@@ -1,6 +1,7 @@
 #include <math.h>
 #include <time.h>
 #include <dstruct/darray.h>
+#include <c-dbg/dbg.h>
 
 #include "mitosis.h"
 
@@ -72,4 +73,40 @@ char *str_mutator(int param)
         }
 
         return random_str;
+}
+
+void evaluate_chromosomes(struct mitosis *m)
+{
+        int i = 0;
+
+        for (i = 0; i < m->max_population; i++) {
+
+        }
+
+}
+
+struct gene_pair *str_mate(char *c_1, char *c_2)
+{
+        struct gene_pair *g_pair = malloc(sizeof(struct gene_pair));
+        int pivot = round((int) strlen(c_1) / 2) - 1;
+        int str_len = (int) strlen(c_1);
+
+        check(
+                strlen(c_1) == strlen(c_2),
+                "chromosome 1 and 2 are not same length"
+        );
+
+        g_pair->child_1 = malloc(sizeof(char) * str_len);
+        g_pair->child_2 = malloc(sizeof(char) * str_len);
+
+        /* pivot at the middle and swap chromosomes */
+        strncpy(g_pair->child_1, c_1, pivot);
+        strncpy(g_pair->child_1 + pivot, c_2 + pivot, str_len);
+
+        strncpy(g_pair->child_2 , c_2, pivot);
+        strncpy(g_pair->child_2 + pivot, c_1 + pivot, str_len);
+
+        return g_pair;
+error:
+        return NULL;
 }

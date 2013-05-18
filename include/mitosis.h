@@ -19,9 +19,15 @@ struct mitosis {
         int max_generation;
 };
 
+struct gene_pair {
+        void * child_1;
+        void * child_2;
+};
+
 /* FUNCTIONS */
 struct mitosis *init_mitosis(int param, float goal, int max_pop, int max_gen);
 void init_str_chromosomes(struct mitosis *m, char *(*mutator)(int));
 char *str_mutator(int parameters);
+struct gene_pair *str_mate(char *c_1, char *c_2);
 
 #endif
