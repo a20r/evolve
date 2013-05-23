@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <math.h>
 
-#include "mitosis.h"
+#include "evolve.h"
 
 float fitness_function(char *chromosome)
 {
@@ -12,7 +13,7 @@ float fitness_function(char *chromosome)
         int i = 0;
 
         for (i = 0; i <= (int) strlen(chromosome); i++) {
-                total += roundf(target[i] - chromosome[i]);
+                total += pow(roundf(target[i] - chromosome[i]), 2);
         }
 
         return total;
@@ -21,25 +22,41 @@ float fitness_function(char *chromosome)
 int main()
 {
         /* initialize mitosis */
-        struct mitosis *m = init_mitosis(
+        struct evolve *e = init_evolve(
                 (int) strlen("hello world!"),  /* param */
                 0.0,  /* goal */
-                20,  /* max_pop */
+                10,  /* max_pop */
                 5000  /* max_gen */
         );
 
-        /* create initial random chromosomes */
-        init_str_chromosomes(m, str_mutator);
-        /* int i = 0; */
-        /* for (i = 0; i < m->population; i++) { */
-        /*         printf("%d: %s\n", i, darray_get(m->chromosomes, i)); */
-        /* } */
+        srand(time(NULL));  /* seed random - VERY IMPORTANT! */
+        init_str_chromosomes(&e, rand_str);  /* init random chromosomes */
 
-        struct gene_pair *g_pair = str_mate("hello world!", "world hello!");
+        int i = 0;
+        for (i = 0; i < 10; i++) {
+                printf("%d: %s\n", i + 1, darray_get(e->chromosomes, i));
+        }
 
-        printf("child 1: %s\n", g_pair->child_1);
-        printf("child 2: %s\n", g_pair->child_2);
-        printf("str len: %d\n", (int) strlen(g_pair->child_1));
+        struct chromosome_pair *c_pair = str_mate(
+                "hello world!",
+                "world hello!"
+        );
+        printf("before mutation [child_1]: %s\n", c_pair->child_1);
+        printf("before mutation [child_2]: %s\n", c_pair->child_2);
+        mutate_gene_str(&c_pair, 0, str_mutator);
+        printf("after mutation [child_1]: %s\n", c_pair->child_1);
+        printf("after mutation [child_2]: %s\n", c_pair->child_2);
+
+
+        /* clean up */
+        darray_clear_destroy(e->chromosomes);
+        free(e);
+
+        free(c_pair->child_1);
+        free(c_pair->child_2);
+        free(c_pair);
+
+
 
         return 0;
 }
