@@ -14,7 +14,7 @@ First navigate into `evolve` root, and generate make files using `cmake` **Note:
     
 where `<path to evolve>` is the path to `evolve`.
 
-#### Install `evolve` to your system
+#### Install `evolve`
 run:
 
     sudo make install  
