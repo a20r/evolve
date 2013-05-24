@@ -1,6 +1,35 @@
 #evolve
 evolve is a Gentic Algorithm implemented in C.
 
+## Requirements
+
+- `cmake` (version 2.6 and higher)
+
+## Installation
+#### Generate make files using `cmake`
+First navigate into `evolve` root, and generate make files using `cmake` **Note: the dot '.' is important**!
+
+    cd <path to evolve>
+    cmake .  
+    
+where `<path to evolve>` is the path to `evolve`.
+
+#### Install `evolve`
+run:
+
+    sudo make install  
+
+to install `evolve` to `/usr/local/include` (default install directory). 
+
+#### Unit tests
+Additionally if you would like to compile the unit tests for `evolve` simply do: 
+    
+    make
+    
+unit tests will reside in the `bin` dir where you ran make.
+    
+
+
 ## Licence
 MIT LICENCE  
 Copyright (C) <2012> Chris Choi
