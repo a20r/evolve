@@ -22,14 +22,13 @@ float fitness_function(char *chromosome)
 int main()
 {
         /* initialize evolution */
-        struct evolve *e = init_evolve(
+        struct population *p = init_population(
                 (int) strlen("hello world!"),  /* param */
                 0.0,  /* goal */
                 10,  /* max_pop */
                 1 /* max_gen */
         );
-        run_evolution(&e, fitness_function);
-        clean_evolve(&e); /* clean up */
+        run_evolution(&p, fitness_function);
 
         return 0;
 }

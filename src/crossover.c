@@ -38,8 +38,8 @@ int str_crossover(struct chromosome_pair **c_pair)
         strncpy((*c_pair)->child_2 , c_2, pivot);
         strncpy((*c_pair)->child_2 + pivot, c_1 + pivot, str_len - pivot);
 
-        debug("child_1 after pivot: %s", (*c_pair)->child_1);
-        debug("child_2 after pivot: %s", (*c_pair)->child_2);
+        debug("child_1 after pivot: %s", (char *) (*c_pair)->child_1);
+        debug("child_2 after pivot: %s", (char *) (*c_pair)->child_2);
 
         /* clean up */
         free(c_1);

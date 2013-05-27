@@ -28,7 +28,7 @@ void mutator(
         }
 
 mutate:
-        debug("mutate!", "hwero");
+        debug("mutate!");
         (*mutator)((char **) &(*c_pair)->child_1);
 no_mutate:
         debug("skip mutate!");
