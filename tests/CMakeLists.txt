@@ -8,3 +8,10 @@ link_directories(/usr/lib)
 
 add_executable(evolve_tests evolve_tests.c)
 target_link_libraries(evolve_tests evolve)
+target_link_libraries(evolve_tests m)
+
+add_executable(utils_tests utils_tests.c)
+target_link_libraries(utils_tests evolve)
+target_link_libraries(utils_tests al)
+target_link_libraries(utils_tests m)
+
