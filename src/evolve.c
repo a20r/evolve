@@ -59,7 +59,7 @@ void print_chromosome(struct population *p, int index)
 
         printf("chromosome [%s]\n", chromo);
         printf("chromosome score: %f\n", score);
-        printf("chromosome total_score: %f\n", total_score);
+        printf("chromosome total_score: %f\n\n", total_score);
 }
 
 void print_chromosomes(struct population *p)
@@ -68,13 +68,25 @@ void print_chromosomes(struct population *p)
         float score = 0.0;
         char *chromo = '\0';
 
-        for (i = 0; i < p->max_population; i++) {
+        for (i = 0; i < p->curr_population; i++) {
                 chromo = (char *) darray_get(p->chromosomes, i);
                 score = *(float *) darray_get(p->chromosome_scores, i);
 
                 printf("chromosome [%s]\n", chromo);
-                printf( "chromosome score: [%f]\n", score);
+                printf( "chromosome score: [%f]\n\n", score);
         }
+}
+
+void print_population(struct population *p)
+{
+        printf("population[paramters]: %d\n", p->parameters);
+        printf("population[goal]: %f\n", p->goal);
+        printf("population[curr_population]: %d\n", p->curr_population);
+        printf("population[max_population]: %d\n\n", p->max_population);
+        printf("population[curr_generation]: %d\n", p->curr_generation);
+        printf("population[max_generation]: %d\n", p->max_generation);
+
+        print_chromosomes(p);
 }
 
 void gen_init_chromosomes(struct population **p, char *(*mutator)(int))
@@ -233,7 +245,7 @@ void run_evolution(
                 debug("GENERATION: %d", (*p)->curr_generation);
 
                 evaluate_chromosomes(eval_func, &(*p));
-                roulette_wheel_selection(&(*p));
+                roulette_wheel_selection(&(*p), NULL);
 
                 (*p)->curr_generation++;
         }

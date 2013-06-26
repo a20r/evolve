@@ -40,6 +40,7 @@ struct population *init_population(
 void destroy_population(struct population **p);
 void print_chromosome(struct population *p, int index);
 void print_chromosomes(struct population *p);
+void print_population(struct population *p);
 void gen_init_chromosomes(struct population **p, char *(*mutator)(int));
 int evaluate_chromosomes(float (eval_func)(char *), struct population **p);
 void normalize_fitness_values(struct population **p);

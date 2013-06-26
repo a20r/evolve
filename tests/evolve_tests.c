@@ -158,13 +158,7 @@ int test_sort_population()
         /* assert tests */
         for (i = 1; i < p->max_population; i++) {
                 curr_score = *(float *) darray_get(p->chromosome_scores, i);
-
-                debug("i: %d", i);
-                debug("previous score: %f", prev_score);
-                debug("current score: %f", curr_score);
-
                 mu_assert(curr_score <= prev_score, "Failed to sort scores!");
-
                 prev_score = curr_score;
         }
 
@@ -202,7 +196,7 @@ void test_suite()
         mu_run_test(test_normalize_fitness_values);
         mu_run_test(test_sort_population);
         mu_run_test(test_destroy_population);
-        /* mu_run_test(test_run_evolution); */
+        mu_run_test(test_run_evolution);
 }
 
 int main()

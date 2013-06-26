@@ -5,7 +5,8 @@
 
 /* FUNCTIONS */
 struct population *roulette_wheel_selection(
-        struct population **p
+        struct population **p,
+        int *select
 );
 
 #endif
