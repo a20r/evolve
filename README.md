@@ -7,18 +7,14 @@ evolve is a Gentic Algorithm implemented in C.
 - [dstruct](http://github.com/chutsu/dstruct): Data structure library in C
 - [munit](http://github.com/chutsu/munit): Unit testing macros for C
 - [dbg](http://github.com/chutsu/dbg): Debugging macros for C
-- `cmake` (version 2.6 and higher)
+- cmake (version 2.6 and higher)
 
 ## Installation
 
     cd <path to evolve>
     cmake .  # the dot '.' is important!
-
     sudo make install  
-    # default install location is:
-    # - `/usr/local/include`
-    # - `/usr/local/lib`
-
+ 
 
 ## Licence
 MIT LICENCE  
