@@ -1,5 +1,5 @@
-#ifndef MUTATE_H
-#define MUTATE_H
+#ifndef _MUTATE_H_
+#define _MUTATE_H_
 
 /* FUNCTIONS */
 void mutate_str(char **str);

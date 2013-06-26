@@ -15,22 +15,22 @@ void mutate_str(char **str)
         (*str)[index] = (*str)[index] + up_or_down;
 }
 
-void mutator(
-        struct chromosome_pair **c_pair,
-        float mutate_chance,
-        void (mutator)(char **))
-{
-        /* to mutate or not mutate */
-        if (randnum_i(0, 100) > mutate_chance) {
-                goto mutate;
-        } else {
-                goto no_mutate;
-        }
-
-mutate:
-        debug("mutate!");
-        (*mutator)((char **) &(*c_pair)->child_1);
-no_mutate:
-        debug("skip mutate!");
-        return;
-}
+/* void mutator( */
+/*         struct chromosome_pair **c_pair, */
+/*         float mutate_chance, */
+/*         void (mutator)(char **)) */
+/* { */
+/*         #<{(| to mutate or not mutate |)}># */
+/*         if (randnum_i(0, 100) > mutate_chance) { */
+/*                 goto mutate; */
+/*         } else { */
+/*                 goto no_mutate; */
+/*         } */
+/*  */
+/* mutate: */
+/*         debug("mutate!"); */
+/*         (*mutator)((char **) &(*c_pair)->child_1); */
+/* no_mutate: */
+/*         debug("skip mutate!"); */
+/*         return; */
+/* } */
