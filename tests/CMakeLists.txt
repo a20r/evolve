@@ -15,3 +15,7 @@ target_link_libraries(utils_tests evolve)
 target_link_libraries(utils_tests al)
 target_link_libraries(utils_tests m)
 
+add_executable(selection_tests selection_tests.c)
+target_link_libraries(selection_tests evolve)
+target_link_libraries(utils_tests al)
+target_link_libraries(utils_tests m)
