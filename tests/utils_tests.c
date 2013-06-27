@@ -11,16 +11,33 @@
 int test_randnum_i()
 {
         int i = 0;
-        int curr_num = 0;  /* current number */
-        int last_num = 0;  /* last number */
+        int curr_num = 0;
+        int last_num = 0;
 
         for (i = 0; i < 10; i++) {
                 curr_num = randnum_i(0, 100);
 
-                debug("Run: %d", i);
-                debug("last_num: [%d]", last_num);
-                debug("curr_num: [%d]", curr_num);
-                debug("");
+                debug("RUN[%d] -> random integer: [%d]", i, curr_num);
+
+                mu_assert(curr_num <= 100, "curr_num should not be over 100!");
+                mu_assert(curr_num >= 0, "curr_num should be over 0!");
+                mu_assert(curr_num != last_num, "curr_num == last_num!");
+                last_num = curr_num;
+        }
+
+        return 0;
+}
+
+int test_randnum_f()
+{
+        int i = 0;
+        float curr_num = 0;
+        float last_num = 0;
+
+        for (i = 0; i < 10; i++) {
+                curr_num = randnum_f(0.0, 100.0);
+
+                debug("RUN[%d] -> random float: [%.2f]", i, curr_num);
 
                 mu_assert(curr_num <= 100, "curr_num should not be over 100!");
                 mu_assert(curr_num >= 0, "curr_num should be over 0!");
@@ -46,9 +63,7 @@ int test_randstr()
                 r_str = randstr(len);
                 strcpy(curr_str, r_str);
 
-                debug("Run: %d", i);
-                debug("random str: [%s]", curr_str);
-                debug("");
+                debug("RUN[%d] -> random string: [%s]", i, curr_str);
 
                 mu_assert(
                         strlen(curr_str) == 10,
@@ -75,6 +90,7 @@ int test_randstr()
 void test_suite()
 {
         mu_run_test(test_randnum_i);
+        mu_run_test(test_randnum_f);
         mu_run_test(test_randstr);
 }
 
