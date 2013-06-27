@@ -45,10 +45,19 @@ struct population *init_population(
 void destroy_population(struct population **p)
 {
         log_info("Destroying population!");
-        darray_clear_destroy((*p)->chromosomes);
-        darray_clear_destroy((*p)->chromosome_scores);
-        free((*p));
-        (*p) = NULL;
+        if ((*p)) {
+
+                if ((*p)->chromosomes){
+                        darray_clear_destroy((*p)->chromosomes);
+                }
+
+                if ((*p)->chromosome_scores) {
+                        darray_clear_destroy((*p)->chromosome_scores);
+                }
+
+                free(*p);
+                *p = NULL;
+        }
 }
 
 void print_chromosome(struct population *p, int index)
@@ -93,15 +102,19 @@ void gen_init_chromosomes(struct population **p, char *(*mutator)(int))
 {
         int i = 0;
         int param = (*p)->parameters;
-        char *chromosome;
+        char *chromosome = '\0';
+
+        check(param != 0, "Parameters should not be 0!");
 
         /* fill initial random chromosome */
         for (i = 0; i < (*p)->max_population; i++) {
                 chromosome = (*mutator)(param);
                 darray_set((*p)->chromosomes, i, chromosome);
-
                 (*p)->curr_population++;
         }
+
+error:
+        return;
 }
 
 int evaluate_chromosomes(float (eval_func)(char *), struct population **p)
@@ -110,15 +123,6 @@ int evaluate_chromosomes(float (eval_func)(char *), struct population **p)
         int goal_reached = 0;
         float *score;
         char *chromosome;
-
-        debug(
-                "element size: %zu",
-                (*p)->chromosome_scores->element_size
-        );
-        debug(
-                "array score size: %zu",
-                sizeof(darray_get((*p)->chromosome_scores, 0))
-        );
 
         log_info("Evaluating chromosomes!");
         for (i = 0; i < (*p)->max_population; i++) {
@@ -134,7 +138,7 @@ int evaluate_chromosomes(float (eval_func)(char *), struct population **p)
                 }
 
                 /* set the score and total_score */
-                darray_set((*p)->chromosome_scores, i, score);
+                darray_push((*p)->chromosome_scores, score);
                 (*p)->total_score += *score;
         }
 
@@ -235,7 +239,6 @@ void run_evolution(
         /* evolution vars */
         int max_gen = (*p)->max_generation;
         int goal_achieved = 0;
-        /* void *chromosomes = (*p)->chromosomes; */
 
         log_info("Running Evolution!");
 
@@ -246,6 +249,7 @@ void run_evolution(
 
                 evaluate_chromosomes(eval_func, &(*p));
                 roulette_wheel_selection(&(*p), NULL);
+                print_population(*p);
 
                 (*p)->curr_generation++;
         }
