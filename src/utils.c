@@ -34,18 +34,19 @@ float randnum_f(float l_bound, float u_bound)
 char *randstr(int length)
 {
         int i = 0;
-        int el_size = sizeof(char) * (length + 1);
-        char *randstr = malloc(el_size);
+        char *r_str = malloc(sizeof(char *) * length);
 
-        check_mem(randstr);
-        memset(randstr, '\0', el_size);
+        check_mem(r_str);
+        memset(r_str, '\0', sizeof(char *) * length);
 
         /* generate random ASCII char */
         for (i = 0; i < length; i++) {
-                randstr[i] = randnum_i(32, 128);
+                r_str[i] = randnum_i(32, 128);
         }
+        r_str[length] = '\0';
 
-        return randstr;
+        return r_str;
 error:
+        if (r_str) free(r_str);
         return NULL;
 }

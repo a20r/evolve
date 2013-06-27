@@ -34,24 +34,39 @@ int test_randnum_i()
 int test_randstr()
 {
         int i = 0;
-        char *curr_str = "";  /* current string */
-        char *last_str = "";  /* last string */
+        int len = 10;
+        char *r_str = '\0';
+        char curr_str[len];
+        char last_str[len];
+
+        memset(curr_str, 0, sizeof(curr_str));
+        memset(last_str, 0, sizeof(last_str));
 
         for (i = 0; i < 10; i++) {
-                curr_str = randstr(10);
+                r_str = randstr(len);
+                strcpy(curr_str, r_str);
 
                 debug("Run: %d", i);
-                debug("last_str: [%s]", last_str);
-                debug("curr_str: [%s]", curr_str);
+                debug("random str: [%s]", curr_str);
                 debug("");
 
-                mu_assert(strlen(curr_str) == 10, "strlen should not be 10!");
+                mu_assert(
+                        strlen(curr_str) == 10,
+                        "Random string should be length 10!"
+                );
+                mu_assert(
+                        curr_str[len] == '\0',
+                        "Random string should be length 10!"
+                );
                 mu_assert(
                         strcmp(last_str, curr_str) != 0,
                         "curr_str != last_str failed"
                 );
 
-                last_str = curr_str;
+                /* clean up */
+                strncpy(last_str, curr_str, sizeof(curr_str));
+                memset(curr_str, 0, sizeof(char) * len);
+                free(r_str);
         }
 
         return 0;
