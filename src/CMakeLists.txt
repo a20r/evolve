@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 
+set(LIB_NAME evolve)
 set(CMAKE_C_COMPILER gcc)
 
 include_directories(../include)
@@ -9,7 +10,7 @@ link_directories(/usr/lib)
 
 # evolve library
 add_library(
-    evolve
+    ${LIB_NAME}
 
     evolve.c
     selection.c
@@ -19,5 +20,3 @@ add_library(
 )
 target_link_libraries(evolve dstruct)
 target_link_libraries(evolve al)
-
-subdirs(examples)

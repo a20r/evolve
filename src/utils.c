@@ -43,7 +43,7 @@ char *randstr(int length)
         for (i = 0; i < length; i++) {
                 r_str[i] = randnum_i(32, 128);
         }
-        r_str[length] = '\0';
+        r_str[length] = '\0';  /* add null terminator for safety */
 
         return r_str;
 error:
