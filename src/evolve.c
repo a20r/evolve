@@ -16,7 +16,7 @@ struct population *init_population(
 {
         struct population *p = malloc(sizeof(struct population));
 
-        log_info("Initializing struct population");
+        debug("Initializing struct population");
 
         /* chromosomes */
         p->chromosomes = darray_create(sizeof(char) * (param + 1), max_pop);
@@ -44,7 +44,7 @@ struct population *init_population(
 
 void destroy_population(struct population **p)
 {
-        log_info("Destroying population!");
+        debug("Destroying population!");
         if ((*p)) {
 
                 if ((*p)->chromosomes){
@@ -102,14 +102,12 @@ void gen_init_chromosomes(struct population **p, char *(*mutator)(int))
 {
         int i = 0;
         int param = (*p)->parameters;
-        char *chromosome = '\0';
 
         check(param != 0, "Parameters should not be 0!");
 
         /* fill initial random chromosome */
         for (i = 0; i < (*p)->max_population; i++) {
-                chromosome = (*mutator)(param);
-                darray_set((*p)->chromosomes, i, chromosome);
+                darray_set((*p)->chromosomes, i, (*mutator)(param));
                 (*p)->curr_population++;
         }
 
@@ -124,7 +122,7 @@ int evaluate_chromosomes(float (eval_func)(char *), struct population **p)
         float *score;
         char *chromosome;
 
-        log_info("Evaluating chromosomes!");
+        debug("Evaluating chromosomes!");
         for (i = 0; i < (*p)->max_population; i++) {
                 /* obtain and evaluate chromosome from population */
                 chromosome = darray_get((*p)->chromosomes, i);
@@ -138,12 +136,11 @@ int evaluate_chromosomes(float (eval_func)(char *), struct population **p)
                 }
 
                 /* set the score and total_score */
-                darray_push((*p)->chromosome_scores, score);
+                darray_set((*p)->chromosome_scores, i, score);
                 (*p)->total_score += *score;
         }
 
         if (goal_reached == 1) {
-                log_info("Found solution!");
                 return 1;
         } else {
                 return 0;
@@ -158,7 +155,7 @@ void normalize_fitness_values(struct population **p)
        float *normalized_score;
        char *chromosome;
 
-       log_info("Normalizing chromsome scores!");
+       debug("Normalizing chromsome scores!");
        for (i = 0; i < (*p)->max_population; i++) {
                 /* get score */
                 chromosome = darray_get((*p)->chromosomes, i);
@@ -240,7 +237,7 @@ void run_evolution(
         int max_gen = (*p)->max_generation;
         int goal_achieved = 0;
 
-        log_info("Running Evolution!");
+        debug("Running Evolution!");
 
         /* evolve until max_gen reached or goal achieved  */
         while ((*p)->curr_generation < max_gen && goal_achieved == 0)
@@ -256,5 +253,5 @@ void run_evolution(
 
         /* clean up */
         destroy_population(&(*p));
-        log_info("Evolution Completed!");
+        debug("Evolution Completed!");
 }

@@ -80,44 +80,38 @@ int test_gen_init_chromosomes()
 int test_evaluate_chromosomes()
 {
         int i = 0;
-        char *curr_chromosome = '\0';
-        char *last_chromosome = '\0';
+        int goal_reached = 0;
+        char *curr_chromo = '\0';
+        char *last_chromo = '\0';
         float curr_score = 0.0;
         float last_score = 0.0;
+        char *chromosome_solution = "hello world!";
+        char *solution = malloc(sizeof(char *) * p->parameters);
 
-        /* set the last chromosome to match the solution, then evaluate */
-        darray_set(p->chromosomes, 4, "hello world!");
-        int goal_reached = evaluate_chromosomes(fitness_function, &p);
-        mu_assert(goal_reached == 1, "goal should have been reached!");
+        /* replace last chromosome to match the solution */
+        memcpy(solution, chromosome_solution, sizeof(char *) * p->parameters);
+        free(darray_get(p->chromosomes, 4));  /* MUST FREE BEFORE REPLACING! */
+        darray_set(p->chromosomes, 4, solution);
 
-        /* loop through chromosomes and their scores to check the are ok */
+        /* evaluate */
+        goal_reached = evaluate_chromosomes(fitness_function, &p);
+        mu_assert(goal_reached == 1, "Goal should have been reached!");
+
+        /* loop through and check scores */
         for (i = 0; i < p->max_population; i++) {
-                curr_chromosome = (char *) darray_get(p->chromosomes, i);
+                curr_chromo = (char *) darray_get(p->chromosomes, i);
                 curr_score = *((float *) darray_get(p->chromosome_scores, i));
 
-                /* chromosome */
-                mu_assert(
-                        curr_chromosome != last_chromosome,
-                        "curr_num == last_num!"
-                );
-
-                /* score */
-                mu_assert(
-                        curr_score != last_score,
-                        "curr_score shoud not equal last_score!"
-                );
-
-                /* other */
+                mu_assert(curr_chromo != last_chromo, "curr_num == last_num!");
+                mu_assert(curr_score != last_score, "curr_score == last_score!");
                 mu_assert(p->curr_population == 5, "Population should be 5!");
 
-                debug("chromosome [%s]", curr_chromosome);
-                debug("chromosome score: %f", curr_score);
-                debug("");
-
-                last_chromosome = curr_chromosome;
+                last_chromo = curr_chromo;
                 last_score = curr_score;
         }
         mu_assert(p->total_score != 0.0, "Sum of scores should not be 0!");
+
+        print_population(p);
 
         return 0;
 }
@@ -192,8 +186,8 @@ void test_suite()
 {
         mu_run_test(test_init_population);
         mu_run_test(test_gen_init_chromosomes);
-        /* mu_run_test(test_evaluate_chromosomes); */
-        /* mu_run_test(test_normalize_fitness_values); */
+        mu_run_test(test_evaluate_chromosomes);
+        mu_run_test(test_normalize_fitness_values);
         /* mu_run_test(test_sort_population); */
         mu_run_test(test_destroy_population);
         /* mu_run_test(test_run_evolution); */
