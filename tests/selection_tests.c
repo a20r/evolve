@@ -3,7 +3,6 @@
 #include <string.h>
 
 #include <munit/munit.h>
-#include <al/comparator.h>
 
 #include "selection.h"
 #include "evolve.h"
@@ -12,7 +11,7 @@
 /* GLOBAL VAR */
 struct population *p;
 
-static void setup()
+void setup()
 {
         p = init_population(
                 (int) strlen("hello world!"),  /* param */
@@ -23,12 +22,12 @@ static void setup()
         gen_init_chromosomes(&p, randstr);
 }
 
-static void teardown()
+void teardown()
 {
         destroy_population(&p);
 }
 
-static float fitness_function(char *chromosome)
+float fitness_function(char *chromosome)
 {
         char *target = "hello world!";
         float total = 0;
@@ -47,10 +46,12 @@ int test_roulette_selection()
 
         evaluate_chromosomes(fitness_function, &p);
         p = roulette_wheel_selection(&p, NULL);
+        print_population(p);
 
         mu_assert(p->curr_population == 5, "Current population should be 5!");
         mu_assert(p->max_population == 10, "Maximum population should be 10!");
 
+        teardown();
         return 0;
 }
 
