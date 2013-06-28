@@ -18,5 +18,6 @@ add_library(
     mutate.c
     utils.c
 )
+target_link_libraries(evolve m)
 target_link_libraries(evolve dstruct)
 target_link_libraries(evolve al)

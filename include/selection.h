@@ -4,6 +4,6 @@
 #include "evolve.h"
 
 /* FUNCTIONS */
-struct population *roulette_wheel_selection(struct population **p, int *select);
+void roulette_wheel_selection(struct population **p, int *select);
 
 #endif

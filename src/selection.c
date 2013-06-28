@@ -5,7 +5,7 @@
 #include "evolve.h"
 
 
-struct population *roulette_wheel_selection(
+void roulette_wheel_selection(
         struct population **p,
         int *select
 )
@@ -69,5 +69,5 @@ struct population *roulette_wheel_selection(
 
         /* clean up */
         destroy_population(&(*p));
-        return new_p;
+        *p = new_p;
 }

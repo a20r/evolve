@@ -45,7 +45,7 @@ int test_roulette_selection()
         setup();
 
         evaluate_chromosomes(fitness_function, &p);
-        p = roulette_wheel_selection(&p, NULL);
+        roulette_wheel_selection(&p, NULL);
         print_population(p);
 
         mu_assert(p->curr_population == 5, "Current population should be 5!");

@@ -6,7 +6,6 @@
 #include <al/comparator.h>
 
 #include "evolve.h"
-#include "utils.h"
 
 /* GLOBAL VAR */
 struct population *p;
@@ -172,25 +171,28 @@ int test_run_evolution()
         struct population *pop = init_population(
                 (int) strlen("hello world!"),  /* param */
                 0.0,  /* goal */
-                5,  /* max_pop */
-                5 /* max_gen */
+                10,  /* max_pop */
+                1 /* max_gen */
         );
 
         gen_init_chromosomes(&pop, randstr);
         run_evolution(&pop, fitness_function);
+        destroy_population(&pop);
+
+        mu_assert(pop == NULL, "Population should be NULL!");
 
         return 0;
 }
 
 void test_suite()
 {
-        mu_run_test(test_init_population);
-        mu_run_test(test_gen_init_chromosomes);
-        mu_run_test(test_evaluate_chromosomes);
-        mu_run_test(test_normalize_fitness_values);
-        mu_run_test(test_sort_population);
-        mu_run_test(test_destroy_population);
-        /* mu_run_test(test_run_evolution); */
+        /* mu_run_test(test_init_population); */
+        /* mu_run_test(test_gen_init_chromosomes); */
+        /* mu_run_test(test_evaluate_chromosomes); */
+        /* mu_run_test(test_normalize_fitness_values); */
+        /* mu_run_test(test_sort_population); */
+        /* mu_run_test(test_destroy_population); */
+        mu_run_test(test_run_evolution);
 }
 
 int main()

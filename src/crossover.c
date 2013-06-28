@@ -4,41 +4,31 @@
 
 #include <dbg/dbg.h>
 
+#include "crossover.h"
 #include "evolve.h"
 
-int str_crossover(struct chromosome_pair **c_pair)
+
+int one_ptr_crossover(struct chromosome_pair **c_pair, int index)
 {
-        int str_len = (int) strlen((*c_pair)->child_1) + 1;
-        int pivot = round(str_len / 2) - 1;
-        char *c_1 = malloc(sizeof(char) * str_len);
-        char *c_2 = malloc(sizeof(char) * str_len);
+        int len = (int) strlen((*c_pair)->child_1) + 1;
+        int i = (index == DEFAULT_PIVOT ? round(len / 2) - 1 : index);
+        char *c_1 = calloc(1, sizeof(char) * len);
+        char *c_2 = calloc(1, sizeof(char) * len);
 
         /* set c_1 and c_2 */
-        strncpy(c_1, (*c_pair)->child_1, str_len);
-        strncpy(c_2, (*c_pair)->child_2, str_len);
+        memcpy(c_1, (*c_pair)->child_1, sizeof(char) * len);
+        memcpy(c_2, (*c_pair)->child_2, sizeof(char) * len);
+        check(strlen(c_1) == strlen(c_2), "c_1 and c_2 are not same the len!");
 
-        check(
-                strlen(c_1) == strlen(c_2),
-                "chromosome 1 and 2 are not same length"
-        );
+        /* pivot at pivot point and swap chromosomes */
+        memcpy((*c_pair)->child_1, c_1, sizeof(char) * i);
+        memcpy((*c_pair)->child_2, c_2, sizeof(char) * i);
+        memcpy((*c_pair)->child_1 + i, c_2 + i, sizeof(char) * (len - i));
+        memcpy((*c_pair)->child_2 + i, c_1 + i, sizeof(char) * (len - i));
 
-        /* clear c_pair child 1 and 2 before pivoting */
-        memset((*c_pair)->child_1, '\0', strlen(c_1));
-        memset((*c_pair)->child_2, '\0', strlen(c_2));
-
-        debug("pivot index: %d", pivot);
-        debug("str_len: %d", str_len);
-        debug("child_1 before pivot: %s", c_1);
-        debug("child_2 before pivot: %s", c_2);
-
-        /* pivot at the middle and swap chromosomes */
-        strncpy((*c_pair)->child_1, c_1, pivot);
-        strncpy((*c_pair)->child_1 + pivot, c_2 + pivot, str_len - pivot);
-        strncpy((*c_pair)->child_2 , c_2, pivot);
-        strncpy((*c_pair)->child_2 + pivot, c_1 + pivot, str_len - pivot);
-
-        debug("child_1 after pivot: %s", (char *) (*c_pair)->child_1);
-        debug("child_2 after pivot: %s", (char *) (*c_pair)->child_2);
+        /* add null terminator for safety */
+        memcpy((*c_pair)->child_1 + len, "\0", sizeof(char));
+        memcpy((*c_pair)->child_2 + len, "\0", sizeof(char));
 
         /* clean up */
         free(c_1);

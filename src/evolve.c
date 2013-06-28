@@ -91,11 +91,17 @@ void print_population(struct population *p)
         printf("population[paramters]: %d\n", p->parameters);
         printf("population[goal]: %f\n", p->goal);
         printf("population[curr_population]: %d\n", p->curr_population);
-        printf("population[max_population]: %d\n\n", p->max_population);
+        printf("population[max_population]: %d\n", p->max_population);
         printf("population[curr_generation]: %d\n", p->curr_generation);
-        printf("population[max_generation]: %d\n", p->max_generation);
+        printf("population[max_generation]: %d\n\n", p->max_generation);
 
         print_chromosomes(p);
+}
+
+void print_chromosome_pair(struct chromosome_pair *c_pair)
+{
+        printf("chromosome pair [child_1]: %s\n", (char *) c_pair->child_1);
+        printf("chromosome pair [child_2]: %s\n\n", (char *) c_pair->child_2);
 }
 
 void gen_init_chromosomes(struct population **p, char *(*mutator)(int))
@@ -190,8 +196,8 @@ void sort_population(
                 int i = j - 1;
 
                 /* obtain chromosome score and bit-string */
-                score = malloc(score_sz);
-                chromo = malloc(chromo_sz);
+                score = darray_new((*p)->chromosome_scores);
+                chromo = darray_new((*p)->chromosomes);
 
                 memcpy(score, darray_get((*p)->chromosome_scores, j), score_sz);
                 memcpy(chromo, darray_get((*p)->chromosomes, j), chromo_sz);
@@ -199,7 +205,6 @@ void sort_population(
                 /* very important! */
                 free(darray_get((*p)->chromosome_scores, j));
                 free(darray_get((*p)->chromosomes, j));
-
 
                 while (
                         i >= 0 &&
@@ -236,25 +241,21 @@ void run_evolution(
         float (eval_func)(char *)
 )
 {
-        /* evolution vars */
         int max_gen = (*p)->max_generation;
-        int goal_achieved = 0;
 
         debug("Running Evolution!");
 
         /* evolve until max_gen reached or goal achieved  */
-        while ((*p)->curr_generation < max_gen && goal_achieved == 0)
+        while ((*p)->curr_generation < max_gen)
         {
                 debug("GENERATION: %d", (*p)->curr_generation);
 
-                evaluate_chromosomes(eval_func, &(*p));
+                if (evaluate_chromosomes(eval_func, &(*p))) break;
                 roulette_wheel_selection(&(*p), NULL);
                 print_population(*p);
 
                 (*p)->curr_generation++;
         }
 
-        /* clean up */
-        destroy_population(&(*p));
         debug("Evolution Completed!");
 }
