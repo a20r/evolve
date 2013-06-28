@@ -189,14 +189,17 @@ void sort_population(
         for (j = 1; j < (*p)->max_population; j++) {
                 int i = j - 1;
 
-                /* chromosome score and bit-string */
+                /* obtain chromosome score and bit-string */
                 score = malloc(score_sz);
                 chromo = malloc(chromo_sz);
-                memset(score, '\0', score_sz);
-                memset(chromo, '\0', chromo_sz);
 
                 memcpy(score, darray_get((*p)->chromosome_scores, j), score_sz);
                 memcpy(chromo, darray_get((*p)->chromosomes, j), chromo_sz);
+
+                /* very important! */
+                free(darray_get((*p)->chromosome_scores, j));
+                free(darray_get((*p)->chromosomes, j));
+
 
                 while (
                         i >= 0 &&
@@ -224,7 +227,7 @@ void sort_population(
 
                 /* chromosome score and bit-string */
                 darray_set((*p)->chromosome_scores, (i + 1), score);
-                darray_set( (*p)->chromosomes, (i + 1), chromo);
+                darray_set((*p)->chromosomes, (i + 1), chromo);
         }
 }
 

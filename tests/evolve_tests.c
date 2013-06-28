@@ -188,7 +188,7 @@ void test_suite()
         mu_run_test(test_gen_init_chromosomes);
         mu_run_test(test_evaluate_chromosomes);
         mu_run_test(test_normalize_fitness_values);
-        /* mu_run_test(test_sort_population); */
+        mu_run_test(test_sort_population);
         mu_run_test(test_destroy_population);
         /* mu_run_test(test_run_evolution); */
 }
