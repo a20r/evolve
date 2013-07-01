@@ -89,8 +89,8 @@ int test_randstr()
 
 void test_suite()
 {
-        mu_run_test(test_randnum_i);
-        mu_run_test(test_randnum_f);
+        /* mu_run_test(test_randnum_i); */
+        /* mu_run_test(test_randnum_f); */
         mu_run_test(test_randstr);
 }
 

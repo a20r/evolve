@@ -15,16 +15,15 @@ char *c_2_orig = "Ciao Maria!\0";
 
 void setup()
 {
-        int c_1_len = strlen(c_1_orig);
-        int c_2_len = strlen(c_2_orig );
+        int c_1_len = strlen(c_1_orig) + 1;  /* + 1 for null terminator */
+        int c_2_len = strlen(c_2_orig) + 1;  /* + 1 for null terminator */
 
         c_pair = malloc(sizeof(struct chromosome_pair));
+        c_pair->child_1 = calloc(1, sizeof(char) * c_1_len);
+        c_pair->child_2 = calloc(1, sizeof(char) * c_2_len);
 
-        c_pair->child_1 = calloc(1, sizeof(char *) * c_1_len);
-        c_pair->child_2 = calloc(1, sizeof(char *) * c_2_len);
-
-        memcpy(c_pair->child_1, c_1_orig, sizeof(char *) * c_1_len);
-        memcpy(c_pair->child_2, c_2_orig , sizeof(char *) * c_2_len);
+        memcpy(c_pair->child_1, c_1_orig, sizeof(char) * c_1_len);
+        memcpy(c_pair->child_2, c_2_orig , sizeof(char) * c_2_len);
 }
 
 void teardown()

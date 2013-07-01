@@ -41,7 +41,7 @@ char *randstr(int length)
 
         /* generate random ASCII char */
         for (i = 0; i < length; i++) {
-                r_str[i] = randnum_i(32, 128);
+                r_str[i] = randnum_i(32, 122);
         }
         r_str[length] = '\0';  /* add null terminator for safety */
 

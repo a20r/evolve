@@ -11,8 +11,11 @@
 
 int one_ptr_crossover(void **chromo_1, void **chromo_2, int index)
 {
+        /* debug("chromo_1: %s", chromo_1); */
+        /* debug("strlen chromo_1: %d", strlen(chromo_1)); */
         int len = (int) strlen(*chromo_1) + 1;
         int i = (index == DEFAULT_PIVOT ? round(len / 2) - 1 : index);
+
 
         check(
                 strlen(*chromo_1) == strlen(*chromo_2),
@@ -44,6 +47,29 @@ int one_ptr_crossover(void **chromo_1, void **chromo_2, int index)
         free(child_2);
         return 0;
 error:
+        printf("chromo 1: %s\n", (char *) *chromo_1);
+        printf("chromo 2: %s\n", (char *) *chromo_2);
+        printf("strlen chromo 1: %zu\n", strlen(*chromo_1));
+        printf("strlen chromo 2: %zu\n", strlen(*chromo_2));
+
+
+        char *c_1 = (char *) chromo_1;
+        char *c_2 = (char *) chromo_2;
+
+        printf("chromo 1\n");
+        for (i = 0; i < strlen(*chromo_1); i++) {
+                printf("%d-", c_1[i]);
+        }
+        printf("\n");
+
+        printf("chromo 2\n");
+        for (i = 0; i < strlen(*chromo_1); i++) {
+                printf("%d-", c_2[i]);
+        }
+        printf("\n");
+
+
+        exit(-1);
         return -1;
 }
 
@@ -56,6 +82,6 @@ void crossover(
 )
 {
         if (crossover_prob > randnum_f(0.0, 1.0)) {
-                crossover_func(*child_1, *child_2, index);
+                crossover_func(&(*child_1), &(*child_2), index);
         }
 }

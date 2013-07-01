@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 2.6)
 
-include_directories(../../include)
+set(CMAKE_C_COMPILER gcc)
+# add_definitions(-DNDEBUG)
+
+include_directories(../include)
 
 link_directories(/usr/local/lib)
 link_directories(/usr/lib)

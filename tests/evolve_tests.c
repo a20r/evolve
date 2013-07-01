@@ -6,6 +6,8 @@
 #include <al/comparator.h>
 
 #include "evolve.h"
+#include "selection.h"
+#include "utils.h"
 
 /* GLOBAL VAR */
 struct population *p;
@@ -30,7 +32,7 @@ int test_init_population()
         p = init_population(
                 (int) strlen("hello world!"),  /* param */
                 0.0,  /* goal */
-                5,  /* max_pop */
+                10,  /* max_pop */
                 1 /* max_gen */
         );
 
@@ -46,7 +48,7 @@ int test_init_population()
         /* population details */
         mu_assert(p->curr_population == 0, "Current population should be 0!");
         mu_assert(p->curr_generation == 0, "Current generation should be 0!");
-        mu_assert(p->max_population == 5, "Max population should be 5!");
+        mu_assert(p->max_population == 10, "Max population should be 5!");
         mu_assert(p->max_generation == 1, "Max generation should be 1!");
         mu_assert(p->solution == NULL, "Solution should be NULL!");
 
@@ -68,10 +70,11 @@ int test_gen_init_chromosomes()
                         curr_chromosome != last_chromosome,
                         "curr_num == last_num!"
                 );
-                mu_assert(p->curr_population == 5,"population != 5!");
+                mu_assert(p->curr_population == 10,"population != 10!");
 
                 last_chromosome = curr_chromosome;
         }
+
 
         return 0;
 }
@@ -103,14 +106,12 @@ int test_evaluate_chromosomes()
 
                 mu_assert(curr_chromo != last_chromo, "curr_num == last_num!");
                 mu_assert(curr_score != last_score, "curr_score == last_score!");
-                mu_assert(p->curr_population == 5, "Population should be 5!");
+                mu_assert(p->curr_population == 10, "Population should be 10!");
 
                 last_chromo = curr_chromo;
                 last_score = curr_score;
         }
         mu_assert(p->total_score != 0.0, "Sum of scores should not be 0!");
-
-        print_population(p);
 
         return 0;
 }
@@ -126,8 +127,8 @@ int test_normalize_fitness_values()
                 sum += *(float *) darray_get(p->chromosome_scores, i);
         }
 
-        /* debug("sum: %f", sum); */
-        /* mu_assert(sum == 1.0, "Sum of normalized values should be 1!"); */
+        debug("sum: %f", sum);
+        mu_assert((int) sum == 1, "Sum of normalized values should be 1!");
 
         return 0;
 }
@@ -158,6 +159,18 @@ int test_sort_population()
         return 0;
 }
 
+int test_populate()
+{
+        roulette_wheel_selection(&p, NULL);
+        populate(&p, 0.9, 0.3);
+
+        mu_assert(p->chromosomes->end == 9, "Population should be 10!");
+        mu_assert(p->chromosome_scores->end == 9, "Population should be 10!");
+        mu_assert(p->curr_population == 10, "Population should be 10!");
+
+        return 0;
+}
+
 int test_destroy_population()
 {
         destroy_population(&p);
@@ -172,11 +185,17 @@ int test_run_evolution()
                 (int) strlen("hello world!"),  /* param */
                 0.0,  /* goal */
                 10,  /* max_pop */
-                1 /* max_gen */
+                2 /* max_gen */
         );
 
         gen_init_chromosomes(&pop, randstr);
-        run_evolution(&pop, fitness_function);
+        run_evolution(
+                &pop,
+                fitness_function,
+                0.5,
+                0.2
+        );
+        print_population(pop);
         destroy_population(&pop);
 
         mu_assert(pop == NULL, "Population should be NULL!");
@@ -186,12 +205,13 @@ int test_run_evolution()
 
 void test_suite()
 {
-        /* mu_run_test(test_init_population); */
-        /* mu_run_test(test_gen_init_chromosomes); */
-        /* mu_run_test(test_evaluate_chromosomes); */
-        /* mu_run_test(test_normalize_fitness_values); */
-        /* mu_run_test(test_sort_population); */
-        /* mu_run_test(test_destroy_population); */
+        mu_run_test(test_init_population);
+        mu_run_test(test_gen_init_chromosomes);
+        mu_run_test(test_evaluate_chromosomes);
+        mu_run_test(test_normalize_fitness_values);
+        mu_run_test(test_sort_population);
+        mu_run_test(test_populate);
+        mu_run_test(test_destroy_population);
         mu_run_test(test_run_evolution);
 }
 

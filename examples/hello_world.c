@@ -1,14 +1,17 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include <math.h>
 
 #include "evolve.h"
+#include "utils.h"
+
+#define TARGET_SOLUTION "hello world!"
+
 
 float fitness_function(char *chromosome)
 {
-        char *target = "hello world!";
+        char *target = TARGET_SOLUTION;
         float total = 0;
         int i = 0;
 
@@ -19,16 +22,29 @@ float fitness_function(char *chromosome)
         return total;
 }
 
+
 int main()
 {
+        /* seed random - VERY IMPORTANT! */
+        srand(time(NULL));
+
         /* initialize evolution */
-        struct population *p = init_population(
-                (int) strlen("hello world!"),  /* param */
+        struct population *pop = init_population(
+                (int) strlen(TARGET_SOLUTION),  /* param */
                 0.0,  /* goal */
                 10,  /* max_pop */
-                1 /* max_gen */
+                1000000 /* max_gen */
         );
-        run_evolution(&p, fitness_function);
+
+        gen_init_chromosomes(&pop, randstr);
+        run_evolution(
+                &pop,
+                fitness_function,
+                0.8,
+                0.2
+        );
+
+        destroy_population(&pop);
 
         return 0;
 }

@@ -30,7 +30,6 @@ void roulette_wheel_selection(
         );
         new_p->curr_generation = (*p)->curr_generation;
         new_p->solution = (*p)->solution;
-        debug("chromosomes->end: %d", new_p->chromosomes->end);
 
         debug("Performing roulette selection!");
 

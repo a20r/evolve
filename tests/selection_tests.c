@@ -11,7 +11,7 @@
 /* GLOBAL VAR */
 struct population *p;
 
-void setup()
+static void setup()
 {
         p = init_population(
                 (int) strlen("hello world!"),  /* param */
@@ -22,12 +22,12 @@ void setup()
         gen_init_chromosomes(&p, randstr);
 }
 
-void teardown()
+static void teardown()
 {
         destroy_population(&p);
 }
 
-float fitness_function(char *chromosome)
+static float fitness_function(char *chromosome)
 {
         char *target = "hello world!";
         float total = 0;
@@ -45,7 +45,6 @@ int test_roulette_selection()
         setup();
 
         evaluate_chromosomes(fitness_function, &p);
-        debug("chromosomes->end: %d", p->chromosomes->end);
         roulette_wheel_selection(&p, NULL);
         print_population(p);
 

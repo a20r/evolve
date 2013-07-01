@@ -34,11 +34,6 @@ struct population *init_population(
         p->parameters = param;
         p->goal = goal;
 
-        debug("population[paramters]: %d", p->parameters);
-        debug("population[goal]: %f", p->goal);
-        debug("population[max_population]: %d", p->max_population);
-        debug("population[max_generation]: %d", p->max_generation);
-
         return p;
 }
 
@@ -84,6 +79,35 @@ void print_chromosomes(struct population *p)
                 printf("chromosome [%s]\n", chromo);
                 printf( "chromosome score: [%f]\n\n", score);
         }
+}
+
+void print_best_chromosome(struct population *p)
+{
+        int i = 0;
+        float goal = p->goal;
+        float curr_score = 0;
+        float best_score = *(float *) darray_get(p->chromosome_scores, 0);
+        char *curr_chromo = calloc(1, sizeof(p->chromosomes->element_size));
+        char *best_chromo = calloc(1, sizeof(p->chromosomes->element_size));
+
+        memcpy(
+                best_chromo,
+                darray_get(p->chromosomes, 0),
+                p->chromosomes->element_size
+        );
+
+        for (i = 1; i < p->curr_population; i++) {
+                curr_chromo = (char *) darray_get(p->chromosomes, i);
+                curr_score = *(float *) darray_get(p->chromosome_scores, i);
+
+                if ((curr_score - goal) <= (best_score - goal)) {
+                        best_score = curr_score;
+                        best_chromo = curr_chromo;
+                }
+        }
+
+        printf("chromosome [%s]\n", best_chromo);
+        /* printf("chromosome score: [%f]\n\n", best_score); */
 }
 
 void print_population(struct population *p)
@@ -236,9 +260,118 @@ void sort_population(
         }
 }
 
+struct chromosome_pair *init_chromosome_pair(char *child_1, char *child_2)
+{
+        int c_1_len = strlen(child_1);
+        int c_2_len = strlen(child_2);
+
+        struct chromosome_pair *c_pair = malloc(sizeof(struct chromosome_pair));
+
+        c_pair->child_1 = calloc(1, sizeof(char *) * c_1_len);
+        c_pair->child_2 = calloc(1, sizeof(char *) * c_2_len);
+
+        memcpy(c_pair->child_1, child_1, sizeof(char *) * c_1_len);
+        memcpy(c_pair->child_2, child_2, sizeof(char *) * c_2_len);
+
+        return c_pair;
+}
+
+void destroy_chromosome_pair(struct chromosome_pair **c_pair)
+{
+        free((*c_pair)->child_1);
+        free((*c_pair)->child_2);
+        free(*c_pair);
+
+        *c_pair = NULL;
+}
+
+int populate(
+        struct population **p,
+        float crossover_prob,
+        float mutate_prob
+)
+{
+        int i = 0;
+        int j = 0;
+        struct darray *chromosomes = (*p)->chromosomes;
+        struct darray *scores = (*p)->chromosome_scores;
+        int population = (*p)->curr_population;
+        int e = 0;
+        void *p_1;  /* parents 1 */
+        void *p_2;  /* parents 2 */
+        void *c_1;  /* child 1 */
+        void *c_2;  /* child 2 */
+        void *n_1;  /* null value 1 */
+        void *n_2;  /* null value 2 */
+        int c_1_len = 0;
+        int c_2_len = 0;
+
+        debug("Populating!");
+
+        /* crossover and mutate */
+        for (i = 0; i < population; i+=2) {
+                c_1_len = strlen(darray_get(chromosomes, i));
+                c_2_len = strlen(darray_get(chromosomes, i + 1));
+
+                /* obtain parents for reproduction */
+                p_1 = darray_get(chromosomes, i);
+                p_2 = darray_get(chromosomes, i + 1);
+
+                for (j = 0; j < 2; j++) {
+                        /* prepare children */
+                        c_1 = calloc(1, sizeof(char) * (c_1_len + 1));
+                        c_2 = calloc(1, sizeof(char) * (c_2_len + 1));
+                        memcpy(c_1, p_1, chromosomes->element_size);
+                        memcpy(c_2, p_2, chromosomes->element_size);
+
+                        /* crossover and mutate */
+                        crossover(
+                                &c_1,
+                                &c_2,
+                                DEFAULT_PIVOT,
+                                one_ptr_crossover,
+                                crossover_prob
+                        );
+                        mutate(&c_1, mutate_prob, mutate_str);
+                        mutate(&c_2, mutate_prob, mutate_str);
+
+                        /* gen 4 offsprings (or 2 if last chromosome set) */
+                        if (j == 0 && (i + 2) < population) {
+                                e = chromosomes->end;
+
+                                /* setup null score */
+                                n_1 = calloc(1, sizeof(float));
+                                n_2 = calloc(1, sizeof(float));
+                                memset(n_1, 0, sizeof(float));
+                                memset(n_2, 0, sizeof(float));
+
+                                /* set chromosomes and scores */
+                                darray_set(chromosomes, e + 1, c_1);
+                                darray_set(chromosomes, e + 2, c_2);
+                                darray_set(scores, e + 1, n_1);
+                                darray_set(scores, e + 2, n_2);
+
+                                (*p)->curr_population += 2;
+                        } if (j == 0 && (i + 2) == population) {
+                                darray_update(chromosomes, i, c_1);
+                                darray_update(chromosomes, i + 1, c_2);
+
+                                break;
+                        } else if (j == 1) {
+                                darray_update(chromosomes, i, c_1);
+                                darray_update(chromosomes, i + 1, c_2);
+                        }
+                }
+        }
+
+        return 0;
+}
+
 void run_evolution(
         struct population **p,
-        float (eval_func)(char *)
+        float (eval_func)(char *),
+        float crossover_prob,
+        float mutate_prob
 )
 {
         int max_gen = (*p)->max_generation;
@@ -250,9 +383,19 @@ void run_evolution(
         {
                 debug("GENERATION: %d", (*p)->curr_generation);
 
+                /* evaluate and select chromosomes */
                 if (evaluate_chromosomes(eval_func, &(*p))) break;
-                roulette_wheel_selection(&(*p), NULL);
-                print_population(*p);
+                print_best_chromosome(*p);
+
+                roulette_wheel_selection(&(*p), DEFAULT_SELECT);
+
+                /* populate population for next generation run */
+                populate(
+                        &(*p),
+                        crossover_prob,
+                        mutate_prob
+                );
+
 
                 (*p)->curr_generation++;
         }

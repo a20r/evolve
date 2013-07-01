@@ -24,3 +24,4 @@ add_custom_target(
 
 subdirs(src)
 subdirs(tests)
+subdirs(examples)
