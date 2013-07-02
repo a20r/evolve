@@ -122,12 +122,6 @@ void print_population(struct population *p)
         print_chromosomes(p);
 }
 
-void print_chromosome_pair(struct chromosome_pair *c_pair)
-{
-        printf("chromosome pair [child_1]: %s\n", (char *) c_pair->child_1);
-        printf("chromosome pair [child_2]: %s\n\n", (char *) c_pair->child_2);
-}
-
 void gen_init_chromosomes(struct population **p, char *(*mutator)(int))
 {
         int i = 0;
@@ -258,31 +252,6 @@ void sort_population(
                 darray_set((*p)->chromosome_scores, (i + 1), score);
                 darray_set((*p)->chromosomes, (i + 1), chromo);
         }
-}
-
-struct chromosome_pair *init_chromosome_pair(char *child_1, char *child_2)
-{
-        int c_1_len = strlen(child_1);
-        int c_2_len = strlen(child_2);
-
-        struct chromosome_pair *c_pair = malloc(sizeof(struct chromosome_pair));
-
-        c_pair->child_1 = calloc(1, sizeof(char *) * c_1_len);
-        c_pair->child_2 = calloc(1, sizeof(char *) * c_2_len);
-
-        memcpy(c_pair->child_1, child_1, sizeof(char *) * c_1_len);
-        memcpy(c_pair->child_2, child_2, sizeof(char *) * c_2_len);
-
-        return c_pair;
-}
-
-void destroy_chromosome_pair(struct chromosome_pair **c_pair)
-{
-        free((*c_pair)->child_1);
-        free((*c_pair)->child_2);
-        free(*c_pair);
-
-        *c_pair = NULL;
 }
 
 int populate(

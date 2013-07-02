@@ -12,37 +12,39 @@
 struct chromosome_pair *c_pair;
 char *c_1_orig = "Hello Dave!\0";
 char *c_2_orig = "Ciao Maria!\0";
+void *chromo_1;
+void *chromo_2;
 
-void setup()
+static void setup()
 {
         int c_1_len = strlen(c_1_orig) + 1;  /* + 1 for null terminator */
         int c_2_len = strlen(c_2_orig) + 1;  /* + 1 for null terminator */
 
-        c_pair = malloc(sizeof(struct chromosome_pair));
-        c_pair->child_1 = calloc(1, sizeof(char) * c_1_len);
-        c_pair->child_2 = calloc(1, sizeof(char) * c_2_len);
+        chromo_1 = calloc(1, sizeof(char) * c_1_len);
+        chromo_2 =  calloc(1, sizeof(char) * c_2_len);
 
-        memcpy(c_pair->child_1, c_1_orig, sizeof(char) * c_1_len);
-        memcpy(c_pair->child_2, c_2_orig , sizeof(char) * c_2_len);
+        memcpy(chromo_1, c_1_orig, sizeof(char) * c_1_len);
+        memcpy(chromo_2, c_2_orig , sizeof(char) * c_2_len);
 }
 
-void teardown()
+static void teardown()
 {
-        free(c_pair->child_1);
-        free(c_pair->child_2);
-        free(c_pair);
+        free(chromo_1);
+        free(chromo_2);
 }
 
 void print_before_pivot(struct chromosome_pair *c_pair)
 {
         printf("Before:\n");
-        print_chromosome_pair(c_pair);
+        printf("Chromosome 1: %s\n", (char *) chromo_1);
+        printf("Chromosome 2: %s\n", (char *) chromo_2);
 }
 
 void print_after_pivot(struct chromosome_pair *c_pair)
 {
         printf("After:\n");
-        print_chromosome_pair(c_pair);
+        printf("Chromosome 1: %s\n", (char *) chromo_1);
+        printf("Chromosome 2: %s\n", (char *) chromo_2);
 }
 
 
@@ -53,8 +55,8 @@ int std_crossover_asserts(struct chromosome_pair *c_pair)
         int c_1_len = 0;
         int c_2_len = 0;
 
-        c_1 = c_pair->child_1;
-        c_2 = c_pair->child_2;
+        c_1 = chromo_1;
+        c_2 = chromo_2;
         c_1_len = strlen(c_1);
         c_2_len = strlen(c_2);
 
@@ -75,26 +77,26 @@ int test_one_ptr_crossover()
 
         /* default crossover  */
         print_before_pivot(c_pair);
-        one_ptr_crossover(&c_pair->child_1, &c_pair->child_2, pivot);
+        one_ptr_crossover(&chromo_1, &chromo_2, pivot);
         mu_assert(
-                strcmp(c_pair->child_1, "HelloMaria!") == 0,
+                strcmp(chromo_1, "HelloMaria!") == 0,
                 "Failed to crossover child 1!"
         );
         mu_assert(
-                strcmp(c_pair->child_2, "Ciao  Dave!") == 0,
+                strcmp(chromo_2, "Ciao  Dave!") == 0,
                 "Failed to crossover child 2!"
         );
         print_after_pivot(c_pair);
 
         /* slightly different crossover - pivot at index = 3 */
         print_before_pivot(c_pair);
-        one_ptr_crossover(&c_pair->child_1, &c_pair->child_2, 3);
+        one_ptr_crossover(&chromo_1, &chromo_2, 3);
         mu_assert(
-                strcmp(c_pair->child_1, "Helo  Dave!") == 0,
+                strcmp(chromo_1, "Helo  Dave!") == 0,
                 "Failed to crossover!"
         );
         mu_assert(
-                strcmp(c_pair->child_2, "CialoMaria!") == 0,
+                strcmp(chromo_2, "CialoMaria!") == 0,
                 "Failed to crossover!"
         );
         print_after_pivot(c_pair);
