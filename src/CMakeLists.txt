@@ -14,6 +14,7 @@ add_library(
     ${LIB_NAME}
 
     evolve.c
+    evolve_utils.c
     selection.c
     crossover.c
     mutate.c
