@@ -47,29 +47,9 @@ int one_ptr_crossover(void **chromo_1, void **chromo_2, int index)
         free(child_2);
         return 0;
 error:
-        printf("chromo 1: %s\n", (char *) *chromo_1);
-        printf("chromo 2: %s\n", (char *) *chromo_2);
-        printf("strlen chromo 1: %zu\n", strlen(*chromo_1));
-        printf("strlen chromo 2: %zu\n", strlen(*chromo_2));
-
-
-        char *c_1 = (char *) chromo_1;
-        char *c_2 = (char *) chromo_2;
-
-        printf("chromo 1\n");
-        for (i = 0; i < strlen(*chromo_1); i++) {
-                printf("%d-", c_1[i]);
-        }
-        printf("\n");
-
-        printf("chromo 2\n");
-        for (i = 0; i < strlen(*chromo_1); i++) {
-                printf("%d-", c_2[i]);
-        }
-        printf("\n");
-
-
-        exit(-1);
+        /* clean up */
+        free(child_1);
+        free(child_2);
         return -1;
 }
 
