@@ -2,6 +2,7 @@
 #include <dbg/dbg.h>
 
 #include "evolve.h"
+#include "evolve_utils.h"
 #include "selection.h"
 #include "crossover.h"
 #include "mutate.h"
@@ -298,6 +299,7 @@ void run_evolution(
                         mutate_prob
                 );
 
+                /* printf("chromosome: [%s]\n", obtain_best_chromosome(*p)); */
 
                 (*p)->curr_generation++;
         }

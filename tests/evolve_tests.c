@@ -14,7 +14,7 @@
 struct population *p;
 
 
-float fitness_function(char *chromosome)
+static float fitness_function(char *chromosome)
 {
         char *target = "hello world!";
         float total = 0;
