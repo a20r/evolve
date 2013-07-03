@@ -41,7 +41,8 @@ int main()
                 &pop,
                 fitness_function,
                 0.8,
-                0.2
+                0.2,
+                NULL
         );
 
         destroy_population(&pop);

@@ -15,6 +15,7 @@ add_library(
 
     evolve.c
     evolve_utils.c
+    evolve_monitor.c
     selection.c
     crossover.c
     mutate.c

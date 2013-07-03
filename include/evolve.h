@@ -3,6 +3,8 @@
 
 #include <dstruct/darray.h>
 
+
+
 /* STRUCTS */
 struct population {
         /* chromosomes */
@@ -46,11 +48,14 @@ int populate(
         float mutation_prob
 );
 
+#include "evolve_monitor.h"
+
 void run_evolution(
         struct population **p,
         float (eval_func)(char *),
         float crossover_prob,
-        float mutate_prob
+        float mutate_prob,
+        struct evolve_monitor **m
 );
 
 #endif

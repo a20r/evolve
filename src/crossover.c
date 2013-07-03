@@ -4,8 +4,8 @@
 
 #include <dbg/dbg.h>
 
-#include "crossover.h"
 #include "evolve.h"
+#include "crossover.h"
 #include "utils.h"
 
 
@@ -15,7 +15,8 @@ int one_ptr_crossover(void **chromo_1, void **chromo_2, int index)
         /* debug("strlen chromo_1: %d", strlen(chromo_1)); */
         int len = (int) strlen(*chromo_1) + 1;
         int i = (index == DEFAULT_PIVOT ? round(len / 2) - 1 : index);
-
+        char *child_1 = calloc(1, sizeof(char) * (len));
+        char *child_2 = calloc(1, sizeof(char) * (len));
 
         check(
                 strlen(*chromo_1) == strlen(*chromo_2),
@@ -23,8 +24,6 @@ int one_ptr_crossover(void **chromo_1, void **chromo_2, int index)
         );
 
         /* set child_1 and child_2 */
-        char *child_1 = calloc(1, sizeof(char) * (len));
-        char *child_2 = calloc(1, sizeof(char) * (len));
         memcpy(child_1, *chromo_1, sizeof(char) * len);
         memcpy(child_2, *chromo_2, sizeof(char) * len);
 
@@ -43,13 +42,13 @@ int one_ptr_crossover(void **chromo_1, void **chromo_2, int index)
         memcpy(*chromo_2, child_2, sizeof(char) * len);
 
         /* clean up */
-        free(child_1);
-        free(child_2);
+        if (child_1) free(child_1);
+        if (child_2) free(child_2);
         return 0;
 error:
         /* clean up */
-        free(child_1);
-        free(child_2);
+        if (child_1) free(child_1);
+        if (child_2) free(child_2);
         return -1;
 }
 

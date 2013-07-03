@@ -112,12 +112,10 @@ void normalize_fitness_values(struct population **p)
        float total_score = (*p)->total_score;
        float *score;
        float *normalized_score;
-       char *chromosome;
 
        debug("Normalizing chromsome scores!");
        for (i = 0; i < (*p)->max_population; i++) {
                 /* get score */
-                chromosome = darray_get((*p)->chromosomes, i);
                 score = darray_get((*p)->chromosome_scores, i);
 
                 /* normalize score and set it back into scores*/
@@ -275,7 +273,8 @@ void run_evolution(
         struct population **p,
         float (eval_func)(char *),
         float crossover_prob,
-        float mutate_prob
+        float mutate_prob,
+        struct evolve_monitor **m
 )
 {
         int max_gen = (*p)->max_generation;
@@ -299,7 +298,10 @@ void run_evolution(
                         mutate_prob
                 );
 
-                /* printf("chromosome: [%s]\n", obtain_best_chromosome(*p)); */
+                /* record generation stats */
+                if (m != NULL) {
+                        record_generation_stats(*p, &(*m));
+                }
 
                 (*p)->curr_generation++;
         }

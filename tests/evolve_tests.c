@@ -194,7 +194,8 @@ int test_run_evolution()
                 &pop,
                 fitness_function,
                 0.5,
-                0.2
+                0.2,
+                NULL
         );
         print_population(pop);
         destroy_population(&pop);
