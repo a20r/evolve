@@ -78,6 +78,7 @@ int evaluate_chromosomes(float (eval_func)(char *), struct population **p)
 {
         int i = 0;
         int goal_reached = 0;
+        float *old_score;
         float *score;
         char *chromosome;
 
@@ -95,6 +96,10 @@ int evaluate_chromosomes(float (eval_func)(char *), struct population **p)
                 }
 
                 /* set the score and total_score */
+                old_score = darray_get((*p)->chromosome_scores, i);
+                if (old_score != NULL) {
+                        free(old_score);
+                }
                 darray_set((*p)->chromosome_scores, i, score);
                 (*p)->total_score += *score;
         }
@@ -136,7 +141,6 @@ void sort_population(
 )
 {
         int j;
-        int cmp_res = 0;
         size_t score_sz = (*p)->chromosome_scores->element_size;
         size_t chromo_sz = (*p)->chromosomes->element_size;
         void *score;
@@ -146,24 +150,31 @@ void sort_population(
         for (j = 1; j < (*p)->max_population; j++) {
                 int i = j - 1;
 
-                /* obtain chromosome score and bit-string */
-                score = darray_new((*p)->chromosome_scores);
+                /* obtain chromosome and score */
                 chromo = darray_new((*p)->chromosomes);
+                score = darray_new((*p)->chromosome_scores);
 
-                memcpy(score, darray_get((*p)->chromosome_scores, j), score_sz);
                 memcpy(chromo, darray_get((*p)->chromosomes, j), chromo_sz);
+                memcpy(score, darray_get((*p)->chromosome_scores, j), score_sz);
 
                 /* very important! */
-                free(darray_get((*p)->chromosome_scores, j));
                 free(darray_get((*p)->chromosomes, j));
+                free(darray_get((*p)->chromosome_scores, j));
 
                 while (
                         i >= 0 &&
-                        (cmp_res = cmp(
+                        cmp(
                                 darray_get((*p)->chromosome_scores, i),
                                 score
-                        )) < 0
+                        ) < 0
                 ) {
+                        /* chromosome */
+                        darray_set(
+                                (*p)->chromosomes,
+                                (i + 1),
+                                darray_get((*p)->chromosomes, i)
+                        );
+
                         /* chromosome score */
                         darray_set(
                                 (*p)->chromosome_scores,
@@ -171,19 +182,12 @@ void sort_population(
                                 darray_get((*p)->chromosome_scores, i)
                         );
 
-                        /* chromosome bit-string */
-                        darray_set(
-                                (*p)->chromosomes,
-                                (i + 1),
-                                darray_get((*p)->chromosomes, i)
-                        );
-
                         i--;
                 }
 
-                /* chromosome score and bit-string */
-                darray_set((*p)->chromosome_scores, (i + 1), score);
+                /* chromosome and score */
                 darray_set((*p)->chromosomes, (i + 1), chromo);
+                darray_set((*p)->chromosome_scores, (i + 1), score);
         }
 }
 
@@ -196,15 +200,12 @@ int populate(
         int i = 0;
         int j = 0;
         struct darray *chromosomes = (*p)->chromosomes;
-        struct darray *scores = (*p)->chromosome_scores;
         int population = (*p)->curr_population;
         int e = 0;
         void *p_1;  /* parents 1 */
         void *p_2;  /* parents 2 */
         void *c_1;  /* child 1 */
         void *c_2;  /* child 2 */
-        void *n_1;  /* null value 1 */
-        void *n_2;  /* null value 2 */
         int c_1_len = 0;
         int c_2_len = 0;
 
@@ -240,24 +241,12 @@ int populate(
                         /* gen 4 offsprings (or 2 if last chromosome set) */
                         if (j == 0 && (i + 2) < population) {
                                 e = chromosomes->end;
-
-                                /* setup null score */
-                                n_1 = calloc(1, sizeof(float));
-                                n_2 = calloc(1, sizeof(float));
-                                memset(n_1, 0, sizeof(float));
-                                memset(n_2, 0, sizeof(float));
-
-                                /* set chromosomes and scores */
                                 darray_set(chromosomes, e + 1, c_1);
                                 darray_set(chromosomes, e + 2, c_2);
-                                darray_set(scores, e + 1, n_1);
-                                darray_set(scores, e + 2, n_2);
-
                                 (*p)->curr_population += 2;
                         } if (j == 0 && (i + 2) == population) {
                                 darray_update(chromosomes, i, c_1);
                                 darray_update(chromosomes, i + 1, c_2);
-
                                 break;
                         } else if (j == 1) {
                                 darray_update(chromosomes, i, c_1);
@@ -269,7 +258,7 @@ int populate(
         return 0;
 }
 
-void run_evolution(
+int run_evolution(
         struct population **p,
         float (eval_func)(char *),
         float crossover_prob,
@@ -286,9 +275,17 @@ void run_evolution(
         {
                 debug("GENERATION: %d", (*p)->curr_generation);
 
-                /* evaluate and select chromosomes */
-                if (evaluate_chromosomes(eval_func, &(*p))) break;
+                /* evaluate */
+                if (evaluate_chromosomes(eval_func, &(*p))) {
+                        break;
+                }
 
+                /* record */
+                if (m != NULL) {
+                        record_generation_stats(*p, &(*m));
+                }
+
+                /* select */
                 roulette_wheel_selection(&(*p), DEFAULT_SELECT);
 
                 /* populate population for next generation run */
@@ -298,13 +295,8 @@ void run_evolution(
                         mutate_prob
                 );
 
-                /* record generation stats */
-                if (m != NULL) {
-                        record_generation_stats(*p, &(*m));
-                }
-
                 (*p)->curr_generation++;
         }
 
-        debug("Evolution Completed!");
+        return 0;
 }

@@ -26,7 +26,7 @@ void record_generation_stats(struct population *p, struct evolve_monitor **m)
 {
         int i = 0;
         float goal = p->goal;
-        int *generation = calloc(1, sizeof(int));
+        int generation = p->curr_generation;
         size_t chromo_sz = p->chromosomes->element_size;
         size_t score_sz = p->chromosome_scores->element_size;
 
@@ -35,9 +35,6 @@ void record_generation_stats(struct population *p, struct evolve_monitor **m)
 
         char *best_chromo = calloc(1, chromo_sz);
         float *best_score = calloc(1, score_sz);
-
-        /* set generation */
-        memset(generation, p->curr_generation, sizeof(int));
 
         /* instanciate inital best chromosome */
         memcpy(best_chromo, darray_get(p->chromosomes, 0), chromo_sz);
@@ -55,9 +52,12 @@ void record_generation_stats(struct population *p, struct evolve_monitor **m)
         }
 
         /* record generation statistics into evolve_monitor */
-        darray_set((*m)->best_chromosomes, *generation, best_chromo);
-        darray_set((*m)->best_scores, *generation, best_score);
-        darray_set((*m)->generations, *generation, generation);
+        int *gen = darray_new((*m)->generations);
+        *gen = generation;
+
+        darray_set((*m)->best_chromosomes, generation, best_chromo);
+        darray_set((*m)->best_scores, generation, best_score);
+        darray_set((*m)->generations, generation, gen);
 
         /* cleanup */
         free(chromo);
@@ -70,17 +70,18 @@ void sort_generation_stats(
 )
 {
         int j;
-        int cmp_res = 0;
         int elements = (*m)->generations->end;
+
         size_t score_sz = (*m)->best_scores->element_size;
         size_t chromo_sz = (*m)->best_chromosomes->element_size;
         size_t gen_sz = (*m)->generations->element_size;
+
         void *score;
         void *chromo;
         void *gen;
 
         /* below implements an insertion sort */
-        for (j = 1; j < elements; j++) {
+        for (j = 1; j <= elements; j++) {
                 int i = j - 1;
 
                 /* obtain chromosome and score */
@@ -99,10 +100,10 @@ void sort_generation_stats(
 
                 while (
                         i >= 0 &&
-                        (cmp_res = cmp(
+                        cmp(
                                 darray_get((*m)->best_scores, i),
                                 score
-                        )) < 0
+                        ) < 0
                 ) {
                         /* chromosome */
                         darray_set(
@@ -125,11 +126,9 @@ void sort_generation_stats(
                                 darray_get((*m)->generations, i)
                         );
 
-
                         i--;
                 }
 
-                /* chromosome and score */
                 darray_set((*m)->best_chromosomes, (i + 1), chromo);
                 darray_set((*m)->best_scores, (i + 1), score);
                 darray_set((*m)->generations, (i + 1), gen);
@@ -145,7 +144,7 @@ void print_generation_stats(struct evolve_monitor *m)
         struct darray *g = m->generations;
 
         for (i = 0; i < elements; i++) {
-                printf("GENERATION: %d\n", *(int *) darray_get(g, i) + 1);
+                printf("GENERATION: %d\n", *(int *) darray_get(g, i));
                 printf("chromosome: [%s]\n", (char *) darray_get(c, i));
                 printf("score: %f\n\n", *(float *) darray_get(s, i));
         }

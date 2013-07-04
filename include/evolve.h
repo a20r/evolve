@@ -50,7 +50,7 @@ int populate(
 
 #include "evolve_monitor.h"
 
-void run_evolution(
+int run_evolution(
         struct population **p,
         float (eval_func)(char *),
         float crossover_prob,

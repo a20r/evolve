@@ -66,26 +66,23 @@ int test_record_generation_stats()
                 chromo_sz,  /* param */
                 0.0,  /* goal */
                 10,  /* max_pop */
-                2 /* max_gen */
+                5 /* max_gen */
         );
-        m = init_evolve_monitor(chromo_sz, 2);
-
+        m = init_evolve_monitor(chromo_sz, 5);
         gen_init_chromosomes(&p, randstr);
         evaluate_chromosomes(fitness_function, &p);
-        print_population(p);
 
         /* record generation stats */
         record_generation_stats(p, &m);
 
         /* asserts */
         mu_assert(
-                strcmp(darray_get(m->best_chromosomes, 0), "vUZym.p)T_e)") == 0,
+                strcmp(darray_get(m->best_chromosomes, 0), "EQxvj(ADnvQ/") == 0,
                 "Failed to record best chromosome!"
         );
 
-        float solution = 206.0;
+        float solution = 234.0;
         float darray_solution = *(float *) darray_get(m->best_scores, 0);
-
         float *best_score = calloc(1, sizeof(float));
         float *monitor_best_score = calloc(1, sizeof(float));
 
@@ -101,9 +98,9 @@ int test_record_generation_stats()
         mu_assert(m->best_scores->end == 0, "Scores array is not 0!");
         mu_assert(m->generations->end == 0, "Generations array is not 0!");
 
-        mu_assert(m->best_chromosomes->max == 2, "Chromosomes array is not 2!");
-        mu_assert(m->best_scores->max == 2, "Scores array is not 2!");
-        mu_assert(m->generations->max == 2, "Generations array is not 2!");
+        mu_assert(m->best_chromosomes->max == 5, "Chromosomes array is not 5!");
+        mu_assert(m->best_scores->max == 5, "Scores array is not 5!");
+        mu_assert(m->generations->max == 5, "Generations array is not 5!");
 
         /* clean up */
         free(best_score);
@@ -115,19 +112,20 @@ int test_record_generation_stats()
 
 int test_sort_generation_stats()
 {
-        /* int i = 0; */
-        /* float curr_score = 0; */
-        /* float prev_score = 0; */
-        /* int elements = m->generations->end; */
+        int i = 0;
+        float curr_score = 0;
+        float prev_score = 0;
+        int max_gen = 10;
 
-        int chromo_sz = strlen("hello world!") * sizeof(char);
+        /* run an evolution to fill the monitor struct */
+        int chromo_sz = strlen("hello world!");
         struct population *p = init_population(
                 chromo_sz,  /* param */
                 0.0,  /* goal */
                 10,  /* max_pop */
-                2 /* max_gen */
+                max_gen /* max_gen */
         );
-        m = init_evolve_monitor(chromo_sz, 2);
+        m = init_evolve_monitor(chromo_sz, max_gen);
         gen_init_chromosomes(&p, randstr);
         run_evolution(
                 &p,
@@ -137,22 +135,22 @@ int test_sort_generation_stats()
                 &m
         );
 
+        /* sort population */
         debug("Before Stats Sort");
         print_generation_stats(m);
 
-        /* sort population */
-        /* sort_generation_stats(&m, float_cmp); */
-        /* prev_score = *(float *) darray_get(m->best_scores, 0); */
+        sort_generation_stats(&m, float_cmp);
+        prev_score = *(float *) darray_get(m->best_scores, 0);
 
-        /* debug("After Stats Sort"); */
-        /* print_generation_stats(m); */
+        debug("After Stats Sort");
+        print_generation_stats(m);
 
-        /* #<{(| assert tests |)}># */
-        /* for (i = 1; i < elements; i++) { */
-        /*         curr_score = *(float *) darray_get(m->best_scores, i); */
-        /*         mu_assert(curr_score <= prev_score, "Failed to sort scores!"); */
-        /*         prev_score = curr_score; */
-        /* } */
+        /* assert tests */
+        for (i = 1; i < m->generations->end; i++) {
+                curr_score = *(float *) darray_get(m->best_scores, i);
+                mu_assert(curr_score <= prev_score, "Failed to sort scores!");
+                prev_score = curr_score;
+        }
 
         destroy_population(&p);
         destroy_evolve_monitor(&m);
@@ -164,13 +162,13 @@ void test_suite()
         mu_run_test(test_init_evolve_monitor);
         mu_run_test(test_destroy_evolve_monitor);
         mu_run_test(test_record_generation_stats);
-        /* mu_run_test(test_sort_generation_stats); */
+        mu_run_test(test_sort_generation_stats);
 }
 
 int main()
 {
         /* seed random - VERY IMPORTANT! */
-        srand(time((time_t *) 1));
+        srand(10);  /* DO NOT CHANGE SEED - asserts are based on this seed */
         test_suite();
         mu_report();
 }

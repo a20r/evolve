@@ -166,7 +166,6 @@ int test_populate()
         populate(&p, 0.9, 0.3);
 
         mu_assert(p->chromosomes->end == 9, "Population should be 10!");
-        mu_assert(p->chromosome_scores->end == 9, "Population should be 10!");
         mu_assert(p->curr_population == 10, "Population should be 10!");
 
         return 0;
@@ -182,25 +181,24 @@ int test_destroy_population()
 
 int test_run_evolution()
 {
-        struct population *pop = init_population(
+        p = init_population(
                 (int) strlen("hello world!"),  /* param */
                 0.0,  /* goal */
                 10,  /* max_pop */
                 2 /* max_gen */
         );
 
-        gen_init_chromosomes(&pop, randstr);
+        gen_init_chromosomes(&p, randstr);
         run_evolution(
-                &pop,
+                &p,
                 fitness_function,
                 0.5,
                 0.2,
                 NULL
         );
-        print_population(pop);
-        destroy_population(&pop);
+        destroy_population(&p);
 
-        mu_assert(pop == NULL, "Population should be NULL!");
+        mu_assert(p == NULL, "Population should be NULL!");
 
         return 0;
 }

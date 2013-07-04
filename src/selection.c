@@ -38,16 +38,17 @@ void roulette_wheel_selection(
         sort_population(&(*p), float_cmp);
 
         /* make sure number of selection is an even number! */
-        if (max_selection % 2 != 0) max_selection += 1;
+        if (max_selection % 2 != 0) {
+                max_selection += 1;
+        }
 
         /* select chromosomes */
         for (i = 0; i < (*p)->max_population; i++) {
                 randnum = randnum_f(0.0, 1.0);
 
                 /* chromosome score and bit-string */
-                score = darray_new((*p)->chromosome_scores);
-                chromo = darray_new((*p)->chromosomes);
-
+                score = calloc(1, score_sz);
+                chromo = calloc(1, chromo_sz);
                 memcpy(score, darray_get((*p)->chromosome_scores, i), score_sz);
                 memcpy(chromo, darray_get((*p)->chromosomes, i), chromo_sz);
 
