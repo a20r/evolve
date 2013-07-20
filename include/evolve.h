@@ -33,7 +33,6 @@ struct population *init_population(
 );
 void destroy_population(struct population **p);
 
-
 void gen_init_chromosomes(struct population **p, char *(*mutator)(int));
 int evaluate_chromosomes(float (eval_func)(char *), struct population **p);
 

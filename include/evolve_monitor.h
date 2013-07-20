@@ -18,6 +18,7 @@ struct evolve_monitor *init_evolve_monitor(size_t chromo_sz, long max_gen);
 void destroy_evolve_monitor(struct evolve_monitor **m);
 
 #include "evolve.h"
+char *find_best_chromosome(struct population *p);
 void record_generation_stats(struct population *p, struct evolve_monitor **m);
 void sort_generation_stats(
         struct evolve_monitor **m,

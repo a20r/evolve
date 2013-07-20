@@ -3,7 +3,10 @@
 #include <time.h>
 #include <math.h>
 
+#include <al/comparator.h>
+
 #include "evolve.h"
+#include "evolve_monitor.h"
 #include "utils.h"
 
 #define TARGET_SOLUTION "hello world!"
@@ -25,27 +28,54 @@ float fitness_function(char *chromosome)
 
 int main()
 {
+        int i = 0;
+        int max_gen = 1000;
+
         /* seed random - VERY IMPORTANT! */
         srand(time(NULL));
 
         /* initialize evolution */
-        struct population *pop = init_population(
+        struct population *p = init_population(
                 (int) strlen(TARGET_SOLUTION),  /* param */
                 0.0,  /* goal */
-                10,  /* max_pop */
-                1000000 /* max_gen */
+                100,  /* max_pop */
+                max_gen  /* max_gen */
+        );
+        struct evolve_monitor *m = init_evolve_monitor(
+                p->chromosomes->element_size,  /* chromosome size */
+                max_gen
         );
 
-        gen_init_chromosomes(&pop, randstr);
+        /* run evolution */
+        printf("RUNNING GA!\n");
+        gen_init_chromosomes(&p, randstr);
         run_evolution(
-                &pop,
+                &p,
                 fitness_function,
-                0.8,
-                0.2,
-                NULL
+                0.5,
+                0.1,
+                &m
         );
 
-        destroy_population(&pop);
+        /* sort results */
+        printf("SORTING RESULTS!\n");
+        sort_generation_stats(&m, float_cmp);
 
+        /* print top 5 chromosomes */
+        printf("\nTOP 5 CHROMOSOMES:\n");
+        for (i = 0; i < 5; i++) {
+                printf(
+                        "chromosome: %s\n",
+                        (char *) darray_get(m->best_chromosomes, i)
+                );
+                printf(
+                        "score: %f\n\n",
+                        *(float *) darray_get(m->best_scores, i)
+                );
+        }
+
+        /* clean up */
+        destroy_evolve_monitor(&m);
+        destroy_population(&p);
         return 0;
 }

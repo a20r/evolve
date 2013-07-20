@@ -33,7 +33,7 @@ int test_init_population()
         p = init_population(
                 (int) strlen("hello world!"),  /* param */
                 0.0,  /* goal */
-                10,  /* max_pop */
+                100,  /* max_pop */
                 1 /* max_gen */
         );
 
@@ -49,7 +49,7 @@ int test_init_population()
         /* population details */
         mu_assert(p->curr_population == 0, "Current population should be 0!");
         mu_assert(p->curr_generation == 0, "Current generation should be 0!");
-        mu_assert(p->max_population == 10, "Max population should be 5!");
+        mu_assert(p->max_population == 100, "Max population should be 100!");
         mu_assert(p->max_generation == 1, "Max generation should be 1!");
         mu_assert(p->solution == NULL, "Solution should be NULL!");
 
@@ -71,7 +71,7 @@ int test_gen_init_chromosomes()
                         curr_chromosome != last_chromosome,
                         "curr_num == last_num!"
                 );
-                mu_assert(p->curr_population == 10,"population != 10!");
+                mu_assert(p->curr_population == 100,"population != 100!");
 
                 last_chromosome = curr_chromosome;
         }
@@ -105,9 +105,8 @@ int test_evaluate_chromosomes()
                 curr_chromo = (char *) darray_get(p->chromosomes, i);
                 curr_score = *((float *) darray_get(p->chromosome_scores, i));
 
-                mu_assert(curr_chromo != last_chromo, "curr_num == last_num!");
                 mu_assert(curr_score != last_score, "curr_score == last_score!");
-                mu_assert(p->curr_population == 10, "Population should be 10!");
+                mu_assert(p->curr_population == 100, "Population should be 100!");
 
                 last_chromo = curr_chromo;
                 last_score = curr_score;
@@ -128,8 +127,7 @@ int test_normalize_fitness_values()
                 sum += *(float *) darray_get(p->chromosome_scores, i);
         }
 
-        debug("sum: %f", sum);
-        mu_assert((int) sum == 1, "Sum of normalized values should be 1!");
+        mu_assert((int) round(sum) == 1, "Sum of normalized values should be 1!");
 
         return 0;
 }
@@ -140,15 +138,15 @@ int test_sort_population()
         float curr_score = 0;
         float prev_score = 0;
 
-        debug("Before Population Sort");
-        print_chromosomes(p);
+        /* debug("Before Population Sort"); */
+        /* print_chromosomes(p); */
 
         /* sort population */
         sort_population(&p, float_cmp);
         prev_score = *(float *) darray_get(p->chromosome_scores, 0);
 
-        debug("After Population Sort");
-        print_chromosomes(p);
+        /* debug("After Population Sort"); */
+        /* print_chromosomes(p); */
 
         /* assert tests */
         for (i = 1; i < p->max_population; i++) {
@@ -165,8 +163,8 @@ int test_populate()
         roulette_wheel_selection(&p, NULL);
         populate(&p, 0.9, 0.3);
 
-        mu_assert(p->chromosomes->end == 9, "Population should be 10!");
-        mu_assert(p->curr_population == 10, "Population should be 10!");
+        mu_assert(p->chromosomes->end == 99, "Population should be 99!");
+        mu_assert(p->curr_population == 100, "Population should be 100!");
 
         return 0;
 }
@@ -184,7 +182,7 @@ int test_run_evolution()
         p = init_population(
                 (int) strlen("hello world!"),  /* param */
                 0.0,  /* goal */
-                10,  /* max_pop */
+                100,  /* max_pop */
                 2 /* max_gen */
         );
 
@@ -210,8 +208,14 @@ void test_suite()
         mu_run_test(test_evaluate_chromosomes);
         mu_run_test(test_normalize_fitness_values);
         mu_run_test(test_sort_population);
+        mu_run_test(test_destroy_population);
+
+        mu_run_test(test_init_population);
+        mu_run_test(test_gen_init_chromosomes);
+        mu_run_test(test_evaluate_chromosomes);
         mu_run_test(test_populate);
         mu_run_test(test_destroy_population);
+
         mu_run_test(test_run_evolution);
 }
 

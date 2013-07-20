@@ -22,6 +22,34 @@ void destroy_evolve_monitor(struct evolve_monitor **m)
         *m = NULL;
 }
 
+char *find_best_chromosome(struct population *p)
+{
+        int i = 0;
+        float goal = p->goal;
+        char *chromo = '\0';
+        float score = 0.0;
+        char *best_chromo = '\0';
+        float best_score = 0.0;
+
+        /* instanciate inital best chromosome */
+        best_chromo = (char *) darray_get(p->chromosomes, 0);
+        best_score = *(float *) darray_get(p->chromosome_scores, 0);
+
+        /* find the best chromosome */
+        for (i = 1; i < p->curr_population; i++) {
+                chromo = (char *) darray_get(p->chromosomes, i);
+                score = *(float *) darray_get(p->chromosome_scores, i);
+
+                if ((score - goal) <= (best_score - goal)) {
+                        best_chromo = chromo;
+                        best_score = score;
+                }
+        }
+
+        printf("\nscore: %f\n", best_score);
+        return best_chromo;
+}
+
 void record_generation_stats(struct population *p, struct evolve_monitor **m)
 {
         int i = 0;
@@ -80,7 +108,7 @@ void sort_generation_stats(
         void *chromo;
         void *gen;
 
-        /* below implements an insertion sort */
+        /* below implements an insertion sort - sort by ASCENDING ORDER */
         for (j = 1; j <= elements; j++) {
                 int i = j - 1;
 
@@ -103,7 +131,7 @@ void sort_generation_stats(
                         cmp(
                                 darray_get((*m)->best_scores, i),
                                 score
-                        ) < 0
+                        ) > 0
                 ) {
                         /* chromosome */
                         darray_set(

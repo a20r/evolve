@@ -200,7 +200,7 @@ int populate(
         int i = 0;
         int j = 0;
         struct darray *chromosomes = (*p)->chromosomes;
-        int population = (*p)->curr_population;
+        int population = (*p)->curr_population + 2;
         int e = 0;
         void *p_1;  /* parents 1 */
         void *p_2;  /* parents 2 */
@@ -212,7 +212,7 @@ int populate(
         debug("Populating!");
 
         /* crossover and mutate */
-        for (i = 0; i < population; i+=2) {
+        for (i = 0; i < population; i += 2) {
                 c_1_len = strlen(darray_get(chromosomes, i));
                 c_2_len = strlen(darray_get(chromosomes, i + 1));
 
@@ -239,12 +239,12 @@ int populate(
                         mutate(&c_2, mutate_prob, mutate_str);
 
                         /* gen 4 offsprings (or 2 if last chromosome set) */
-                        if (j == 0 && (i + 2) < population) {
+                        if (j == 0 && ((i + 2) < population)) {
                                 e = chromosomes->end;
                                 darray_set(chromosomes, e + 1, c_1);
                                 darray_set(chromosomes, e + 2, c_2);
                                 (*p)->curr_population += 2;
-                        } if (j == 0 && (i + 2) == population) {
+                        } if (j == 0 && ((i + 2) == population)) {
                                 darray_update(chromosomes, i, c_1);
                                 darray_update(chromosomes, i + 1, c_2);
                                 break;

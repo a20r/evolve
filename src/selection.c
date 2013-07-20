@@ -1,8 +1,10 @@
 #include <dbg/dbg.h>
 #include <al/comparator.h>
+#include <unistd.h>
 
 #include "selection.h"
 #include "evolve.h"
+#include "evolve_utils.h"
 #include "utils.h"
 
 
@@ -19,9 +21,12 @@ void roulette_wheel_selection(
         void *score;
         void *chromo;
         int selected = 0;
-        int max_selection = select == NULL ? (*p)->max_population / 2 : *select;
+        int max_selection = (
+                select == NULL ? (*p)->max_population / 2 : *select
+        );
         struct population *new_p;
 
+        /* initialize new population */
         new_p = init_population(
                 (*p)->parameters,
                 (*p)->goal,
