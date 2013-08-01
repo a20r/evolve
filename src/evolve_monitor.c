@@ -157,7 +157,7 @@ static void insertion_sort_gstats(
         }
 }
 
-static int partition(
+int partition_gstats(
         struct evolve_monitor *m,
         int pivot_index,
         int left,

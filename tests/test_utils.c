@@ -42,8 +42,8 @@ int assert_sorted_gstats(
 
         for (i = 1; i <= end; i++) {
                 res = cmp(
-                        darray_get(m->best_scores, i),
-                        darray_get(m->best_scores, i - 1)
+                        darray_get(m->best_scores, i - 1),
+                        darray_get(m->best_scores, i)
                 );
 
                 if (res > 0) {
