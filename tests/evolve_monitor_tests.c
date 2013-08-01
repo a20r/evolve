@@ -102,58 +102,6 @@ int test_record_generation_stats()
         return 0;
 }
 
-int test_partition_gstats()
-{
-        int res = 0;
-        int max_gen = 5;
-        int max_pop = 100;
-
-        /* run an evolution to fill the monitor struct */
-        int chromo_sz = strlen("hello world!");
-        struct population *p = init_population(
-                chromo_sz,  /* param */
-                0.0,  /* goal */
-                max_pop,  /* max_pop */
-                max_gen /* max_gen */
-        );
-        m = init_evolve_monitor(chromo_sz, max_gen);
-        gen_init_chromosomes(&p, randstr);
-        run_evolution(
-                &p,
-                fitness_function,
-                0.8,
-                0.2,
-                m
-        );
-
-        /* partition gstats */
-        debug("Before Parition");
-        print_generation_stats(m);
-
-        int pivot_index = 2;
-        float pivot_value = *(float *) darray_get(m->best_scores, pivot_index);
-        printf("Pivot value: %f\n", pivot_value);
-        res = partition_gstats(
-                m,
-                pivot_index,
-                0,
-                m->best_scores->end,
-                float_cmp_asc
-        );
-        printf("Partition result: %d\n\n", res);
-
-        debug("After Partition");
-        print_generation_stats(m);
-
-        /* assert test */
-        mu_assert(res == 0, "Failed to partition gstats");
-
-        destroy_population(&p);
-        destroy_evolve_monitor(&m);
-
-        return 0;
-}
-
 int test_insertion_sort_gstats()
 {
         int res = 0;
@@ -197,8 +145,105 @@ int test_insertion_sort_gstats()
         return 0;
 }
 
+int test_partition_gstats()
+{
+        int res = 0;
+        int max_gen = 5;
+        int max_pop = 100;
+
+        /* run an evolution to fill the monitor struct */
+        int chromo_sz = strlen("hello world!");
+        struct population *p = init_population(
+                chromo_sz,  /* param */
+                0.0,  /* goal */
+                max_pop,  /* max_pop */
+                max_gen /* max_gen */
+        );
+        m = init_evolve_monitor(chromo_sz, max_gen);
+        gen_init_chromosomes(&p, randstr);
+        run_evolution(
+                &p,
+                fitness_function,
+                0.8,
+                0.2,
+                m
+        );
+
+        /* partition gstats */
+        debug("Before Parition");
+        print_generation_stats(m);
+
+        int pivot_index = 2;
+        float pivot_value = *(float *) darray_get(m->best_scores, pivot_index);
+        printf("Pivot value: %f\n", pivot_value);
+        res = partition_gstats(
+                m,
+                pivot_index,
+                0,
+                m->best_scores->end,
+                float_cmp_asc
+        );
+        printf("Partition result: %d\n\n", res);
+
+        debug("After Partition");
+        print_generation_stats(m);
+
+
+        /* assert test */
+        insertion_sort_gstats(m, 0, m->best_scores->end, float_cmp_asc);
+        float value = *(float *) darray_get(m->best_scores, res);
+        mu_assert(
+                float_cmp_asc(&value, &pivot_value) == 0,
+                "Failed to partition gstats"
+        );
+        printf("value_1: %f \t value_2: %f\n", pivot_value, value);
+
+        destroy_population(&p);
+        destroy_evolve_monitor(&m);
+
+        return 0;
+}
+
+
 int test_quick_sort_gstats()
 {
+        int res = 0;
+        int max_gen = 10;
+        int max_pop = 100;
+
+        /* run an evolution to fill the monitor struct */
+        int chromo_sz = strlen("hello world!");
+        struct population *p = init_population(
+                chromo_sz,  /* param */
+                0.0,  /* goal */
+                max_pop,  /* max_pop */
+                max_gen /* max_gen */
+        );
+        m = init_evolve_monitor(chromo_sz, max_gen);
+        gen_init_chromosomes(&p, randstr);
+        run_evolution(
+                &p,
+                fitness_function,
+                0.8,
+                0.2,
+                m
+        );
+
+        /* sort population */
+        debug("Before Stats Sort");
+        print_generation_stats(m);
+
+        quick_sort_gstats(m, 0, m->best_scores->end, float_cmp_asc);
+
+        debug("After Stats Sort");
+        print_generation_stats(m);
+
+        /* assert test */
+        res = assert_sorted_gstats(m, float_cmp_asc);
+        mu_assert(res == 0, "Sort Generation Stats Failed!");
+
+        destroy_population(&p);
+        destroy_evolve_monitor(&m);
 
         return 0;
 }
@@ -206,9 +251,6 @@ int test_quick_sort_gstats()
 int test_sort_generation_stats()
 {
         int res = 0;
-        int i = 0;
-        float curr_score = 0;
-        float prev_score = 0;
         int max_gen = 5;
         int max_pop = 10;
 
@@ -254,8 +296,9 @@ void test_suite()
         mu_run_test(test_destroy_evolve_monitor);
         mu_run_test(test_record_generation_stats);
         mu_run_test(test_insertion_sort_gstats);
-        /* mu_run_test(test_partition_gstats); */
-        /* mu_run_test(test_sort_generation_stats); */
+        mu_run_test(test_partition_gstats);
+        mu_run_test(test_quick_sort_gstats);
+        mu_run_test(test_sort_generation_stats);
 }
 
 int main()

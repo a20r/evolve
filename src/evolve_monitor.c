@@ -198,7 +198,7 @@ int partition_gstats(
         return store;
 }
 
-static void quick_sort_gstats(
+void quick_sort_gstats(
         struct evolve_monitor *m,
         int left,
         int right,
@@ -211,7 +211,7 @@ static void quick_sort_gstats(
 
         /* partition */
         int pivot_index = randnum_i(left, right);
-        pivot_index = partition(m, pivot_index, left, right, cmp);
+        pivot_index = partition_gstats(m, pivot_index, left, right, cmp);
 
         if (pivot_index - 1 - left <= QSORT_MIN_SIZE) {
                 insertion_sort_gstats(m, left, pivot_index - 1, cmp);

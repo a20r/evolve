@@ -6,7 +6,7 @@
 #include "utils.h"
 
 /* DEFINES */
-#define QSORT_MIN_SIZE 20
+#define QSORT_MIN_SIZE 5
 
 
 /* STRUCT */
@@ -29,6 +29,12 @@ void insertion_sort_gstats(
         int left,
         int right,
         int (*cmp)(const void *, const void *)
+);
+void quick_sort_gstats(
+        struct evolve_monitor *m,
+        int left,
+        int right,
+        int(*cmp)(const void *, const void *)
 );
 int partition_gstats(
         struct evolve_monitor *m,
