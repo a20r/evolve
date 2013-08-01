@@ -5,11 +5,15 @@
 #include <munit/munit.h>
 #include <al/comparator.h>
 
+#include "test_utils.h"
+
 #include "evolve.h"
 #include "evolve_utils.h"
 #include "evolve_monitor.h"
 #include "selection.h"
 #include "utils.h"
+
+
 
 /* GLOBAL VAR */
 struct evolve_monitor *m;
@@ -76,7 +80,6 @@ int test_record_generation_stats()
         record_generation_stats(p, m);
 
         /* asserts */
-        /* debug("best chromo: %s", (char *) darray_get(m->best_chromosomes, 0)); */
         /* mu_assert( */
         /*         strcmp(darray_get(m->best_chromosomes, 0), "EQxvj(ADnvQ/") == 0, */
         /*         "Failed to record best chromosome!" */
@@ -99,19 +102,33 @@ int test_record_generation_stats()
         return 0;
 }
 
+int test_insertion_sort_gstats()
+{
+
+        return 0;
+}
+
+int test_quick_sort_gstats()
+{
+
+        return 0;
+}
+
 int test_sort_generation_stats()
 {
+        int res = 0;
         int i = 0;
         float curr_score = 0;
         float prev_score = 0;
-        int max_gen = 2;
+        int max_gen = 5;
+        int max_pop = 10;
 
         /* run an evolution to fill the monitor struct */
         int chromo_sz = strlen("hello world!");
         struct population *p = init_population(
                 chromo_sz,  /* param */
                 0.0,  /* goal */
-                10,  /* max_pop */
+                max_pop,  /* max_pop */
                 max_gen /* max_gen */
         );
         m = init_evolve_monitor(chromo_sz, max_gen);
@@ -124,22 +141,18 @@ int test_sort_generation_stats()
                 m
         );
 
-        /* #<{(| sort population |)}># */
-        /* debug("Before Stats Sort"); */
-        /* print_generation_stats(m); */
+        /* sort population */
+        debug("Before Stats Sort");
+        print_generation_stats(m);
 
-        /* sort_generation_stats(m, float_cmp); */
-        /* prev_score = *(float *) darray_get(m->best_scores, 0); */
+        sort_generation_stats(m, float_cmp_asc);
 
-        /* debug("After Stats Sort"); */
-        /* print_generation_stats(m); */
+        debug("After Stats Sort");
+        print_generation_stats(m);
 
-        /* #<{(| assert tests |)}># */
-        /* for (i = 1; i < m->generations->end; i++) { */
-        /*         curr_score = *(float *) darray_get(m->best_scores, i); */
-        /*         mu_assert(curr_score <= prev_score, "Failed to sort scores!"); */
-        /*         prev_score = curr_score; */
-        /* } */
+        /* assert test */
+        res = assert_sorted_gstats(m, float_cmp_asc);
+        mu_assert(res != 0, "Sort Generation Stats Failed!");
 
         destroy_population(&p);
         destroy_evolve_monitor(&m);
