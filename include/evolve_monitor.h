@@ -24,6 +24,12 @@ void destroy_evolve_monitor(struct evolve_monitor **m);
 #include "evolve.h"
 char *find_best_chromosome(struct population *p);
 void record_generation_stats(struct population *p, struct evolve_monitor *m);
+void insertion_sort_gstats(
+        struct evolve_monitor *m,
+        int left,
+        int right,
+        int (*cmp)(const void *, const void *)
+);
 int partition_gstats(
         struct evolve_monitor *m,
         int pivot_index,

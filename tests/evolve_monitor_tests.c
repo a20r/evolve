@@ -107,6 +107,7 @@ int test_partition_gstats()
         int res = 0;
         int max_gen = 5;
         int max_pop = 100;
+
         /* run an evolution to fill the monitor struct */
         int chromo_sz = strlen("hello world!");
         struct population *p = init_population(
@@ -155,6 +156,43 @@ int test_partition_gstats()
 
 int test_insertion_sort_gstats()
 {
+        int res = 0;
+        int max_gen = 5;
+        int max_pop = 100;
+
+        /* run an evolution to fill the monitor struct */
+        int chromo_sz = strlen("hello world!");
+        struct population *p = init_population(
+                chromo_sz,  /* param */
+                0.0,  /* goal */
+                max_pop,  /* max_pop */
+                max_gen /* max_gen */
+        );
+        m = init_evolve_monitor(chromo_sz, max_gen);
+        gen_init_chromosomes(&p, randstr);
+        run_evolution(
+                &p,
+                fitness_function,
+                0.8,
+                0.2,
+                m
+        );
+
+        /* sort population */
+        debug("Before Stats Sort");
+        print_generation_stats(m);
+
+        insertion_sort_gstats(m, 0, m->best_scores->end, float_cmp_asc);
+
+        debug("After Stats Sort");
+        print_generation_stats(m);
+
+        /* assert test */
+        res = assert_sorted_gstats(m, float_cmp_asc);
+        mu_assert(res == 0, "Sort Generation Stats Failed!");
+
+        destroy_population(&p);
+        destroy_evolve_monitor(&m);
 
         return 0;
 }
@@ -215,8 +253,9 @@ void test_suite()
         mu_run_test(test_init_evolve_monitor);
         mu_run_test(test_destroy_evolve_monitor);
         mu_run_test(test_record_generation_stats);
-        mu_run_test(test_partition_gstats);
-        mu_run_test(test_sort_generation_stats);
+        mu_run_test(test_insertion_sort_gstats);
+        /* mu_run_test(test_partition_gstats); */
+        /* mu_run_test(test_sort_generation_stats); */
 }
 
 int main()

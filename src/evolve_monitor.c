@@ -98,7 +98,7 @@ static void swap_darray_elem(struct darray *arr, int index_1, int index_2)
         darray_set(arr, index_2, tmp_ptr);
 }
 
-static void insertion_sort_gstats(
+void insertion_sort_gstats(
         struct evolve_monitor *m,
         int left,
         int right,
