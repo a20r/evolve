@@ -12,6 +12,7 @@
 
 /* GLOBAL VAR */
 struct population *p;
+int max_pop = 10;
 
 
 static float fitness_function(char *chromosome)
@@ -33,7 +34,7 @@ int test_init_population()
         p = init_population(
                 (int) strlen("hello world!"),  /* param */
                 0.0,  /* goal */
-                100,  /* max_pop */
+                max_pop,  /* max_pop */
                 1 /* max_gen */
         );
 
@@ -49,7 +50,7 @@ int test_init_population()
         /* population details */
         mu_assert(p->curr_population == 0, "Current population should be 0!");
         mu_assert(p->curr_generation == 0, "Current generation should be 0!");
-        mu_assert(p->max_population == 100, "Max population should be 100!");
+        mu_assert(p->max_population == max_pop, "Invalid max population!");
         mu_assert(p->max_generation == 1, "Max generation should be 1!");
         mu_assert(p->solution == NULL, "Solution should be NULL!");
 
@@ -71,7 +72,7 @@ int test_gen_init_chromosomes()
                         curr_chromosome != last_chromosome,
                         "curr_num == last_num!"
                 );
-                mu_assert(p->curr_population == 100,"population != 100!");
+                mu_assert(p->curr_population == max_pop,"Invalid population!");
 
                 last_chromosome = curr_chromosome;
         }
@@ -84,8 +85,6 @@ int test_evaluate_chromosomes()
 {
         int i = 0;
         int goal_reached = 0;
-        char *curr_chromo = '\0';
-        char *last_chromo = '\0';
         float curr_score = 0.0;
         float last_score = 0.0;
         char *chromosome_solution = "hello world!";
@@ -102,13 +101,11 @@ int test_evaluate_chromosomes()
 
         /* loop through and check scores */
         for (i = 0; i < p->max_population; i++) {
-                curr_chromo = (char *) darray_get(p->chromosomes, i);
                 curr_score = *((float *) darray_get(p->chromosome_scores, i));
 
                 mu_assert(curr_score != last_score, "curr_score == last_score!");
-                mu_assert(p->curr_population == 100, "Population should be 100!");
+                mu_assert(p->curr_population == max_pop, "Invalid population!");
 
-                last_chromo = curr_chromo;
                 last_score = curr_score;
         }
         mu_assert(p->total_score != 0.0, "Sum of scores should not be 0!");
@@ -142,7 +139,7 @@ int test_sort_population()
         /* print_chromosomes(p); */
 
         /* sort population */
-        sort_population(&p, float_cmp);
+        sort_population(&p, float_cmp_asc);
         prev_score = *(float *) darray_get(p->chromosome_scores, 0);
 
         /* debug("After Population Sort"); */
@@ -163,8 +160,8 @@ int test_populate()
         roulette_wheel_selection(&p, NULL);
         populate(&p, 0.9, 0.3);
 
-        mu_assert(p->chromosomes->end == 99, "Population should be 99!");
-        mu_assert(p->curr_population == 100, "Population should be 100!");
+        mu_assert(p->chromosomes->end == max_pop - 1, "Invalid end value!");
+        mu_assert(p->curr_population == max_pop, "Invalid current population!");
 
         return 0;
 }
@@ -182,7 +179,7 @@ int test_run_evolution()
         p = init_population(
                 (int) strlen("hello world!"),  /* param */
                 0.0,  /* goal */
-                100,  /* max_pop */
+                max_pop,  /* max_pop */
                 2 /* max_gen */
         );
 

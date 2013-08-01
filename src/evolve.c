@@ -6,6 +6,7 @@
 #include "selection.h"
 #include "crossover.h"
 #include "mutate.h"
+#include "utils.h"
 
 
 struct population *init_population(
@@ -16,8 +17,6 @@ struct population *init_population(
 )
 {
         struct population *p = malloc(sizeof(struct population));
-
-        debug("Initializing struct population");
 
         /* chromosomes */
         p->chromosomes = darray_create(sizeof(char) * (param + 1), max_pop);
@@ -40,7 +39,6 @@ struct population *init_population(
 
 void destroy_population(struct population **p)
 {
-        debug("Destroying population!");
         if ((*p)) {
 
                 if ((*p)->chromosomes){
@@ -82,7 +80,6 @@ int evaluate_chromosomes(float (eval_func)(char *), struct population **p)
         float *score;
         char *chromosome;
 
-        debug("Evaluating chromosomes!");
         for (i = 0; i < (*p)->max_population; i++) {
                 /* obtain and evaluate chromosome from population */
                 chromosome = darray_get((*p)->chromosomes, i);
@@ -118,7 +115,6 @@ void normalize_fitness_values(struct population **p)
        float *score;
        float *normalized_score;
 
-       debug("Normalizing chromsome scores!");
        for (i = 0; i < (*p)->max_population; i++) {
                 /* get score */
                 score = darray_get((*p)->chromosome_scores, i);
@@ -135,8 +131,10 @@ void normalize_fitness_values(struct population **p)
        }
 }
 
-void sort_population(
+static void insertion_sort_population(
         struct population **p,
+        int left,
+        int right,
         int (*cmp)(const void *, const void *)
 )
 {
@@ -147,7 +145,7 @@ void sort_population(
         void *chromo;
 
         /* below implements an insertion sort */
-        for (j = 1; j < (*p)->max_population; j++) {
+        for (j = left + 1; j <= right; j++) {
                 int i = j - 1;
 
                 /* obtain chromosome and score */
@@ -191,7 +189,77 @@ void sort_population(
         }
 }
 
-int populate(
+/* static int partition( */
+/*         void **ar, */
+/*         int pivot_index, */
+/*         int left, */
+/*         int right, */
+/*         int (*cmp)(const void *, const void *) */
+/* ) */
+/* { */
+/*         int idx, store; */
+/*         void *pivot = ar[pivot_index]; */
+/*  */
+/*         #<{(| move pivot to the end of the array |)}># */
+/*         void *tmp = ar[right]; */
+/*         ar[right] = ar[pivot_index]; */
+/*         ar[pivot_index] = tmp; */
+/*  */
+/*         #<{(| values <= pivot, moved to front of pivot */
+/*          * values > pivot, insert after pivot |)}># */
+/*         store = left; */
+/*         for (idx = left; idx < right; idx++) { */
+/*                 if (cmp(ar[idx], pivot) <= 0) { */
+/*                         tmp = ar[idx]; */
+/*                         ar[idx] = ar[store]; */
+/*                         ar[store] = tmp; */
+/*                         store++; */
+/*                 } */
+/*         } */
+/*  */
+/*         tmp = ar[right]; */
+/*         ar[right] = ar[store]; */
+/*         ar[store] = tmp; */
+/*  */
+/*         return store; */
+/* } */
+
+void quick_sort_population(
+        void **arr,
+        int left,
+        int right,
+        int(*cmp)(const void *, const void *)
+)
+{
+        /* if (right <= left) { return; } */
+
+        /* #<{(| partition |)}># */
+        /* int pivot_index = randnum_i(left, right); */
+        /* pivot_index = partition(arr, cmp, left, right, pivot_index); */
+
+        /* if (pivot_index - 1 - left <= SORT_MIN_SIZE) { */
+        /*         insertion(arr, cmp, left, pivot_index - 1); */
+        /* } else { */
+        /*         quick_sort_population(arr, left, pivot_index - 1, cmp); */
+        /* } */
+
+        /* if (right-pivot_index-1 <= SORT_MIN_SIZE) { */
+        /*         insertion(arr, cmp, pivot_index+1, right); */
+        /* } else { */
+        /*         quick_sort_population(arr, pivot_index + 1, right, cmp); */
+        /* } */
+}
+
+
+void sort_population(
+        struct population **p,
+        int (*cmp)(const void *, const void *)
+)
+{
+        insertion_sort_population(p, 0, (*p)->max_population - 1, cmp);
+}
+
+void populate(
         struct population **p,
         float crossover_prob,
         float mutate_prob
@@ -199,33 +267,50 @@ int populate(
 {
         int i = 0;
         int j = 0;
-        struct darray *chromosomes = (*p)->chromosomes;
-        int population = (*p)->curr_population + 2;
-        int e = 0;
+        int offspring_pair = 0;
+
         void *p_1;  /* parents 1 */
         void *p_2;  /* parents 2 */
         void *c_1;  /* child 1 */
         void *c_2;  /* child 2 */
+
         int c_1_len = 0;
         int c_2_len = 0;
 
-        debug("Populating!");
+        struct darray *old_chromosomes = (*p)->chromosomes;
+        int population = (*p)->curr_population;
+
+
+        /* initialize new population */
+        struct population *new_p = init_population(
+                (*p)->parameters,
+                (*p)->goal,
+                (*p)->max_population,
+                (*p)->max_generation
+        );
+        new_p->curr_generation = (*p)->curr_generation;
+        new_p->solution = (*p)->solution;
+        struct darray *new_chromosomes = new_p->chromosomes;
 
         /* crossover and mutate */
         for (i = 0; i < population; i += 2) {
-                c_1_len = strlen(darray_get(chromosomes, i));
-                c_2_len = strlen(darray_get(chromosomes, i + 1));
-
                 /* obtain parents for reproduction */
-                p_1 = darray_get(chromosomes, i);
-                p_2 = darray_get(chromosomes, i + 1);
+                c_1_len = strlen(darray_get(old_chromosomes, i));
+                c_2_len = strlen(darray_get(old_chromosomes, i + 1));
+                p_1 = darray_get(old_chromosomes, i);
+                p_2 = darray_get(old_chromosomes, i + 1);
 
                 for (j = 0; j < 2; j++) {
-                        /* prepare children */
+                        /* make sure number of offspring < max_population */
+                        if (i + j + offspring_pair  == (*p)->max_population) {
+                                break;
+                        }
+
+                        /* prepare children c_1 and c_2 */
                         c_1 = calloc(1, sizeof(char) * (c_1_len + 1));
                         c_2 = calloc(1, sizeof(char) * (c_2_len + 1));
-                        memcpy(c_1, p_1, chromosomes->element_size);
-                        memcpy(c_2, p_2, chromosomes->element_size);
+                        memcpy(c_1, p_1, old_chromosomes->element_size);
+                        memcpy(c_2, p_2, old_chromosomes->element_size);
 
                         /* crossover and mutate */
                         crossover(
@@ -238,24 +323,17 @@ int populate(
                         mutate(&c_1, mutate_prob, mutate_str);
                         mutate(&c_2, mutate_prob, mutate_str);
 
-                        /* gen 4 offsprings (or 2 if last chromosome set) */
-                        if (j == 0 && ((i + 2) < population)) {
-                                e = chromosomes->end;
-                                darray_set(chromosomes, e + 1, c_1);
-                                darray_set(chromosomes, e + 2, c_2);
-                                (*p)->curr_population += 2;
-                        } if (j == 0 && ((i + 2) == population)) {
-                                darray_update(chromosomes, i, c_1);
-                                darray_update(chromosomes, i + 1, c_2);
-                                break;
-                        } else if (j == 1) {
-                                darray_update(chromosomes, i, c_1);
-                                darray_update(chromosomes, i + 1, c_2);
-                        }
+                        /* put children into new population */
+                        darray_set(new_chromosomes, i + j + offspring_pair, c_1);
+                        darray_set(new_chromosomes, i + j + offspring_pair + 1, c_2);
+                        new_p->curr_population += 2;
+                        offspring_pair++;
                 }
         }
 
-        return 0;
+        /* clean up */
+        destroy_population(&(*p));
+        *p = new_p;
 }
 
 int run_evolution(
@@ -263,17 +341,15 @@ int run_evolution(
         float (eval_func)(char *),
         float crossover_prob,
         float mutate_prob,
-        struct evolve_monitor **m
+        struct evolve_monitor *m
 )
 {
         int max_gen = (*p)->max_generation;
 
-        debug("Running Evolution!");
-
         /* evolve until max_gen reached or goal achieved  */
         while ((*p)->curr_generation < max_gen)
         {
-                debug("GENERATION: %d", (*p)->curr_generation);
+                debug("GENERATION: %d\n", (*p)->curr_generation);
 
                 /* evaluate */
                 if (evaluate_chromosomes(eval_func, &(*p))) {
@@ -282,7 +358,7 @@ int run_evolution(
 
                 /* record */
                 if (m != NULL) {
-                        record_generation_stats(*p, &(*m));
+                        record_generation_stats(*p, m);
                 }
 
                 /* select */

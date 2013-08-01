@@ -29,7 +29,7 @@ float fitness_function(char *chromosome)
 int main()
 {
         int i = 0;
-        int max_gen = 1000;
+        int max_gen = 10000;
 
         /* seed random - VERY IMPORTANT! */
         srand(time(NULL));
@@ -54,12 +54,12 @@ int main()
                 fitness_function,
                 0.5,
                 0.1,
-                &m
+                m
         );
 
         /* sort results */
         printf("SORTING RESULTS!\n");
-        sort_generation_stats(&m, float_cmp);
+        sort_generation_stats(m, float_cmp_asc);
 
         /* print top 5 chromosomes */
         printf("\nTOP 5 CHROMOSOMES:\n");
@@ -69,8 +69,12 @@ int main()
                         (char *) darray_get(m->best_chromosomes, i)
                 );
                 printf(
-                        "score: %f\n\n",
+                        "score: %f\n",
                         *(float *) darray_get(m->best_scores, i)
+                );
+                printf(
+                        "generation: %d\n\n",
+                        *(int *) darray_get(m->generations, i)
                 );
         }
 

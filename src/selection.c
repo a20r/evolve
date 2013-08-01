@@ -21,10 +21,9 @@ void roulette_wheel_selection(
         void *score;
         void *chromo;
         int selected = 0;
-        int max_selection = (
-                select == NULL ? (*p)->max_population / 2 : *select
-        );
+        int max_select = (select == NULL ? (*p)->max_population / 2 : *select);
         struct population *new_p;
+
 
         /* initialize new population */
         new_p = init_population(
@@ -36,15 +35,14 @@ void roulette_wheel_selection(
         new_p->curr_generation = (*p)->curr_generation;
         new_p->solution = (*p)->solution;
 
-        debug("Performing roulette selection!");
 
         /* noramlize fitness values and sort by descending order */
         normalize_fitness_values(&(*p));
-        sort_population(&(*p), float_cmp);
+        sort_population(&(*p), float_cmp_asc);
 
         /* make sure number of selection is an even number! */
-        if (max_selection % 2 != 0) {
-                max_selection += 1;
+        if (max_select % 2 != 0) {
+                max_select += 1;
         }
 
         /* select chromosomes */
@@ -71,7 +69,7 @@ void roulette_wheel_selection(
                 }
 
                 /* loop conditions */
-                if (selected == max_selection) {
+                if (selected == max_select) {
                         break;
                 } else if ((i + 1) >= (*p)->max_population) {
                         i = 0;

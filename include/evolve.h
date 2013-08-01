@@ -3,6 +3,8 @@
 
 #include <dstruct/darray.h>
 
+/* DEFINES */
+#define SORT_MIN_SIZE 20
 
 
 /* STRUCTS */
@@ -41,7 +43,7 @@ void sort_population(
         struct population **p,
         int (*cmp)(const void *, const void *)
 );
-int populate(
+void populate(
         struct population **p,
         float crossover_prob,
         float mutation_prob
@@ -54,7 +56,7 @@ int run_evolution(
         float (eval_func)(char *),
         float crossover_prob,
         float mutate_prob,
-        struct evolve_monitor **m
+        struct evolve_monitor *m
 );
 
 #endif
