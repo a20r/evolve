@@ -181,6 +181,50 @@ int test_insertion_sort_population()
         return 0;
 }
 
+int test_partition_population()
+{
+        int res = 0;
+
+        setup();
+
+        printf("Before Population Sort\n");
+        print_chromosomes(p);
+
+        /* keep pivot value for reference */
+        int pivot_index = 2;
+        float pivot_value = *(float *) darray_get(
+                p->chromosome_scores,
+                pivot_index
+        );
+
+        /* partition population */
+        res = partition_population(
+                p,
+                pivot_index,
+                0,
+                p->chromosomes->end,
+                float_cmp_asc
+        );
+
+        printf("After Population Sort\n");
+        print_chromosomes(p);
+
+        /* assert tests */
+        insertion_sort_population(p, 0, p->chromosomes->end, float_cmp_asc);
+        float value = *(float *) darray_get(p->chromosome_scores, res);
+
+        /* assert test */
+        mu_assert(
+                float_cmp_asc(&value, &pivot_value) == 0,
+                "Failed to partition population!"
+        );
+        printf("value_1: %f \t value_2: %f", pivot_value, value);
+
+        teardown();
+
+        return 0;
+}
+
 int test_sort_population()
 {
         int res = 0;
@@ -215,6 +259,7 @@ void test_suite()
 
         /* sort functions */
         mu_run_test(test_insertion_sort_population);
+        mu_run_test(test_partition_population);
         mu_run_test(test_sort_population);
 
         testsuite_cleanup();

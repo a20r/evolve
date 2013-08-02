@@ -16,6 +16,13 @@ void insertion_sort_population(
         int right,
         int (*cmp)(const void *, const void *)
 );
+int partition_population(
+        struct population *p,
+        int pivot_index,
+        int left,
+        int right,
+        int (*cmp)(const void *, const void *)
+);
 void sort_population(
         struct population *p,
         int (*cmp)(const void *, const void *)

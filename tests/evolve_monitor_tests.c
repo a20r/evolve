@@ -193,7 +193,7 @@ int test_partition_gstats()
         /* assert test */
         mu_assert(
                 float_cmp_asc(&value, &pivot_value) == 0,
-                "Failed to partition gstats"
+                "Failed to partition gstats!"
         );
         debug("value_1: %f \t value_2: %f", pivot_value, value);
 
