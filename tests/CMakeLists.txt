@@ -30,6 +30,15 @@ add_executable(
 )
 target_link_libraries(evolve_monitor_tests ${LIBRARY_NAME})
 
+# population
+add_executable(
+    population_tests
+
+    test_utils.c
+    population_tests.c
+)
+target_link_libraries(population_tests ${LIBRARY_NAME})
+
 # utils
 add_executable(utils_tests utils_tests.c)
 target_link_libraries(utils_tests ${LIBRARY_NAME})

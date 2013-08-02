@@ -1,6 +1,8 @@
+#include <unistd.h>
+
 #include <dbg/dbg.h>
 #include <al/comparator.h>
-#include <unistd.h>
+#include <dstruct/darray.h>
 
 #include "selection.h"
 #include "evolve.h"

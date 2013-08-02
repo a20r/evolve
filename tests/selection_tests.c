@@ -2,6 +2,7 @@
 #include <math.h>
 #include <string.h>
 
+#include <dstruct/darray.h>
 #include <munit/munit.h>
 
 #include "selection.h"

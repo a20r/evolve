@@ -3,9 +3,11 @@
 #include <string.h>
 
 #include <munit/munit.h>
-#include <dbg/dbg.h>
+#include <dstruct/darray.h>
 
 #include "test_utils.h"
+#include "population.h"
+
 
 int assert_sorted_array(
         void *array,

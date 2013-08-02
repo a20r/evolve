@@ -9,5 +9,4 @@
 /* FUNCTIONS */
 void roulette_wheel_selection(struct population **p, int *select);
 
-
 #endif

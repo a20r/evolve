@@ -12,14 +12,16 @@ link_directories(/usr/lib)
 add_library(
     ${LIB_NAME}
 
-    evolve.c
-    evolve_utils.c
-    evolve_monitor.c
+    population.c
     selection.c
     crossover.c
     mutate.c
     utils.c
+
+    evolve.c
+    evolve_utils.c
+    evolve_monitor.c
 )
 target_link_libraries(evolve m)
-target_link_libraries(evolve dstruct)
 target_link_libraries(evolve al)
+target_link_libraries(evolve dstruct)

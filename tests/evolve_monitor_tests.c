@@ -4,6 +4,7 @@
 
 #include <munit/munit.h>
 #include <al/comparator.h>
+#include <dstruct/darray.h>
 
 #include "test_utils.h"
 
