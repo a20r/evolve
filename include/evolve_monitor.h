@@ -1,12 +1,10 @@
 #ifndef _EVOLVE_MONITOR_H_
 #define _EVOLVE_MONITOR_H_
 
-#include <dbg/dbg.h>
-
 #include "utils.h"
 
 /* DEFINES */
-#define QSORT_MIN_SIZE 5
+#define POPULATION_QSORT_MIN_SIZE 5
 
 
 /* STRUCT */

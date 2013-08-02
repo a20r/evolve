@@ -67,13 +67,13 @@ static void restore_stdout()
         close(save_stdout);
 }
 
-static void setup()
+static void setup(int max_pop, int max_gen)
 {
         p = init_population(
                 (int) strlen("hello world!"),  /* param */
                 0.0,  /* goal */
-                10,  /* max_pop */
-                1 /* max_gen */
+                max_pop,  /* max_pop */
+                max_gen /* max_gen */
         );
         gen_init_chromosomes(&p, randstr);
         evaluate_chromosomes(fitness_function, &p);
@@ -114,8 +114,11 @@ static int read_file(char* fp)
 
 int test_print_chromosome()
 {
+        int max_pop = 10;
+        int max_gen = 5;
+
         redirect_stdout();
-        setup();
+        setup(max_pop, max_gen);
 
         print_chromosome(p, 0);
 
@@ -129,8 +132,11 @@ int test_print_chromosome()
 
 int test_print_chromosomes()
 {
+        int max_pop = 10;
+        int max_gen = 5;
+
         redirect_stdout();
-        setup();
+        setup(max_pop, max_gen);
 
         print_chromosomes(p);
 
@@ -144,8 +150,11 @@ int test_print_chromosomes()
 
 int test_print_population()
 {
+        int max_pop = 10;
+        int max_gen = 5;
+
         redirect_stdout();
-        setup();
+        setup(max_pop, max_gen);
 
         print_population(p);
 
@@ -160,8 +169,10 @@ int test_print_population()
 int test_insertion_sort_population()
 {
         int res = 0;
+        int max_pop = 10;
+        int max_gen = 5;
 
-        setup();
+        setup(max_pop, max_gen);
 
         printf("Before Population Sort\n");
         print_chromosomes(p);
@@ -184,8 +195,10 @@ int test_insertion_sort_population()
 int test_partition_population()
 {
         int res = 0;
+        int max_pop = 10;
+        int max_gen = 5;
 
-        setup();
+        setup(max_pop, max_gen);
 
         printf("Before Population Sort\n");
         print_chromosomes(p);
@@ -225,11 +238,40 @@ int test_partition_population()
         return 0;
 }
 
+int test_quick_sort_population()
+{
+        int res = 0;
+        int max_pop = 100;
+        int max_gen = 5;
+
+        setup(max_pop, max_gen);
+
+
+        printf("Before Population Sort\n");
+        print_chromosomes(p);
+
+        /* sort population */
+        quick_sort_population(p, 0, p->chromosomes->end, float_cmp_asc);
+
+        printf("After Population Sort\n");
+        print_chromosomes(p);
+
+        /* #<{(| assert tests |)}># */
+        res = assert_sorted_population(p, float_cmp_asc);
+        mu_assert(res == 0, "Failed to sort population!");
+
+        teardown();
+
+        return 0;
+}
+
 int test_sort_population()
 {
         int res = 0;
+        int max_pop = 100;
+        int max_gen = 5;
 
-        setup();
+        setup(max_pop, max_gen);
 
         printf("Before Population Sort\n");
         print_chromosomes(p);
@@ -260,6 +302,7 @@ void test_suite()
         /* sort functions */
         mu_run_test(test_insertion_sort_population);
         mu_run_test(test_partition_population);
+        mu_run_test(test_quick_sort_population);
         mu_run_test(test_sort_population);
 
         testsuite_cleanup();

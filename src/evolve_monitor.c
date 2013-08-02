@@ -1,4 +1,7 @@
+#include <dbg/dbg.h>
+
 #include "evolve_monitor.h"
+#include "utils.h"
 
 
 struct evolve_monitor *init_evolve_monitor(size_t chromo_sz, long max_gen)
@@ -213,13 +216,13 @@ void quick_sort_gstats(
         int pivot_index = randnum_i(left, right);
         pivot_index = partition_gstats(m, pivot_index, left, right, cmp);
 
-        if (pivot_index - 1 - left <= QSORT_MIN_SIZE) {
+        if (pivot_index - 1 - left <= POPULATION_QSORT_MIN_SIZE) {
                 insertion_sort_gstats(m, left, pivot_index - 1, cmp);
         } else {
                 quick_sort_gstats(m, left, pivot_index - 1, cmp);
         }
 
-        if (right-pivot_index-1 <= QSORT_MIN_SIZE) {
+        if (right - pivot_index - 1 <= POPULATION_QSORT_MIN_SIZE) {
                 insertion_sort_gstats(m, pivot_index + 1, right, cmp);
         } else {
                 quick_sort_gstats(m, pivot_index + 1, right, cmp);

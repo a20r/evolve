@@ -5,6 +5,9 @@
 
 #include "evolve.h"
 
+/* DEFINES */
+#define QSORT_MIN_SIZE 20
+
 
 /* FUNCTIONS */
 void print_chromosome(struct population *p, int index);
@@ -22,6 +25,12 @@ int partition_population(
         int left,
         int right,
         int (*cmp)(const void *, const void *)
+);
+void quick_sort_population(
+        struct population *m,
+        int left,
+        int right,
+        int(*cmp)(const void *, const void *)
 );
 void sort_population(
         struct population *p,

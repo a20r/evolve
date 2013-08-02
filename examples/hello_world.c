@@ -29,7 +29,8 @@ float fitness_function(char *chromosome)
 int main()
 {
         int i = 0;
-        int max_gen = 10000;
+        int max_pop = 100;
+        int max_gen = 1000;
 
         /* seed random - VERY IMPORTANT! */
         srand(time(NULL));
@@ -38,7 +39,7 @@ int main()
         struct population *p = init_population(
                 (int) strlen(TARGET_SOLUTION),  /* param */
                 0.0,  /* goal */
-                100,  /* max_pop */
+                max_pop,  /* max_pop */
                 max_gen  /* max_gen */
         );
         struct evolve_monitor *m = init_evolve_monitor(
@@ -52,7 +53,7 @@ int main()
         run_evolution(
                 &p,
                 fitness_function,
-                0.5,
+                0.8,
                 0.1,
                 m
         );

@@ -217,11 +217,13 @@ int run_evolution(
 )
 {
         int max_gen = (*p)->max_generation;
+        char *chromo;
+        float score;
 
         /* evolve until max_gen reached or goal achieved  */
         while ((*p)->curr_generation < max_gen)
         {
-                debug("GENERATION: %d\n", (*p)->curr_generation);
+                int i = (*p)->curr_generation;
 
                 /* evaluate */
                 if (evaluate_chromosomes(eval_func, &(*p))) {
@@ -231,6 +233,11 @@ int run_evolution(
                 /* record */
                 if (m != NULL) {
                         record_generation_stats(*p, m);
+                        chromo = (char *) darray_get(m->best_chromosomes, i);
+                        score = *(float *) darray_get(m->best_scores, i);
+
+                        debug("GENERATION: %d", i);
+                        debug("BEST CHROMOSOME: %s [%f]\n", chromo, score);
                 }
 
                 /* select */
