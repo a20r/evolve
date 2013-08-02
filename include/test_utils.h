@@ -10,6 +10,11 @@ int assert_sorted_array(
         int(*cmp)(const void *,const void *)
 );
 
+int assert_sorted_population(
+        struct population *p,
+        int(*cmp)(const void *,const void *)
+);
+
 int assert_sorted_gstats(
         struct evolve_monitor *m,
         int(*cmp)(const void *,const void *)

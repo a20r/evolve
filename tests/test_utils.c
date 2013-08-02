@@ -31,6 +31,29 @@ int assert_sorted_array(
         return 0;
 }
 
+int assert_sorted_population(
+        struct population *p,
+	int(*cmp)(const void *,const void *)
+)
+{
+        int i = 0;
+        int end = p->chromosomes->end;
+        int res = 0;
+
+        for (i = 1; i <= end; i++) {
+                res = cmp(
+                        darray_get(p->chromosome_scores, i - 1),
+                        darray_get(p->chromosome_scores, i)
+                );
+
+                if (res > 0) {
+                        return -1;
+                }
+        }
+
+        return 0;
+}
+
 int assert_sorted_gstats(
         struct evolve_monitor *m,
 	int(*cmp)(const void *,const void *)

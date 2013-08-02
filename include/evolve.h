@@ -39,10 +39,6 @@ void gen_init_chromosomes(struct population **p, char *(*mutator)(int));
 int evaluate_chromosomes(float (eval_func)(char *), struct population **p);
 
 void normalize_fitness_values(struct population **p);
-void sort_population(
-        struct population **p,
-        int (*cmp)(const void *, const void *)
-);
 void populate(
         struct population **p,
         float crossover_prob,

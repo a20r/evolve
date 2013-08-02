@@ -38,7 +38,7 @@ void roulette_wheel_selection(
 
         /* noramlize fitness values and sort by descending order */
         normalize_fitness_values(&(*p));
-        sort_population(&(*p), float_cmp_asc);
+        sort_population(*p, float_cmp_asc);
 
         /* make sure number of selection is an even number! */
         if (max_select % 2 != 0) {

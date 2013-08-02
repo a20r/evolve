@@ -12,6 +12,7 @@
 
 /* GLOBAL VAR */
 struct population *p;
+struct evolve_monitor *m;
 int max_pop = 10;
 
 
@@ -27,7 +28,6 @@ static float fitness_function(char *chromosome)
 
         return total;
 }
-
 
 int test_init_population()
 {
@@ -129,32 +129,6 @@ int test_normalize_fitness_values()
         return 0;
 }
 
-int test_sort_population()
-{
-        int i = 0;
-        float curr_score = 0;
-        float prev_score = 0;
-
-        /* debug("Before Population Sort"); */
-        /* print_chromosomes(p); */
-
-        /* sort population */
-        sort_population(&p, float_cmp_asc);
-        prev_score = *(float *) darray_get(p->chromosome_scores, 0);
-
-        /* debug("After Population Sort"); */
-        /* print_chromosomes(p); */
-
-        /* assert tests */
-        for (i = 1; i < p->max_population; i++) {
-                curr_score = *(float *) darray_get(p->chromosome_scores, i);
-                mu_assert(curr_score <= prev_score, "Failed to sort scores!");
-                prev_score = curr_score;
-        }
-
-        return 0;
-}
-
 int test_populate()
 {
         roulette_wheel_selection(&p, NULL);
@@ -204,7 +178,6 @@ void test_suite()
         mu_run_test(test_gen_init_chromosomes);
         mu_run_test(test_evaluate_chromosomes);
         mu_run_test(test_normalize_fitness_values);
-        mu_run_test(test_sort_population);
         mu_run_test(test_destroy_population);
 
         mu_run_test(test_init_population);

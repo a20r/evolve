@@ -61,7 +61,6 @@ static void sort_test_teardown()
         m = NULL;
 }
 
-
 int test_init_evolve_monitor()
 {
         int len = strlen("hello world!");

@@ -9,6 +9,8 @@
 #include <munit/munit.h>
 #include <al/comparator.h>
 
+#include "test_utils.h"
+
 #include "evolve.h"
 #include "evolve_utils.h"
 #include "selection.h"
@@ -35,17 +37,8 @@ static float fitness_function(char *chromosome)
         return total;
 }
 
-static void setup()
+static void redirect_stdout()
 {
-        p = init_population(
-                (int) strlen("hello world!"),  /* param */
-                0.0,  /* goal */
-                10,  /* max_pop */
-                1 /* max_gen */
-        );
-        gen_init_chromosomes(&p, randstr);
-        evaluate_chromosomes(fitness_function, &p);
-
         /* open output file */
         output = open(TEST_OUTPUT, O_RDWR|O_CREAT, 0755);
         if (output == -1) {
@@ -63,28 +56,43 @@ static void setup()
         }
 }
 
-static void teardown()
+static void restore_stdout()
 {
         /* flush output */
         fflush(stdout);
         close(output);
-
-        destroy_population(&p);
 
         /* restore stdout */
         dup2(save_stdout, 1);
         close(save_stdout);
 }
 
-static void cleanup()
+static void setup()
+{
+        p = init_population(
+                (int) strlen("hello world!"),  /* param */
+                0.0,  /* goal */
+                10,  /* max_pop */
+                1 /* max_gen */
+        );
+        gen_init_chromosomes(&p, randstr);
+        evaluate_chromosomes(fitness_function, &p);
+}
+
+static void teardown()
+{
+        destroy_population(&p);
+}
+
+static void testsuite_cleanup()
 {
         int result = remove(TEST_OUTPUT);
+
         if (result == 0) {
                 printf("Removed file [%s]!\n", TEST_OUTPUT);
         } else {
                 printf("ERROR Failed to removed file [%s]!\n", TEST_OUTPUT);
         }
-
 }
 
 static int read_file(char* fp)
@@ -106,9 +114,13 @@ static int read_file(char* fp)
 
 int test_print_chromosome()
 {
+        redirect_stdout();
         setup();
+
         print_chromosome(p, 0);
+
         teardown();
+        restore_stdout();
 
         mu_assert(read_file(TEST_OUTPUT) != 0, "There should be some output!");
 
@@ -117,9 +129,13 @@ int test_print_chromosome()
 
 int test_print_chromosomes()
 {
+        redirect_stdout();
         setup();
+
         print_chromosomes(p);
+
         teardown();
+        restore_stdout();
 
         mu_assert(read_file(TEST_OUTPUT) != 0, "There should be some output!");
 
@@ -128,22 +144,80 @@ int test_print_chromosomes()
 
 int test_print_population()
 {
+        redirect_stdout();
         setup();
+
         print_population(p);
+
         teardown();
+        restore_stdout();
 
         mu_assert(read_file(TEST_OUTPUT) != 0, "There should be some output!");
 
         return 0;
 }
 
+int test_insertion_sort_population()
+{
+        int res = 0;
+
+        setup();
+
+        printf("Before Population Sort\n");
+        print_chromosomes(p);
+
+        /* sort population */
+        insertion_sort_population(p, 0, p->chromosomes->end, float_cmp_asc);
+
+        printf("After Population Sort\n");
+        print_chromosomes(p);
+
+        /* #<{(| assert tests |)}># */
+        res = assert_sorted_population(p, float_cmp_asc);
+        mu_assert(res == 0, "Failed to sort population!");
+
+        teardown();
+
+        return 0;
+}
+
+int test_sort_population()
+{
+        int res = 0;
+
+        setup();
+
+        printf("Before Population Sort\n");
+        print_chromosomes(p);
+
+        /* sort population */
+        sort_population(p, float_cmp_asc);
+
+        printf("After Population Sort\n");
+        print_chromosomes(p);
+
+        /* #<{(| assert tests |)}># */
+        res = assert_sorted_population(p, float_cmp_asc);
+        mu_assert(res == 0, "Failed to sort population!");
+
+        teardown();
+
+        return 0;
+}
+
+
 void test_suite()
 {
+        /* print functions */
         mu_run_test(test_print_chromosome);
         mu_run_test(test_print_chromosomes);
         mu_run_test(test_print_population);
 
-        cleanup();
+        /* sort functions */
+        mu_run_test(test_insertion_sort_population);
+        mu_run_test(test_sort_population);
+
+        testsuite_cleanup();
 }
 
 int main()
