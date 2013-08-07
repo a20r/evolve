@@ -72,25 +72,25 @@ int main()
         }
 
         /* sort results */
-        /* printf("SORTING RESULTS!\n"); */
-        /* sort_generation_stats(m, float_cmp_desc); */
+        printf("SORTING RESULTS!\n");
+        sort_generation_stats(m, float_cmp_desc);
 
-        /* #<{(| print top 5 chromosomes |)}># */
-        /* printf("\nTOP 5 CHROMOSOMES:\n"); */
-        /* for (i = 0; i < 5; i++) { */
-        /*         printf( */
-        /*                 "chromosome: %s\n", */
-        /*                 (char *) darray_get(m->best_chromosomes, i) */
-        /*         ); */
-        /*         printf( */
-        /*                 "score: %f\n", */
-        /*                 *(float *) darray_get(m->best_scores, i) */
-        /*         ); */
-        /*         printf( */
-        /*                 "generation: %d\n\n", */
-        /*                 *(int *) darray_get(m->generations, i) */
-        /*         ); */
-        /* } */
+        /* print top 5 chromosomes */
+        printf("\nTOP 5 CHROMOSOMES:\n");
+        for (i = 0; i < 5; i++) {
+                printf(
+                        "chromosome: %s\n",
+                        (char *) darray_get(m->best_chromosomes, i)
+                );
+                printf(
+                        "score: %.2f\n",
+                        *(float *) darray_get(m->best_scores, i)
+                );
+                printf(
+                        "generation: %d\n\n",
+                        *(int *) darray_get(m->generations, i)
+                );
+        }
 
         /* clean up */
         destroy_evolve_monitor(&m);

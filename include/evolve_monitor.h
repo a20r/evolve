@@ -1,10 +1,14 @@
 #ifndef _EVOLVE_MONITOR_H_
 #define _EVOLVE_MONITOR_H_
 
+#include <stdlib.h>
+
 #include "utils.h"
 
 /* DEFINES */
-#define POPULATION_QSORT_MIN_SIZE 5
+#ifndef QSORT_MIN_SIZE
+#define QSORT_MIN_SIZE 20
+#endif
 
 
 /* STRUCT */
@@ -18,10 +22,12 @@ struct evolve_monitor
 /* FUNCTIONS */
 struct evolve_monitor *init_evolve_monitor(size_t chromo_sz, long max_gen);
 void destroy_evolve_monitor(struct evolve_monitor **m);
-
 #include "evolve.h"
-char *find_best_chromosome(struct population *p);
-void record_generation_stats(struct population *p, struct evolve_monitor *m);
+void record_generation_stats(
+        struct population *p,
+        struct evolve_monitor *m,
+        int(*cmp)(const void *, const void *)
+);
 void insertion_sort_gstats(
         struct evolve_monitor *m,
         int left,

@@ -1,5 +1,6 @@
 #include <dstruct/darray.h>
 #include <dbg/dbg.h>
+#include <al/comparator.h>
 
 #include "evolve.h"
 #include "evolve_monitor.h"
@@ -27,7 +28,7 @@ int run_evolution(
 
                 /* evaluate */
                 if (evaluate_chromosomes(eval_func, &(*p))) {
-                        record_generation_stats(*p, m);
+                        record_generation_stats(*p, m, float_cmp_desc);
                         chromo = (char *) darray_get(m->best_chromosomes, i);
                         score = *(float *) darray_get(m->best_scores, i);
 
@@ -42,7 +43,7 @@ int run_evolution(
 
                 /* record */
                 if (m != NULL) {
-                        record_generation_stats(*p, m);
+                        record_generation_stats(*p, m, float_cmp_desc);
                         chromo = (char *) darray_get(m->best_chromosomes, i);
                         score = *(float *) darray_get(m->best_scores, i);
 

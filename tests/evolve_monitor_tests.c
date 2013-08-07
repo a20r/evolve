@@ -107,7 +107,7 @@ int test_record_generation_stats()
         evaluate_chromosomes(fitness_function, &p);
 
         /* record generation stats */
-        record_generation_stats(p, m);
+        record_generation_stats(p, m, float_cmp_asc);
 
         /* asserts */
         /* mu_assert( */

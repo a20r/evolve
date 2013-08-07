@@ -27,34 +27,11 @@ void destroy_evolve_monitor(struct evolve_monitor **m)
         *m = NULL;
 }
 
-char *find_best_chromosome(struct population *p)
-{
-        int i = 0;
-        float goal = p->goal;
-        char *chromo = '\0';
-        float score = 0.0;
-        char *best_chromo = '\0';
-        float best_score = 0.0;
-
-        /* instanciate inital best chromosome */
-        best_chromo = (char *) darray_get(p->chromosomes, 0);
-        best_score = *(float *) darray_get(p->chromosome_scores, 0);
-
-        /* find the best chromosome */
-        for (i = 1; i < p->curr_population; i++) {
-                chromo = (char *) darray_get(p->chromosomes, i);
-                score = *(float *) darray_get(p->chromosome_scores, i);
-
-                if ((score - goal) <= (best_score - goal)) {
-                        best_chromo = chromo;
-                        best_score = score;
-                }
-        }
-
-        return best_chromo;
-}
-
-void record_generation_stats(struct population *p, struct evolve_monitor *m)
+void record_generation_stats(
+        struct population *p,
+        struct evolve_monitor *m,
+        int(*cmp)(const void *, const void *)
+)
 {
         int i = 0;
         float goal = p->goal;
@@ -76,10 +53,19 @@ void record_generation_stats(struct population *p, struct evolve_monitor *m)
                 memcpy(chromo, darray_get(p->chromosomes, i), chromo_sz);
                 memcpy(score, darray_get(p->chromosome_scores, i), score_sz);
 
-                if ((*score - goal) <= (*best_score - goal)) {
+                /* set value 1 and value 2 for comparison */
+                float *val_1 = calloc(1, sizeof(float));
+                float *val_2 = calloc(1, sizeof(float));
+                *val_1 = *score - goal;
+                *val_2 = *best_score - goal;
+
+                if (cmp(val_1, val_2) < 1) {
                         memcpy(best_chromo, chromo, chromo_sz);
                         memcpy(best_score, score, score_sz);
                 }
+
+                free(val_1);
+                free(val_2);
         }
 
         /* record generation statistics into evolve_monitor */
@@ -217,13 +203,13 @@ void quick_sort_gstats(
         int pivot_index = randnum_i(left, right);
         pivot_index = partition_gstats(m, pivot_index, left, right, cmp);
 
-        if (pivot_index - 1 - left <= POPULATION_QSORT_MIN_SIZE) {
+        if (pivot_index - 1 - left <= QSORT_MIN_SIZE) {
                 insertion_sort_gstats(m, left, pivot_index - 1, cmp);
         } else {
                 quick_sort_gstats(m, left, pivot_index - 1, cmp);
         }
 
-        if (right - pivot_index - 1 <= POPULATION_QSORT_MIN_SIZE) {
+        if (right - pivot_index - 1 <= QSORT_MIN_SIZE) {
                 insertion_sort_gstats(m, pivot_index + 1, right, cmp);
         } else {
                 quick_sort_gstats(m, pivot_index + 1, right, cmp);
