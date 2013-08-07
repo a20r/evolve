@@ -87,8 +87,16 @@ int main()
                         *(float *) darray_get(m->best_scores, i)
                 );
                 printf(
-                        "generation: %d\n\n",
+                        "generation: %d\n",
                         *(int *) darray_get(m->generations, i)
+                );
+                printf(
+                        "convergence rate: %.2f\n",
+                        *(float *) darray_get(m->convergence_rates, i)
+                );
+                printf(
+                        "goal distance: %.2f\n\n",
+                        *(float *) darray_get(m->goal_distances, i)
                 );
         }
 
