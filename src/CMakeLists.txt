@@ -19,7 +19,6 @@ add_library(
     utils.c
 
     evolve.c
-    evolve_utils.c
     evolve_monitor.c
 )
 target_link_libraries(evolve m)

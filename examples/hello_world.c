@@ -14,9 +14,10 @@
 #define TARGET_SOLUTION "hello world!"
 
 
-float fitness_function(char *chromosome)
+static float fitness_function(char *chromosome)
 {
         char *target = TARGET_SOLUTION;
+        float max_score = 122 * strlen(chromosome);
         float total = 0;
         int i = 0;
 
@@ -24,15 +25,14 @@ float fitness_function(char *chromosome)
                 total += fabsf(roundf(target[i] - chromosome[i]));
         }
 
-        return total;
+        return max_score - total;
 }
-
 
 int main()
 {
         int i = 0;
         int max_pop = 100;
-        int max_gen = 1000;
+        int max_gen = 10000;
 
         /* seed random - VERY IMPORTANT! */
         srand(time(NULL));
@@ -40,7 +40,7 @@ int main()
         /* initialize evolution */
         struct population *p = init_population(
                 (int) strlen(TARGET_SOLUTION),  /* param */
-                0.0,  /* goal */
+                122 * strlen(TARGET_SOLUTION),  /* goal */
                 max_pop,  /* max_pop */
                 max_gen  /* max_gen */
         );
@@ -60,26 +60,37 @@ int main()
                 m
         );
 
-        /* sort results */
-        printf("SORTING RESULTS!\n");
-        sort_generation_stats(m, float_cmp_asc);
-
-        /* print top 5 chromosomes */
-        printf("\nTOP 5 CHROMOSOMES:\n");
-        for (i = 0; i < 5; i++) {
-                printf(
-                        "chromosome: %s\n",
-                        (char *) darray_get(m->best_chromosomes, i)
-                );
-                printf(
-                        "score: %f\n",
-                        *(float *) darray_get(m->best_scores, i)
-                );
-                printf(
-                        "generation: %d\n\n",
-                        *(int *) darray_get(m->generations, i)
-                );
+        /* print solution */
+        if (p->solution != NULL) {
+                printf("SUCCESS! FOUND SOLUTION!\n");
+                printf("Solution: %s\n", p->solution);
+                printf("Score: %.2f\n", fitness_function(p->solution));
+                printf("Goal: %.2f\n", p->goal);
+                printf("Took %d Generations\n", p->curr_generation);
+        } else {
+                printf("Failed to find solution . . . \n");
         }
+
+        /* sort results */
+        /* printf("SORTING RESULTS!\n"); */
+        /* sort_generation_stats(m, float_cmp_desc); */
+
+        /* #<{(| print top 5 chromosomes |)}># */
+        /* printf("\nTOP 5 CHROMOSOMES:\n"); */
+        /* for (i = 0; i < 5; i++) { */
+        /*         printf( */
+        /*                 "chromosome: %s\n", */
+        /*                 (char *) darray_get(m->best_chromosomes, i) */
+        /*         ); */
+        /*         printf( */
+        /*                 "score: %f\n", */
+        /*                 *(float *) darray_get(m->best_scores, i) */
+        /*         ); */
+        /*         printf( */
+        /*                 "generation: %d\n\n", */
+        /*                 *(int *) darray_get(m->generations, i) */
+        /*         ); */
+        /* } */
 
         /* clean up */
         destroy_evolve_monitor(&m);

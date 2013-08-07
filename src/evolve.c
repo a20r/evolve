@@ -2,7 +2,6 @@
 #include <dbg/dbg.h>
 
 #include "evolve.h"
-#include "evolve_utils.h"
 #include "evolve_monitor.h"
 #include "population.h"
 #include "selection.h"
@@ -28,6 +27,16 @@ int run_evolution(
 
                 /* evaluate */
                 if (evaluate_chromosomes(eval_func, &(*p))) {
+                        record_generation_stats(*p, m);
+                        chromo = (char *) darray_get(m->best_chromosomes, i);
+                        score = *(float *) darray_get(m->best_scores, i);
+
+                        debug("GENERATION: %d", i);
+                        debug(
+                                "BEST CHROMOSOME: %s [%f]\n\n",
+                                (*p)->solution,
+                                eval_func((*p)->solution)
+                        );
                         break;
                 }
 

@@ -7,7 +7,7 @@
 #include <al/comparator.h>
 
 #include "evolve.h"
-#include "evolve_utils.h"
+#include "population.h"
 #include "selection.h"
 #include "utils.h"
 

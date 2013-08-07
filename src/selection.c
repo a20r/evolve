@@ -1,3 +1,4 @@
+#include <math.h>
 #include <unistd.h>
 
 #include <dbg/dbg.h>
@@ -5,8 +6,8 @@
 #include <dstruct/darray.h>
 
 #include "selection.h"
+#include "population.h"
 #include "evolve.h"
-#include "evolve_utils.h"
 #include "utils.h"
 
 
@@ -40,7 +41,7 @@ void roulette_wheel_selection(
 
         /* noramlize fitness values and sort by descending order */
         normalize_fitness_values(&(*p));
-        sort_population(*p, float_cmp_asc);
+        sort_population(*p, float_cmp_desc);
 
         /* make sure number of selection is an even number! */
         if (max_select % 2 != 0) {
@@ -62,6 +63,7 @@ void roulette_wheel_selection(
                         darray_set(new_p->chromosomes, arr_index, chromo);
                         darray_set(new_p->chromosome_scores, arr_index, score);
 
+                        i = 0; /* reset wheel */
                         selected++;
                         arr_index++;
                         new_p->curr_population += 1;
@@ -74,7 +76,7 @@ void roulette_wheel_selection(
                 if (selected == max_select) {
                         break;
                 } else if ((i + 1) >= (*p)->max_population) {
-                        i = 0;
+                        i = 0; /* reset wheel */
                 }
         }
 

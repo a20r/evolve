@@ -12,15 +12,6 @@ link_directories(/usr/lib)
 add_executable(evolve_tests evolve_tests.c)
 target_link_libraries(evolve_tests ${LIBRARY_NAME})
 
-# evolve_utils
-add_executable(
-    evolve_utils_tests
-
-    test_utils.c
-    evolve_utils_tests.c
-)
-target_link_libraries(evolve_utils_tests ${LIBRARY_NAME})
-
 # evolve_monitor
 add_executable(
     evolve_monitor_tests

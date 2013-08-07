@@ -51,7 +51,6 @@ char *find_best_chromosome(struct population *p)
                 }
         }
 
-        printf("\nscore: %f\n", best_score);
         return best_chromo;
 }
 

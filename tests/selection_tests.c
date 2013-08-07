@@ -5,29 +5,14 @@
 #include <dstruct/darray.h>
 #include <munit/munit.h>
 
-#include "selection.h"
 #include "evolve.h"
-#include "evolve_utils.h"
+#include "population.h"
+#include "selection.h"
 #include "utils.h"
 
 /* GLOBAL VAR */
 struct population *p;
 
-static void setup()
-{
-        p = init_population(
-                (int) strlen("hello world!"),  /* param */
-                0.0,  /* goal */
-                10,  /* max_pop */
-                1 /* max_gen */
-        );
-        gen_init_chromosomes(&p, randstr);
-}
-
-static void teardown()
-{
-        destroy_population(&p);
-}
 
 static float fitness_function(char *chromosome)
 {
@@ -42,11 +27,28 @@ static float fitness_function(char *chromosome)
         return total;
 }
 
+static void setup()
+{
+        p = init_population(
+                (int) strlen("hello world!"),  /* param */
+                0.0,  /* goal */
+                10,  /* max_pop */
+                1 /* max_gen */
+        );
+        gen_init_chromosomes(&p, randstr);
+        evaluate_chromosomes(fitness_function, &p);
+}
+
+static void teardown()
+{
+        destroy_population(&p);
+}
+
 int test_roulette_selection()
 {
         setup();
 
-        evaluate_chromosomes(fitness_function, &p);
+        print_population(p);
         roulette_wheel_selection(&p, NULL);
         print_population(p);
 
