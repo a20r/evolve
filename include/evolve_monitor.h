@@ -17,11 +17,14 @@ struct evolve_monitor
         struct darray *best_chromosomes;
         struct darray *best_scores;
         struct darray *generations;
+        struct darray *convergence_rates;
+        struct darray *goal_distances;
 };
 
 /* FUNCTIONS */
 struct evolve_monitor *init_evolve_monitor(size_t chromo_sz, long max_gen);
 void destroy_evolve_monitor(struct evolve_monitor **m);
+
 #include "evolve.h"
 void record_generation_stats(
         struct population *p,

@@ -82,6 +82,14 @@ int test_init_evolve_monitor()
                 m->generations->max == max_gen,
                 "Darray size of generations is invalid!"
         );
+        mu_assert(
+                m->convergence_rates->max == max_gen,
+                "Darray size of generations is invalid!"
+        );
+        mu_assert(
+                m->goal_distances->max == max_gen,
+                "Darray size of generations is invalid!"
+        );
 
         return 0;
 }
