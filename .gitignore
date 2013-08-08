@@ -11,3 +11,6 @@ Makefile
 cmake_install.cmake
 cmake_uninstall.cmake
 install_manifest.txt
+
+examples/log_data
+*.dat

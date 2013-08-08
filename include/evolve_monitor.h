@@ -19,10 +19,17 @@ struct evolve_monitor
         struct darray *generations;
         struct darray *convergence_rates;
         struct darray *goal_distances;
+
+        int log_stats;
+        FILE *log_fp;
 };
 
 /* FUNCTIONS */
-struct evolve_monitor *init_evolve_monitor(size_t chromo_sz, long max_gen);
+struct evolve_monitor *init_evolve_monitor(
+        size_t chromo_sz,
+        long max_gen,
+        char *log_fp
+);
 void destroy_evolve_monitor(struct evolve_monitor **m);
 
 #include "evolve.h"

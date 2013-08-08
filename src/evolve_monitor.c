@@ -8,7 +8,11 @@
 #include "utils.h"
 
 
-struct evolve_monitor *init_evolve_monitor(size_t chromo_sz, long max_gen)
+struct evolve_monitor *init_evolve_monitor(
+        size_t chromo_sz,
+        long max_gen,
+        char *log_fp
+)
 {
         struct evolve_monitor *m = malloc(sizeof(struct evolve_monitor));
 
@@ -17,6 +21,18 @@ struct evolve_monitor *init_evolve_monitor(size_t chromo_sz, long max_gen)
         m->generations = darray_create(sizeof(long), max_gen);
         m->convergence_rates = darray_create(sizeof(float), max_gen);
         m->goal_distances = darray_create(sizeof(float), max_gen);
+
+        if (log_fp != NULL) {
+                m->log_stats = 1;
+                m->log_fp = fopen(log_fp, "w");
+                if (m->log_fp == NULL) {
+                        printf("Failed to open [%s] for logging!\n", log_fp);
+                        exit(-1);
+                }
+        } else {
+                m->log_stats = 0;
+                m->log_fp = NULL;
+        }
 
         return m;
 }
@@ -28,9 +44,24 @@ void destroy_evolve_monitor(struct evolve_monitor **m)
         darray_clear_destroy((*m)->generations);
         darray_clear_destroy((*m)->convergence_rates);
         darray_clear_destroy((*m)->goal_distances);
+        if ((*m)->log_fp != NULL) fclose((*m)->log_fp);
         free(*m);
 
         *m = NULL;
+}
+
+void log_generation_stats(struct evolve_monitor *m, int geneartion)
+{
+        char *chromosome = darray_get(m->best_chromosomes, geneartion);
+        float *score = darray_get(m->best_scores, geneartion);
+        float *conv_rate = darray_get(m->convergence_rates, geneartion);
+        float *goal_dist = darray_get(m->goal_distances, geneartion);
+
+        fprintf(m->log_fp, "%s\n", chromosome);
+        fprintf(m->log_fp, "%f\n", *score);
+        fprintf(m->log_fp, "%d\n", geneartion);
+        fprintf(m->log_fp, "%f\n", *conv_rate);
+        fprintf(m->log_fp, "%f\n\n", *goal_dist);
 }
 
 void record_generation_stats(
@@ -94,6 +125,9 @@ void record_generation_stats(
         darray_set(m->generations, generation, gen);
         darray_set(m->convergence_rates, generation, conv_rate);
         darray_set(m->goal_distances, generation, goal_dist);
+
+        /* log generation stats */
+        log_generation_stats(m, generation);
 
         /* cleanup */
         free(chromo);

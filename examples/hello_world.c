@@ -28,39 +28,8 @@ static float fitness_function(char *chromosome)
         return max_score - total;
 }
 
-int main()
+static void print_evolve_results(struct population *p)
 {
-        int i = 0;
-        int max_pop = 100;
-        int max_gen = 10000;
-
-        /* seed random - VERY IMPORTANT! */
-        srand(time(NULL));
-
-        /* initialize evolution */
-        struct population *p = init_population(
-                (int) strlen(TARGET_SOLUTION),  /* param */
-                122 * strlen(TARGET_SOLUTION),  /* goal */
-                max_pop,  /* max_pop */
-                max_gen  /* max_gen */
-        );
-        struct evolve_monitor *m = init_evolve_monitor(
-                p->chromosomes->element_size,  /* chromosome size */
-                max_gen
-        );
-
-        /* run evolution */
-        printf("RUNNING GA!\n");
-        gen_init_chromosomes(&p, randstr);
-        run_evolution(
-                &p,
-                fitness_function,
-                0.8,
-                0.1,
-                m
-        );
-
-        /* print solution */
         if (p->solution != NULL) {
                 printf("SUCCESS! FOUND SOLUTION!\n");
                 printf("Solution: %s\n", p->solution);
@@ -70,6 +39,11 @@ int main()
         } else {
                 printf("Failed to find solution . . . \n");
         }
+}
+
+static void print_top_chromosomes(struct evolve_monitor *m)
+{
+        int i = 0;
 
         /* sort results */
         printf("SORTING RESULTS!\n");
@@ -99,9 +73,47 @@ int main()
                         *(float *) darray_get(m->goal_distances, i)
                 );
         }
+}
+
+int main()
+{
+        int max_pop = 100;
+        int max_gen = 10000;
+
+        /* seed random - VERY IMPORTANT! */
+        srand(time(NULL));
+
+        /* initialize evolution */
+        struct population *p = init_population(
+                (int) strlen(TARGET_SOLUTION),  /* param */
+                122 * strlen(TARGET_SOLUTION),  /* goal */
+                max_pop,  /* max_pop */
+                max_gen  /* max_gen */
+        );
+        struct evolve_monitor *m = init_evolve_monitor(
+                p->chromosomes->element_size,  /* chromosome size */
+                max_gen,
+                "hello_world.dat"
+        );
+
+        /* run evolution */
+        printf("RUNNING GA!\n");
+        gen_init_chromosomes(&p, randstr);
+        run_evolution(
+                &p,
+                fitness_function,
+                0.8,
+                0.1,
+                m
+        );
+
+        /* print results */
+        print_evolve_results(p);
+        print_top_chromosomes(m);
 
         /* clean up */
         destroy_evolve_monitor(&m);
         destroy_population(&p);
+
         return 0;
 }

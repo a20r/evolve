@@ -43,7 +43,7 @@ static void sort_test_setup(int max_gen, int max_pop)
                 max_pop,  /* max_pop */
                 max_gen /* max_gen */
         );
-        m = init_evolve_monitor(chromo_sz, max_gen);
+        m = init_evolve_monitor(chromo_sz, max_gen, NULL);
         gen_init_chromosomes(&p, randstr);
         run_evolution(
                 &p,
@@ -68,7 +68,7 @@ int test_init_evolve_monitor()
         size_t chromo_sz = sizeof(char) * len;
         long max_gen = 10;
 
-        m = init_evolve_monitor(chromo_sz, max_gen);
+        m = init_evolve_monitor(chromo_sz, max_gen, NULL);
 
         mu_assert(
                 m->best_chromosomes->max == max_gen,
@@ -110,7 +110,7 @@ int test_record_generation_stats()
                 10,  /* max_pop */
                 5 /* max_gen */
         );
-        m = init_evolve_monitor(chromo_sz, 5);
+        m = init_evolve_monitor(chromo_sz, 5, NULL);
         gen_init_chromosomes(&p, randstr);
         evaluate_chromosomes(fitness_function, &p);
 

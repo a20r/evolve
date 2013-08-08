@@ -28,27 +28,15 @@ int run_evolution(
 
                 /* evaluate */
                 if (evaluate_chromosomes(eval_func, &(*p))) {
-                        record_generation_stats(*p, m, float_cmp_desc);
-                        chromo = (char *) darray_get(m->best_chromosomes, i);
-                        score = *(float *) darray_get(m->best_scores, i);
-
-                        debug("GENERATION: %d", i);
-                        debug(
-                                "BEST CHROMOSOME: %s [%f]\n\n",
-                                (*p)->solution,
-                                eval_func((*p)->solution)
-                        );
+                        if (m != NULL) {
+                                record_generation_stats(*p, m, float_cmp_desc);
+                        }
                         break;
                 }
 
                 /* record */
                 if (m != NULL) {
                         record_generation_stats(*p, m, float_cmp_desc);
-                        chromo = (char *) darray_get(m->best_chromosomes, i);
-                        score = *(float *) darray_get(m->best_scores, i);
-
-                        debug("GENERATION: %d", i);
-                        debug("BEST CHROMOSOME: %s [%f]\n", chromo, score);
                 }
 
                 /* select */

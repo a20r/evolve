@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.6)
 
-set(CMAKE_C_COMPILER gcc)
+set(CMAKE_BUILD_TYPE RELEASE)
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -g")
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -DNDEBUG")
 
 include_directories(../include)
 
