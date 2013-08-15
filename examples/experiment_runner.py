@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import time
 import subprocess
 
 # settings
@@ -11,18 +12,24 @@ data_fp = "hello_world.dat"
 if __name__ == '__main__':
     print("Starting Hello World Experiment!")
 
-    # open file to dev null
-    devnull = open("/dev/null", "w")
-
     for i in range(runs):
         print("running experiment [{0}]".format(i + 1))
 
         # execute hello world demo
-        subprocess.call(["../bin/hello_world"], stdout=devnull, stderr=devnull)
+        dn = open("/dev/null", "w")
+        start = time.time()
+        subprocess.call(["../bin/hello_world"], stdout=dn, stderr=dn)
+        elapsed = (time.time() - start)
+        print("completed in {0}\n".format(elapsed))
 
         # create data dir if not already exists
         if not os.path.exists(data_dir):
             os.makedirs(data_dir)
+
+        # append execution time in log file
+        data_file = open(data_fp, "a")
+        data_file.write("execution time: {0}\n".format(elapsed))
+        data_file.close()
 
         # move file to data_dir
         file_name = data_fp.split(".")[0]
