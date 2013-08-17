@@ -7,10 +7,6 @@ chosen from a population for later breeding (recombination or crossover).
     void roulette_wheel_selection(struct population **p, int *select)
 
 ### roulette_wheel_selection
-
-`void roulette_wheel_selection(struct population **p, int *select)`
-
-#### Description
 **Roulette Wheel Selection** is a generic GA selection procedure, it works as
 follows:
 
@@ -37,10 +33,9 @@ follows:
 
 Note: The function modifies the input population **in-place**.
 
-#### Parameters
-
-    struct population **p
-        Population to select from
-    
-    int *select
-        Pointer to number of individual or chromosome to be selected
+    Parameters:
+        struct population **p
+            Population to select from
+        
+        int *select
+            Pointer to number of individual or chromosome to be selected
