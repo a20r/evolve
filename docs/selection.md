@@ -39,5 +39,8 @@ Note: The function modifies the input population **in-place**.
 
 #### Parameters
 
-    struct population **p - Population to select from
-    int *select - Pointer to number of individual or chromosome to be selected
+    struct population **p
+        Population to select from
+    
+    int *select
+        Pointer to number of individual or chromosome to be selected
