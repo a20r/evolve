@@ -1,5 +1,5 @@
 # Crossover
-Crossover is one of the Genetic Algorithm (GA) operators.
+In genetic algorithms, crossover is a genetic operator used to vary the programming of a chromosome or chromosomes from one generation to the next. It is analogous to reproduction and biological crossover, upon which genetic algorithms are based. Cross over is a process of taking more than one parent solutions and producing a child solution from them.
 
 ## Function Summary
 
@@ -14,6 +14,8 @@ Crossover is one of the Genetic Algorithm (GA) operators.
     
 
 ### one_pt_crossover
+A single crossover point on both chromosomes is selected with `index`. All data beyond that point in either chromosome is swapped between the two. The result is crossed overd chromosomes.
+
 #### Parameters
 
 	void **chromo_1
@@ -22,8 +24,8 @@ Crossover is one of the Genetic Algorithm (GA) operators.
 	void **chromo_2
 		Pointer to pointer pointing at chromosome 1
 
-    int index
-    	Crossover pivot index
+    	int index
+	    	Crossover pivot index
     	
 #### Returns
 	
@@ -32,7 +34,7 @@ Crossover is one of the Genetic Algorithm (GA) operators.
     	
     	
 ### crossover
-#### Description
+Main crossover wrapper for different crossover methods.
 
 #### Parameters
 
