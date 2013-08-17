@@ -13,11 +13,9 @@ Evolve contains Genetic Algorithm (GA) runners that help make running them easie
     
 
 ### run_evolution
-#### Description
-This function encapsulates the whole GA process into one function, with parameters that you can tweak to change the behaviour of the GA. Namely the evaulation function (or fitness function), crossover and mutation probabilities, and also an optional evolve_monitor.
+    This function encapsulates the whole GA process into one function, with parameters that you can tweak to change the behaviour of the GA. Namely the evaulation function (or fitness function), crossover and mutation probabilities, and also an optional evolve_monitor.
 
-#### Parameters
-
+    Parameters:
         struct population **p
             Population of the GA
             
