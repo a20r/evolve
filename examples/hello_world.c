@@ -8,6 +8,8 @@
 #include <dstruct/darray.h>
 
 #include "evolve.h"
+#include "crossover.h"
+#include "mutate.h"
 #include "evolve_monitor.h"
 #include "utils.h"
 
@@ -104,7 +106,10 @@ int main(int argc, char *argv[])
         run_evolution(
                 &p,
                 fitness_function,
+                one_ptr_crossover,
                 atof(argv[1]), /* crossover probability */
+                DEFAULT_PIVOT,
+                mutate_str,
                 atof(argv[2]), /* mutation probability */
                 m
         );

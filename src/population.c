@@ -312,7 +312,10 @@ void sort_population(
 
 void populate(
         struct population **p,
+        int (*crossover_func)(void **chromo_1, void **chromo_2, int index),
         float crossover_prob,
+        int pivot_index,
+        void (*mutate_func)(char **),
         float mutate_prob
 )
 {
@@ -328,7 +331,7 @@ void populate(
         int c_1_len = 0;
         int c_2_len = 0;
 
-        struct darray *old_chromosomes = (*p)->chromosomes;
+        struct darray *old_chromos = (*p)->chromosomes;
         int population = (*p)->curr_population;
 
 
@@ -341,15 +344,15 @@ void populate(
         );
         new_p->curr_generation = (*p)->curr_generation;
         new_p->solution = (*p)->solution;
-        struct darray *new_chromosomes = new_p->chromosomes;
+        struct darray *new_chromos = new_p->chromosomes;
 
         /* crossover and mutate */
         for (i = 0; i < population; i += 2) {
                 /* obtain parents for reproduction */
-                c_1_len = strlen(darray_get(old_chromosomes, i));
-                c_2_len = strlen(darray_get(old_chromosomes, i + 1));
-                p_1 = darray_get(old_chromosomes, i);
-                p_2 = darray_get(old_chromosomes, i + 1);
+                c_1_len = strlen(darray_get(old_chromos, i));
+                c_2_len = strlen(darray_get(old_chromos, i + 1));
+                p_1 = darray_get(old_chromos, i);
+                p_2 = darray_get(old_chromos, i + 1);
 
                 for (j = 0; j < 2; j++) {
                         /* make sure number of offspring < max_population */
@@ -360,23 +363,23 @@ void populate(
                         /* prepare children c_1 and c_2 */
                         c_1 = calloc(1, sizeof(char) * (c_1_len + 1));
                         c_2 = calloc(1, sizeof(char) * (c_2_len + 1));
-                        memcpy(c_1, p_1, old_chromosomes->element_size);
-                        memcpy(c_2, p_2, old_chromosomes->element_size);
+                        memcpy(c_1, p_1, old_chromos->element_size);
+                        memcpy(c_2, p_2, old_chromos->element_size);
 
                         /* crossover and mutate */
                         crossover(
                                 &c_1,
                                 &c_2,
-                                DEFAULT_PIVOT,
-                                one_ptr_crossover,
+                                pivot_index,
+                                crossover_func,
                                 crossover_prob
                         );
-                        mutate(&c_1, mutate_prob, mutate_str);
-                        mutate(&c_2, mutate_prob, mutate_str);
+                        mutate(&c_1, mutate_prob, mutate_func);
+                        mutate(&c_2, mutate_prob, mutate_func);
 
                         /* put children into new population */
-                        darray_set(new_chromosomes, i + j + offspring_pair, c_1);
-                        darray_set(new_chromosomes, i + j + offspring_pair + 1, c_2);
+                        darray_set(new_chromos, i + j + offspring_pair, c_1);
+                        darray_set(new_chromos, i + j + offspring_pair + 1, c_2);
                         new_p->curr_population += 2;
                         offspring_pair++;
                 }

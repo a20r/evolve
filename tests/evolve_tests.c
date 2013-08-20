@@ -9,6 +9,8 @@
 #include "evolve.h"
 #include "population.h"
 #include "selection.h"
+#include "crossover.h"
+#include "mutate.h"
 #include "utils.h"
 
 /* GLOBAL VAR */
@@ -43,7 +45,10 @@ int test_run_evolution()
         run_evolution(
                 &p,
                 fitness_function,
+                one_ptr_crossover,
                 0.5,
+                DEFAULT_PIVOT,
+                mutate_str,
                 0.2,
                 NULL
         );

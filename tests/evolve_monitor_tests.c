@@ -12,6 +12,8 @@
 #include "population.h"
 #include "evolve_monitor.h"
 #include "selection.h"
+#include "crossover.h"
+#include "mutate.h"
 #include "utils.h"
 
 
@@ -48,7 +50,10 @@ static void sort_test_setup(int max_gen, int max_pop)
         run_evolution(
                 &p,
                 fitness_function,
+                one_ptr_crossover,
                 0.8,
+                DEFAULT_PIVOT,
+                mutate_str,
                 0.2,
                 m
         );

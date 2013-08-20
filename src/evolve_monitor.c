@@ -127,7 +127,9 @@ void record_generation_stats(
         darray_set(m->goal_distances, generation, goal_dist);
 
         /* log generation stats */
-        log_generation_stats(m, generation);
+        if (m->log_stats) {
+                log_generation_stats(m, generation);
+        }
 
         /* cleanup */
         free(chromo);

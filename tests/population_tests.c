@@ -14,6 +14,8 @@
 
 #include "population.h"
 #include "selection.h"
+#include "crossover.h"
+#include "mutate.h"
 #include "utils.h"
 
 #define TEST_OUTPUT "evolve_utils_tests.out"
@@ -436,7 +438,13 @@ int test_populate()
         gen_init_chromosomes(&p, randstr);
         evaluate_chromosomes(fitness_function, &p);
         roulette_wheel_selection(&p, NULL);
-        populate(&p, 0.9, 0.3);
+        populate(&p,
+                one_ptr_crossover,
+                0.9,
+                DEFAULT_PIVOT,
+                mutate_str,
+                0.3
+        );
 
         /* assert tests */
         mu_assert(p->chromosomes->end == max_pop - 1, "Invalid end value!");

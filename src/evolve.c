@@ -12,7 +12,10 @@
 int run_evolution(
         struct population **p,
         float (eval_func)(char *),
+        int (*crossover_func)(void **chromo_1, void **chromo_2, int index),
         float crossover_prob,
+        int pivot_index,
+        void (*mutate_func)(char **),
         float mutate_prob,
         struct evolve_monitor *m
 )
@@ -42,7 +45,10 @@ int run_evolution(
                 /* populate population for next generation run */
                 populate(
                         &(*p),
+                        crossover_func,
                         crossover_prob,
+                        pivot_index,
+                        mutate_func,
                         mutate_prob
                 );
 
