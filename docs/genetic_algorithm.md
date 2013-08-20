@@ -1,14 +1,3 @@
-<!-- MATHJAX -->
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
-        TeX: { equationNumbers: { autoNumber: "AMS" }}
-    });
-</script>
-<script type="text/javascript"
-    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
 # Genetic Algorithms
 In the 1950s and the 1960s several computer scientists independently studied
 evolutionary systems with the idea that evolution could be used as an
@@ -154,4 +143,3 @@ There are a number of details to fill in, such as the size of the population
 and the probabilities of crossover and mutation, and the success of the
 algorithm often depends greatly on these details. There are also more
 complicated versions of GAs, which will not be covered here.
-

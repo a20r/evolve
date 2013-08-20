@@ -1,7 +1,6 @@
 # Evolve
-Evolve contains Genetic Algorithm (GA) runners that help make running them easier.
-
-## Function Summary
+Evolve contains Genetic Algorithm (GA) runners that help make running them
+easier.
 
     int run_evolution(
         struct population **p,
@@ -10,23 +9,24 @@ Evolve contains Genetic Algorithm (GA) runners that help make running them easie
         float mutate_prob,
         struct evolve_monitor *m
     )
-    
 
-### run_evolution
-This function encapsulates the whole GA process into one function, with parameters that you can tweak to change the behaviour of the GA. Namely the evaulation function (or fitness function), crossover and mutation probabilities, and also an optional evolve_monitor.
+Encapsulates the whole GA process into one function, with parameters that you
+can tweak to change the behaviour of the GA. Namely the evaulation function (or
+fitness function), crossover and mutation probabilities, and also an optional
+`evolve_monitor`.
 
     Parameters:
         struct population **p
             Population of the GA
-            
+
         float (eval_func)(char *)
             The evaluation or fitness function
-            
+
         float crossover_prob
             Crossover probability
-        
+
         float mutate_prob
             Mutation probability
-            
+
         struct evolve_monitor *m
             Evolution monitor. Optional can be **NULL**
