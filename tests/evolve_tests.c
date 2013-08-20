@@ -10,7 +10,7 @@
 #include "population.h"
 #include "selection.h"
 #include "crossover.h"
-#include "mutate.h"
+#include "mutation.h"
 #include "utils.h"
 
 /* GLOBAL VAR */

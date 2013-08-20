@@ -63,10 +63,10 @@ void sort_population(
 );
 void populate(
         struct population **p,
-        int (*crossover_func)(void **chromo_1, void **chromo_2, int index),
+        int (*crossover_func)(void **, void **, int),
         float crossover_prob,
         int pivot_index,
-        void (*mutate_func)(char **),
+        void (*mutation)(char **),
         float mutate_prob
 );
 

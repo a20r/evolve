@@ -10,7 +10,7 @@
 #include "evolve.h"
 #include "selection.h"
 #include "crossover.h"
-#include "mutate.h"
+#include "mutation.h"
 #include "evolve_monitor.h"
 #include "utils.h"
 

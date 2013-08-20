@@ -15,7 +15,7 @@
 #include "population.h"
 #include "selection.h"
 #include "crossover.h"
-#include "mutate.h"
+#include "mutation.h"
 #include "utils.h"
 
 #define TEST_OUTPUT "evolve_utils_tests.out"

@@ -5,7 +5,7 @@
 
 #include "population.h"
 #include "crossover.h"
-#include "mutate.h"
+#include "mutation.h"
 
 
 struct population *init_population(
@@ -312,10 +312,10 @@ void sort_population(
 
 void populate(
         struct population **p,
-        int (*crossover_func)(void **chromo_1, void **chromo_2, int index),
+        int (*crossover_func)(void **, void **, int),
         float crossover_prob,
         int pivot_index,
-        void (*mutate_func)(char **),
+        void (*mutation_func)(char **),
         float mutate_prob
 )
 {
@@ -374,8 +374,8 @@ void populate(
                                 crossover_func,
                                 crossover_prob
                         );
-                        mutate(&c_1, mutate_prob, mutate_func);
-                        mutate(&c_2, mutate_prob, mutate_func);
+                        mutate(&c_1, mutate_prob, mutation_func);
+                        mutate(&c_2, mutate_prob, mutation_func);
 
                         /* put children into new population */
                         darray_set(new_chromos, i + j + offspring_pair, c_1);

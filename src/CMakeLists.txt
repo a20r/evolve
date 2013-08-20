@@ -18,7 +18,7 @@ add_library(
     population.c
     selection.c
     crossover.c
-    mutate.c
+    mutation.c
     utils.c
 
     evolve.c

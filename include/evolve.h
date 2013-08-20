@@ -14,7 +14,7 @@ int run_evolution(
         int (*crossover_func)(void **, void **, int),
         float crossover_prob,
         int pivot_index,
-        void (*mutate_func)(char **),
+        void (*mutation_func)(char **),
         float mutate_prob,
         struct evolve_monitor *m
 );
