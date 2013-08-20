@@ -14,3 +14,4 @@ install_manifest.txt
 
 examples/log_data
 *.dat
+nohup.out
