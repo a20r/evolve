@@ -307,7 +307,7 @@ void sort_population(
         int (*cmp)(const void *, const void *)
 )
 {
-        insertion_sort_population(p, 0, p->chromosomes->end, cmp);
+        quick_sort_population(p, 0, p->chromosomes->end, cmp);
 }
 
 void populate(

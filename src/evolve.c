@@ -18,13 +18,10 @@ int run_evolution(
 )
 {
         int max_gen = (*p)->max_generation;
-        char *chromo;
-        float score;
 
         /* evolve until max_gen reached or goal achieved  */
         while ((*p)->curr_generation < max_gen)
         {
-                int i = (*p)->curr_generation;
 
                 /* evaluate */
                 if (evaluate_chromosomes(eval_func, &(*p))) {
