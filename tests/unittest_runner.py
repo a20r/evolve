@@ -6,7 +6,9 @@ import subprocess
 
 
 # SETTINGS
-unittests_bin = "../bin"
+keep_unittest_logs = True
+unittests_bin_dir = "../bin"
+unittests_log_dir = "unittests_log"
 unittests_file_pattern = "^[a-zA-Z0-9_]*_tests$"
 
 
@@ -22,19 +24,26 @@ class TermColors:
 if __name__ == "__main__":
     orig_cwd = os.getcwd()
 
+    # make log dir if not already exist
+    os.mkdir(unittests_log_dir)
+
     # gather all unittests
-    file_list = os.listdir(unittests_bin)
+    file_list = os.listdir(unittests_bin_dir)
     unittests = []
     for f in file_list:
         if re.match(unittests_file_pattern, f):
             unittests.append(f)
 
     # execute all unittests
-    os.chdir(unittests_bin)
+    os.chdir(unittests_bin_dir)
     error = False
     for unittest in unittests:
         # execute unittest
-        unittest_output_fp = os.path.join(orig_cwd, unittest + ".log")
+        unittest_output_fp = os.path.join(
+            orig_cwd,
+            unittests_log_dir,
+            unittest + ".log"
+        )
         unittest_output = open(unittest_output_fp, 'w')
         return_val = subprocess.check_call(
             "./{0}".format(unittest),
@@ -61,7 +70,8 @@ if __name__ == "__main__":
                     TermColors.ENDC
                 )
             )
-            os.remove(unittest_output_fp)
+            if keep_unittest_logs is False:
+                os.remove(unittest_output_fp)
 
     if error is True:
         sys.exit(-1)
