@@ -41,7 +41,7 @@ static void print_evolve_results(struct population *p)
         }
 }
 
-static void print_top_chromosomes(struct evolve_monitor *m)
+static void print_top_chromosomes(struct evolve_monitor *m, int top)
 {
         int i = 0;
 
@@ -50,8 +50,8 @@ static void print_top_chromosomes(struct evolve_monitor *m)
         sort_generation_stats(m, float_cmp_desc);
 
         /* print top 5 chromosomes */
-        printf("\nTOP 5 CHROMOSOMES:\n");
-        for (i = 0; i < 5; i++) {
+        printf("\nTOP %d CHROMOSOMES:\n", top);
+        for (i = 0; i < top; i++) {
                 printf(
                         "chromosome: %s\n",
                         (char *) darray_get(m->best_chromosomes, i)
@@ -75,7 +75,7 @@ static void print_top_chromosomes(struct evolve_monitor *m)
         }
 }
 
-int main()
+int main(int argc, char *argv[])
 {
         int max_pop = 100;
         int max_gen = 10000;
@@ -98,18 +98,20 @@ int main()
 
         /* run evolution */
         printf("RUNNING GA!\n");
+        printf("Crossover Probability [%.2f]!\n", atof(argv[1]));
+        printf("Mutation Probability [%.2f]!\n", atof(argv[2]));
         gen_init_chromosomes(&p, randstr);
         run_evolution(
                 &p,
                 fitness_function,
-                0.8,
-                0.1,
+                atof(argv[1]), /* crossover probability */
+                atof(argv[2]), /* mutation probability */
                 m
         );
 
         /* print results */
         print_evolve_results(p);
-        print_top_chromosomes(m);
+        print_top_chromosomes(m, 5);
 
         /* clean up */
         destroy_evolve_monitor(&m);
