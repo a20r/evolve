@@ -34,7 +34,8 @@ if __name__ == "__main__":
     error = False
     for unittest in unittests:
         # execute unittest
-        unittest_output = open(os.path.join(orig_cwd, unittest + ".log"), 'w')
+        unittest_output_fp = os.path.join(orig_cwd, unittest + ".log")
+        unittest_output = open(unittest_output_fp, 'w')
         return_val = subprocess.check_call(
             "./{0}".format(unittest),
             stdout=unittest_output,
@@ -60,6 +61,7 @@ if __name__ == "__main__":
                     TermColors.ENDC
                 )
             )
+            os.remove(unittest_output_fp)
 
     if error is True:
         sys.exit(-1)
