@@ -5,14 +5,15 @@
 #include "evolve.h"
 #include "evolve_monitor.h"
 #include "population.h"
-#include "selection.h"
 #include "utils.h"
 
 
 int run_evolution(
         struct population **p,
         float (eval_func)(char *),
-        int (*crossover_func)(void **chromo_1, void **chromo_2, int index),
+        void (*selection_func)(struct population **, int *),
+        int *select,
+        int (*crossover_func)(void **, void **, int),
         float crossover_prob,
         int pivot_index,
         void (*mutate_func)(char **),
@@ -40,7 +41,7 @@ int run_evolution(
                 }
 
                 /* select */
-                roulette_wheel_selection(&(*p), DEFAULT_SELECT);
+                selection_func(&(*p), select);
 
                 /* populate population for next generation run */
                 populate(

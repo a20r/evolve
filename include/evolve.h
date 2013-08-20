@@ -9,7 +9,9 @@
 int run_evolution(
         struct population **p,
         float (eval_func)(char *),
-        int (*crossover_func)(void **chromo_1, void **chromo_2, int index),
+        void (*selection_func)(struct population **, int *),
+        int *select,
+        int (*crossover_func)(void **, void **, int),
         float crossover_prob,
         int pivot_index,
         void (*mutate_func)(char **),

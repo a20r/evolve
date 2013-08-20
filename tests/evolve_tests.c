@@ -45,11 +45,21 @@ int test_run_evolution()
         run_evolution(
                 &p,
                 fitness_function,
+
+                /* selection */
+                roulette_wheel_selection,
+                DEFAULT_SELECT,
+
+                /* crossover */
                 one_ptr_crossover,
                 0.5,
                 DEFAULT_PIVOT,
+
+                /* mutation */
                 mutate_str,
                 0.2,
+
+                /* monitor */
                 NULL
         );
         destroy_population(&p);
