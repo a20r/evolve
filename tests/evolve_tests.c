@@ -51,7 +51,7 @@ int test_run_evolution()
                 DEFAULT_SELECT,
 
                 /* crossover */
-                one_ptr_crossover,
+                one_pt_crossover,
                 0.5,
                 DEFAULT_PIVOT,
 

@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
                 DEFAULT_SELECT,
 
                 /* crossover */
-                one_ptr_crossover,
+                one_pt_crossover,
                 atof(argv[1]), /* crossover probability */
                 DEFAULT_PIVOT,
 

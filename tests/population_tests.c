@@ -439,7 +439,7 @@ int test_populate()
         evaluate_chromosomes(fitness_function, &p);
         roulette_wheel_selection(&p, NULL);
         populate(&p,
-                one_ptr_crossover,
+                one_pt_crossover,
                 0.9,
                 DEFAULT_PIVOT,
                 mutate_str,

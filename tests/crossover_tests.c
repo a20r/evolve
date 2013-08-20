@@ -78,7 +78,7 @@ int test_one_ptr_crossover()
 
         /* default crossover  */
         print_before_pivot();
-        one_ptr_crossover(&chromo_1, &chromo_2, pivot);
+        one_pt_crossover(&chromo_1, &chromo_2, pivot);
         mu_assert(
                 strcmp(chromo_1, "HelloMaria!") == 0,
                 "Failed to crossover child 1!"
@@ -91,7 +91,7 @@ int test_one_ptr_crossover()
 
         /* slightly different crossover - pivot at index = 3 */
         print_before_pivot();
-        one_ptr_crossover(&chromo_1, &chromo_2, 3);
+        one_pt_crossover(&chromo_1, &chromo_2, 3);
         mu_assert(
                 strcmp(chromo_1, "Helo  Dave!") == 0,
                 "Failed to crossover!"

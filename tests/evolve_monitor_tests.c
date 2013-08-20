@@ -56,7 +56,7 @@ static void sort_test_setup(int max_gen, int max_pop)
                 DEFAULT_SELECT,
 
                 /* crossover */
-                one_ptr_crossover,
+                one_pt_crossover,
                 0.8,
                 DEFAULT_PIVOT,
 

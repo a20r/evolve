@@ -9,7 +9,7 @@
 #include "utils.h"
 
 
-int one_ptr_crossover(void **chromo_1, void **chromo_2, int index)
+int one_pt_crossover(void **chromo_1, void **chromo_2, int index)
 {
         /* debug("chromo_1: %s", chromo_1); */
         /* debug("strlen chromo_1: %d", strlen(chromo_1)); */
