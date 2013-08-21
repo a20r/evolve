@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/[chutsu]/[evolve].png)](https://travis-ci.org/[chutsu]/[evolve])
+[![Build Status](https://travis-ci.org/chutsu/evolve.png)](https://travis-ci.org/chutsu/evolve)
 
 #evolve
 evolve is a Gentic Algorithm implemented in C. Currently features:
