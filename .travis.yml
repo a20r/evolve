@@ -10,7 +10,7 @@ before_script:
     - bash install_dependencies.sh
 
 script:
-    cmake . && make && cd tests && python unittests_runner.py
+    cmake . && make && cd tests && python unittest_runner.py
 
 branches:
   only:
