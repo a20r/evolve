@@ -8,19 +8,19 @@ git clone https://github.com/chutsu/al.git
 git clone https://github.com/chutsu/dstruct.git
 
 cd munit
-make && make install
+sudo make && sudo make install
 cd ..
 
 cd dbg
-cmake . && make && make install
+cmake . && make && sudo make install
 cd ..
 
 cd al
-cmake . && make && make install
+cmake . && make && sudo make install
 cd ..
 
 cd dstruct
-cmake . && make && make install
+cmake . && make && sudo make install
 cd ..
 
 rm -rf build_dep
