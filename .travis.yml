@@ -7,7 +7,7 @@ compiler:
 
 before_script:
     - sudo apt-get install cmake
-    - bash install_dependencies.sh
+    - sudo bash install_dependencies.sh
 
 script:
     cmake . && make && cd tests && python unittest_runner.py
