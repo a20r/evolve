@@ -16,4 +16,4 @@ install_manifest.txt
 *.log
 nohup.out
 examples/log_data
-build_dep/
+build/
