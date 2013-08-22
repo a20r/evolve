@@ -1,4 +1,4 @@
-#evolve [![Build Status](https://travis-ci.org/chutsu/evolve.png)](https://travis-ci.org/chutsu/evolve)
+# evolve [![Build Status](https://travis-ci.org/chutsu/evolve.png)][1]
 evolve is a Gentic Algorithm implemented in C. Currently features:
 
 - One dimension bit-string
@@ -8,19 +8,34 @@ evolve is a Gentic Algorithm implemented in C. Currently features:
 
 For more information please have a look at the documentation.
 
+
+
 ## Requirements
 
-- [al](http://github.com/chutsu/al): Algorithm library in C
-- [dstruct](http://github.com/chutsu/dstruct): Data structure library in C
 - [munit](http://github.com/chutsu/munit): Unit testing macros for C
 - [dbg](http://github.com/chutsu/dbg): Debugging macros for C
+- [al](http://github.com/chutsu/al): Algorithm library in C
+- [dstruct](http://github.com/chutsu/dstruct): Data structure library in C
 - cmake (version 2.6 and higher)
+
+
 
 ## Installation
 
-    cd <path to evolve>
-    cmake .  # the dot '.' is important!
-    sudo make install
+    # obtain evolve
+    git clone https://github.com/chutsu/evolve.git
+    cd evolve
+
+    # install dependencies
+    cd scripts
+    sudo bash install_dependencies.sh
+    cd ..
+
+    # make evolve
+    cmake . # the dot '.' is important!
+    make
+
+
 
 ## Licence
 LGPL License
@@ -37,3 +52,5 @@ PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with
 this program.  If not, see <http://www.gnu.org/licenses/>.
+
+[1]: https://travis-ci.org/chutsu/evolve

@@ -25,7 +25,8 @@ if __name__ == "__main__":
     orig_cwd = os.getcwd()
 
     # make log dir if not already exist
-    os.mkdir(unittests_log_dir)
+    if not os.path.exists(unittests_log_dir):
+        os.mkdir(unittests_log_dir)
 
     # gather all unittests
     file_list = os.listdir(unittests_bin_dir)

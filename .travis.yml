@@ -7,10 +7,10 @@ compiler:
 
 before_script:
     - sudo apt-get install cmake
-    - sudo bash install_dependencies.sh
+    - sudo bash scripts/install_dependencies.sh
 
 script:
-    cmake . && make && cd tests && python unittest_runner.py
+    cmake . && make && cd scripts && python unittest_runner.py
 
 branches:
   only:
