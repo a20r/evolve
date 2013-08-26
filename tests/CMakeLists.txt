@@ -41,3 +41,7 @@ target_link_libraries(selection_tests ${LIBRARY_NAME})
 # crossover
 add_executable(crossover_tests crossover_tests.c)
 target_link_libraries(crossover_tests ${LIBRARY_NAME})
+
+# mutation
+add_executable(mutation_tests mutation_tests.c)
+target_link_libraries(mutation_tests ${LIBRARY_NAME})

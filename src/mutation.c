@@ -12,14 +12,29 @@
 void mutate_str(char **str)
 {
         /* decide which char to mutate and by moving char val up or down */
-        int str_len = strlen(*str);
-        int index = randnum_i(0, str_len);
+        int index = randnum_i(0, strlen(*str) - 2);
         int diff = randnum_i(0, 100) <= 50 ? -1 : 1;
-        int c = (*str)[index];
+        int new_c = (*str)[index] + diff;
 
-        if ((c + diff) <= CHAR_UPPER_BOUND && (c + diff) >= CHAR_LOWER_BOUND) {
+mutate:
+        if (new_c <= CHAR_UPPER_BOUND && new_c >= CHAR_LOWER_BOUND) {
                 (*str)[index] = (int) (*str)[index] + diff;
+        } else {
+                /* new_c is not a valid mutation, mutate again */
+                diff = randnum_i(0, 100) <= 50 ? -1 : 1;
+                new_c = (*str)[index] + diff;
+                goto mutate;
         }
+}
+
+void mutate_dna(char **dna_str)
+{
+        char dna[4] = { 'A', 'C' , 'G', 'T' };
+        int index = randnum_i(0, strlen(*dna_str) - 2);
+        char new_base;
+
+        while ((new_base = dna[randnum_i(0, 3)]) == (*dna_str)[index]) {}
+        (*dna_str)[index] = new_base;
 }
 
 void mutate(
