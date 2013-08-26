@@ -6,8 +6,22 @@
 #include "evolve.h"
 #include "utils.h"
 
-#define CHAR_LOWER_BOUND 32
-#define CHAR_UPPER_BOUND 122
+#ifndef CHAR_LOWER_BOUND
+  #define CHAR_LOWER_BOUND 32
+#endif
+
+#ifndef CHAR_UPPER_BOUND
+  #define CHAR_UPPER_BOUND 122
+#endif
+
+#ifndef NUM_LOWER_BOUND
+  #define NUM_LOWER_BOUND 48
+#endif
+
+#ifndef NUM_UPPER_BOUND
+  #define NUM_UPPER_BOUND 57
+#endif
+
 
 void mutate_str(char **str)
 {
@@ -23,6 +37,26 @@ void mutate_str(char **str)
         }
 
         (*str)[index] = (int) (*str)[index] + diff;
+}
+
+void mutate_num(char **num_str)
+{
+        int i = 0;
+        int num_index = 0;
+        char num[10];
+        int index = randnum_i(0, strlen(*num_str) - 2);
+        int new_num = (int) num[randnum_i(0, 9)];
+
+        /* create num array */
+        for (i = NUM_LOWER_BOUND; i <= NUM_UPPER_BOUND; i++) {
+                num[num_index] = i;
+                num_index++;
+        }
+
+        /* if new_base is not a valid mutation, mutate again */
+        while ((new_num = num[randnum_i(0, num_index - 1)]) == (*num_str)[index]) {}
+
+        (*num_str)[index] = new_num;
 }
 
 void mutate_dna(char **dna_str)

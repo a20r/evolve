@@ -50,3 +50,24 @@ error:
         if (r_str) free(r_str);
         return NULL;
 }
+
+char *randdna(int length)
+{
+        int i = 0;
+        char dna[4] = { 'A', 'C' , 'G', 'T' };
+        char *r_dna = malloc(sizeof(char *) * length);
+
+        check_mem(r_dna);
+        memset(r_dna, '\0', sizeof(char *) * length);
+
+        /* generate random ASCII char */
+        for (i = 0; i < length; i++) {
+                r_dna[i] = dna[randnum_i(0, 3)];
+        }
+        r_dna[length] = '\0';  /* add null terminator for safety */
+
+        return r_dna;
+error:
+        if (r_dna) free(r_dna);
+        return NULL;
+}
