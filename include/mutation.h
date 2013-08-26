@@ -5,6 +5,7 @@
 
 /* FUNCTIONS */
 void mutate_str(char **str);
+void mutate_dna(char **dna_str);
 void mutate(
         void **chromosome,
         float mutate_prob,

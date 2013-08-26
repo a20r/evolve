@@ -16,15 +16,13 @@ void mutate_str(char **str)
         int diff = randnum_i(0, 100) <= 50 ? -1 : 1;
         int new_c = (*str)[index] + diff;
 
-mutate:
-        if (new_c <= CHAR_UPPER_BOUND && new_c >= CHAR_LOWER_BOUND) {
-                (*str)[index] = (int) (*str)[index] + diff;
-        } else {
-                /* new_c is not a valid mutation, mutate again */
+        /* if new_c is not a valid mutation, mutate again */
+        while ((new_c <= CHAR_UPPER_BOUND && new_c >= CHAR_LOWER_BOUND) == 0) {
                 diff = randnum_i(0, 100) <= 50 ? -1 : 1;
                 new_c = (*str)[index] + diff;
-                goto mutate;
         }
+
+        (*str)[index] = (int) (*str)[index] + diff;
 }
 
 void mutate_dna(char **dna_str)
@@ -33,7 +31,9 @@ void mutate_dna(char **dna_str)
         int index = randnum_i(0, strlen(*dna_str) - 2);
         char new_base;
 
+        /* if new_base is not a valid mutation, mutate again */
         while ((new_base = dna[randnum_i(0, 3)]) == (*dna_str)[index]) {}
+
         (*dna_str)[index] = new_base;
 }
 
