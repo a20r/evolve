@@ -9,12 +9,14 @@ include_directories(../include)
 link_directories(/usr/local/lib)
 link_directories(/usr/lib)
 
+# HELLO WORLD EXAMPLE
 add_executable(hello_world hello_world.c)
 target_link_libraries(hello_world evolve)
 target_link_libraries(hello_world dstruct)
 target_link_libraries(hello_world m)
 
-add_executable(closest_string_problem closest_string_problem.c)
-target_link_libraries(closest_string_problem evolve)
-target_link_libraries(closest_string_problem dstruct)
-target_link_libraries(closest_string_problem m)
+# CLOSEST STRING EXAMPLE
+add_executable(csp csp.c)
+target_link_libraries(csp evolve)
+target_link_libraries(csp dstruct)
+target_link_libraries(csp m)

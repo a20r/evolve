@@ -50,16 +50,16 @@ void destroy_evolve_monitor(struct evolve_monitor **m)
         *m = NULL;
 }
 
-void log_generation_stats(struct evolve_monitor *m, int geneartion)
+void log_generation_stats(struct evolve_monitor *m, int generation)
 {
-        char *chromosome = darray_get(m->best_chromosomes, geneartion);
-        float *score = darray_get(m->best_scores, geneartion);
-        float *conv_rate = darray_get(m->convergence_rates, geneartion);
-        float *goal_dist = darray_get(m->goal_distances, geneartion);
+        char *chromosome = darray_get(m->best_chromosomes, generation);
+        float *score = darray_get(m->best_scores, generation);
+        float *conv_rate = darray_get(m->convergence_rates, generation);
+        float *goal_dist = darray_get(m->goal_distances, generation);
 
         fprintf(m->log_fp, "%s\n", chromosome);
         fprintf(m->log_fp, "%f\n", *score);
-        fprintf(m->log_fp, "%d\n", geneartion);
+        fprintf(m->log_fp, "%d\n", generation);
         fprintf(m->log_fp, "%f\n", *conv_rate);
         fprintf(m->log_fp, "%f\n\n", *goal_dist);
 }

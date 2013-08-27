@@ -125,7 +125,8 @@ int main(int argc, char *argv[])
                 mutate_str,
                 p_m , /* mutation probability */
 
-                m
+                m,
+                0
         );
 
         /* print results */

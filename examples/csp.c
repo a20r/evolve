@@ -4,6 +4,7 @@
 #include <time.h>
 #include <math.h>
 #include <unistd.h>
+#include <signal.h>
 
 #include <al/utils.h>
 #include <al/comparator.h>
@@ -27,7 +28,13 @@ char *solutions[5];
 char *largest;
 char *smallest;
 float min_hd;
+volatile sig_atomic_t stop = 0;
 
+
+static void signal_handler(int signnum)
+{
+        stop = 1;
+}
 
 static char *randnumstr(int length)
 {
@@ -120,9 +127,6 @@ static void setup_solutions(int k, int len)
 
         printf("Largest string: %s\n", largest);
         printf("Smallest string: %s\n", smallest);
-        /* for (i = 0; i < k; i++) { */
-        /*         printf("S[%d]: %s\n", i, solutions[i]); */
-        /* } */
         printf("Theoretical Minimum Hamming Distance: %.2f\n", min_hd);
 }
 
@@ -139,11 +143,16 @@ static float fitness_function(char *chromosome)
 {
         float score_1;
         float score_2;
-        float max_score = 52 * len;
+        float max_score = 52 * len + 1;
 
         /* evaulate closest string */
         score_1 = min_edit_dist(chromosome, largest);
         score_2 = min_edit_dist(chromosome, smallest);
+
+        if (float_cmp((void *) &score_1, (void *) &score_2) == 0) {
+                printf("edit dist 1: %f\n", score_1);
+                printf("edit dist 2: %f\n\n", score_2);
+        }
 
         return max_score - (score_1 - score_2);
 }
@@ -200,7 +209,7 @@ static void print_top_chromosomes(struct evolve_monitor *m, int top)
 int main(int argc, char *argv[])
 {
         int max_pop = 10;
-        int max_gen = -1;
+        int max_gen = 1000;
         float p_c = (argv[1] == NULL) ? 0.8 : atof(argv[1]);
         float p_m = (argv[1] == NULL) ? 0.1 : atof(argv[2]);
 
@@ -210,6 +219,7 @@ int main(int argc, char *argv[])
         /* setup */
         setup_solutions(k, len);
         sleep(2);
+        signal(SIGINT, signal_handler);
 
 
         /* initialize evolution */
@@ -247,7 +257,8 @@ int main(int argc, char *argv[])
                 mutate_numstr,
                 p_m, /* mutation probability */
 
-                m
+                m,
+                stop
         );
 
         /* print results */

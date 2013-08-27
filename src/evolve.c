@@ -16,25 +16,25 @@ int run_evolution(
         int pivot_index,
         void (*mutation_func)(char **),
         float mutate_prob,
-        struct evolve_monitor *m
+        struct evolve_monitor *m,
+        volatile sig_atomic_t stop
 )
 {
         int max_gen = (*p)->max_generation;
+        int goal_reached = 0;
 
         /* evolve until max_gen reached or goal achieved  */
         while ((*p)->curr_generation < max_gen)
         {
-                /* evaluate */
-                if (evaluate_chromosomes(eval_func, &(*p))) {
-                        if (m != NULL) {
-                                record_generation_stats(*p, m, float_cmp_desc);
-                        }
-                        break;
-                }
-
-                /* record */
+                /* evaluate and record */
+                goal_reached = evaluate_chromosomes(eval_func, &(*p));
                 if (m != NULL) {
                         record_generation_stats(*p, m, float_cmp_desc);
+                }
+
+                /* stop conditions */
+                if (goal_reached || stop == 1) {
+                        break;
                 }
 
                 /* select */

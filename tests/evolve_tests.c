@@ -60,7 +60,8 @@ int test_run_evolution()
                 0.2,
 
                 /* monitor */
-                NULL
+                NULL,
+                0
         );
         destroy_population(&p);
 

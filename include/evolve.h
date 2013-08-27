@@ -1,6 +1,7 @@
 #ifndef _EVOLVE_H_
 #define _EVOLVE_H_
 
+#include <signal.h>
 #include "population.h"
 #include "evolve_monitor.h"
 
@@ -16,7 +17,8 @@ int run_evolution(
         int pivot_index,
         void (*mutation_func)(char **),
         float mutate_prob,
-        struct evolve_monitor *m
+        struct evolve_monitor *m,
+        volatile sig_atomic_t stop
 );
 
 #endif

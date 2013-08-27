@@ -64,7 +64,8 @@ static void sort_test_setup(int max_gen, int max_pop)
                 mutate_str,
                 0.2,
 
-                m
+                m,
+                0
         );
 }
 
