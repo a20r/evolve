@@ -19,7 +19,6 @@ add_library(
     selection.c
     crossover.c
     mutation.c
-    utils.c
 
     evolve.c
     evolve_monitor.c

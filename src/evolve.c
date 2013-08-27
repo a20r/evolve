@@ -3,9 +3,7 @@
 #include <al/comparator.h>
 
 #include "evolve.h"
-#include "evolve_monitor.h"
 #include "population.h"
-#include "utils.h"
 
 
 int run_evolution(
@@ -26,7 +24,6 @@ int run_evolution(
         /* evolve until max_gen reached or goal achieved  */
         while ((*p)->curr_generation < max_gen)
         {
-
                 /* evaluate */
                 if (evaluate_chromosomes(eval_func, &(*p))) {
                         if (m != NULL) {

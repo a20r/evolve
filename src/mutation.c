@@ -3,72 +3,79 @@
 #include <string.h>
 #include <math.h>
 
+#include <al/utils.h>
+
 #include "evolve.h"
-#include "utils.h"
 
-#ifndef CHAR_LOWER_BOUND
-  #define CHAR_LOWER_BOUND 32
-#endif
+char ALPHA[52] = {
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
+        'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+        'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+};
 
-#ifndef CHAR_UPPER_BOUND
-  #define CHAR_UPPER_BOUND 122
-#endif
+char NUMERIC[10] = {
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+};
 
-#ifndef NUM_LOWER_BOUND
-  #define NUM_LOWER_BOUND 48
-#endif
+char ALPHANUM[62] = {
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
+        'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+        'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+};
 
-#ifndef NUM_UPPER_BOUND
-  #define NUM_UPPER_BOUND 57
-#endif
+char DNA[4] = {
+        'A', 'C' , 'G', 'T'
+};
 
 
 void mutate_str(char **str)
 {
-        /* decide which char to mutate and by moving char val up or down */
-        int index = randnum_i(0, strlen(*str) - 2);
+        int index = randnum_i(0, strlen(*str) - 1);
         int diff = randnum_i(0, 100) <= 50 ? -1 : 1;
         int new_c = (*str)[index] + diff;
 
         /* if new_c is not a valid mutation, mutate again */
-        while ((new_c <= CHAR_UPPER_BOUND && new_c >= CHAR_LOWER_BOUND) == 0) {
-                diff = randnum_i(0, 100) <= 50 ? -1 : 1;
-                new_c = (*str)[index] + diff;
+        if ((new_c >= 32 && new_c <= 126) == 0) {
+                diff = diff * -1;
         }
 
-        (*str)[index] = (int) (*str)[index] + diff;
+        (*str)[index] = (*str)[index] + diff;
 }
 
-void mutate_num(char **num_str)
+void mutate_alphanum(char **str)
 {
-        int i = 0;
-        int num_index = 0;
-        char num[10];
-        int index = randnum_i(0, strlen(*num_str) - 2);
-        int new_num = (int) num[randnum_i(0, 9)];
+        int index = randnum_i(0, strlen(*str) - 1);
+        char new_c;
 
-        /* create num array */
-        for (i = NUM_LOWER_BOUND; i <= NUM_UPPER_BOUND; i++) {
-                num[num_index] = i;
-                num_index++;
-        }
+        /* if new_c is same as previous, mutate again */
+        while ((new_c = ALPHANUM[randnum_i(0, 61)]) == (*str)[index]) {}
 
-        /* if new_base is not a valid mutation, mutate again */
-        while ((new_num = num[randnum_i(0, num_index - 1)]) == (*num_str)[index]) {}
-
-        (*num_str)[index] = new_num;
+        (*str)[index] = new_c;
 }
 
-void mutate_dna(char **dna_str)
+void mutate_num(char **str)
 {
-        char dna[4] = { 'A', 'C' , 'G', 'T' };
-        int index = randnum_i(0, strlen(*dna_str) - 2);
+        int index = randnum_i(0, strlen(*str) - 1);
+        char new_num;
+
+        /* if new_num is same as previous, mutate again */
+        while((new_num = NUMERIC[randnum_i(0, 9)]) == (*str)[index]) {}
+
+        (*str)[index] = new_num;
+}
+
+void mutate_dna(char **str)
+{
+        int index = randnum_i(0, strlen(*str) - 1);
         char new_base;
 
-        /* if new_base is not a valid mutation, mutate again */
-        while ((new_base = dna[randnum_i(0, 3)]) == (*dna_str)[index]) {}
+        /* if new_base is same as previous, mutate again */
+        while ((new_base = DNA[randnum_i(0, 3)]) == (*str)[index]) {}
 
-        (*dna_str)[index] = new_base;
+        (*str)[index] = new_base;
 }
 
 void mutate(

@@ -3,7 +3,6 @@
 
 #include <stdlib.h>
 
-#include "utils.h"
 
 /* DEFINES */
 #ifndef QSORT_MIN_SIZE

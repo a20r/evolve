@@ -4,6 +4,7 @@
 #include <time.h>
 #include <math.h>
 
+#include <al/utils.h>
 #include <al/comparator.h>
 #include <dstruct/darray.h>
 
@@ -12,7 +13,6 @@
 #include "crossover.h"
 #include "mutation.h"
 #include "evolve_monitor.h"
-#include "utils.h"
 
 #define TARGET_SOLUTION "hello world!"
 
@@ -38,9 +38,9 @@ static void print_evolve_results(struct population *p)
                 printf("Solution: %s\n", p->solution);
                 printf("Score: %.2f\n", fitness_function(p->solution));
                 printf("Goal: %.2f\n", p->goal);
-                printf("Took %d Generations\n", p->curr_generation);
+                printf("Took %d Generations\n\n", p->curr_generation);
         } else {
-                printf("Failed to find solution . . . \n");
+                printf("Failed to find solution . . . \n\n");
         }
 }
 
@@ -54,34 +54,38 @@ static void print_top_chromosomes(struct evolve_monitor *m, int top)
 
         /* print top 5 chromosomes */
         printf("\nTOP %d CHROMOSOMES:\n", top);
-        for (i = 0; i < top; i++) {
-                printf(
-                        "chromosome: %s\n",
-                        (char *) darray_get(m->best_chromosomes, i)
-                );
-                printf(
-                        "score: %.2f\n",
-                        *(float *) darray_get(m->best_scores, i)
-                );
-                printf(
-                        "generation: %d\n",
-                        *(int *) darray_get(m->generations, i)
-                );
-                printf(
-                        "convergence rate: %.2f\n",
-                        *(float *) darray_get(m->convergence_rates, i)
-                );
-                printf(
-                        "goal distance: %.2f\n\n",
-                        *(float *) darray_get(m->goal_distances, i)
-                );
+        if (m->generations->end != 1) {
+                for (i = 0; i < top; i++) {
+                        printf(
+                                "chromosome: %s\n",
+                                (char *) darray_get(m->best_chromosomes, i)
+                        );
+                        printf(
+                                "score: %.2f\n",
+                                *(float *) darray_get(m->best_scores, i)
+                        );
+                        printf(
+                                "generation: %d\n",
+                                *(int *) darray_get(m->generations, i)
+                        );
+                        printf(
+                                "convergence rate: %.2f\n",
+                                *(float *) darray_get(m->convergence_rates, i)
+                        );
+                        printf(
+                                "goal distance: %.2f\n\n",
+                                *(float *) darray_get(m->goal_distances, i)
+                        );
+                }
         }
 }
 
 int main(int argc, char *argv[])
 {
-        int max_pop = 100;
+        int max_pop = 1000;
         int max_gen = 10000;
+        float p_c = (argv[1] == NULL) ? 0.8 : atof(argv[1]);
+        float p_m = (argv[1] == NULL) ? 0.1 : atof(argv[2]);
 
         /* seed random - VERY IMPORTANT! */
         srand(time(NULL));
@@ -101,8 +105,8 @@ int main(int argc, char *argv[])
 
         /* run evolution */
         printf("RUNNING GA!\n");
-        printf("Crossover Probability [%.2f]!\n", atof(argv[1]));
-        printf("Mutation Probability [%.2f]!\n", atof(argv[2]));
+        printf("Crossover Probability [%.4f]!\n", p_c);
+        printf("Mutation Probability [%.4f]!\n", p_m);
         gen_init_chromosomes(&p, randstr);
         run_evolution(
                 &p,
@@ -114,12 +118,12 @@ int main(int argc, char *argv[])
 
                 /* crossover */
                 one_pt_crossover,
-                atof(argv[1]), /* crossover probability */
+                p_c, /* crossover probability */
                 DEFAULT_PIVOT,
 
                 /* mutation */
                 mutate_str,
-                atof(argv[2]), /* mutation probability */
+                p_m , /* mutation probability */
 
                 m
         );

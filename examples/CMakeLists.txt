@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 
-set(CMAKE_BUILD_TYPE RELEASE)
+set(CMAKE_BUILD_TYPE DEBUG)
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -g")
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -DNDEBUG")
 
@@ -13,3 +13,8 @@ add_executable(hello_world hello_world.c)
 target_link_libraries(hello_world evolve)
 target_link_libraries(hello_world dstruct)
 target_link_libraries(hello_world m)
+
+add_executable(closest_string_problem closest_string_problem.c)
+target_link_libraries(closest_string_problem evolve)
+target_link_libraries(closest_string_problem dstruct)
+target_link_libraries(closest_string_problem m)

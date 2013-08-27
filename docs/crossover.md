@@ -6,25 +6,31 @@ algorithms are based. Cross over is a process of taking more than one parent
 solutions and producing a child solution from them.
 
 
+
+## Functions
+
     int one_pt_crossover(void **chromo_1, void **chromo_2, int index)
 
 A one point single crossover on both chromosomes is selected with
 `index`.  All data beyond that point in either chromosome is swapped
 between the two.  The result is crossed overd chromosomes.
 
-    Parameters:
-        void **chromo_1
-            Pointer to pointer pointing at chromosome 1
+Parameters:
 
-        void **chromo_2
-            Pointer to pointer pointing at chromosome 1
+    void **chromo_1
+        Pointer to pointer pointing at chromosome 1
 
-        int index
-            Crossover pivot index
+    void **chromo_2
+        Pointer to pointer pointing at chromosome 1
 
-    Returns:
-        0 for success, -1 for failure
+    int index
+        Crossover pivot index
 
+Returns:
+
+    0 for success, -1 on failure
+
+------------------------------------------------------------------------------
 
     void crossover(
             void **child_1,
@@ -36,18 +42,21 @@ between the two.  The result is crossed overd chromosomes.
 
 Main crossover wrapper for different crossover methods.
 
-    Parameters:
-        void **child_1
-            Pointer to pointer pointing at child_1
+Parameters:
 
-        void **child_2
-            Pointer to pointer pointing at child_2
+    void **child_1
+        Pointer to pointer pointing at child_1
 
-        int index
-            Crossover pivot index
+    void **child_2
+        Pointer to pointer pointing at child_2
 
-        int (*crossover_func)(void **chromo_1, void **chromo_2, int index)
-            Pointer to crossover function
+    int index
+        Crossover pivot index
 
-        float crossover_prob
-            Crossover probability
+    int (*crossover_func)(void **chromo_1, void **chromo_2, int index)
+        Pointer to crossover function
+
+    float crossover_prob
+        Crossover probability
+
+------------------------------------------------------------------------------

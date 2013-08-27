@@ -2,6 +2,7 @@
 
 #include <dstruct/darray.h>
 #include <al/comparator.h>
+#include <al/utils.h>
 
 #include "population.h"
 #include "crossover.h"

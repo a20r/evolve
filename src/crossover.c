@@ -6,7 +6,7 @@
 
 #include "evolve.h"
 #include "crossover.h"
-#include "utils.h"
+#include "evolve_utils.h"
 
 
 int one_pt_crossover(void **chromo_1, void **chromo_2, int index)

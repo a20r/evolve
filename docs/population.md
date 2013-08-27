@@ -1,5 +1,8 @@
 # Population
-Population contains functions that handle, modify, perform actions on the GA population.
+Population contains functions that handle, modify, perform actions on the GA
+population.
+
+
 
 ## Structures
 
@@ -21,63 +24,35 @@ Population contains functions that handle, modify, perform actions on the GA pop
             char *solution;
     };
 
-## Function Summary
-    struct population *init_population(
-            int param,
-            float goal,
-            int max_pop,
-            int max_gen
-    );
+The `population` structure is used to encapsulate all individuals in the
+evolution process, it also keeps a record of the fitness scores, total fitness
+score, current popualtion, generation, maximum population, generation as well
+as the solution (if known, as a GA termination criteria).
 
-    void destroy_population(struct population **p);
+Parameters:
 
-    void gen_init_chromosomes(struct population **p, char *(*mutator)(int));
+    struct darray *chromosomes
 
-    int evaluate_chromosomes(float (eval_func)(char *), struct population **p);
+    struct darray *chromosome_scores
 
-    void normalize_fitness_values(struct population **p);
+    float total_score
 
-    void print_chromosome(struct population *p, int index);
+    int parameters
 
-    void print_chromosomes(struct population *p);
+    float goal
 
-    void print_population(struct population *p);
+    int curr_population
 
-    void insertion_sort_population(
-            struct population *p,
-            int left,
-            int right,
-            int (*cmp)(const void *, const void *)
-    );
+    int curr_generation
 
-    int partition_population(
-            struct population *p,
-            int pivot_index,
-            int left,
-            int right,
-            int (*cmp)(const void *, const void *)
-    );
+    int max_population
 
-    void quick_sort_population(
-            struct population *m,
-            int left,
-            int right,
-            int(*cmp)(const void *, const void *)
-    );
-
-    void sort_population(
-            struct population *p,
-            int (*cmp)(const void *, const void *)
-    );
-
-    void populate(
-            struct population **p,
-            float crossover_prob,
-            float mutation_prob
-    );
+    int max_generation
 
 
-## init_population
+
+## Functions
+
     struct population *init_population(
             int param,
             float goal,
@@ -87,45 +62,60 @@ Population contains functions that handle, modify, perform actions on the GA pop
 
 Initialize the structure `population`.
 
-    Parameters:
-        int param
-            Number of parameters
+Parameters:
 
-        float goal
-            Goal score to achieve
+    int param
+        Number of parameters
 
-        int max_pop
-            Maximum popuation
+    float goal
+        Goal score to achieve
 
-        int max_gen
-            Maximum generations
+    int max_pop
+        Maximum popuation
 
+    int max_gen
+        Maximum generations
 
-## destroy_population
+Returns:
 
- void destroy_population(struct population **p);
+    The initialized `population` structure
 
-## gen_init_chromosomes
+------------------------------------------------------------------------------
+
+    void destroy_population(struct population **p);
+
+Destory the `popuation` structure.
+
+Parameters:
+
+    structure population **p Population
+
+------------------------------------------------------------------------------
 
     void gen_init_chromosomes(struct population **p, char *(*mutator)(int));
 
-## evaluate_chromosomes
+Generate initial random chromosomes.
+
+------------------------------------------------------------------------------
+
     int evaluate_chromosomes(float (eval_func)(char *), struct population **p);
 
-## normalize_fitness_values
+------------------------------------------------------------------------------
 
     void normalize_fitness_values(struct population **p);
 
-## print_chromosome
+------------------------------------------------------------------------------
+
     void print_chromosome(struct population *p, int index);
 
-## print_chromosomes
+------------------------------------------------------------------------------
+
     void print_chromosomes(struct population *p);
 
-## print_population
-    void print_population(struct population *p);
+------------------------------------------------------------------------------
 
-## insertion_sort_population
+    void print_population(struct population *p);
+------------------------------------------------------------------------------
 
     void insertion_sort_population(
             struct population *p,
@@ -133,8 +123,7 @@ Initialize the structure `population`.
             int right,
             int (*cmp)(const void *, const void *)
     );
-
-## partition_population
+------------------------------------------------------------------------------
 
     int partition_population(
             struct population *p,
@@ -144,7 +133,7 @@ Initialize the structure `population`.
             int (*cmp)(const void *, const void *)
     );
 
-## quick_sort_population
+------------------------------------------------------------------------------
 
     void quick_sort_population(
             struct population *m,
@@ -153,16 +142,18 @@ Initialize the structure `population`.
             int(*cmp)(const void *, const void *)
     );
 
-## sort_population
+------------------------------------------------------------------------------
+
     void sort_population(
             struct population *p,
             int (*cmp)(const void *, const void *)
     );
 
-## populate
+------------------------------------------------------------------------------
 
     void populate(
             struct population **p,
             float crossover_prob,
             float mutation_prob
     );
+------------------------------------------------------------------------------

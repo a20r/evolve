@@ -5,12 +5,13 @@
 
 #include <munit/munit.h>
 
-#include <mutation.h>
+#include "mutation.h"
 
 #define LOOP 100
 #define TEST_STR "Hello World"
-#define TEST_DNA "ACGCT"
+#define TEST_ALPHANUM "Year2000"
 #define TEST_NUM "00000"
+#define TEST_DNA "ACGCT"
 
 int test_mutate_str()
 {
@@ -20,9 +21,9 @@ int test_mutate_str()
                 char *str = malloc(sizeof(char) * (strlen(TEST_STR) + 1));
                 strcpy(str, TEST_STR);
 
-                printf("Original string: %s\n", str);
+                printf("Original: %s\n", str);
                 mutate_str(&str);
-                printf("Mutated string:  %s\n\n", str);
+                printf("Mutated:  %s\n\n", str);
                 fflush(stdout);
 
                 mu_assert(
@@ -40,6 +41,34 @@ int test_mutate_str()
         return 0;
 }
 
+int test_mutate_alphanum()
+{
+        int i = 0;
+
+        for (i = 0; i < LOOP; i++) {
+                char *num_str = malloc(sizeof(char) * (strlen(TEST_NUM) + 1));
+                strcpy(num_str, TEST_NUM);
+
+                printf("Original: %s\n", num_str);
+                mutate_alphanum(&num_str);
+                printf("Mutated:  %s\n\n", num_str);
+                fflush(stdout);
+
+                mu_assert(
+                        strcmp(num_str, TEST_NUM) != 0,
+                        "Failed to mutate alphanum"
+                );
+                mu_assert(
+                        strlen(num_str) == strlen(TEST_NUM),
+                        "Failed to mutate alphanum"
+                );
+
+                free(num_str);
+        }
+
+        return 0;
+}
+
 int test_mutate_num()
 {
         int i = 0;
@@ -48,9 +77,9 @@ int test_mutate_num()
                 char *num_str = malloc(sizeof(char) * (strlen(TEST_NUM) + 1));
                 strcpy(num_str, TEST_NUM);
 
-                printf("Original NUM: %s\n", num_str);
+                printf("Original: %s\n", num_str);
                 mutate_num(&num_str);
-                printf("Mutated NUM:  %s\n\n", num_str);
+                printf("Mutated:  %s\n\n", num_str);
                 fflush(stdout);
 
                 mu_assert(
@@ -76,9 +105,9 @@ int test_mutate_dna()
                 char *dna_str = malloc(sizeof(char) * (strlen(TEST_DNA) + 1));
                 strcpy(dna_str, TEST_DNA);
 
-                printf("Original DNA: %s\n", dna_str);
+                printf("Original: %s\n", dna_str);
                 mutate_dna(&dna_str);
-                printf("Mutated DNA:  %s\n\n", dna_str);
+                printf("Mutated:  %s\n\n", dna_str);
                 fflush(stdout);
 
                 mu_assert(
@@ -99,6 +128,7 @@ int test_mutate_dna()
 void test_suite()
 {
         mu_run_test(test_mutate_str);
+        mu_run_test(test_mutate_alphanum);
         mu_run_test(test_mutate_num);
         mu_run_test(test_mutate_dna);
 }

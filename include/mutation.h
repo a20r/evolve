@@ -5,8 +5,10 @@
 
 /* FUNCTIONS */
 void mutate_str(char **str);
-void mutate_num(char **num_str);
-void mutate_dna(char **dna_str);
+void mutate_alpha(char **str);
+void mutate_alphanum(char **str);
+void mutate_num(char **str);
+void mutate_dna(char **str);
 void mutate(
         void **chromosome,
         float mutate_prob,

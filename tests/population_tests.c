@@ -8,6 +8,7 @@
 
 #include <munit/munit.h>
 #include <al/comparator.h>
+#include <al/utils.h>
 #include <dstruct/darray.h>
 
 #include "test_utils.h"
@@ -16,7 +17,6 @@
 #include "selection.h"
 #include "crossover.h"
 #include "mutation.h"
-#include "utils.h"
 
 #define TEST_OUTPUT "evolve_utils_tests.out"
 

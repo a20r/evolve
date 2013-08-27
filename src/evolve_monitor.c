@@ -1,11 +1,11 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include <al/utils.h>
 #include <dstruct/darray.h>
 
 #include "evolve.h"
 #include "evolve_monitor.h"
-#include "utils.h"
 
 
 struct evolve_monitor *init_evolve_monitor(
@@ -120,6 +120,8 @@ void record_generation_stats(
         }
         *goal_dist = fabs(p->goal - *best_score);
 
+        /* printf("GEN: %d\n", generation); */
+        /* printf("BEST CHROMO: %s\n", best_chromo); */
         darray_set(m->best_chromosomes, generation, best_chromo);
         darray_set(m->best_scores, generation, best_score);
         darray_set(m->generations, generation, gen);

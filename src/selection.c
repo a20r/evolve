@@ -3,12 +3,12 @@
 
 #include <dbg/dbg.h>
 #include <al/comparator.h>
+#include <al/utils.h>
 #include <dstruct/darray.h>
 
 #include "selection.h"
 #include "population.h"
 #include "evolve.h"
-#include "utils.h"
 
 
 void roulette_wheel_selection(

@@ -15,18 +15,24 @@ can tweak to change the behaviour of the GA. Namely the evaulation function (or
 fitness function), crossover and mutation probabilities, and also an optional
 `evolve_monitor`.
 
-    Parameters:
-        struct population **p
-            Population of the GA
+Parameters:
 
-        float (eval_func)(char *)
-            The evaluation or fitness function
+    struct population **p
+        Population of the GA
 
-        float crossover_prob
-            Crossover probability
+    float (eval_func)(char *)
+        The evaluation or fitness function
 
-        float mutate_prob
-            Mutation probability
+    float crossover_prob
+        Crossover probability
 
-        struct evolve_monitor *m
-            Evolution monitor. Optional can be **NULL**
+    float mutate_prob
+        Mutation probability
+
+    struct evolve_monitor *m
+        Evolution monitor. Optional can be **NULL**
+
+Returns: 
+
+    0 for success, -1 on failure
+
