@@ -82,7 +82,7 @@ static void print_top_chromosomes(struct evolve_monitor *m, int top)
 
 int main(int argc, char *argv[])
 {
-        int max_pop = 1000;
+        int max_pop = 100;
         int max_gen = 10000;
         float p_c = (argv[1] == NULL) ? 0.8 : atof(argv[1]);
         float p_m = (argv[1] == NULL) ? 0.1 : atof(argv[2]);
