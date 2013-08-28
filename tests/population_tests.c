@@ -7,8 +7,8 @@
 #include <string.h>
 
 #include <munit/munit.h>
-#include <al/comparator.h>
 #include <al/utils.h>
+#include <al/comparator.h>
 #include <dstruct/darray.h>
 
 #include "test_utils.h"
@@ -152,6 +152,21 @@ int test_init_population()
         return 0;
 }
 
+int test_extend_max_generation()
+{
+        setup(max_pop, 1);
+
+        /* extend max generations */
+        extend_max_generation(p, 100);
+
+        /* assert extend */
+        mu_assert(p->max_generation == 101, "Failed to extend generations!");
+
+        teardown();
+
+        return 0;
+}
+
 int test_gen_init_chromosomes()
 {
         int i = 0;
@@ -166,9 +181,9 @@ int test_gen_init_chromosomes()
                 curr_chromosome = darray_get(p->chromosomes, i);
 
                 mu_assert(
-                        curr_chromosome != last_chromosome,
-                        "curr_num == last_num!"
-                );
+                                curr_chromosome != last_chromosome,
+                                "curr_num == last_num!"
+                         );
                 mu_assert(p->curr_population == max_pop,"Invalid population!");
 
                 last_chromosome = curr_chromosome;
@@ -206,8 +221,14 @@ int test_evaluate_chromosomes()
         for (i = 0; i < p->max_population; i++) {
                 curr_score = *((float *) darray_get(p->chromosome_scores, i));
 
-                mu_assert(curr_score != last_score, "curr_score == last_score!");
-                mu_assert(p->curr_population == max_pop, "Invalid population!");
+                mu_assert(
+                                curr_score != last_score,
+                                "curr_score == last_score!"
+                         );
+                mu_assert(
+                                p->curr_population == max_pop,
+                                "Invalid population!"
+                         );
 
                 last_score = curr_score;
         }
@@ -223,9 +244,11 @@ int test_normalize_fitness_values()
 {
         int i = 0;
         float sum = 0;
+        float unity = 1;
+        int cmp_res = 0;
 
         /* setup */
-        setup(5, 1);
+        setup(10, 1);
         gen_init_chromosomes(&p, randstr);
         evaluate_chromosomes(fitness_function, &p);
 
@@ -241,7 +264,10 @@ int test_normalize_fitness_values()
         for (i = 0; i < p->max_population; i++) {
                 sum += *(float *) darray_get(p->chromosome_scores, i);
         }
-        mu_assert((int) round(sum) == 1, "Sum of normalized values should be 1!");
+
+        sum = round(sum);
+        cmp_res = float_cmp(&sum, &unity);
+        mu_assert(cmp_res == 0, "Sum of normalized values should be 1!");
 
         /* teardown */
         teardown();
@@ -468,6 +494,7 @@ void test_suite()
 {
         /* tests population functions */
         mu_run_test(test_init_population);
+        mu_run_test(test_extend_max_generation);
         mu_run_test(test_gen_init_chromosomes);
         mu_run_test(test_evaluate_chromosomes);
         mu_run_test(test_normalize_fitness_values);

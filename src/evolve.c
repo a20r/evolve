@@ -24,6 +24,7 @@ int run_evolution(
         int goal_reached = 0;
 
         /* evolve until max_gen reached or goal achieved  */
+        /* while ((*p)->curr_generation < max_gen && stop != 1) */
         while ((*p)->curr_generation < max_gen)
         {
                 /* evaluate and record */

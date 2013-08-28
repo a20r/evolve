@@ -32,6 +32,7 @@ struct population *init_population(
         int max_gen
 );
 void destroy_population(struct population **p);
+void extend_max_generation(struct population *p, int extension_size);
 void gen_init_chromosomes(struct population **p, char *(*mutator)(int));
 int evaluate_chromosomes(float (eval_func)(char *), struct population **p);
 void normalize_fitness_values(struct population **p);

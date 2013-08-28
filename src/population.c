@@ -18,6 +18,11 @@ struct population *init_population(
 {
         struct population *p = malloc(sizeof(struct population));
 
+        /* checks */
+        check(param > 0, "Parameters has to be bigger than 0!");
+        check((max_pop % 2) == 0, "Max population has to be even!");
+        check(max_gen > 0, "Max generation has to be bigger than 0!");
+
         /* chromosomes */
         p->chromosomes = darray_create(sizeof(char) * (param + 1), max_pop);
         p->chromosome_scores = darray_create(sizeof(float), max_pop);
@@ -34,6 +39,9 @@ struct population *init_population(
         p->parameters = param;
         p->goal = goal;
 
+        return p;
+error:
+        free(p);
         return p;
 }
 
@@ -54,13 +62,17 @@ void destroy_population(struct population **p)
         }
 }
 
+void extend_max_generation(struct population *p, int extension_size)
+{
+        p->max_generation += extension_size;
+}
 
 void gen_init_chromosomes(struct population **p, char *(*mutator)(int))
 {
         int i = 0;
         int param = (*p)->parameters;
 
-        check(param != 0, "Parameters should not be 0!");
+        check(param != 0, "Parameters should be greater than 0!");
 
         /* fill initial random chromosome */
         for (i = 0; i < (*p)->max_population; i++) {

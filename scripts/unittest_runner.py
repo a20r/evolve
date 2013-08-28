@@ -6,7 +6,7 @@ import subprocess
 
 
 # SETTINGS
-keep_unittest_logs = True
+keep_unittest_logs = False
 unittests_bin_dir = "../bin"
 unittests_log_dir = "unittests_log"
 unittests_file_pattern = "^[a-zA-Z0-9_]*_tests$"
