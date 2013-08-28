@@ -116,6 +116,54 @@ int test_destroy_evolve_monitor()
         return 0;
 }
 
+int test_expand_evolve_monitor()
+{
+        int prev_max = 0;
+        int chromo_sz = strlen("hello world!") * sizeof(char);
+        struct population *p = init_population(
+                chromo_sz,  /* param */
+                0.0,  /* goal */
+                10,  /* max_pop */
+                5 /* max_gen */
+        );
+        m = init_evolve_monitor(chromo_sz, 5, NULL);
+        gen_init_chromosomes(&p, randstr);
+        evaluate_chromosomes(fitness_function, &p);
+        record_generation_stats(p, m, float_cmp_asc);
+
+        /* expand */
+        prev_max = m->best_chromosomes->max;
+        expand_evolve_monitor(m);
+
+        /* assert */
+        mu_assert(
+                m->best_chromosomes->max == prev_max + DEFAULT_EXPAND_RATE,
+                "Failed to expand best_chromosomes!"
+        );
+        mu_assert(
+                m->best_scores->max == prev_max + DEFAULT_EXPAND_RATE,
+                "Failed to expand best_scores!"
+        );
+        mu_assert(
+                m->generations->max == prev_max + DEFAULT_EXPAND_RATE,
+                "Failed to expand generations!"
+        );
+        mu_assert(
+                m->convergence_rates->max == prev_max + DEFAULT_EXPAND_RATE,
+                "Failed to expand convergence_rates!"
+        );
+        mu_assert(
+                m->goal_distances->max == prev_max + DEFAULT_EXPAND_RATE,
+                "Failed to expand goal_distances!"
+        );
+
+        /* clean up */
+        destroy_population(&p);
+        destroy_evolve_monitor(&m);
+
+        return 0;
+}
+
 int test_record_generation_stats()
 {
         int chromo_sz = strlen("hello world!") * sizeof(char);
@@ -283,6 +331,7 @@ void test_suite()
 {
         mu_run_test(test_init_evolve_monitor);
         mu_run_test(test_destroy_evolve_monitor);
+        mu_run_test(test_expand_evolve_monitor);
         mu_run_test(test_record_generation_stats);
         mu_run_test(test_insertion_sort_gstats);
         mu_run_test(test_partition_gstats);

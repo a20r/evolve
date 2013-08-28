@@ -50,6 +50,23 @@ void destroy_evolve_monitor(struct evolve_monitor **m)
         *m = NULL;
 }
 
+int expand_evolve_monitor(struct evolve_monitor *m)
+{
+        int result = 0;
+
+        result = darray_expand(m->best_chromosomes);
+        result = darray_expand(m->best_scores);
+        result = darray_expand(m->generations);
+        result = darray_expand(m->convergence_rates);
+        result = darray_expand(m->goal_distances);
+
+        check(result == 0, "Failed to expand evolve monitor!");
+
+        return 0;
+error:
+        return -1;
+}
+
 void log_generation_stats(struct evolve_monitor *m, int generation)
 {
         char *chromosome = darray_get(m->best_chromosomes, generation);

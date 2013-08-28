@@ -30,6 +30,7 @@ struct evolve_monitor *init_evolve_monitor(
         char *log_fp
 );
 void destroy_evolve_monitor(struct evolve_monitor **m);
+int expand_evolve_monitor(struct evolve_monitor *m);
 
 #include "evolve.h"
 void record_generation_stats(
