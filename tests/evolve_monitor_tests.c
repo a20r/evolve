@@ -16,15 +16,17 @@
 #include "crossover.h"
 #include "mutation.h"
 
+#define TEST_SOLUTION "hello world!"
 
 
 /* GLOBAL VAR */
 struct evolve_monitor *m;
 struct population *p;
+volatile sig_atomic_t stop_signal = 0;
 
 static float fitness_function(char *chromosome)
 {
-        char *target = "hello world!";
+        char *target = TEST_SOLUTION;
         float total = 0;
         int i = 0;
 
@@ -38,7 +40,7 @@ static float fitness_function(char *chromosome)
 static void sort_test_setup(int max_gen, int max_pop)
 {
         /* run an evolution to fill the monitor struct */
-        int chromo_sz = strlen("hello world!");
+        int chromo_sz = strlen(TEST_SOLUTION);
         p = init_population(
                 chromo_sz,  /* param */
                 0.0,  /* goal */
@@ -65,7 +67,8 @@ static void sort_test_setup(int max_gen, int max_pop)
                 0.2,
 
                 m,
-                0
+                0,
+                &stop_signal
         );
 }
 
@@ -79,7 +82,7 @@ static void sort_test_teardown()
 
 int test_init_evolve_monitor()
 {
-        int len = strlen("hello world!");
+        int len = strlen(TEST_SOLUTION);
         size_t chromo_sz = sizeof(char) * len;
         long max_gen = 10;
 
@@ -119,7 +122,7 @@ int test_destroy_evolve_monitor()
 int test_expand_evolve_monitor()
 {
         int prev_max = 0;
-        int chromo_sz = strlen("hello world!") * sizeof(char);
+        int chromo_sz = strlen(TEST_SOLUTION) * sizeof(char);
         struct population *p = init_population(
                 chromo_sz,  /* param */
                 0.0,  /* goal */
@@ -166,7 +169,7 @@ int test_expand_evolve_monitor()
 
 int test_record_generation_stats()
 {
-        int chromo_sz = strlen("hello world!") * sizeof(char);
+        int chromo_sz = strlen(TEST_SOLUTION) * sizeof(char);
         struct population *p = init_population(
                 chromo_sz,  /* param */
                 0.0,  /* goal */

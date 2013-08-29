@@ -39,6 +39,8 @@ if __name__ == "__main__":
     os.chdir(unittests_bin_dir)
     error = False
     for unittest in unittests:
+        print("UNITTEST [{0}]".format(unittest)),
+
         # execute unittest
         unittest_output_fp = os.path.join(
             orig_cwd,
@@ -55,22 +57,10 @@ if __name__ == "__main__":
 
         # print result
         if return_val != 0:
-            print(
-                "{0}ERROR!{1} UNITTEST [{2}] FAILED!".format(
-                    TermColors.FAIL,
-                    TermColors.ENDC,
-                    unittest
-                )
-            )
+            print("{0}FAILED!{1}".format(TermColors.FAIL, TermColors.ENDC))
             error = True
         else:
-            print(
-                "UNITTEST [{0}] {1} PASSED!{2}".format(
-                    unittest,
-                    TermColors.OKGREEN,
-                    TermColors.ENDC
-                )
-            )
+            print("{0}PASSED!{1}".format(TermColors.OKGREEN, TermColors.ENDC))
             if keep_unittest_logs is False:
                 os.remove(unittest_output_fp)
 

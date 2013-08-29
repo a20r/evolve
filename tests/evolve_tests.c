@@ -17,6 +17,7 @@
 struct population *p;
 struct evolve_monitor *m;
 int max_pop = 10;
+volatile sig_atomic_t stop_signal = 0;
 
 
 static float fitness_function(char *chromosome)
@@ -61,7 +62,8 @@ int test_run_evolution()
 
                 /* monitor */
                 NULL,
-                0
+                0,
+                &stop_signal
         );
         destroy_population(&p);
 

@@ -18,7 +18,8 @@ int run_evolution(
         void (*mutation_func)(char **),
         float mutate_prob,
         struct evolve_monitor *m,
-        volatile sig_atomic_t stop
+        int wait_signal,
+        volatile sig_atomic_t *stop_signal
 );
 
 #endif

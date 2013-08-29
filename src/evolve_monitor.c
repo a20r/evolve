@@ -39,11 +39,11 @@ struct evolve_monitor *init_evolve_monitor(
 
 void destroy_evolve_monitor(struct evolve_monitor **m)
 {
-        darray_clear_destroy((*m)->best_chromosomes);
-        darray_clear_destroy((*m)->best_scores);
-        darray_clear_destroy((*m)->generations);
-        darray_clear_destroy((*m)->convergence_rates);
-        darray_clear_destroy((*m)->goal_distances);
+        darray_destroy((*m)->best_chromosomes);
+        darray_destroy((*m)->best_scores);
+        darray_destroy((*m)->generations);
+        darray_destroy((*m)->convergence_rates);
+        darray_destroy((*m)->goal_distances);
         if ((*m)->log_fp != NULL) fclose((*m)->log_fp);
         free(*m);
 
@@ -322,8 +322,7 @@ void sort_generation_stats(
 )
 {
         int right = m->generations->end;
-        /* quick_sort_gstats(m, 0, right, cmp); */
-        insertion_sort_gstats(m, 0, right, cmp);
+        quick_sort_gstats(m, 0, right, cmp);
 }
 
 void print_generation_stats(struct evolve_monitor *m)
