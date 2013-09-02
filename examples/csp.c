@@ -25,7 +25,7 @@
 
 /* GLOBAL VARS */
 int k = 5;  /* number of elements */
-int len = 3;  /* length of each element */
+int len = 10;  /* length of each element */
 char *strings[5];
 char *largest;
 char *smallest;
@@ -278,7 +278,7 @@ int main(int argc, char *argv[])
         int max_pop = 6;
         int max_gen = 10;
         float p_c = (argv[1] == NULL) ? 0.8 : atof(argv[1]);
-        float p_m = (argv[1] == NULL) ? 0.1 : atof(argv[2]);
+        float p_m = (argv[1] == NULL) ? 0.01 : atof(argv[2]);
 
         if (argc != 2) {
                 printf("missing arguments, assuming default probabilities!\n");
@@ -296,7 +296,7 @@ int main(int argc, char *argv[])
         /* initialize evolution */
         struct population *p = init_population(
                 len,  /* param */
-                len * k,
+                len * k,  /* goal */
                 max_pop,  /* max_pop */
                 max_gen  /* max_gen */
         );

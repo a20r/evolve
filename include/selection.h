@@ -8,5 +8,6 @@
 
 /* FUNCTIONS */
 void roulette_wheel_selection(struct population **p, int *select);
+void tournament_selection(struct population **p, int *select);
 
 #endif

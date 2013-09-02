@@ -139,7 +139,7 @@ void record_generation_stats(
 
         /* printf("GEN: %d\n", generation); */
         /* printf("BEST CHROMO: %s\n", best_chromo); */
-        printf("BEST SCORE: %f\n", *(float *) best_score);
+        /* printf("BEST SCORE: %f\n", *(float *) best_score); */
         darray_set(m->best_chromosomes, generation, best_chromo);
         darray_set(m->best_scores, generation, best_score);
         darray_set(m->generations, generation, gen);
