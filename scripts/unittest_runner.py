@@ -39,7 +39,7 @@ if __name__ == "__main__":
     os.chdir(unittests_bin_dir)
     error = False
     for unittest in unittests:
-        print("UNITTEST [{0}]".format(unittest)),
+        print("UNITTEST [{0}] ".format(unittest)),
 
         # execute unittest
         unittest_output_fp = os.path.join(
