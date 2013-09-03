@@ -40,7 +40,7 @@ int run_evolution(
                         break;
                 }
 
-                /* expand memory allocation if needed */
+                /* extend max generations if in signal mode */
                 last_gen = ((*p)->curr_generation + 1 == max_gen);
                 if (wait_signal == 1 && last_gen == 1) {
                         extend_max_generation(*p, DEFAULT_EXPAND_RATE);

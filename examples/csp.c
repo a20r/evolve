@@ -281,7 +281,7 @@ int main(int argc, char *argv[])
         float p_m = (argv[1] == NULL) ? 0.8 : atof(argv[2]);
 
         if (argc != 2) {
-                printf("missing arguments, assuming default probabilities!\n");
+                printf("missing arguments, using default settings!\n");
         }
 
         /* seed random - VERY IMPORTANT! */

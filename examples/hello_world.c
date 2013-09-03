@@ -88,6 +88,10 @@ int main(int argc, char *argv[])
         float p_c = (argv[1] == NULL) ? 0.8 : atof(argv[1]);
         float p_m = (argv[1] == NULL) ? 0.1 : atof(argv[2]);
 
+        if (argc != 2) {
+                printf("missing arguments, using default settings!\n");
+        }
+
         /* seed random - VERY IMPORTANT! */
         srand(time(NULL));
 

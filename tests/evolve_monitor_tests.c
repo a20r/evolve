@@ -43,11 +43,11 @@ static void sort_test_setup(int max_gen, int max_pop)
         int chromo_sz = strlen(TEST_SOLUTION);
         p = init_population(
                 chromo_sz,  /* param */
-                0.0,  /* goal */
+                122 * strlen(TEST_SOLUTION),  /* goal */
                 max_pop,  /* max_pop */
                 max_gen /* max_gen */
         );
-        m = init_evolve_monitor(chromo_sz, max_gen, NULL);
+        m = init_evolve_monitor(chromo_sz, 5, NULL);
         gen_init_chromosomes(&p, randstr);
         run_evolution(
                 &p,
@@ -162,36 +162,10 @@ int test_record_generation_stats()
         return 0;
 }
 
-int test_insertion_sort_gstats()
-{
-        int res = 0;
-        int max_gen = 5;
-        int max_pop = 100;
-
-        sort_test_setup(max_gen, max_pop);
-
-        /* sort population */
-        debug("Before Stats Sort");
-        print_generation_stats(m);
-
-        insertion_sort_gstats(m, 0, m->best_scores->end, float_cmp_asc);
-
-        debug("After Stats Sort");
-        print_generation_stats(m);
-
-        /* assert test */
-        res = assert_sorted_gstats(m, float_cmp_asc);
-        mu_assert(res == 0, "Sort Generation Stats Failed!");
-
-        sort_test_teardown();
-
-        return 0;
-}
-
 int test_sort_generation_stats()
 {
         int res = 0;
-        int max_gen = 5;
+        int max_gen = 4;
         int max_pop = 10;
 
         sort_test_setup(max_gen, max_pop);
@@ -200,13 +174,13 @@ int test_sort_generation_stats()
         debug("Before Stats Sort");
         print_generation_stats(m);
 
-        sort_generation_stats(m, float_cmp_asc);
+        /* sort_generation_stats(m, float_cmp_desc); */
 
         debug("After Stats Sort");
         print_generation_stats(m);
 
         /* assert test */
-        res = assert_sorted_gstats(m, float_cmp_asc);
+        res = assert_sorted_gstats(m, float_cmp_desc);
         mu_assert(res == 0, "Sort Generation Stats Failed!");
 
         sort_test_teardown();
@@ -219,7 +193,6 @@ void test_suite()
         mu_run_test(test_init_evolve_monitor);
         mu_run_test(test_destroy_evolve_monitor);
         mu_run_test(test_record_generation_stats);
-        mu_run_test(test_insertion_sort_gstats);
         mu_run_test(test_sort_generation_stats);
 }
 
