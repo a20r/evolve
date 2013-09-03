@@ -9,7 +9,7 @@
 
 int run_evolution(
         struct population **p,
-        float (eval_func)(char *),
+        float (*eval_func)(char *),
         void (*selection_func)(struct population **, int *),
         int *select,
         int (*crossover_func)(void **, void **, int),
@@ -44,7 +44,6 @@ int run_evolution(
                 last_gen = ((*p)->curr_generation + 1 == max_gen);
                 if (wait_signal == 1 && last_gen == 1) {
                         extend_max_generation(*p, DEFAULT_EXPAND_RATE);
-                        expand_evolve_monitor(m);
                         max_gen = (*p)->max_generation;
                         last_gen = 0;
                 }

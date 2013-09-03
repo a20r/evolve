@@ -2,6 +2,7 @@
 #include <math.h>
 
 #include <al/utils.h>
+#include <al/comparator.h>
 #include <dstruct/darray.h>
 
 #include "evolve.h"
@@ -10,17 +11,18 @@
 
 struct evolve_monitor *init_evolve_monitor(
         size_t chromo_sz,
-        long max_gen,
+        long top,
         char *log_fp
 )
 {
         struct evolve_monitor *m = malloc(sizeof(struct evolve_monitor));
 
-        m->best_chromosomes = darray_create(chromo_sz, max_gen);
-        m->best_scores = darray_create(sizeof(float), max_gen);
-        m->generations = darray_create(sizeof(long), max_gen);
-        m->convergence_rates = darray_create(sizeof(float), max_gen);
-        m->goal_distances = darray_create(sizeof(float), max_gen);
+        m->top = top;
+        m->best_chromosomes = darray_create(chromo_sz, top);
+        m->best_scores = darray_create(sizeof(float), top);
+        m->generations = darray_create(sizeof(long), top);
+        m->convergence_rates = darray_create(sizeof(float), top);
+        m->goal_distances = darray_create(sizeof(float), top);
 
         if (log_fp != NULL) {
                 m->log_stats = 1;
@@ -50,117 +52,67 @@ void destroy_evolve_monitor(struct evolve_monitor **m)
         *m = NULL;
 }
 
-int expand_evolve_monitor(struct evolve_monitor *m)
+static void log_generation_stats(
+        FILE *log_fp,
+        int generation,
+        char *chromosome,
+        float score,
+        float convergence_rate,
+        float goal_distance
+)
 {
-        int result = 0;
+        fprintf(log_fp, "%s\n", chromosome);
+        fprintf(log_fp, "%f\n", score);
+        fprintf(log_fp, "%d\n", generation);
+        fprintf(log_fp, "%f\n", convergence_rate);
+        fprintf(log_fp, "%f\n\n", goal_distance);
+}
 
-        result = darray_expand(m->best_chromosomes);
-        result = darray_expand(m->best_scores);
-        result = darray_expand(m->generations);
-        result = darray_expand(m->convergence_rates);
-        result = darray_expand(m->goal_distances);
+static int fill_leader_board(
+        struct population *p,
+        struct evolve_monitor *m
+)
+{
+        int i = 0;
+        char *chromo;
+        float *score;
+        float *generation;
+        float *convergence_rate;
+        float *goal_distance;
 
-        check(result == 0, "Failed to expand evolve monitor!");
+        size_t chromo_sz = p->chromosomes->element_size;
+        size_t score_sz = p->chromosome_scores->element_size;
+
+        check(
+                p->curr_generation == 0,
+                "Error! fill_leader_board() should only be in generation 0!"
+        );
+
+        /* find the best chromosome */
+        for (i = 0; i < m->top; i++) {
+                /* allocate memory */
+                chromo = darray_new(p->chromosomes);
+                score = darray_new(p->chromosome_scores);
+                generation = calloc(1, sizeof(float));
+                convergence_rate = calloc(1, sizeof(float));
+                goal_distance = calloc(1, sizeof(float));
+
+                memcpy(chromo, darray_get(p->chromosomes, i), chromo_sz);
+                memcpy(score, darray_get(p->chromosome_scores, i), score_sz);
+                *generation = 0;
+                *convergence_rate = 0;
+                *goal_distance = p->goal;
+
+                darray_set(m->best_chromosomes, i, chromo);
+                darray_set(m->best_scores, i, score);
+                darray_set(m->generations, i, generation);
+                darray_set(m->convergence_rates, i, convergence_rate);
+                darray_set(m->goal_distances, i, goal_distance);
+        }
 
         return 0;
 error:
         return -1;
-}
-
-void log_generation_stats(struct evolve_monitor *m, int generation)
-{
-        char *chromosome = darray_get(m->best_chromosomes, generation);
-        float *score = darray_get(m->best_scores, generation);
-        float *conv_rate = darray_get(m->convergence_rates, generation);
-        float *goal_dist = darray_get(m->goal_distances, generation);
-
-        fprintf(m->log_fp, "%s\n", chromosome);
-        fprintf(m->log_fp, "%f\n", *score);
-        fprintf(m->log_fp, "%d\n", generation);
-        fprintf(m->log_fp, "%f\n", *conv_rate);
-        fprintf(m->log_fp, "%f\n\n", *goal_dist);
-}
-
-void record_generation_stats(
-        struct population *p,
-        struct evolve_monitor *m,
-        int(*cmp)(const void *, const void *)
-)
-{
-        int i = 0;
-        float goal = p->goal;
-        int generation = p->curr_generation;
-        size_t chromo_sz = p->chromosomes->element_size;
-        size_t score_sz = p->chromosome_scores->element_size;
-
-        char *chromo = calloc(1, chromo_sz);
-        float *score = calloc(1, score_sz);
-        char *best_chromo = calloc(1, chromo_sz);
-        float *best_score = calloc(1, score_sz);
-
-        /* instanciate inital best chromosome */
-        memcpy(best_chromo, darray_get(p->chromosomes, 0), chromo_sz);
-        memcpy(best_score, darray_get(p->chromosome_scores, 0), score_sz);
-
-        /* find the best chromosome */
-        for (i = 1; i < p->curr_population; i++) {
-                memcpy(chromo, darray_get(p->chromosomes, i), chromo_sz);
-                memcpy(score, darray_get(p->chromosome_scores, i), score_sz);
-
-                /* set value 1 and value 2 for comparison */
-                float *val_1 = calloc(1, sizeof(float));
-                float *val_2 = calloc(1, sizeof(float));
-                *val_1 = *score - goal;
-                *val_2 = *best_score - goal;
-
-                if (cmp(val_1, val_2) < 1) {
-                        memcpy(best_chromo, chromo, chromo_sz);
-                        memcpy(best_score, score, score_sz);
-                }
-
-                free(val_1);
-                free(val_2);
-        }
-
-        /* record generation statistics into evolve_monitor */
-        int *gen = darray_new(m->generations);
-        float *last_best_score;
-        float *conv_rate = darray_new(m->convergence_rates);
-        float *goal_dist = darray_new(m->goal_distances);
-
-        *gen = generation;
-        if (generation != 0) {
-                last_best_score = darray_get(m->best_scores, generation - 1);
-                *conv_rate = fabs(*last_best_score - *best_score);
-        } else {
-                *conv_rate = 0;
-        }
-        *goal_dist = fabs(p->goal - *best_score);
-
-        /* printf("GEN: %d\n", generation); */
-        /* printf("BEST CHROMO: %s\n", best_chromo); */
-        /* printf("BEST SCORE: %f\n", *(float *) best_score); */
-        darray_set(m->best_chromosomes, generation, best_chromo);
-        darray_set(m->best_scores, generation, best_score);
-        darray_set(m->generations, generation, gen);
-        darray_set(m->convergence_rates, generation, conv_rate);
-        darray_set(m->goal_distances, generation, goal_dist);
-
-        /* log generation stats */
-        if (m->log_stats) {
-                log_generation_stats(m, generation);
-        }
-
-        /* cleanup */
-        free(chromo);
-        free(score);
-}
-
-static void swap_darray_elem(struct darray *arr, int index_1, int index_2)
-{
-        void *tmp_ptr = darray_get(arr, index_1);
-        darray_set(arr, index_1, darray_get(arr, index_2));
-        darray_set(arr, index_2, tmp_ptr);
 }
 
 void insertion_sort_gstats(
@@ -242,89 +194,115 @@ void insertion_sort_gstats(
         }
 }
 
-int partition_gstats(
-        struct evolve_monitor *m,
-        int pivot_index,
-        int left,
-        int right,
-        int (*cmp)(const void *, const void *)
-)
-{
-        int i = 0;
-        int store = 0;
-
-        /* pivot value */
-        void *pivot = darray_get(m->best_scores, pivot_index);
-
-
-        /* move pivot elements to the end of the array */
-        swap_darray_elem(m->best_chromosomes, pivot_index, right);
-        swap_darray_elem(m->best_scores, pivot_index, right);
-        swap_darray_elem(m->generations, pivot_index, right);
-        swap_darray_elem(m->convergence_rates, pivot_index, right);
-        swap_darray_elem(m->goal_distances, pivot_index, right);
-
-        /* values <= pivot, moved to front of pivot
-         * values > pivot, insert after pivot */
-        store = left;
-        for (i = left; i < right; i++) {
-                if (cmp(darray_get(m->best_scores, i), pivot) <= 0) {
-
-                        swap_darray_elem(m->best_chromosomes, i, store);
-                        swap_darray_elem(m->best_scores, i, store);
-                        swap_darray_elem(m->generations, i, store);
-                        swap_darray_elem(m->convergence_rates, i, store);
-                        swap_darray_elem(m->goal_distances, i, store);
-
-                        store++;
-                }
-        }
-
-        swap_darray_elem(m->best_chromosomes, right, store);
-        swap_darray_elem(m->best_scores, right, store);
-        swap_darray_elem(m->generations, right, store);
-        swap_darray_elem(m->convergence_rates, right, store);
-        swap_darray_elem(m->goal_distances, right, store);
-
-        return store;
-}
-
-void quick_sort_gstats(
-        struct evolve_monitor *m,
-        int left,
-        int right,
-        int(*cmp)(const void *, const void *)
-)
-{
-        if (right <= left) {
-                return;
-        }
-
-        /* partition */
-        int pivot_index = randnum_i(left, right);
-        pivot_index = partition_gstats(m, pivot_index, left, right, cmp);
-
-        if (pivot_index - 1 - left <= QSORT_MIN_SIZE) {
-                insertion_sort_gstats(m, left, pivot_index - 1, cmp);
-        } else {
-                quick_sort_gstats(m, left, pivot_index - 1, cmp);
-        }
-
-        if (right - pivot_index - 1 <= QSORT_MIN_SIZE) {
-                insertion_sort_gstats(m, pivot_index + 1, right, cmp);
-        } else {
-                quick_sort_gstats(m, pivot_index + 1, right, cmp);
-        }
-}
-
 void sort_generation_stats(
         struct evolve_monitor *m,
         int (*cmp)(const void *, const void *)
 )
 {
         int right = m->generations->end;
-        quick_sort_gstats(m, 0, right, cmp);
+        insertion_sort_gstats(m, 0, right, cmp);
 }
+
+void record_generation_stats(
+        struct population *p,
+        struct evolve_monitor *m,
+        int (*cmp)(const void *, const void *)
+)
+{
+        int i = 0;
+        float goal = p->goal;
+        size_t chromo_sz = p->chromosomes->element_size;
+        size_t score_sz = p->chromosome_scores->element_size;
+
+        char *best_chromo = darray_new(p->chromosomes);
+        float *best_score = darray_new(p->chromosome_scores);
+        char *chromo = darray_new(p->chromosomes);
+        float *score = darray_new(p->chromosome_scores);
+
+        /* instanciate inital best chromosome */
+        memcpy(best_chromo, darray_get(p->chromosomes, 0), chromo_sz);
+        memcpy(best_score, darray_get(p->chromosome_scores, 0), score_sz);
+
+        /* find the best chromosome */
+        for (i = 1; i < p->curr_population; i++) {
+                memcpy(chromo, darray_get(p->chromosomes, i), chromo_sz);
+                memcpy(score, darray_get(p->chromosome_scores, i), score_sz);
+
+                /* set value 1 and value 2 for comparison */
+                float *val_1 = calloc(1, sizeof(float));
+                float *val_2 = calloc(1, sizeof(float));
+                *val_1 = *score - goal;
+                *val_2 = *best_score - goal;
+
+                if (cmp(val_1, val_2) < 1) {
+                        memcpy(best_chromo, chromo, chromo_sz);
+                        memcpy(best_score, score, score_sz);
+                }
+
+                free(val_1);
+                free(val_2);
+        }
+
+
+        /* record generation statistics into evolve_monitor */
+        int *gen = darray_new(m->generations);
+        float *conv_rate = darray_new(m->convergence_rates);
+        float *goal_dist = darray_new(m->goal_distances);
+
+
+        /* calculate convergence rate */
+        *conv_rate = m->curr_convergence_rate;
+        *gen = p->curr_generation;
+        if (p->curr_generation != 0) {
+                *conv_rate = fabs(m->curr_score - *best_score);
+        } else {
+                fill_leader_board(p, m);
+                sort_generation_stats(m, cmp);
+                *conv_rate = 0;
+        }
+        *goal_dist = fabs(p->goal - *best_score);
+
+        /* log generation stats */
+        if (m->log_stats) {
+                log_generation_stats(
+                        m->log_fp,
+                        p->curr_generation,
+                        best_chromo,
+                        *best_score,
+                        *conv_rate,
+                        *goal_dist
+                );
+        }
+
+        /* over-write prev gen details with current */
+        m->curr_generation = p->curr_generation;
+        m->curr_chromo = best_chromo;
+        m->curr_score = *best_score;
+        m->curr_convergence_rate = *conv_rate;
+        m->curr_goal_distance = *goal_dist;
+
+        /* printf("GEN: %d\n", generation); */
+        /* printf("BEST CHROMO: %s\n", best_chromo); */
+        /* printf("BEST SCORE: %f\n", *(float *) best_score); */
+
+        /* record best chromosome stats */
+        for (i = 0; i < m->top; i++) {
+                if (cmp(darray_get(m->best_scores, i), best_score) > 0) {
+                        darray_update(m->best_chromosomes, i, best_chromo);
+                        darray_update(m->best_scores, i, best_score);
+                        darray_update(m->generations, i, gen);
+                        darray_update(m->convergence_rates, i, conv_rate);
+                        darray_update(m->goal_distances, i, goal_dist);
+                        break;
+                }
+
+        }
+
+        /* cleanup */
+        free(chromo);
+        free(score);
+}
+
 
 void print_generation_stats(struct evolve_monitor *m)
 {

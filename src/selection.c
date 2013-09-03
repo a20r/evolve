@@ -49,8 +49,8 @@ void roulette_wheel_selection(
         }
 
         /* select chromosomes */
+        randnum = randnum_f(0.0, 1.0);
         for (i = 0; i < (*p)->max_population; i++) {
-                randnum = randnum_f(0.0, 1.0);
 
                 /* chromosome score and bit-string */
                 score = calloc(1, score_sz);
@@ -66,6 +66,7 @@ void roulette_wheel_selection(
 
                         i = 0; /* reset wheel */
                         cumulative_prob = 0.0;  /* reset cumulative_prob */
+                        randnum = randnum_f(0.0, 1.0);  /* reset probability */
                         selected++;
                         arr_index++;
                         new_p->curr_population += 1;
@@ -79,6 +80,8 @@ void roulette_wheel_selection(
                         break;
                 } else if ((i + 1) >= (*p)->max_population) {
                         i = 0; /* reset wheel */
+                        cumulative_prob = 0.0;  /* reset cumulative_prob */
+                        randnum = randnum_f(0.0, 1.0);  /* reset probability */
                 }
         }
 

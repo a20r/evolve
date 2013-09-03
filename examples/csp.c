@@ -24,9 +24,9 @@
 
 
 /* GLOBAL VARS */
-int k = 5;  /* number of elements */
-int len = 10;  /* length of each element */
-char *strings[5];
+int k = 4;  /* number of elements */
+int len = 3;  /* length of each element */
+char *strings[4];
 char *largest;
 char *smallest;
 float min_hd;
@@ -245,8 +245,8 @@ static void print_top_chromosomes(struct evolve_monitor *m, int top)
         printf("SORTING RESULTS!\n");
         sort_generation_stats(m, float_cmp_desc);
 
-        /* print top 5 chromosomes */
-        if (m->generations->end >= 5) {
+        /* print top chromosomes */
+        if (m->top >= top) {
                 printf("\nTOP %d CHROMOSOMES:\n", top);
                 for (i = 0; i < top; i++) {
                         printf(
@@ -277,8 +277,8 @@ int main(int argc, char *argv[])
 {
         int max_pop = 6;
         int max_gen = 10;
-        float p_c = (argv[1] == NULL) ? 0.8 : atof(argv[1]);
-        float p_m = (argv[1] == NULL) ? 0.01 : atof(argv[2]);
+        float p_c = (argv[1] == NULL) ? 0.0 : atof(argv[1]);
+        float p_m = (argv[1] == NULL) ? 0.8 : atof(argv[2]);
 
         if (argc != 2) {
                 printf("missing arguments, assuming default probabilities!\n");
@@ -302,7 +302,7 @@ int main(int argc, char *argv[])
         );
         struct evolve_monitor *m = init_evolve_monitor(
                 p->chromosomes->element_size,  /* chromosome size */
-                max_gen,
+                5,
                 "cloest_string_problem.dat"
         );
 

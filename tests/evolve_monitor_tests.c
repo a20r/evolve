@@ -119,54 +119,6 @@ int test_destroy_evolve_monitor()
         return 0;
 }
 
-int test_expand_evolve_monitor()
-{
-        int prev_max = 0;
-        int chromo_sz = strlen(TEST_SOLUTION) * sizeof(char);
-        struct population *p = init_population(
-                chromo_sz,  /* param */
-                0.0,  /* goal */
-                10,  /* max_pop */
-                5 /* max_gen */
-        );
-        m = init_evolve_monitor(chromo_sz, 5, NULL);
-        gen_init_chromosomes(&p, randstr);
-        evaluate_chromosomes(fitness_function, &p);
-        record_generation_stats(p, m, float_cmp_asc);
-
-        /* expand */
-        prev_max = m->best_chromosomes->max;
-        expand_evolve_monitor(m);
-
-        /* assert */
-        mu_assert(
-                m->best_chromosomes->max == prev_max + DEFAULT_EXPAND_RATE,
-                "Failed to expand best_chromosomes!"
-        );
-        mu_assert(
-                m->best_scores->max == prev_max + DEFAULT_EXPAND_RATE,
-                "Failed to expand best_scores!"
-        );
-        mu_assert(
-                m->generations->max == prev_max + DEFAULT_EXPAND_RATE,
-                "Failed to expand generations!"
-        );
-        mu_assert(
-                m->convergence_rates->max == prev_max + DEFAULT_EXPAND_RATE,
-                "Failed to expand convergence_rates!"
-        );
-        mu_assert(
-                m->goal_distances->max == prev_max + DEFAULT_EXPAND_RATE,
-                "Failed to expand goal_distances!"
-        );
-
-        /* clean up */
-        destroy_population(&p);
-        destroy_evolve_monitor(&m);
-
-        return 0;
-}
-
 int test_record_generation_stats()
 {
         int chromo_sz = strlen(TEST_SOLUTION) * sizeof(char);
@@ -184,17 +136,21 @@ int test_record_generation_stats()
         record_generation_stats(p, m, float_cmp_asc);
 
         /* asserts */
-        /* mu_assert( */
-        /*         strcmp(darray_get(m->best_chromosomes, 0), "EQxvj(ADnvQ/") == 0, */
-        /*         "Failed to record best chromosome!" */
-        /* ); */
-
         float best_score = *(float *) darray_get(m->best_scores, 0);
         mu_assert(best_score != 0, "Failed to record best score!");
 
-        mu_assert(m->best_chromosomes->end == 0, "Chromosomes array is not 0!");
-        mu_assert(m->best_scores->end == 0, "Scores array is not 0!");
-        mu_assert(m->generations->end == 0, "Generations array is not 0!");
+        mu_assert(
+                m->best_chromosomes->end != 0,
+                "best_chromosomes length should not be 0!"
+        );
+        mu_assert(
+                m->best_scores->end != 0,
+                "best_scores length should not be 0!"
+        );
+        mu_assert(
+                m->generations->end != 0,
+                "generations length should not be 0!"
+        );
 
         mu_assert(m->best_chromosomes->max == 5, "Chromosomes array is not 5!");
         mu_assert(m->best_scores->max == 5, "Scores array is not 5!");
@@ -219,78 +175,6 @@ int test_insertion_sort_gstats()
         print_generation_stats(m);
 
         insertion_sort_gstats(m, 0, m->best_scores->end, float_cmp_asc);
-
-        debug("After Stats Sort");
-        print_generation_stats(m);
-
-        /* assert test */
-        res = assert_sorted_gstats(m, float_cmp_asc);
-        mu_assert(res == 0, "Sort Generation Stats Failed!");
-
-        sort_test_teardown();
-
-        return 0;
-}
-
-int test_partition_gstats()
-{
-        int res = 0;
-        int max_gen = 5;
-        int max_pop = 100;
-
-        sort_test_setup(max_gen, max_pop);
-
-        /* partition gstats */
-        debug("Before Parition");
-        print_generation_stats(m);
-
-        /* keep pivot value for reference */
-        int pivot_index = 2;
-        float pivot_value = *(float *) darray_get(m->best_scores, pivot_index);
-        debug("Pivot value: %f", pivot_value);
-
-        /* partition gstats */
-        res = partition_gstats(
-                m,
-                pivot_index,
-                0,
-                m->best_scores->end,
-                float_cmp_asc
-        );
-        debug("Partition result: %d\n", res);
-        debug("After Partition");
-        print_generation_stats(m);
-
-        /* sort gstats so we can verify the partition result */
-        insertion_sort_gstats(m, 0, m->best_scores->end, float_cmp_asc);
-        float value = *(float *) darray_get(m->best_scores, res);
-
-        /* assert test */
-        mu_assert(
-                float_cmp_asc(&value, &pivot_value) == 0,
-                "Failed to partition gstats!"
-        );
-        debug("value_1: %f \t value_2: %f", pivot_value, value);
-
-        sort_test_teardown();
-
-        return 0;
-}
-
-
-int test_quick_sort_gstats()
-{
-        int res = 0;
-        int max_gen = 100;
-        int max_pop = 100;
-
-        sort_test_setup(max_gen, max_pop);
-
-        /* sort population */
-        debug("Before Stats Sort");
-        print_generation_stats(m);
-
-        quick_sort_gstats(m, 0, m->best_scores->end, float_cmp_asc);
 
         debug("After Stats Sort");
         print_generation_stats(m);
@@ -334,11 +218,8 @@ void test_suite()
 {
         mu_run_test(test_init_evolve_monitor);
         mu_run_test(test_destroy_evolve_monitor);
-        mu_run_test(test_expand_evolve_monitor);
         mu_run_test(test_record_generation_stats);
         mu_run_test(test_insertion_sort_gstats);
-        mu_run_test(test_partition_gstats);
-        mu_run_test(test_quick_sort_gstats);
         mu_run_test(test_sort_generation_stats);
 }
 

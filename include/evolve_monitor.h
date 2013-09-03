@@ -1,6 +1,7 @@
 #ifndef _EVOLVE_MONITOR_H_
 #define _EVOLVE_MONITOR_H_
 
+#include <stdio.h>
 #include <stdlib.h>
 
 
@@ -13,11 +14,21 @@
 /* STRUCT */
 struct evolve_monitor
 {
+        long top;
+
+        /* leader board */
         struct darray *best_chromosomes;
         struct darray *best_scores;
         struct darray *generations;
         struct darray *convergence_rates;
         struct darray *goal_distances;
+
+        /* current generation stats */
+        char *curr_chromo;
+        float curr_score;
+        float curr_generation;
+        float curr_convergence_rate;
+        float curr_goal_distance;
 
         int log_stats;
         FILE *log_fp;
@@ -30,7 +41,6 @@ struct evolve_monitor *init_evolve_monitor(
         char *log_fp
 );
 void destroy_evolve_monitor(struct evolve_monitor **m);
-int expand_evolve_monitor(struct evolve_monitor *m);
 
 #include "evolve.h"
 void record_generation_stats(
@@ -40,19 +50,6 @@ void record_generation_stats(
 );
 void insertion_sort_gstats(
         struct evolve_monitor *m,
-        int left,
-        int right,
-        int (*cmp)(const void *, const void *)
-);
-void quick_sort_gstats(
-        struct evolve_monitor *m,
-        int left,
-        int right,
-        int(*cmp)(const void *, const void *)
-);
-int partition_gstats(
-        struct evolve_monitor *m,
-        int pivot_index,
         int left,
         int right,
         int (*cmp)(const void *, const void *)
