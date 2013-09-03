@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 
 set(LIB_NAME evolve)
-set(CMAKE_C_COMPILER gcc)
+set(CMAKE_C_COMPILER clang)
 set(CMAKE_BUILD_TYPE DEBUG)
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -g")
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -DNDEBUG")

@@ -10,7 +10,7 @@ before_script:
     - sudo bash scripts/install_dependencies.sh
 
 script:
-    cmake . && make && cd scripts && python unittest_runner.py
+    cmake . && make && python ./scripts/unittest_runner.py
 
 branches:
   only:
