@@ -11,10 +11,8 @@
 
 int one_pt_crossover(void **chromo_1, void **chromo_2, int index)
 {
-        /* debug("chromo_1: %s", chromo_1); */
-        /* debug("strlen chromo_1: %d", strlen(chromo_1)); */
         int len = (int) strlen(*chromo_1) + 1;
-        int i = (index == DEFAULT_PIVOT ? round(len / 2) - 1 : index);
+        int i = (index == DEFAULT_PIVOT ? round(len / 2) : index);
         char *child_1 = calloc(1, sizeof(char) * (len));
         char *child_2 = calloc(1, sizeof(char) * (len));
 
@@ -50,6 +48,20 @@ error:
         if (child_1) free(child_1);
         if (child_2) free(child_2);
         return -1;
+}
+
+int two_pt_crossover(void **chromo_1, void **chromo_2, int index)
+{
+        int result = 0;
+        int len = (int) strlen(*chromo_1) + 1;
+        int i_1 = index == DEFAULT_PIVOT ? round(len / 3) : index;
+        int i_2 = index == DEFAULT_PIVOT ? round(len * 2 / 3) : len * 2 / 3;
+
+        result = one_pt_crossover(&(*chromo_1), &(*chromo_2), i_1);
+        result = one_pt_crossover(&(*chromo_1), &(*chromo_2), i_2);
+
+        /* clean up */
+        return result;
 }
 
 void crossover(

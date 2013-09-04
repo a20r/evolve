@@ -245,8 +245,6 @@ def analyze_log_file(data_dir):
     log_file = log_files[0]
     print("Processing file [{0}]".format(log_file))
     result = scrape_log_file(join(data_dir, log_file))
-    print result["generations"].__len__()
-    print result["goal_distances"].__len__()
     plot_scatter_graph(
         "Goal Distances vs Generations",
         result["generations"][1:],

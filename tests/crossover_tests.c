@@ -11,8 +11,8 @@
 
 /* GLOBAL VAR */
 struct chromosome_pair *c_pair;
-char *c_1_orig = "Hello Dave!\0";
-char *c_2_orig = "Ciao Maria!\0";
+char *c_1_orig = "123456789\0";
+char *c_2_orig = "ABCDEFGHI\0";
 void *chromo_1;
 void *chromo_2;
 
@@ -80,25 +80,61 @@ int test_one_ptr_crossover()
         print_before_pivot();
         one_pt_crossover(&chromo_1, &chromo_2, pivot);
         mu_assert(
-                strcmp(chromo_1, "HelloMaria!") == 0,
+                strcmp(chromo_1, "12345FGHI") == 0,
                 "Failed to crossover child 1!"
         );
         mu_assert(
-                strcmp(chromo_2, "Ciao  Dave!") == 0,
+                strcmp(chromo_2, "ABCDE6789") == 0,
                 "Failed to crossover child 2!"
         );
         print_after_pivot();
 
         /* slightly different crossover - pivot at index = 3 */
         print_before_pivot();
-        one_pt_crossover(&chromo_1, &chromo_2, 3);
+        one_pt_crossover(&chromo_1, &chromo_2, 5);
         mu_assert(
-                strcmp(chromo_1, "Helo  Dave!") == 0,
-                "Failed to crossover!"
+                strcmp(chromo_1, "123456789") == 0,
+                "Failed to crossover child 1!"
         );
         mu_assert(
-                strcmp(chromo_2, "CialoMaria!") == 0,
-                "Failed to crossover!"
+                strcmp(chromo_2, "ABCDEFGHI") == 0,
+                "Failed to crossover child 2!"
+        );
+        print_after_pivot();
+
+        teardown();
+        return 0;
+}
+
+int test_two_ptr_crossover()
+{
+        int pivot = DEFAULT_PIVOT;
+
+        setup();
+
+        /* default crossover  */
+        print_before_pivot();
+        two_pt_crossover(&chromo_1, &chromo_2, pivot);
+        mu_assert(
+                strcmp(chromo_1, "12345FGHI") == 0,
+                "Failed to crossover child 1!"
+        );
+        mu_assert(
+                strcmp(chromo_2, "ABCDE6789") == 0,
+                "Failed to crossover child 2!"
+        );
+        print_after_pivot();
+
+        /* slightly different crossover - pivot at index = 3 */
+        print_before_pivot();
+        two_pt_crossover(&chromo_1, &chromo_2, 3);
+        mu_assert(
+                strcmp(chromo_1, "123456789") == 0,
+                "Failed to crossover child 1!"
+        );
+        mu_assert(
+                strcmp(chromo_2, "ABCDEFGHI") == 0,
+                "Failed to crossover child 2!"
         );
         print_after_pivot();
 
@@ -109,6 +145,7 @@ int test_one_ptr_crossover()
 void test_suite()
 {
         mu_run_test(test_one_ptr_crossover);
+        mu_run_test(test_two_ptr_crossover);
 }
 
 int main()

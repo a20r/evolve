@@ -211,7 +211,7 @@ static float fitness_function(char *chromosome)
         }
         insertion_sort(scores, sizeof(float), 0, k - 1, float_cmp_desc);
 
-        return max_score - scores[0];
+        return max_score - fabs(min_hd - scores[0]);
 }
 
 static void print_evolve_results(struct population *p)
@@ -305,7 +305,7 @@ int main(int argc, char *argv[])
                 fitness_function,
 
                 /* selection */
-                roulette_wheel_selection,
+                tournament_selection,
                 DEFAULT_SELECT,
 
                 /* crossover */

@@ -8,6 +8,7 @@
 
 /* FUNCTIONS */
 int one_pt_crossover(void **chromo_1, void **chromo_2, int index);
+int two_pt_crossover(void **chromo_1, void **chromo_2, int index);
 void crossover(
         void **child_1,
         void **child_2,
