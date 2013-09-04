@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import re
 from os import listdir
 from os.path import isfile
 from os.path import join
@@ -8,7 +9,10 @@ import numpy
 
 
 # settings
-data_dir = "log_data/pc0.8_pm0.1"
+# data_dir = "log_data/pc0.8_pm0.1"
+data_dir = "."
+data_file_pattern = "^[a-zA-Z0-9_]*.dat$"
+
 
 
 def scrape_log_file(log_file):
@@ -21,9 +25,10 @@ def scrape_log_file(log_file):
 
     log = open(log_file, "r")
     lines = log.readlines()
-    exec_time = float(
-        lines[-1].replace("execution time: ", "").replace("\n", "")
-    )
+    if lines[-1].__len__() != 1:
+        exec_time = float(
+            lines[-1].replace("execution time: ", "").replace("\n", "")
+        )
     line_numbers = lines.__len__() - 2
 
     field = 0
@@ -203,9 +208,12 @@ def analyze_log_files(data_dir):
     file_names = []
 
     # obtain file list
-    log_files = [f for f in listdir(data_dir) if isfile(join(data_dir, f))]
+    file_list = [f for f in listdir(data_dir) if isfile(join(data_dir, f))]
+    log_files = []
+    for f in file_list:
+        if re.match(data_file_pattern, f):
+            log_files.append(f)
     log_files.sort()
-    log_files = log_files
 
     # loop through files
     for log_file in log_files:
@@ -221,7 +229,34 @@ def analyze_log_files(data_dir):
     obtain_convergence_equations(exec_time_summary)
 
 
+def analyze_log_file(data_dir):
+    exec_times = []
+    file_names = []
+
+    # obtain file list
+    file_list = [f for f in listdir(data_dir) if isfile(join(data_dir, f))]
+    log_files = []
+    for f in file_list:
+        if re.match(data_file_pattern, f):
+            log_files.append(f)
+    log_files.sort()
+
+    # loop through files
+    log_file = log_files[0]
+    print("Processing file [{0}]".format(log_file))
+    result = scrape_log_file(join(data_dir, log_file))
+    print result["generations"].__len__()
+    print result["goal_distances"].__len__()
+    plot_scatter_graph(
+        "Goal Distances vs Generations",
+        result["generations"][1:],
+        result["goal_distances"],
+        "Generation",
+        "Goal Distance"
+    )
+
 if __name__ == '__main__':
     print("Analyzing experiment log files")
-    analyze_log_files(data_dir)
+    # analyze_log_files(data_dir)
+    analyze_log_file(data_dir)
     # plot_time_vs_generations()

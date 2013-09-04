@@ -44,7 +44,7 @@ static void teardown()
         destroy_population(&p);
 }
 
-int test_roulette_selection()
+int test_roulette_wheel_selection()
 {
         setup();
 
@@ -55,7 +55,24 @@ int test_roulette_selection()
         mu_assert(p->chromosomes->end == 5, "End should be 5!");
         mu_assert(p->chromosome_scores->end == 5, "End should be 5!");
         mu_assert(p->curr_population == 6, "Current population should be 6!");
-        mu_assert(p->max_population == 10, "Maximum population should be 10!");
+        mu_assert(p->max_population == 10, "Max population should be 10!");
+
+        teardown();
+        return 0;
+}
+
+int test_tournament_selection()
+{
+        setup();
+
+        print_population(p);
+        tournament_selection(&p, NULL);
+        print_population(p);
+
+        mu_assert(p->chromosomes->end == 5, "End should be 5!");
+        mu_assert(p->chromosome_scores->end == 5, "End should be 5!");
+        mu_assert(p->curr_population == 6, "Current population should be 6!");
+        mu_assert(p->max_population == 10, "Max population should be 10!");
 
         teardown();
         return 0;
@@ -63,7 +80,8 @@ int test_roulette_selection()
 
 void test_suite()
 {
-        mu_run_test(test_roulette_selection);
+        mu_run_test(test_roulette_wheel_selection);
+        mu_run_test(test_tournament_selection);
 }
 
 int main()

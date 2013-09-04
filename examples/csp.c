@@ -25,10 +25,8 @@
 
 /* GLOBAL VARS */
 int k = 4;  /* number of elements */
-int len = 3;  /* length of each element */
+int len = 10;  /* length of each element */
 char *strings[4];
-char *largest;
-char *smallest;
 float min_hd;
 volatile sig_atomic_t stop_signal = 0;
 
@@ -183,13 +181,7 @@ static void setup_strings(int k, int len)
         }
 
         /* find theoretical minimal hamming diameter */
-        largest = calloc(1, (sizeof(char) * len * 2) + 1);
-        smallest = calloc(1, (sizeof(char) * len * 2) + 1);
-        strcpy(largest, combinations[scores_len - 1]);
-        strcpy(smallest, combinations[0]);
-        min_hd = fabs((scores[0] - scores[scores_len - 1]) / 2);
-        printf("Largest combination: %s\n", largest);
-        printf("Smallest combination: %s\n", smallest);
+        min_hd = roundf(fabs((scores[scores_len - 1]) / 2));
         printf("Theoretical Minimum Hamming Distance: %.2f\n", min_hd);
 
         /* clean up */
@@ -205,23 +197,21 @@ static void teardown_strings()
         for (i = 0; i < k; i++) {
                 free(strings[i]);
         }
-
-        free(largest);
-        free(smallest);
 }
 
 static float fitness_function(char *chromosome)
 {
         int i;
-        float score = 0.0;
+        float scores[k];
         float max_score = len * k;
 
         /* evaulate closest string */
         for (i = 0; i < k; i++) {
-                score += hamming_dist(chromosome, strings[i]);
+                scores[i] = hamming_dist(chromosome, strings[i]);
         }
+        insertion_sort(scores, sizeof(float), 0, k - 1, float_cmp_desc);
 
-        return max_score - score;
+        return max_score - scores[0];
 }
 
 static void print_evolve_results(struct population *p)
@@ -275,10 +265,10 @@ static void print_top_chromosomes(struct evolve_monitor *m, int top)
 
 int main(int argc, char *argv[])
 {
-        int max_pop = 6;
-        int max_gen = 10;
-        float p_c = (argv[1] == NULL) ? 0.0 : atof(argv[1]);
-        float p_m = (argv[1] == NULL) ? 0.8 : atof(argv[2]);
+        int max_pop = 10;
+        int max_gen = 1000;
+        float p_c = (argv[1] == NULL) ? 0.8 : atof(argv[1]);
+        float p_m = (argv[1] == NULL) ? 0.1 : atof(argv[2]);
 
         if (argc != 2) {
                 printf("missing arguments, using default settings!\n");
@@ -292,7 +282,6 @@ int main(int argc, char *argv[])
         printf("Running!\n");
         signal(SIGINT, signal_handler);
 
-
         /* initialize evolution */
         struct population *p = init_population(
                 len,  /* param */
@@ -303,7 +292,7 @@ int main(int argc, char *argv[])
         struct evolve_monitor *m = init_evolve_monitor(
                 p->chromosomes->element_size,  /* chromosome size */
                 5,
-                "cloest_string_problem.dat"
+                "csp.dat"
         );
 
         /* run evolution */
