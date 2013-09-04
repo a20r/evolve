@@ -10,34 +10,43 @@
 #include "population.h"
 #include "evolve.h"
 
+static struct population *create_empty_population(struct population *p)
+{
+        struct population *new_p;
+        new_p = init_population(
+                p->parameters,
+                p->goal,
+                p->max_population,
+                p->max_generation
+        );
+        new_p->curr_generation = p->curr_generation;
+        new_p->solution = p->solution;
 
-void roulette_wheel_selection(
-        struct population **p,
-        int *select
-)
+        return new_p;
+}
+
+void roulette_wheel_selection(struct population **p, int *select)
 {
         int i = 0;
-        float randnum = 0.0;
-        size_t chromo_sz = (*p)->chromosomes->element_size;
-        size_t score_sz = (*p)->chromosome_scores->element_size;
         int arr_index = 0;
+        int selected = 0;
+        int max_select = 0;
+        float randnum = 0.0;
+
         void *score;
         void *chromo;
-        int selected = 0;
-        int max_select = (select == NULL ? (*p)->max_population / 2 : *select);
+        size_t chromo_sz;
+        size_t score_sz;
+
         struct population *new_p;
         float cumulative_prob = 0.0;
 
 
-        /* initialize new population */
-        new_p = init_population(
-                (*p)->parameters,
-                (*p)->goal,
-                (*p)->max_population,
-                (*p)->max_generation
-        );
-        new_p->curr_generation = (*p)->curr_generation;
-        new_p->solution = (*p)->solution;
+        /* setup */
+        chromo_sz = (*p)->chromosomes->element_size;
+        score_sz = (*p)->chromosome_scores->element_size;
+        new_p = create_empty_population(*p);
+        max_select = (select == NULL ? (*p)->max_population / 2 : *select);
 
         /* noramlize fitness values and sort by descending order */
         normalize_fitness_values(&(*p));
@@ -146,10 +155,7 @@ static void sort_tournament(
         }
 }
 
-void tournament_selection(
-        struct population **p,
-        int *select
-)
+void tournament_selection(struct population **p, int *select)
 {
         int i = 0;
         int j = 0;
@@ -157,10 +163,10 @@ void tournament_selection(
         int t_size = 2;  /* tournament size */
         float r = 0.0;
 
-        size_t chromo_sz = (*p)->chromosomes->element_size;
-        size_t score_sz = (*p)->chromosome_scores->element_size;
         void *chromo;
         void *score;
+        size_t chromo_sz;
+        size_t score_sz;
 
         struct population *new_p;
         struct darray *t_chromos;  /* tournament chromosomes */
@@ -168,24 +174,13 @@ void tournament_selection(
 
 
         /* setup */
+        chromo_sz = (*p)->chromosomes->element_size;
+        score_sz = (*p)->chromosome_scores->element_size;
         t_chromos = darray_create(chromo_sz, t_size);
         t_scores = darray_create(score_sz, t_size);
-
-        /* make sure number of selection is an even number! */
         max_select = (select == NULL ? (*p)->max_population / 2 : *select);
-        if (max_select % 2 != 0) {
-                max_select += 1;
-        }
-
-        /* initialize new population */
-        new_p = init_population(
-                (*p)->parameters,
-                (*p)->goal,
-                (*p)->max_population,
-                (*p)->max_generation
-        );
-        new_p->curr_generation = (*p)->curr_generation;
-        new_p->solution = (*p)->solution;
+        max_select = (max_select % 2 == 0) ? max_select : max_select + 1;
+        new_p = create_empty_population(*p);
 
         /* tournament selection */
         for (j = 0; j < max_select; j++) {
@@ -208,11 +203,11 @@ void tournament_selection(
                                 score_sz
                         );
 
-                        /* on first run set, second+ update */
                         if (j == 0) {
                                 darray_set(t_chromos, i, chromo);
                                 darray_set(t_scores, i, score);
                         } else {
+                                /* second+ update to avoid mem leaks */
                                 darray_update(t_chromos, i, chromo);
                                 darray_update(t_scores, i, score);
                         }
