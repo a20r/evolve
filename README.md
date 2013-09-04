@@ -2,12 +2,12 @@
 evolve is a Gentic Algorithm implemented in C. Currently features:
 
 - One dimensional bit-string
-- Selection
+- **Selection**
     - Roulette selection
     - Tournament selection
-- Crossover
+- **Crossover**
     - One point crossover
-- Mutation
+- **Mutation**
     - String mutation
     - Alphanumeric mutation
     - Numeric mutation
