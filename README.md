@@ -7,6 +7,7 @@ evolve is a Gentic Algorithm implemented in C. Currently features:
     - Tournament selection
 - **Crossover**
     - One point crossover
+    - Two point crossover
 - **Mutation**
     - String mutation
     - Alphanumeric mutation
