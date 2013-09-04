@@ -10,6 +10,7 @@
 #include "population.h"
 #include "evolve.h"
 
+
 static struct population *create_empty_population(struct population *p)
 {
         struct population *new_p;

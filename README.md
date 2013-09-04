@@ -1,10 +1,17 @@
 # evolve [![Build Status](https://travis-ci.org/chutsu/evolve.png)][1]
 evolve is a Gentic Algorithm implemented in C. Currently features:
 
-- One dimension bit-string
-- Roulette Selection
-- One point crossover
-- Simple single character mutation
+- One dimensional bit-string
+- Selection
+    - Roulette selection
+    - Tournament selection
+- Crossover
+    - One point crossover
+- Mutation
+    - String mutation
+    - Alphanumeric mutation
+    - Numeric mutation
+    - DNA mutation
 
 For more information please have a look at the documentation.
 
