@@ -21,6 +21,17 @@ class TermColors:
     FAIL = '\033[91m'
     ENDC = '\033[0m'
 
+def print_stdout(unittest_output_fp):
+    # open unittest stdout log file
+    unittest_output = open(unittest_output_fp, 'r')
+    output_content = unittest_output.read()
+    unittest_output.close()
+
+    # print unittest stdout
+    print("-" * 79)
+    print(output_content)
+    print("-" * 79)
+
 
 if __name__ == "__main__":
     orig_cwd = os.getcwd()
@@ -39,39 +50,33 @@ if __name__ == "__main__":
     # execute all unittests
     os.chdir(unittests_bin_dir)
     error = False
+    return_val = 0
     for unittest in unittests:
         print("UNITTEST [{0}] ".format(unittest)),
 
         # execute unittest
-        unittest_output_fp = os.path.join(
-            orig_cwd,
-            unittests_log_dir,
-            unittest + ".log"
-        )
-        unittest_output = open(unittest_output_fp, 'w')
-        return_val = subprocess.check_call(
-            "./{0}".format(unittest),
-            stdout=unittest_output,
-            stderr=unittest_output
-        )
-        unittest_output.close()
+        try:
+            unittest_output_fp = os.path.join(
+                orig_cwd,
+                unittests_log_dir,
+                unittest + ".log"
+            )
 
-        # print result
-        if return_val != 0:
-            error = True
-            print("{0}FAILED!{1}".format(TermColors.FAIL, TermColors.ENDC))
-
-            # open unittest stdout log file
             unittest_output = open(unittest_output_fp, 'w')
-            output_content = unittest_output.read()
+            return_val = subprocess.check_call(
+                "./{0}".format(unittest),
+                stdout=unittest_output,
+                stderr=unittest_output
+            )
             unittest_output.close()
-
-            # print unittest stdout
-            print("-" * 79)
-            print(output_content)
-            print("-" * 79)
-        else:
             print("{0}PASSED!{1}".format(TermColors.OKGREEN, TermColors.ENDC))
+
+        except:
+            unittest_output.close()
+            print("{0}FAILED!{1}".format(TermColors.FAIL, TermColors.ENDC))
+            print_stdout(unittest_output_fp)
+            error = True
+
 
     # remove unittest stdout dir
     os.chdir(orig_cwd)
