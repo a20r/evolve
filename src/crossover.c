@@ -60,7 +60,6 @@ int two_pt_crossover(void **chromo_1, void **chromo_2, int index)
         result = one_pt_crossover(&(*chromo_1), &(*chromo_2), i_1);
         result = one_pt_crossover(&(*chromo_1), &(*chromo_2), i_2);
 
-        /* clean up */
         return result;
 }
 

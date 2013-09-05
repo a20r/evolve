@@ -81,7 +81,7 @@ static int fill_leader_board(
         float *goal_distance;
 
         size_t chromo_sz = p->chromosomes->element_size;
-        size_t score_sz = p->chromosome_scores->element_size;
+        size_t score_sz = p->scores->element_size;
 
         check(
                 p->curr_generation == 0,
@@ -94,13 +94,13 @@ static int fill_leader_board(
         for (i = 0; i < m->top; i++) {
                 /* allocate memory */
                 chromo = darray_new(p->chromosomes);
-                score = darray_new(p->chromosome_scores);
+                score = darray_new(p->scores);
                 generation = calloc(1, sizeof(float));
                 convergence_rate = calloc(1, sizeof(float));
                 goal_distance = calloc(1, sizeof(float));
 
                 memcpy(chromo, darray_get(p->chromosomes, i), chromo_sz);
-                memcpy(score, darray_get(p->chromosome_scores, i), score_sz);
+                memcpy(score, darray_get(p->scores, i), score_sz);
                 *generation = 0;
                 *convergence_rate = fabs(p->goal - *score);
                 *goal_distance = fabs(p->goal - *score);
@@ -201,17 +201,17 @@ static int find_best_chromosome(
 )
 {
         int i = 0;
-        size_t score_sz = p->chromosome_scores->element_size;
-        float *score = darray_new(p->chromosome_scores);
-        float *best_score = darray_new(p->chromosome_scores);
+        size_t score_sz = p->scores->element_size;
+        float *score = darray_new(p->scores);
+        float *best_score = darray_new(p->scores);
         int best_score_index = 0;
 
         /* instanciate inital best chromosome */
-        memcpy(score, darray_get(p->chromosome_scores, 0), score_sz);
+        memcpy(score, darray_get(p->scores, 0), score_sz);
 
         /* find the best chromosome */
         for (i = 1; i < p->curr_population; i++) {
-                memcpy(score, darray_get(p->chromosome_scores, i), score_sz);
+                memcpy(score, darray_get(p->scores, i), score_sz);
 
                 /* set value 1 and value 2 for comparison */
                 float *val_1 = calloc(1, sizeof(float));
@@ -272,7 +272,7 @@ void record_generation_stats(
 {
         /* leaderboard variables */
         char *best_chromo = darray_new(p->chromosomes);
-        float *best_score = darray_new(p->chromosome_scores);
+        float *best_score = darray_new(p->scores);
         int *gen = darray_new(m->generations);
         float *conv_rate = darray_new(m->convergence_rates);
         float *goal_dist = darray_new(m->goal_distances);
@@ -280,9 +280,9 @@ void record_generation_stats(
         /* find the best chromosome */
         int best_index = find_best_chromosome(p, cmp);
         size_t chromo_sz = p->chromosomes->element_size;
-        size_t score_sz = p->chromosome_scores->element_size;
+        size_t score_sz = p->scores->element_size;
         memcpy(best_chromo, darray_get(p->chromosomes, best_index), chromo_sz);
-        memcpy(best_score, darray_get(p->chromosome_scores, best_index), score_sz);
+        memcpy(best_score, darray_get(p->scores, best_index), score_sz);
 
         /* calculate convergence rate and goal distance */
         *conv_rate = m->curr_convergence_rate;

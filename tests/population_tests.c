@@ -133,7 +133,7 @@ int test_init_population()
 
         /* chromosomes */
         mu_assert(p->chromosomes != NULL, "Chromosomes should not be NULL!");
-        mu_assert(p->chromosome_scores != NULL, "Scores should not be NULL!");
+        mu_assert(p->scores != NULL, "Scores should not be NULL!");
         mu_assert(p->total_score == 0.0, "Sum of scores should be 0.0!");
 
         /* fitness details */
@@ -219,7 +219,7 @@ int test_evaluate_chromosomes()
 
         /* loop through and check scores */
         for (i = 0; i < p->max_population; i++) {
-                curr_score = *((float *) darray_get(p->chromosome_scores, i));
+                curr_score = *((float *) darray_get(p->scores, i));
 
                 mu_assert(
                                 curr_score != last_score,
@@ -262,7 +262,7 @@ int test_normalize_fitness_values()
 
         /* assert tests */
         for (i = 0; i < p->max_population; i++) {
-                sum += *(float *) darray_get(p->chromosome_scores, i);
+                sum += *(float *) darray_get(p->scores, i);
         }
 
         sum = round(sum);
@@ -372,7 +372,7 @@ int test_partition_population()
         /* keep pivot value for reference */
         int pivot_index = 2;
         float pivot_value = *(float *) darray_get(
-                p->chromosome_scores,
+                p->scores,
                 pivot_index
         );
 
@@ -390,7 +390,7 @@ int test_partition_population()
 
         /* assert tests */
         insertion_sort_population(p, 0, p->chromosomes->end, float_cmp_asc);
-        float value = *(float *) darray_get(p->chromosome_scores, res);
+        float value = *(float *) darray_get(p->scores, res);
 
         /* assert test */
         mu_assert(

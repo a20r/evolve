@@ -9,7 +9,7 @@
 struct population {
         /* chromosomes */
         struct darray *chromosomes;
-        struct darray *chromosome_scores;
+        struct darray *scores;
         float total_score;
 
         /* fitness details */

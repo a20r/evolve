@@ -116,11 +116,11 @@ int test_two_ptr_crossover()
         print_before_pivot();
         two_pt_crossover(&chromo_1, &chromo_2, pivot);
         mu_assert(
-                strcmp(chromo_1, "12345FGHI") == 0,
+                strcmp(chromo_1, "123DEF789") == 0,
                 "Failed to crossover child 1!"
         );
         mu_assert(
-                strcmp(chromo_2, "ABCDE6789") == 0,
+                strcmp(chromo_2, "ABC456GHI") == 0,
                 "Failed to crossover child 2!"
         );
         print_after_pivot();

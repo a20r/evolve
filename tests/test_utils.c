@@ -44,8 +44,8 @@ int assert_sorted_population(
 
         for (i = 1; i <= end; i++) {
                 res = cmp(
-                        darray_get(p->chromosome_scores, i - 1),
-                        darray_get(p->chromosome_scores, i)
+                        darray_get(p->scores, i - 1),
+                        darray_get(p->scores, i)
                 );
 
                 if (res > 0) {

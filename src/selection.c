@@ -45,7 +45,7 @@ void roulette_wheel_selection(struct population **p, int *select)
 
         /* setup */
         chromo_sz = (*p)->chromosomes->element_size;
-        score_sz = (*p)->chromosome_scores->element_size;
+        score_sz = (*p)->scores->element_size;
         new_p = create_empty_population(*p);
         max_select = (select == NULL ? (*p)->max_population / 2 : *select);
 
@@ -66,13 +66,13 @@ void roulette_wheel_selection(struct population **p, int *select)
                 chromo = calloc(1, chromo_sz);
                 score = calloc(1, score_sz);
                 memcpy(chromo, darray_get((*p)->chromosomes, i), chromo_sz);
-                memcpy(score, darray_get((*p)->chromosome_scores, i), score_sz);
+                memcpy(score, darray_get((*p)->scores, i), score_sz);
 
                 /* select if chromosome score is larger than random number */
                 cumulative_prob += *(float *) score;
                 if (cumulative_prob >= randnum) {
                         darray_set(new_p->chromosomes, arr_index, chromo);
-                        darray_set(new_p->chromosome_scores, arr_index, score);
+                        darray_set(new_p->scores, arr_index, score);
 
                         i = 0; /* reset wheel */
                         cumulative_prob = 0.0;  /* reset cumulative_prob */
@@ -176,7 +176,7 @@ void tournament_selection(struct population **p, int *select)
 
         /* setup */
         chromo_sz = (*p)->chromosomes->element_size;
-        score_sz = (*p)->chromosome_scores->element_size;
+        score_sz = (*p)->scores->element_size;
         t_chromos = darray_create(chromo_sz, t_size);
         t_scores = darray_create(score_sz, t_size);
         max_select = (select == NULL ? (*p)->max_population / 2 : *select);
@@ -200,7 +200,7 @@ void tournament_selection(struct population **p, int *select)
                         );
                         memcpy(
                                 score,
-                                darray_get((*p)->chromosome_scores, r),
+                                darray_get((*p)->scores, r),
                                 score_sz
                         );
 
@@ -224,7 +224,7 @@ void tournament_selection(struct population **p, int *select)
                 memcpy(score, darray_get(t_scores, 0), score_sz);
 
                 darray_set(new_p->chromosomes, j, chromo);
-                darray_set(new_p->chromosome_scores, j, score);
+                darray_set(new_p->scores, j, score);
                 new_p->curr_population += 1;
         }
 
