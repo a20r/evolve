@@ -54,7 +54,7 @@ int test_roulette_wheel_selection()
 
         mu_assert(p->chromosomes->end == 5, "End should be 5!");
         mu_assert(p->scores->end == 5, "End should be 5!");
-        mu_assert(p->curr_population == 6, "Current population should be 6!");
+        mu_assert(p->population == 6, "Current population should be 6!");
         mu_assert(p->max_population == 10, "Max population should be 10!");
 
         teardown();
@@ -71,7 +71,7 @@ int test_tournament_selection()
 
         mu_assert(p->chromosomes->end == 5, "End should be 5!");
         mu_assert(p->scores->end == 5, "End should be 5!");
-        mu_assert(p->curr_population == 6, "Current population should be 6!");
+        mu_assert(p->population == 6, "Current population should be 6!");
         mu_assert(p->max_population == 10, "Max population should be 10!");
 
         teardown();

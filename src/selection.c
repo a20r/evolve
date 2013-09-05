@@ -20,7 +20,7 @@ static struct population *create_empty_population(struct population *p)
                 p->max_population,
                 p->max_generation
         );
-        new_p->curr_generation = p->curr_generation;
+        new_p->generation = p->generation;
         new_p->solution = p->solution;
 
         return new_p;
@@ -79,7 +79,7 @@ void roulette_wheel_selection(struct population **p, int *select)
                         randnum = randnum_f(0.0, 1.0);  /* reset probability */
                         selected++;
                         arr_index++;
-                        new_p->curr_population += 1;
+                        new_p->population += 1;
                 } else {
                         free(score);
                         free(chromo);
@@ -188,7 +188,7 @@ void tournament_selection(struct population **p, int *select)
 
                 /* randomly select N chromosomes (i.e tournament size) */
                 for (i = 0; i < t_size; i++) {
-                        r = randnum_i(0, (*p)->curr_population - 1);
+                        r = randnum_i(0, (*p)->population - 1);
 
                         /* chromosome and score */
                         chromo = calloc(1, chromo_sz);
@@ -225,7 +225,7 @@ void tournament_selection(struct population **p, int *select)
 
                 darray_set(new_p->chromosomes, j, chromo);
                 darray_set(new_p->scores, j, score);
-                new_p->curr_population += 1;
+                new_p->population += 1;
         }
 
         /* clean up */

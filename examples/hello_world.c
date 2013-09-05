@@ -38,7 +38,7 @@ static void print_evolve_results(struct population *p)
                 printf("Solution: %s\n", p->solution);
                 printf("Score: %.2f\n", fitness_function(p->solution));
                 printf("Goal: %.2f\n", p->goal);
-                printf("Took %d Generations\n\n", p->curr_generation);
+                printf("Took %d Generations\n\n", p->generation);
         } else {
                 printf("Failed to find solution . . . \n\n");
         }

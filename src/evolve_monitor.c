@@ -84,7 +84,7 @@ static int fill_leader_board(
         size_t score_sz = p->scores->element_size;
 
         check(
-                p->curr_generation == 0,
+                p->generation == 0,
                 "Error! fill_leader_board() should only be in generation 0!"
         );
 
@@ -210,7 +210,7 @@ static int find_best_chromosome(
         memcpy(score, darray_get(p->scores, 0), score_sz);
 
         /* find the best chromosome */
-        for (i = 1; i < p->curr_population; i++) {
+        for (i = 1; i < p->population; i++) {
                 memcpy(score, darray_get(p->scores, i), score_sz);
 
                 /* set value 1 and value 2 for comparison */
@@ -285,10 +285,10 @@ void record_generation_stats(
         memcpy(best_score, darray_get(p->scores, best_index), score_sz);
 
         /* calculate convergence rate and goal distance */
-        *conv_rate = m->curr_convergence_rate;
-        *gen = p->curr_generation;
-        if (p->curr_generation != 0) {
-                *conv_rate = fabs(m->curr_score - *best_score);
+        *conv_rate = m->convergence_rate;
+        *gen = p->generation;
+        if (p->generation != 0) {
+                *conv_rate = fabs(m->score - *best_score);
         } else {
                 fill_leader_board(p, m);
                 sort_generation_stats(m, cmp);
@@ -300,7 +300,7 @@ void record_generation_stats(
         if (m->log_stats) {
                 log_generation_stats(
                         m->log_fp,
-                        p->curr_generation,
+                        p->generation,
                         best_chromo,
                         *best_score,
                         *conv_rate,
@@ -309,11 +309,11 @@ void record_generation_stats(
         }
 
         /* over-write prev gen details with current */
-        m->curr_generation = p->curr_generation;
-        m->curr_chromo = best_chromo;
-        m->curr_score = *best_score;
-        m->curr_convergence_rate = *conv_rate;
-        m->curr_goal_distance = *goal_dist;
+        m->generation = p->generation;
+        m->chromo = best_chromo;
+        m->score = *best_score;
+        m->convergence_rate = *conv_rate;
+        m->goal_distance = *goal_dist;
 
         /* printf("GEN: %d\n", generation); */
         /* printf("BEST CHROMO: %s\n", best_chromo); */

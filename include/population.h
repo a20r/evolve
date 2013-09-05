@@ -17,8 +17,8 @@ struct population {
         float goal;
 
         /* evolution details */
-        int curr_population;
-        int curr_generation;
+        int population;
+        int generation;
         int max_population;
         int max_generation;
         char *solution;

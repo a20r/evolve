@@ -27,7 +27,7 @@ int run_evolution(
         int last_gen = 0;
 
         /* loop til max_gen reached, goal achieved, or receive stop signal */
-        while ((*p)->curr_generation < max_gen && *stop_signal == 0)
+        while ((*p)->generation < max_gen && *stop_signal == 0)
         {
                 /* evaluate and record */
                 goal_reached = evaluate_chromosomes(eval_func, &(*p));
@@ -41,7 +41,7 @@ int run_evolution(
                 }
 
                 /* extend max generations if in signal mode */
-                last_gen = ((*p)->curr_generation + 1 == max_gen);
+                last_gen = ((*p)->generation + 1 == max_gen);
                 if (wait_signal == 1 && last_gen == 1) {
                         extend_max_generation(*p, DEFAULT_EXPAND_RATE);
                         max_gen = (*p)->max_generation;
@@ -61,7 +61,7 @@ int run_evolution(
                         mutate_prob
                 );
 
-                (*p)->curr_generation++;
+                (*p)->generation++;
         }
 
         return 0;

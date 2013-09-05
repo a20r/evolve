@@ -29,8 +29,8 @@ struct population *init_population(
         p->total_score = 0.0;
 
         /* population details */
-        p->curr_population = 0;
-        p->curr_generation = 0;
+        p->population = 0;
+        p->generation = 0;
         p->max_population = max_pop;
         p->max_generation = max_gen;
         p->solution = NULL;
@@ -77,7 +77,7 @@ void gen_init_chromosomes(struct population **p, char *(*mutator)(int))
         /* fill initial random chromosome */
         for (i = 0; i < (*p)->max_population; i++) {
                 darray_set((*p)->chromosomes, i, (*mutator)(param));
-                (*p)->curr_population++;
+                (*p)->population++;
         }
 
 error:
@@ -161,7 +161,7 @@ void print_chromosomes(struct population *p)
         char *chromo = '\0';
         float total_score = (double) p->total_score;
 
-        for (i = 0; i < p->curr_population; i++) {
+        for (i = 0; i < p->population; i++) {
                 chromo = (char *) darray_get(p->chromosomes, i);
                 score = *(float *) darray_get(p->scores, i);
 
@@ -176,9 +176,9 @@ void print_population(struct population *p)
 {
         printf("population[paramters]: %d\n", p->parameters);
         printf("population[goal]: %f\n", p->goal);
-        printf("population[curr_population]: %d\n", p->curr_population);
+        printf("population[population]: %d\n", p->population);
         printf("population[max_population]: %d\n", p->max_population);
-        printf("population[curr_generation]: %d\n", p->curr_generation);
+        printf("population[generation]: %d\n", p->generation);
         printf("population[max_generation]: %d\n\n", p->max_generation);
 
         print_chromosomes(p);
@@ -345,7 +345,7 @@ void populate(
         int c_2_len = 0;
 
         struct darray *old_chromos = (*p)->chromosomes;
-        int population = (*p)->curr_population;
+        int population = (*p)->population;
 
 
         /* initialize new population */
@@ -355,7 +355,7 @@ void populate(
                 (*p)->max_population,
                 (*p)->max_generation
         );
-        new_p->curr_generation = (*p)->curr_generation;
+        new_p->generation = (*p)->generation;
         new_p->solution = (*p)->solution;
         struct darray *new_chromos = new_p->chromosomes;
 
@@ -393,7 +393,7 @@ void populate(
                         /* put children into new population */
                         darray_set(new_chromos, i + j + offspring_pair, c_1);
                         darray_set(new_chromos, i + j + offspring_pair + 1, c_2);
-                        new_p->curr_population += 2;
+                        new_p->population += 2;
                         offspring_pair++;
                 }
         }

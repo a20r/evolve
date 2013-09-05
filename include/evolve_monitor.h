@@ -24,11 +24,11 @@ struct evolve_monitor
         struct darray *goal_distances;
 
         /* current generation stats */
-        char *curr_chromo;
-        float curr_score;
-        float curr_generation;
-        float curr_convergence_rate;
-        float curr_goal_distance;
+        char *chromo;
+        float score;
+        float generation;
+        float convergence_rate;
+        float goal_distance;
 
         int log_stats;
         FILE *log_fp;
