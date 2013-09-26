@@ -11,7 +11,7 @@ void mutate_num(char **str);
 void mutate_dna(char **str);
 void mutate(
         void **chromosome,
-        float mutate_prob,
+        float *mutate_prob,
         void (mutate_func)(char **)
 );
 

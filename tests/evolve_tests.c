@@ -16,6 +16,8 @@
 /* GLOBAL VAR */
 struct population *p;
 struct evolve_monitor *m;
+float *crossover_prob;
+float *mutate_prob;
 int max_pop = 10;
 volatile sig_atomic_t stop_signal = 0;
 
@@ -41,8 +43,11 @@ int test_run_evolution()
                 max_pop,  /* max_pop */
                 2 /* max_gen */
         );
-
         gen_init_chromosomes(&p, randstr);
+
+        mutate_prob = calloc(1, sizeof(float));
+        *mutate_prob = 0.2;
+
         run_evolution(
                 &p,
                 fitness_function,
@@ -58,7 +63,7 @@ int test_run_evolution()
 
                 /* mutation */
                 mutate_str,
-                0.2,
+                mutate_prob,
 
                 /* monitor */
                 NULL,

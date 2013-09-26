@@ -22,6 +22,8 @@
 /* GLOBAL VAR */
 struct evolve_monitor *m;
 struct population *p;
+float *crossover_prob;
+float *mutate_prob;
 volatile sig_atomic_t stop_signal = 0;
 
 static float fitness_function(char *chromosome)
@@ -49,6 +51,13 @@ static void sort_test_setup(int max_gen, int max_pop)
         );
         m = init_evolve_monitor(chromo_sz, 5, NULL);
         gen_init_chromosomes(&p, randstr);
+
+        /* crossover_prob = calloc(1, sizeof(float)); */
+        /* *crossover_prob = 0.8; */
+
+        mutate_prob = calloc(1, sizeof(float));
+        *mutate_prob = 0.2;
+
         run_evolution(
                 &p,
                 fitness_function,
@@ -64,7 +73,7 @@ static void sort_test_setup(int max_gen, int max_pop)
 
                 /* mutation */
                 mutate_str,
-                0.2,
+                mutate_prob,
 
                 m,
                 0,

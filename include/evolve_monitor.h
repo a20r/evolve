@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "evolve.h"
+
 
 /* DEFINES */
 #ifndef QSORT_MIN_SIZE
@@ -42,7 +44,6 @@ struct evolve_monitor *init_evolve_monitor(
 );
 void destroy_evolve_monitor(struct evolve_monitor **m);
 
-#include "evolve.h"
 void record_generation_stats(
         struct population *p,
         struct evolve_monitor *m,

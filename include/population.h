@@ -68,7 +68,7 @@ void populate(
         float crossover_prob,
         int pivot_index,
         void (*mutation)(char **),
-        float mutate_prob
+        float *mutate_prob
 );
 
 #endif

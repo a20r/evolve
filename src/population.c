@@ -329,7 +329,7 @@ void populate(
         float crossover_prob,
         int pivot_index,
         void (*mutation_func)(char **),
-        float mutate_prob
+        float *mutate_prob
 )
 {
         int i = 0;

@@ -80,12 +80,12 @@ void mutate_dna(char **str)
 
 void mutate(
         void **chromosome,
-        float mutate_prob,
+        float *mutate_prob,
         void (mutate_func)(char **)
 )
 {
         /* to mutate or not mutate */
-        if (mutate_prob> randnum_f(0.0, 1.0)) {
+        if (*mutate_prob > randnum_f(0.0, 1.0)) {
                 goto mutate;
         } else {
                 goto no_mutate;

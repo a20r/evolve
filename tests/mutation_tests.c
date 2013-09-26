@@ -13,6 +13,7 @@
 #define TEST_NUM "00000"
 #define TEST_DNA "ACGCT"
 
+
 int test_mutate_str()
 {
         int i = 0;

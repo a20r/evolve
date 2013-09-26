@@ -464,12 +464,16 @@ int test_populate()
         gen_init_chromosomes(&p, randstr);
         evaluate_chromosomes(fitness_function, &p);
         roulette_wheel_selection(&p, NULL);
+
+        float *mutate_prob = calloc(1, sizeof(float));
+        *mutate_prob = 0.2;
+
         populate(&p,
                 one_pt_crossover,
                 0.9,
                 DEFAULT_PIVOT,
                 mutate_str,
-                0.3
+                mutate_prob
         );
 
         /* assert tests */

@@ -86,8 +86,10 @@ int main(int argc, char *argv[])
         int max_pop = 100;
         int max_gen = 10000;
         float p_c = (argv[1] == NULL) ? 0.8 : atof(argv[1]);
-        float p_m = (argv[1] == NULL) ? 0.1 : atof(argv[2]);
+        float *p_m = calloc(1, sizeof(float));
 
+        /* setup */
+        *p_m = (argv[1] == NULL) ? 0.1 : atof(argv[2]);
         if (argc != 2) {
                 printf("missing arguments, using default settings!\n");
         }

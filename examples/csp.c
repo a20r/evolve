@@ -28,6 +28,7 @@ int k = 5;  /* number of elements */
 int len = 20;  /* length of each element */
 char *strings[5];
 float min_hd;
+float *mutate_prob;
 volatile sig_atomic_t stop_signal = 0;
 
 
@@ -118,7 +119,7 @@ static void insertion_sort_scores(
         }
 }
 
-static int binomial_coefficient(n, m)
+static int binomial_coefficient(int n, int m)
 {
         int i;
         int j;
@@ -267,9 +268,11 @@ int main(int argc, char *argv[])
 {
         int max_pop = 10;
         int max_gen = 1000;
+        float *p_m = calloc(1, sizeof(float));
         float p_c = (argv[1] == NULL) ? 0.8 : atof(argv[1]);
-        float p_m = (argv[1] == NULL) ? 0.1 : atof(argv[2]);
 
+        /* setup */
+        *p_m = (argv[1] == NULL) ? 0.1 : atof(argv[2]);
         if (argc != 2) {
                 printf("missing arguments, using default settings!\n");
         }
@@ -300,6 +303,8 @@ int main(int argc, char *argv[])
         printf("Crossover Probability [%.2f]!\n", p_c);
         printf("Mutation Probability [%.2f]!\n", p_m);
         gen_init_chromosomes(&p, randnumstr);
+
+
         run_evolution(
                 &p,
                 fitness_function,

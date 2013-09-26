@@ -20,7 +20,7 @@ struct evolution_settings
         int pivot_index;
 
         void (*mutation_func)(char **);
-        float mutate_prob;
+        float *mutate_prob;
 
         struct evolve_monitor *m;
 
@@ -39,7 +39,7 @@ int run_evolution(
         float crossover_prob,
         int pivot_index,
         void (*mutation_func)(char **),
-        float mutate_prob,
+        float *mutate_prob,
         struct evolve_monitor *m,
         int wait_signal,
         volatile sig_atomic_t *stop_signal
