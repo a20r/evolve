@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 {
         volatile sig_atomic_t stop_signal = 0;
         int max_pop = 100;
-        int max_gen = 10000;
+        int max_gen = 1000;
         float *p_c = calloc(1, sizeof(float));
         float *p_m = calloc(1, sizeof(float));
 

@@ -11,9 +11,10 @@ solutions and producing a child solution from them.
 
     int one_pt_crossover(void **chromo_1, void **chromo_2, int index)
 
-A one point single crossover on both chromosomes is selected with
-`index`.  All data beyond that point in either chromosome is swapped
-between the two.  The result is crossed overd chromosomes.
+A single point is selected on both chromosomes, the chromosomes are then
+crossed from the point to form two pairs of chromosomes. All chromosomes beyond
+that point are swapped between the two adjacent chromosomes. The result is
+two pairs of mixed chromosomes from a single point.
 
 Parameters:
 
@@ -32,6 +33,32 @@ Returns:
 
 ------------------------------------------------------------------------------
 
+    int two_pt_crossover(void **chromo_1, void **chromo_2, int index)
+
+Two points are selected on both chromosomes, the chromosomes are then crossed
+from the point to form two pairs of chromosomes. All chromosomes beyond both
+points are swapped between the two adjacent chromosomes. Essentially similar to
+a one point crossover but repeated twice. The result is two pairs of mixed
+chromosomes from two points.
+
+Parameters:
+
+    void **chromo_1
+        Pointer to pointer pointing at chromosome 1
+
+    void **chromo_2
+        Pointer to pointer pointing at chromosome 1
+
+    int index
+        Crossover pivot index
+
+Returns:
+
+    0 for success, -1 on failure
+
+
+------------------------------------------------------------------------------
+
     void crossover(
             void **child_1,
             void **child_2,
@@ -45,16 +72,16 @@ Main crossover wrapper for different crossover methods.
 Parameters:
 
     void **child_1
-        Pointer to pointer pointing at child_1
+        Child 1 to be crossed over
 
     void **child_2
-        Pointer to pointer pointing at child_2
+        Child 2 to be crossed over
 
     int index
         Crossover pivot index
 
     int (*crossover_func)(void **chromo_1, void **chromo_2, int index)
-        Pointer to crossover function
+        Crossover function
 
     float crossover_prob
         Crossover probability

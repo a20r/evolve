@@ -17,8 +17,8 @@ population.
             float goal;
 
             /* evolution details */
-            int curr_population;
-            int curr_generation;
+            int population;
+            int generation;
             int max_population;
             int max_generation;
             char *solution;
@@ -32,22 +32,32 @@ as the solution (if known, as a GA termination criteria).
 Parameters:
 
     struct darray *chromosomes
+        Population of chromosomes
 
     struct darray *chromosome_scores
+        Stores the scores of each chromosomes
 
     float total_score
+        Sum total fitness/evaluation score of population
 
     int parameters
+        Length of chromosomes (assuming chromosome is a bit string)
 
     float goal
+        Fitness/ evaluation goal score that causes GA to stop. Optionally
+        `goal` can be NULL to denote no goal.
 
-    int curr_population
+    int population
+        Current number of chromosomes in population
 
-    int curr_generation
+    int generation
+        Current generation number
 
     int max_population
+        Maximum number of chromosomes in population
 
     int max_generation
+        Maximum number of GA generations
 
 
 
@@ -58,7 +68,7 @@ Parameters:
             float goal,
             int max_pop,
             int max_gen
-    );
+    )
 
 Initialize the structure `population`.
 
@@ -80,9 +90,11 @@ Returns:
 
     The initialized `population` structure
 
+
 ------------------------------------------------------------------------------
 
-    void destroy_population(struct population **p);
+
+    void destroy_population(struct population **p)
 
 Destory the `popuation` structure.
 
@@ -90,40 +102,131 @@ Parameters:
 
     structure population **p Population
 
-------------------------------------------------------------------------------
-
-    void gen_init_chromosomes(struct population **p, char *(*mutator)(int));
-
-Generate initial random chromosomes.
 
 ------------------------------------------------------------------------------
 
-    int evaluate_chromosomes(float (eval_func)(char *), struct population **p);
+
+    void gen_init_chromosomes(struct population **p, char *(*mutator)(int))
+
+Generate initial random chromosomes. How the chromosomes are create is user
+defined.
+
+Parameters:
+
+    struct population **p
+        Population
+
+    char *(*mutator)(int)
+        Mutation function
+
 
 ------------------------------------------------------------------------------
 
-    void normalize_fitness_values(struct population **p);
+
+    int evaluate_chromosomes(float (eval_func)(char *), struct population **p)
+
+Evaluates the chromosomes in the population using user defined evaluation
+or fitness function.
+
+Parameters:
+
+    float (eval_func)(char *)
+        Evaluation/ fitness function
+
+    struct population **p
+        Population
+
+
+Returns:
+
+    0   Goal is not reached
+    1   If goal is reached
+
 
 ------------------------------------------------------------------------------
 
-    void print_chromosome(struct population *p, int index);
+
+    void normalize_fitness_values(struct population **p)
+
+Normalizes fitness values for all chromosomes in population.
+
+Parameters:
+
+    struct population **p
+        Population
+
 
 ------------------------------------------------------------------------------
 
-    void print_chromosomes(struct population *p);
+
+    void print_chromosome(struct population *p, int index)
+
+Prints the details of a specific chromosome in the population.
+
+Parameters:
+
+    struct population **p
+        Population
+
+    int index
+        Chromosome in the population to print
+
 
 ------------------------------------------------------------------------------
 
-    void print_population(struct population *p);
+
+    void print_chromosomes(struct population *p)
+
+Prints the details of chromosomes in the population.
+
+Parameters:
+
+    struct population **p
+        Population
+
+
 ------------------------------------------------------------------------------
+
+
+    void print_population(struct population *p)
+
+Prints the details of the population.
+
+Parameters:
+
+    struct population **p
+        Population
+
+
+------------------------------------------------------------------------------
+
 
     void insertion_sort_population(
             struct population *p,
             int left,
             int right,
             int (*cmp)(const void *, const void *)
-    );
+    )
+
+Sorts the population by their fitness scores using insertion sort.
+
+Parameters:
+
+    struct population *p
+        Population
+
+    int left
+        Left most or first element index to start sorting from
+
+    int right
+        Right most or last element index to start sorting to
+
+    int (*cmp)(const void *, const void *)
+        Comparator to be used to sort chromosomes
+
+
 ------------------------------------------------------------------------------
+
 
     int partition_population(
             struct population *p,
@@ -131,29 +234,94 @@ Generate initial random chromosomes.
             int left,
             int right,
             int (*cmp)(const void *, const void *)
-    );
+    )
+
+`partition_population` is part of the quick sort procedure, it sorts the
+element under the `pivot_index` in-place to find its ultimate index if all
+elements were sorted.
+
+Parameters:
+
+    struct population *p
+        Population
+
+    int pivot_index
+        Partition pivot index
+
+    int left
+        Left most or first element index to start sorting from
+
+    int right
+        Right most or last element index to start sorting to
+
+    int (*cmp)(const void *, const void *)
+        Comparator to be used to sort chromosomes
+
+
+Returns:
+
+    Index of the element in `pivot_index`
+
 
 ------------------------------------------------------------------------------
+
 
     void quick_sort_population(
             struct population *m,
             int left,
             int right,
             int(*cmp)(const void *, const void *)
-    );
+    )
+
+Sorts the population by their fitness scores using quick sort.
+
+Parameters:
+
+    struct population *p
+        Population
+
+    int left
+        Left most or first element index to start sorting from
+
+    int right
+        Right most or last element index to start sorting to
+
+    int (*cmp)(const void *, const void *)
+        Comparator to be used to sort chromosomes
+
 
 ------------------------------------------------------------------------------
+
 
     void sort_population(
             struct population *p,
             int (*cmp)(const void *, const void *)
-    );
+    )
+
+General population sort wrapper, it uses quick sort for large number of
+elements and insertion sort for small number of elements.
+
+Parameters:
+
+    struct population *p
+        Population
+
+    int (*cmp)(const void *, const void *)
+        Comparator to be used to sort chromosomes
+
 
 ------------------------------------------------------------------------------
 
+
     void populate(
             struct population **p,
-            float crossover_prob,
-            float mutation_prob
-    );
+            int (*crossover_func)(void **, void **, int),
+            float *crossover_prob,
+            int pivot_index,
+            void (*mutation_func)(char **),
+            float *mutate_prob
+    )
+
+Populates the population to its max after the selection process. It also
+
 ------------------------------------------------------------------------------
