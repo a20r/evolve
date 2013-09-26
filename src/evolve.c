@@ -13,7 +13,7 @@ int run_evolution(
         void (*selection_func)(struct population **, int *),
         int *select,
         int (*crossover_func)(void **, void **, int),
-        float crossover_prob,
+        float *crossover_prob,
         int pivot_index,
         void (*mutation_func)(char **),
         float *mutate_prob,

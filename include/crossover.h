@@ -14,7 +14,7 @@ void crossover(
         void **child_2,
         int index,
         int (*crossover_func)(void **chromo_1, void **chromo_2, int index),
-        float crossover_prob
+        float *crossover_prob
 );
 
 #endif

@@ -45,6 +45,9 @@ int test_run_evolution()
         );
         gen_init_chromosomes(&p, randstr);
 
+        crossover_prob = calloc(1, sizeof(float));
+        *crossover_prob = 0.5;
+
         mutate_prob = calloc(1, sizeof(float));
         *mutate_prob = 0.2;
 
@@ -58,7 +61,7 @@ int test_run_evolution()
 
                 /* crossover */
                 one_pt_crossover,
-                0.5,
+                crossover_prob,
                 DEFAULT_PIVOT,
 
                 /* mutation */

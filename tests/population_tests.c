@@ -465,12 +465,14 @@ int test_populate()
         evaluate_chromosomes(fitness_function, &p);
         roulette_wheel_selection(&p, NULL);
 
+        float *crossover_prob = calloc(1, sizeof(float));
         float *mutate_prob = calloc(1, sizeof(float));
+        *crossover_prob = 0.9;
         *mutate_prob = 0.2;
 
         populate(&p,
                 one_pt_crossover,
-                0.9,
+                crossover_prob,
                 DEFAULT_PIVOT,
                 mutate_str,
                 mutate_prob

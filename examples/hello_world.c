@@ -85,10 +85,11 @@ int main(int argc, char *argv[])
         volatile sig_atomic_t stop_signal = 0;
         int max_pop = 100;
         int max_gen = 10000;
-        float p_c = (argv[1] == NULL) ? 0.8 : atof(argv[1]);
+        float *p_c = calloc(1, sizeof(float));
         float *p_m = calloc(1, sizeof(float));
 
         /* setup */
+        *p_c = (argv[1] == NULL) ? 0.8 : atof(argv[1]);
         *p_m = (argv[1] == NULL) ? 0.1 : atof(argv[2]);
         if (argc != 2) {
                 printf("missing arguments, using default settings!\n");
@@ -112,8 +113,8 @@ int main(int argc, char *argv[])
 
         /* run evolution */
         printf("RUNNING GA!\n");
-        printf("Crossover Probability [%.4f]!\n", p_c);
-        printf("Mutation Probability [%.4f]!\n", p_m);
+        printf("Crossover Probability [%.4f]!\n", *p_c);
+        printf("Mutation Probability [%.4f]!\n", *p_m);
         gen_init_chromosomes(&p, randstr);
         run_evolution(
                 &p,
@@ -144,6 +145,8 @@ int main(int argc, char *argv[])
         /* clean up */
         destroy_evolve_monitor(&m);
         destroy_population(&p);
+        free(p_c);
+        free(p_m);
 
         return 0;
 }

@@ -52,8 +52,8 @@ static void sort_test_setup(int max_gen, int max_pop)
         m = init_evolve_monitor(chromo_sz, 5, NULL);
         gen_init_chromosomes(&p, randstr);
 
-        /* crossover_prob = calloc(1, sizeof(float)); */
-        /* *crossover_prob = 0.8; */
+        crossover_prob = calloc(1, sizeof(float));
+        *crossover_prob = 0.8;
 
         mutate_prob = calloc(1, sizeof(float));
         *mutate_prob = 0.2;
@@ -68,7 +68,7 @@ static void sort_test_setup(int max_gen, int max_pop)
 
                 /* crossover */
                 one_pt_crossover,
-                0.8,
+                crossover_prob,
                 DEFAULT_PIVOT,
 
                 /* mutation */

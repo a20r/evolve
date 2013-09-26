@@ -68,10 +68,10 @@ void crossover(
         void **child_2,
         int index,
         int (*crossover_func)(void **chromo_1, void **chromo_2, int index),
-        float crossover_prob
+        float *crossover_prob
 )
 {
-        if (crossover_prob > randnum_f(0.0, 1.0)) {
+        if (*crossover_prob > randnum_f(0.0, 1.0)) {
                 crossover_func(&(*child_1), &(*child_2), index);
         }
 }

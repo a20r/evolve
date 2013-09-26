@@ -268,10 +268,11 @@ int main(int argc, char *argv[])
 {
         int max_pop = 10;
         int max_gen = 1000;
+        float *p_c = calloc(1, sizeof(float));
         float *p_m = calloc(1, sizeof(float));
-        float p_c = (argv[1] == NULL) ? 0.8 : atof(argv[1]);
 
         /* setup */
+        *p_c = (argv[1] == NULL) ? 0.8 : atof(argv[1]);
         *p_m = (argv[1] == NULL) ? 0.1 : atof(argv[2]);
         if (argc != 2) {
                 printf("missing arguments, using default settings!\n");
@@ -300,8 +301,8 @@ int main(int argc, char *argv[])
 
         /* run evolution */
         printf("RUNNING GA!\n");
-        printf("Crossover Probability [%.2f]!\n", p_c);
-        printf("Mutation Probability [%.2f]!\n", p_m);
+        printf("Crossover Probability [%.2f]!\n", *p_c);
+        printf("Mutation Probability [%.2f]!\n", *p_m);
         gen_init_chromosomes(&p, randnumstr);
 
 
@@ -335,6 +336,8 @@ int main(int argc, char *argv[])
         destroy_evolve_monitor(&m);
         destroy_population(&p);
         teardown_strings();
+        free(p_c);
+        free(p_m);
 
         return 0;
 }
