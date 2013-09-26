@@ -24,9 +24,9 @@
 
 
 /* GLOBAL VARS */
-int k = 4;  /* number of elements */
-int len = 10;  /* length of each element */
-char *strings[4];
+int k = 5;  /* number of elements */
+int len = 20;  /* length of each element */
+char *strings[5];
 float min_hd;
 volatile sig_atomic_t stop_signal = 0;
 

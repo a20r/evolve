@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 
-set(LIB_NAME evolve)
+set(LIBRARY_NAME evolve)
 set(CMAKE_C_COMPILER clang)
 set(CMAKE_BUILD_TYPE DEBUG)
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -g")
@@ -13,7 +13,7 @@ link_directories(/usr/lib)
 
 # evolve library
 add_library(
-    ${LIB_NAME}
+    ${LIBRARY_NAME}
 
     population.c
     selection.c
