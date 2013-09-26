@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
         );
         struct evolve_monitor *m = init_evolve_monitor(
                 p->chromosomes->element_size,  /* chromosome size */
-                max_gen,
+                5,
                 "hello_world.dat"
         );
 

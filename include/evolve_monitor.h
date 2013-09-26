@@ -39,11 +39,10 @@ struct evolve_monitor
 /* FUNCTIONS */
 struct evolve_monitor *init_evolve_monitor(
         size_t chromo_sz,
-        long max_gen,
+        long top,
         char *log_fp
 );
 void destroy_evolve_monitor(struct evolve_monitor **m);
-
 void record_generation_stats(
         struct population *p,
         struct evolve_monitor *m,

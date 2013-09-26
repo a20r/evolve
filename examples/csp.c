@@ -20,7 +20,6 @@
 #define MAXN 100
 #define NUM_LBOUND 49
 #define NUM_UBOUND 52
-#define MIN3(a, b, c) ((a) < (b) ? ((a) < (c) ? (a) : (c)) : ((b) < (c) ? (b) : (c)))
 
 
 /* GLOBAL VARS */
@@ -150,6 +149,8 @@ static void setup_strings(int k, int len)
         float scores[scores_len];
         char *combinations[scores_len];
         char *cache;
+        char *str_1;
+        char *str_2;
 
         /* initialize closest string strings */
         for (i = 0; i < k; i++) {
@@ -167,6 +168,7 @@ static void setup_strings(int k, int len)
                         /* make combination string */
                         cache = calloc(1, (sizeof(char) * len * 2) + 1);
                         strcpy(cache, strings[i]);
+                        strcat(cache, " ");
                         strcat(cache, strings[j]);
 
                         /* record combination string */
@@ -178,7 +180,7 @@ static void setup_strings(int k, int len)
         /* sort by score */
         insertion_sort_scores(scores, combinations, scores_len);
         for (i = 0; i < scores_len; i++) {
-                printf("scores:[%f] combination:[%s]\n", scores[i], combinations[i]);
+                printf("scores:[%f] string:[%s]\n", scores[i], combinations[i]);
         }
 
         /* find theoretical minimal hamming diameter */
@@ -304,7 +306,6 @@ int main(int argc, char *argv[])
         printf("Crossover Probability [%.2f]!\n", *p_c);
         printf("Mutation Probability [%.2f]!\n", *p_m);
         gen_init_chromosomes(&p, randnumstr);
-
 
         run_evolution(
                 &p,

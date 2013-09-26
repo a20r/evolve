@@ -87,9 +87,7 @@ static int fill_leader_board(
                 "Error! fill_leader_board() should only be in generation 0!"
         );
 
-        printf("filling leader board!\n");
-
-        /* find the best chromosome */
+        /* find the best initial chromosome and fill up the leader board */
         for (i = 0; i < m->top; i++) {
                 /* allocate memory */
                 chromo = darray_new(p->chromosomes);
