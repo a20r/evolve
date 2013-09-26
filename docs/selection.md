@@ -2,11 +2,18 @@
 Selection is the stage of a genetic algorithm in which individual genomes are
 chosen from a population for later breeding (recombination or crossover).
 
+
 ## Function Summary
 
     void roulette_wheel_selection(struct population **p, int *select)
+    void tournament_selection(struct population **p, int *select)
 
-### roulette_wheel_selection
+
+## Functions
+
+
+    void roulette_wheel_selection(struct population **p, int *select)
+
 **Roulette Wheel Selection** is a generic GA selection procedure, it works as
 follows:
 
@@ -33,9 +40,30 @@ follows:
 
 Note: The function modifies the input population **in-place**.
 
-    Parameters:
-        struct population **p
-            Population to select from
-        
-        int *select
-            Pointer to number of individual or chromosome to be selected
+Parameters:
+
+    struct population **p
+        Population 
+
+    int *select
+        Pointer to number of individual or chromosome to be selected
+
+
+-------------------------------------------------------------------------------
+
+
+    void tournament_selection(struct population **p, int *select)
+
+**Tournament Selection** involves running tournaments among a few individuals
+chosen at random from the population. The winner of each tournament is selected.
+
+Currently `tournament_selection` implements a tournament size of 2 (aka Binary
+tournament selection).
+
+Parameters:
+
+    struct population **p
+        Population
+
+    int *select
+        Pointer to number of individual or chromosome to be selected
