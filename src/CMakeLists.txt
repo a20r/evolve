@@ -1,18 +1,17 @@
-cmake_minimum_required(VERSION 2.6)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
-set(LIBRARY_NAME evolve)
-set(CMAKE_C_COMPILER clang)
-set(CMAKE_BUILD_TYPE DEBUG)
-set(CMAKE_C_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -g")
-set(CMAKE_C_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -DNDEBUG")
+SET(LIBRARY_NAME evolve)
+SET(CMAKE_BUILD_TYPE DEBUG)
+SET(CMAKE_C_FLAGS_DEBUG "-Wall -g -fprofile-arcs -ftest-coverage")
+SET(CMAKE_C_FLAGS_RELEASE "-Wall -DNDEBUG")
 
-include_directories(../include)
+INCLUDE_DIRECTORIES(../include)
 
-link_directories(/usr/local/lib)
-link_directories(/usr/lib)
+LINK_DIRECTORIES(/usr/local/lib)
+LINK_DIRECTORIES(/usr/lib)
 
 # evolve library
-add_library(
+ADD_LIBRARY(
     ${LIBRARY_NAME}
 
     population.c
@@ -23,6 +22,6 @@ add_library(
     evolve.c
     evolve_monitor.c
 )
-target_link_libraries(evolve m)
-target_link_libraries(evolve al)
-target_link_libraries(evolve dstruct)
+TARGET_LINK_LIBRARIES(evolve m)
+TARGET_LINK_LIBRARIES(evolve al)
+TARGET_LINK_LIBRARIES(evolve dstruct)

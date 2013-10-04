@@ -1,25 +1,25 @@
-cmake_minimum_required(VERSION 2.6)
-project(evolve)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+PROJECT(evolve)
 
-set(CMAKE_C_COMPILER clang)
+SET(CMAKE_C_COMPILER gcc)
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # uninstall target
-configure_file(
+CONFIGURE_FILE(
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
     "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
     IMMEDIATE @ONLY
 )
-add_custom_target(
+ADD_CUSTOM_TARGET(
     uninstall
     COMMAND
-        ${CMAKE_COMMAND} -P
-        ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
+    ${CMAKE_COMMAND} -P
+    ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
 )
 
-subdirs(src)
-subdirs(tests)
-subdirs(examples)
+SUBDIRS(src)
+SUBDIRS(tests)
+SUBDIRS(examples)

@@ -1,43 +1,45 @@
-cmake_minimum_required(VERSION 2.6)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
-set(LIBRARY_NAME evolve)
+SET(LIBRARY_NAME evolve)
+SET(CMAKE_C_FLAGS_DEBUG "-Wall -g -fprofile-arcs -ftest-coversage")
+SET(CMAKE_C_FLAGS_RELEASE "-Wall -DNDEBUG")
 
-include_directories(../include)
-include_directories(/usr/local/include/)
+INCLUDE_DIRECTORIES(../include)
+INCLUDE_DIRECTORIES(/usr/local/include/)
 
-link_directories(/usr/local/lib)
-link_directories(/usr/lib)
+LINK_DIRECTORIES(/usr/local/lib)
+LINK_DIRECTORIES(/usr/lib)
 
 # evolve
-add_executable(evolve_tests evolve_tests.c)
-target_link_libraries(evolve_tests ${LIBRARY_NAME})
+ADD_EXECUTABLE(evolve_tests evolve_tests.c)
+TARGET_LINK_LIBRARIES(evolve_tests ${LIBRARY_NAME})
 
 # evolve_monitor
-add_executable(
+ADD_EXECUTABLE(
     evolve_monitor_tests
 
     test_utils.c
     evolve_monitor_tests.c
 )
-target_link_libraries(evolve_monitor_tests ${LIBRARY_NAME})
+TARGET_LINK_LIBRARIES(evolve_monitor_tests ${LIBRARY_NAME})
 
 # population
-add_executable(
+ADD_EXECUTABLE(
     population_tests
 
     test_utils.c
     population_tests.c
 )
-target_link_libraries(population_tests ${LIBRARY_NAME})
+TARGET_LINK_LIBRARIES(population_tests ${LIBRARY_NAME})
 
 # selection
-add_executable(selection_tests selection_tests.c)
-target_link_libraries(selection_tests ${LIBRARY_NAME})
+ADD_EXECUTABLE(selection_tests selection_tests.c)
+TARGET_LINK_LIBRARIES(selection_tests ${LIBRARY_NAME})
 
 # crossover
-add_executable(crossover_tests crossover_tests.c)
-target_link_libraries(crossover_tests ${LIBRARY_NAME})
+ADD_EXECUTABLE(crossover_tests crossover_tests.c)
+TARGET_LINK_LIBRARIES(crossover_tests ${LIBRARY_NAME})
 
 # mutation
-add_executable(mutation_tests mutation_tests.c)
-target_link_libraries(mutation_tests ${LIBRARY_NAME})
+ADD_EXECUTABLE(mutation_tests mutation_tests.c)
+TARGET_LINK_LIBRARIES(mutation_tests ${LIBRARY_NAME})
