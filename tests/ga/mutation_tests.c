@@ -5,7 +5,7 @@
 
 #include <munit/munit.h>
 
-#include "mutation.h"
+#include "ga/mutation.h"
 
 #define LOOP 100
 #define TEST_STR "Hello World"

@@ -6,8 +6,8 @@
 #include <munit/munit.h>
 #include <al/comparator.h>
 
-#include "crossover.h"
-#include "evolve.h"
+#include "ga/crossover.h"
+#include "ga/evolve.h"
 
 /* GLOBAL VAR */
 struct chromosome_pair *c_pair;

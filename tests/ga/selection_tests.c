@@ -6,9 +6,9 @@
 #include <munit/munit.h>
 #include <al/utils.h>
 
-#include "evolve.h"
-#include "population.h"
-#include "selection.h"
+#include "ga/evolve.h"
+#include "ga/population.h"
+#include "ga/selection.h"
 
 /* GLOBAL VAR */
 struct population *p;

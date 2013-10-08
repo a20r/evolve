@@ -5,7 +5,7 @@
 #include <al/comparator.h>
 #include <dstruct/darray.h>
 
-#include "evolve_monitor.h"
+#include "ga/evolve_monitor.h"
 
 
 struct evolve_monitor *init_evolve_monitor(
@@ -127,7 +127,6 @@ void sort_generation_stats(
         void *conv_rate;
         void *goal_dist;
 
-        printf("sorting generation stats!\n");
         /* below implements an insertion sort - sort by ASCENDING ORDER */
         for (j = 1; j <= m->top - 1; j++) {
                 int i = j - 1;

@@ -7,14 +7,14 @@
 #include <al/utils.h>
 #include <dstruct/darray.h>
 
-#include "test_utils.h"
+#include "ga/test_utils.h"
 
-#include "evolve.h"
-#include "population.h"
-#include "evolve_monitor.h"
-#include "selection.h"
-#include "crossover.h"
-#include "mutation.h"
+#include "ga/evolve.h"
+#include "ga/population.h"
+#include "ga/evolve_monitor.h"
+#include "ga/selection.h"
+#include "ga/crossover.h"
+#include "ga/mutation.h"
 
 #define TEST_SOLUTION "hello world!"
 

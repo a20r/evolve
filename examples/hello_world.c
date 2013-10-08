@@ -9,10 +9,6 @@
 #include <dstruct/darray.h>
 
 #include "evolve.h"
-#include "selection.h"
-#include "crossover.h"
-#include "mutation.h"
-#include "evolve_monitor.h"
 
 #define TARGET_SOLUTION "hello world!"
 
@@ -84,7 +80,7 @@ int main(int argc, char *argv[])
 {
         volatile sig_atomic_t stop_signal = 0;
         int max_pop = 100;
-        int max_gen = 1000;
+        int max_gen = 5000;
         float *p_c = calloc(1, sizeof(float));
         float *p_m = calloc(1, sizeof(float));
 
@@ -121,7 +117,7 @@ int main(int argc, char *argv[])
                 fitness_function,
 
                 /* selection */
-                roulette_wheel_selection,
+                tournament_selection,
                 DEFAULT_SELECT,
 
                 /* crossover */

@@ -11,11 +11,7 @@
 #include <al/sort.h>
 #include <dstruct/darray.h>
 
-#include "selection.h"
-#include "crossover.h"
-#include "mutation.h"
 #include "evolve.h"
-#include "evolve_monitor.h"
 
 #define MAXN 100
 #define NUM_LBOUND 49
@@ -149,8 +145,6 @@ static void setup_strings(int k, int len)
         float scores[scores_len];
         char *combinations[scores_len];
         char *cache;
-        char *str_1;
-        char *str_2;
 
         /* initialize closest string strings */
         for (i = 0; i < k; i++) {
