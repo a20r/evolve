@@ -6,19 +6,18 @@
 #include <munit/munit.h>
 #include <al/comparator.h>
 #include <al/utils.h>
+#include <dstruct/darray.h>
 
 #include "evolve.h"
+#include "evolve_monitor.h"
 #include "population.h"
 #include "ga/selection.h"
 #include "ga/crossover.h"
 #include "ga/mutation.h"
 
+#define TARGET_SOLUTION "hello world!"
+
 /* GLOBAL VAR */
-struct population *p;
-struct evolve_monitor *m;
-float *crossover_prob;
-float *mutate_prob;
-int max_pop = 10;
 volatile sig_atomic_t stop_signal = 0;
 
 
@@ -37,20 +36,32 @@ static float fitness_function(char *chromosome)
 
 int test_run_evolution()
 {
-        p = init_population(
-                (int) strlen("hello world!"),  /* param */
-                0.0,  /* goal */
-                max_pop,  /* max_pop */
-                2 /* max_gen */
-        );
-        gen_init_chromosomes(&p, randstr);
+        struct population *p;
+        struct evolve_monitor *m;
+        int max_pop = 10;
+        int max_gen = 2;
+        float *crossover_prob;
+        float *mutate_prob;
 
+        p = init_population(
+                (int) strlen(TARGET_SOLUTION),  /* param */
+                122 * strlen(TARGET_SOLUTION),  /* goal */
+                max_pop,  /* max_pop */
+                max_gen  /* max_gen */
+        );
+        m = init_evolve_monitor(
+                p->chromosomes->element_size,  /* chromosome size */
+                5,
+                NULL
+        );
+
+        /* init crossover and mutation probability */
         crossover_prob = calloc(1, sizeof(float));
         *crossover_prob = 0.5;
-
         mutate_prob = calloc(1, sizeof(float));
         *mutate_prob = 0.2;
 
+        gen_init_chromosomes(&p, randstr);
         run_evolution(
                 &p,
                 fitness_function,
@@ -69,7 +80,7 @@ int test_run_evolution()
                 mutate_prob,
 
                 /* monitor */
-                NULL,
+                m,
                 0,
                 &stop_signal
         );

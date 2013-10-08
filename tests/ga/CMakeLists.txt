@@ -1,7 +1,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 SET(LIBRARY_NAME evolve)
-SET(CMAKE_C_FLAGS_DEBUG "-Wall -g -fprofile-arcs -ftest-coversage")
+SET(CMAKE_C_FLAGS_DEBUG "-Wall -g")
 SET(CMAKE_C_FLAGS_RELEASE "-Wall -DNDEBUG")
 
 INCLUDE_DIRECTORIES(../../include)

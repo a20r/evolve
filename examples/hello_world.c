@@ -84,8 +84,10 @@ static void print_top_chromosomes(struct evolve_monitor *m, int top)
 int main(int argc, char *argv[])
 {
         volatile sig_atomic_t stop_signal = 0;
-        int max_pop = 100;
-        int max_gen = 5000;
+        struct population *p;
+        struct evolve_monitor *m;
+        int max_pop = 10;
+        int max_gen = 2;
         float *p_c = calloc(1, sizeof(float));
         float *p_m = calloc(1, sizeof(float));
 
@@ -100,13 +102,13 @@ int main(int argc, char *argv[])
         srand(time(NULL));
 
         /* initialize evolution */
-        struct population *p = init_population(
+        p = init_population(
                 (int) strlen(TARGET_SOLUTION),  /* param */
                 122 * strlen(TARGET_SOLUTION),  /* goal */
                 max_pop,  /* max_pop */
                 max_gen  /* max_gen */
         );
-        struct evolve_monitor *m = init_evolve_monitor(
+        m = init_evolve_monitor(
                 p->chromosomes->element_size,  /* chromosome size */
                 5,
                 /* "hello_world.dat" */
@@ -123,7 +125,7 @@ int main(int argc, char *argv[])
                 fitness_function,
 
                 /* selection */
-                tournament_selection,
+                roulette_wheel_selection,
                 DEFAULT_SELECT,
 
                 /* crossover */

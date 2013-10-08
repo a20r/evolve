@@ -68,6 +68,7 @@ void roulette_wheel_selection(struct population **p, int *select)
                 memcpy(score, darray_get((*p)->scores, i), score_sz);
 
                 /* select if chromosome score is larger than random number */
+                cumulative_prob += *(float *) score;
                 if (cumulative_prob >= randnum) {
                         darray_set(new_p->chromosomes, arr_index, chromo);
                         darray_set(new_p->scores, arr_index, score);

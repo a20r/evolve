@@ -311,7 +311,7 @@ void record_generation_stats(
         m->convergence_rate = *conv_rate;
         m->goal_distance = *goal_dist;
 
-        /* printf("GEN: %d\n", generation); */
+        /* printf("GEN: %d\n", *gen); */
         /* printf("BEST CHROMO: %s\n", best_chromo); */
         /* printf("BEST SCORE: %f\n", *(float *) best_score); */
 
