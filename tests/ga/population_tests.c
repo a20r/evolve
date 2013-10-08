@@ -11,9 +11,9 @@
 #include <al/comparator.h>
 #include <dstruct/darray.h>
 
-#include "ga/test_utils.h"
+#include "test_utils.h"
 
-#include "ga/population.h"
+#include "population.h"
 #include "ga/selection.h"
 #include "ga/crossover.h"
 #include "ga/mutation.h"

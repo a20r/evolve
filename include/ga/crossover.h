@@ -1,7 +1,7 @@
 #ifndef _CROSSOVER_H_
 #define _CROSSOVER_H_
 
-#include "evolve.h"
+#include "../evolve.h"
 
 /* MACROS */
 #define DEFAULT_PIVOT -1

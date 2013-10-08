@@ -5,7 +5,7 @@
 #include <al/utils.h>
 #include <dbg/dbg.h>
 
-#include "ga/evolve.h"
+#include "evolve.h"
 #include "ga/crossover.h"
 
 

@@ -4,8 +4,8 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
-ALPHA	src/mutation.c	/^char ALPHA[52] = {$/;"	v
-ALPHANUM	src/mutation.c	/^char ALPHANUM[62] = {$/;"	v
+ALPHA	src/ga/mutation.c	/^char ALPHA[52] = {$/;"	v
+ALPHANUM	src/ga/mutation.c	/^char ALPHANUM[62] = {$/;"	v
 ARCHITECTURE_ID	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	276;"	d	file:
 ARCHITECTURE_ID	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	279;"	d	file:
 ARCHITECTURE_ID	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	282;"	d	file:
@@ -18,53 +18,24 @@ ARCHITECTURE_ID	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	270;"	d	file:
 ARCHITECTURE_ID	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	273;"	d	file:
 ARCHITECTURE_ID	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	276;"	d	file:
 ARCHITECTURE_ID	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	280;"	d	file:
-ARCHITECTURE_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	264;"	d	file:
-ARCHITECTURE_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	267;"	d	file:
-ARCHITECTURE_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	270;"	d	file:
-ARCHITECTURE_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	273;"	d	file:
-ARCHITECTURE_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	276;"	d	file:
-ARCHITECTURE_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	280;"	d	file:
-ARCHITECTURE_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	264;"	d	file:
-ARCHITECTURE_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	267;"	d	file:
-ARCHITECTURE_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	270;"	d	file:
-ARCHITECTURE_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	273;"	d	file:
-ARCHITECTURE_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	276;"	d	file:
-ARCHITECTURE_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	280;"	d	file:
-ARCHITECTURE_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	264;"	d	file:
-ARCHITECTURE_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	267;"	d	file:
-ARCHITECTURE_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	270;"	d	file:
-ARCHITECTURE_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	273;"	d	file:
-ARCHITECTURE_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	276;"	d	file:
-ARCHITECTURE_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	280;"	d	file:
-BSSSC_BUFF_LEN	scripts/build/dstruct/src/bstrlib.c	2316;"	d	file:
-BSTRLIB_H	scripts/build/dstruct/include/bstrlib.h	43;"	d
-BSTR_BS_BUFF_LENGTH_GET	scripts/build/dstruct/include/bstrlib.h	76;"	d
-BSTR_ERR	scripts/build/dstruct/include/bstrlib.h	74;"	d
-BSTR_OK	scripts/build/dstruct/include/bstrlib.h	75;"	d
-BSTR_PRINTF	scripts/build/dstruct/include/bstrlib.h	56;"	d
-BSTR_PRINTF	scripts/build/dstruct/include/bstrlib.h	61;"	d
-BSTR_PRIVATE	scripts/build/dstruct/include/bstrlib.h	48;"	d
-BSTR_PRIVATE	scripts/build/dstruct/include/bstrlib.h	52;"	d
-BSTR_PUBLIC	scripts/build/dstruct/include/bstrlib.h	46;"	d
-BSTR_PUBLIC	scripts/build/dstruct/include/bstrlib.h	51;"	d
-BSTR_UNUSED	scripts/build/dstruct/include/bstrlib.h	58;"	d
-BSTR_UNUSED	scripts/build/dstruct/include/bstrlib.h	62;"	d
-BS_BUFF_SZ	scripts/build/dstruct/src/bstrlib.c	1815;"	d	file:
-CFCLEN	scripts/build/dstruct/src/bstrlib.c	1257;"	d	file:
-CFCLEN	scripts/build/dstruct/src/bstrlib.c	1270;"	d	file:
 CMAKE_BINARY_DIR	Makefile	/^CMAKE_BINARY_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
 CMAKE_BINARY_DIR	examples/Makefile	/^CMAKE_BINARY_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
 CMAKE_BINARY_DIR	src/Makefile	/^CMAKE_BINARY_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
+CMAKE_BINARY_DIR	src/ga/Makefile	/^CMAKE_BINARY_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
 CMAKE_BINARY_DIR	tests/Makefile	/^CMAKE_BINARY_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
+CMAKE_BINARY_DIR	tests/ga/Makefile	/^CMAKE_BINARY_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
 CMAKE_COMMAND	Makefile	/^CMAKE_COMMAND = \/usr\/bin\/cmake$/;"	m
 CMAKE_COMMAND	examples/Makefile	/^CMAKE_COMMAND = \/usr\/bin\/cmake$/;"	m
 CMAKE_COMMAND	src/Makefile	/^CMAKE_COMMAND = \/usr\/bin\/cmake$/;"	m
+CMAKE_COMMAND	src/ga/Makefile	/^CMAKE_COMMAND = \/usr\/bin\/cmake$/;"	m
 CMAKE_COMMAND	tests/Makefile	/^CMAKE_COMMAND = \/usr\/bin\/cmake$/;"	m
+CMAKE_COMMAND	tests/ga/Makefile	/^CMAKE_COMMAND = \/usr\/bin\/cmake$/;"	m
 CMAKE_SOURCE_DIR	Makefile	/^CMAKE_SOURCE_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
 CMAKE_SOURCE_DIR	examples/Makefile	/^CMAKE_SOURCE_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
 CMAKE_SOURCE_DIR	src/Makefile	/^CMAKE_SOURCE_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
+CMAKE_SOURCE_DIR	src/ga/Makefile	/^CMAKE_SOURCE_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
 CMAKE_SOURCE_DIR	tests/Makefile	/^CMAKE_SOURCE_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
-CMP_EPSILON	scripts/build/al/include/comparator.h	6;"	d
+CMAKE_SOURCE_DIR	tests/ga/Makefile	/^CMAKE_SOURCE_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
 COMPILER_ID	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	101;"	d	file:
 COMPILER_ID	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	104;"	d	file:
 COMPILER_ID	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	107;"	d	file:
@@ -114,78 +85,6 @@ COMPILER_ID	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	78;"	d	file:
 COMPILER_ID	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	80;"	d	file:
 COMPILER_ID	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	89;"	d	file:
 COMPILER_ID	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	97;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	100;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	103;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	106;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	109;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	117;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	12;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	137;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	140;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	157;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	15;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	160;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	163;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	26;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	32;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	38;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	44;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	50;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	64;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	71;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	75;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	78;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	80;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	89;"	d	file:
-COMPILER_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	97;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	100;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	103;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	106;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	109;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	117;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	12;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	137;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	140;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	157;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	15;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	160;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	163;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	26;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	32;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	38;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	44;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	50;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	64;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	71;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	75;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	78;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	80;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	89;"	d	file:
-COMPILER_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	97;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	100;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	103;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	106;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	109;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	117;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	12;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	137;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	140;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	157;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	15;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	160;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	163;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	26;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	32;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	38;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	44;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	50;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	64;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	71;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	75;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	78;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	80;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	89;"	d	file:
-COMPILER_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	97;"	d	file:
 COMPILER_VERSION_MAJOR	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	111;"	d	file:
 COMPILER_VERSION_MAJOR	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	120;"	d	file:
 COMPILER_VERSION_MAJOR	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	155;"	d	file:
@@ -214,48 +113,6 @@ COMPILER_VERSION_MAJOR	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	58;"	d	fi
 COMPILER_VERSION_MAJOR	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	66;"	d	file:
 COMPILER_VERSION_MAJOR	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	83;"	d	file:
 COMPILER_VERSION_MAJOR	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	90;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	110;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	119;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	143;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	148;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	17;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	27;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	33;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	40;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	46;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	53;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	58;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	66;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	83;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	90;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	110;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	119;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	143;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	148;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	17;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	27;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	33;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	40;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	46;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	53;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	58;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	66;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	83;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	90;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	110;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	119;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	143;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	148;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	17;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	27;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	33;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	40;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	46;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	53;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	58;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	66;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	83;"	d	file:
-COMPILER_VERSION_MAJOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	90;"	d	file:
 COMPILER_VERSION_MINOR	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	112;"	d	file:
 COMPILER_VERSION_MINOR	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	121;"	d	file:
 COMPILER_VERSION_MINOR	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	156;"	d	file:
@@ -284,48 +141,6 @@ COMPILER_VERSION_MINOR	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	59;"	d	fi
 COMPILER_VERSION_MINOR	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	67;"	d	file:
 COMPILER_VERSION_MINOR	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	84;"	d	file:
 COMPILER_VERSION_MINOR	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	91;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	111;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	120;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	144;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	149;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	18;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	28;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	34;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	41;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	47;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	54;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	59;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	67;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	84;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	91;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	111;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	120;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	144;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	149;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	18;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	28;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	34;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	41;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	47;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	54;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	59;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	67;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	84;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	91;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	111;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	120;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	144;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	149;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	18;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	28;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	34;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	41;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	47;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	54;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	59;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	67;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	84;"	d	file:
-COMPILER_VERSION_MINOR	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	91;"	d	file:
 COMPILER_VERSION_PATCH	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	114;"	d	file:
 COMPILER_VERSION_PATCH	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	125;"	d	file:
 COMPILER_VERSION_PATCH	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	128;"	d	file:
@@ -352,127 +167,36 @@ COMPILER_VERSION_PATCH	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	60;"	d	fi
 COMPILER_VERSION_PATCH	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	68;"	d	file:
 COMPILER_VERSION_PATCH	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	85;"	d	file:
 COMPILER_VERSION_PATCH	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	93;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	113;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	124;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	127;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	145;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	150;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	19;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	29;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	35;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	55;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	60;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	68;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	85;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	93;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	113;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	124;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	127;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	145;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	150;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	19;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	29;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	35;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	55;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	60;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	68;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	85;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	93;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	113;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	124;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	127;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	145;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	150;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	19;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	29;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	35;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	55;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	60;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	68;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	85;"	d	file:
-COMPILER_VERSION_PATCH	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	93;"	d	file:
 COMPILER_VERSION_TWEAK	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	132;"	d	file:
 COMPILER_VERSION_TWEAK	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	20;"	d	file:
 COMPILER_VERSION_TWEAK	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	131;"	d	file:
 COMPILER_VERSION_TWEAK	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	22;"	d	file:
-COMPILER_VERSION_TWEAK	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	131;"	d	file:
-COMPILER_VERSION_TWEAK	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	22;"	d	file:
-COMPILER_VERSION_TWEAK	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	131;"	d	file:
-COMPILER_VERSION_TWEAK	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	22;"	d	file:
-COMPILER_VERSION_TWEAK	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	131;"	d	file:
-COMPILER_VERSION_TWEAK	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	22;"	d	file:
-DATAFILE_FLOAT	scripts/build/al/src/random_data_generator.c	10;"	d	file:
-DATAFILE_INTEGER	scripts/build/al/src/random_data_generator.c	9;"	d	file:
-DATAFILE_STRING	scripts/build/al/src/random_data_generator.c	11;"	d	file:
 DEC	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	296;"	d	file:
 DEC	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	284;"	d	file:
-DEC	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	284;"	d	file:
-DEC	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	284;"	d	file:
-DEC	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	284;"	d	file:
-DEFAULT_EXPAND_RATE	scripts/build/dstruct/include/darray.h	26;"	d
-DEFAULT_NUMBER_OF_BUCKETS	scripts/build/dstruct/include/hashmap.h	22;"	d
-DEFAULT_PIVOT	include/crossover.h	7;"	d
-DEFAULT_SELECT	include/selection.h	7;"	d
-DNA	src/mutation.c	/^char DNA[4] = {$/;"	v
+DEFAULT_PIVOT	include/ga/crossover.h	7;"	d
+DEFAULT_SELECT	include/ga/selection.h	7;"	d
+DNA	src/ga/mutation.c	/^char DNA[4] = {$/;"	v
 DirectoryOfThisScript	.ycm_extra_conf.py	/^def DirectoryOfThisScript():$/;"	f
-ENDC	scripts/build/al/scripts/unittest_runner.py	/^    ENDC = '\\033[0m'$/;"	v	class:TermColors
-ENDC	scripts/build/dbg/scripts/unittest_runner.py	/^    ENDC = '\\033[0m'$/;"	v	class:TermColors
-ENDC	scripts/build/dstruct/scripts/unittest_runner.py	/^    ENDC = '\\033[0m'$/;"	v	class:TermColors
-ENDC	scripts/build/munit/scripts/unittest_runner.py	/^    ENDC = '\\033[0m'$/;"	v	class:TermColors
 ENDC	scripts/unittest_runner.py	/^    ENDC = '\\033[0m'$/;"	v	class:TermColors
 EQUALS	Makefile	/^EQUALS = =$/;"	m
 EQUALS	examples/Makefile	/^EQUALS = =$/;"	m
 EQUALS	src/Makefile	/^EQUALS = =$/;"	m
+EQUALS	src/ga/Makefile	/^EQUALS = =$/;"	m
 EQUALS	tests/Makefile	/^EQUALS = =$/;"	m
-FAIL	scripts/build/al/scripts/unittest_runner.py	/^    FAIL = '\\033[91m'$/;"	v	class:TermColors
-FAIL	scripts/build/dbg/scripts/unittest_runner.py	/^    FAIL = '\\033[91m'$/;"	v	class:TermColors
-FAIL	scripts/build/dstruct/scripts/unittest_runner.py	/^    FAIL = '\\033[91m'$/;"	v	class:TermColors
-FAIL	scripts/build/munit/scripts/unittest_runner.py	/^    FAIL = '\\033[91m'$/;"	v	class:TermColors
+EQUALS	tests/ga/Makefile	/^EQUALS = =$/;"	m
 FAIL	scripts/unittest_runner.py	/^    FAIL = '\\033[91m'$/;"	v	class:TermColors
-FLOAT_DATA	scripts/build/al/include/test_utils.h	6;"	d
-FLOAT_TESTDATA	scripts/build/al/include/test_utils.h	9;"	d
 FlagsForFile	.ycm_extra_conf.py	/^def FlagsForFile( filename ):$/;"	f
-HEADER	scripts/build/al/scripts/unittest_runner.py	/^    HEADER = '\\033[95m'$/;"	v	class:TermColors
-HEADER	scripts/build/dbg/scripts/unittest_runner.py	/^    HEADER = '\\033[95m'$/;"	v	class:TermColors
-HEADER	scripts/build/dstruct/scripts/unittest_runner.py	/^    HEADER = '\\033[95m'$/;"	v	class:TermColors
-HEADER	scripts/build/munit/scripts/unittest_runner.py	/^    HEADER = '\\033[95m'$/;"	v	class:TermColors
 HEADER	scripts/unittest_runner.py	/^    HEADER = '\\033[95m'$/;"	v	class:TermColors
 HEX	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	307;"	d	file:
 HEX	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	295;"	d	file:
-HEX	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	295;"	d	file:
-HEX	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	295;"	d	file:
-HEX	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	295;"	d	file:
 ID_VOID_MAIN	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	9;"	d	file:
-INITIAL_STATIC_FIND_INDEX_COUNT	scripts/build/dstruct/src/bstrlib.c	1565;"	d	file:
-INT_DATA	scripts/build/al/include/test_utils.h	5;"	d
-INT_TESTDATA	scripts/build/al/include/test_utils.h	8;"	d
-KBLU	scripts/build/munit/src/munit.h	15;"	d
-KCYN	scripts/build/munit/src/munit.h	17;"	d
-KGRN	scripts/build/munit/src/munit.h	13;"	d
-KMAG	scripts/build/munit/src/munit.h	16;"	d
-KNRM	scripts/build/munit/src/munit.h	11;"	d
-KRED	scripts/build/munit/src/munit.h	12;"	d
-KWHT	scripts/build/munit/src/munit.h	18;"	d
-KYEL	scripts/build/munit/src/munit.h	14;"	d
-LONG_BITS_QTY	scripts/build/dstruct/src/bstrlib.c	1254;"	d	file:
-LONG_LOG_BITS_QTY	scripts/build/dstruct/src/bstrlib.c	1253;"	d	file:
-LONG_TYPE	scripts/build/dstruct/src/bstrlib.c	1256;"	d	file:
-LOOP	tests/mutation_tests.c	10;"	d	file:
-MAXN	examples/csp.c	20;"	d	file:
+LOOP	tests/ga/mutation_tests.c	10;"	d	file:
+MAXN	examples/csp.c	21;"	d	file:
 MakeRelativePathsInFlagsAbsolute	.ycm_extra_conf.py	/^def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):$/;"	f
-NDEBUG	scripts/build/dstruct/src/hashmap.c	1;"	d	file:
-NUMERIC	src/mutation.c	/^char NUMERIC[10] = {$/;"	v
-NUM_LBOUND	examples/csp.c	21;"	d	file:
-NUM_UBOUND	examples/csp.c	22;"	d	file:
-OKBLUE	scripts/build/al/scripts/unittest_runner.py	/^    OKBLUE = '\\033[94m'$/;"	v	class:TermColors
-OKBLUE	scripts/build/dbg/scripts/unittest_runner.py	/^    OKBLUE = '\\033[94m'$/;"	v	class:TermColors
-OKBLUE	scripts/build/dstruct/scripts/unittest_runner.py	/^    OKBLUE = '\\033[94m'$/;"	v	class:TermColors
-OKBLUE	scripts/build/munit/scripts/unittest_runner.py	/^    OKBLUE = '\\033[94m'$/;"	v	class:TermColors
+NUMERIC	src/ga/mutation.c	/^char NUMERIC[10] = {$/;"	v
+NUM_LBOUND	examples/csp.c	22;"	d	file:
+NUM_UBOUND	examples/csp.c	23;"	d	file:
 OKBLUE	scripts/unittest_runner.py	/^    OKBLUE = '\\033[94m'$/;"	v	class:TermColors
-OKGREEN	scripts/build/al/scripts/unittest_runner.py	/^    OKGREEN = '\\033[92m'$/;"	v	class:TermColors
-OKGREEN	scripts/build/dbg/scripts/unittest_runner.py	/^    OKGREEN = '\\033[92m'$/;"	v	class:TermColors
-OKGREEN	scripts/build/dstruct/scripts/unittest_runner.py	/^    OKGREEN = '\\033[92m'$/;"	v	class:TermColors
-OKGREEN	scripts/build/munit/scripts/unittest_runner.py	/^    OKGREEN = '\\033[92m'$/;"	v	class:TermColors
 OKGREEN	scripts/unittest_runner.py	/^    OKGREEN = '\\033[92m'$/;"	v	class:TermColors
 PLATFORM_ID	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	187;"	d	file:
 PLATFORM_ID	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	190;"	d	file:
@@ -526,408 +250,93 @@ PLATFORM_ID	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	244;"	d	file:
 PLATFORM_ID	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	247;"	d	file:
 PLATFORM_ID	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	250;"	d	file:
 PLATFORM_ID	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	253;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	175;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	178;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	181;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	184;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	187;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	190;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	193;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	196;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	199;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	202;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	205;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	208;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	211;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	217;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	220;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	223;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	226;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	229;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	232;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	235;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	238;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	241;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	244;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	247;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	250;"	d	file:
-PLATFORM_ID	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	253;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	175;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	178;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	181;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	184;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	187;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	190;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	193;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	196;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	199;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	202;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	205;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	208;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	211;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	217;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	220;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	223;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	226;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	229;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	232;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	235;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	238;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	241;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	244;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	247;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	250;"	d	file:
-PLATFORM_ID	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	253;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	175;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	178;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	181;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	184;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	187;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	190;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	193;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	196;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	199;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	202;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	205;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	208;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	211;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	217;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	220;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	223;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	226;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	229;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	232;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	235;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	238;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	241;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	244;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	247;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	250;"	d	file:
-PLATFORM_ID	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	253;"	d	file:
 QSORT_MIN_SIZE	include/evolve_monitor.h	12;"	d
 QSORT_MIN_SIZE	include/population.h	6;"	d
 RM	Makefile	/^RM = \/usr\/bin\/cmake -E remove -f$/;"	m
 RM	examples/Makefile	/^RM = \/usr\/bin\/cmake -E remove -f$/;"	m
 RM	src/Makefile	/^RM = \/usr\/bin\/cmake -E remove -f$/;"	m
+RM	src/ga/Makefile	/^RM = \/usr\/bin\/cmake -E remove -f$/;"	m
 RM	tests/Makefile	/^RM = \/usr\/bin\/cmake -E remove -f$/;"	m
+RM	tests/ga/Makefile	/^RM = \/usr\/bin\/cmake -E remove -f$/;"	m
 SHELL	Makefile	/^SHELL = \/bin\/sh$/;"	m
 SHELL	examples/Makefile	/^SHELL = \/bin\/sh$/;"	m
 SHELL	src/Makefile	/^SHELL = \/bin\/sh$/;"	m
+SHELL	src/ga/Makefile	/^SHELL = \/bin\/sh$/;"	m
 SHELL	tests/Makefile	/^SHELL = \/bin\/sh$/;"	m
-SORT_MIN_SIZE	scripts/build/al/src/sort.c	7;"	d	file:
-START_VSNBUFF	scripts/build/dstruct/src/bstrlib.c	2751;"	d	file:
+SHELL	tests/ga/Makefile	/^SHELL = \/bin\/sh$/;"	m
 SUFFIXES	Makefile	/^SUFFIXES =$/;"	m
 SUFFIXES	examples/Makefile	/^SUFFIXES =$/;"	m
 SUFFIXES	src/Makefile	/^SUFFIXES =$/;"	m
+SUFFIXES	src/ga/Makefile	/^SUFFIXES =$/;"	m
 SUFFIXES	tests/Makefile	/^SUFFIXES =$/;"	m
-TARGET_SOLUTION	examples/hello_world.c	17;"	d	file:
-TEST_ALPHANUM	tests/mutation_tests.c	12;"	d	file:
-TEST_DNA	tests/mutation_tests.c	14;"	d	file:
-TEST_NUM	tests/mutation_tests.c	13;"	d	file:
-TEST_OUTPUT	tests/population_tests.c	21;"	d	file:
-TEST_SOLUTION	tests/evolve_monitor_tests.c	19;"	d	file:
-TEST_STR	tests/mutation_tests.c	11;"	d	file:
-TermColors	scripts/build/al/scripts/unittest_runner.py	/^class TermColors:$/;"	c
-TermColors	scripts/build/dbg/scripts/unittest_runner.py	/^class TermColors:$/;"	c
-TermColors	scripts/build/dstruct/scripts/unittest_runner.py	/^class TermColors:$/;"	c
-TermColors	scripts/build/munit/scripts/unittest_runner.py	/^class TermColors:$/;"	c
+SUFFIXES	tests/ga/Makefile	/^SUFFIXES =$/;"	m
+TARGET_SOLUTION	examples/hello_world.c	18;"	d	file:
+TEST_ALPHANUM	tests/ga/mutation_tests.c	12;"	d	file:
+TEST_DNA	tests/ga/mutation_tests.c	14;"	d	file:
+TEST_NUM	tests/ga/mutation_tests.c	13;"	d	file:
+TEST_OUTPUT	tests/ga/population_tests.c	21;"	d	file:
+TEST_SOLUTION	tests/ga/evolve_monitor_tests.c	19;"	d	file:
+TEST_STR	tests/ga/mutation_tests.c	11;"	d	file:
 TermColors	scripts/unittest_runner.py	/^class TermColors:$/;"	c
-WARNING	scripts/build/al/scripts/unittest_runner.py	/^    WARNING = '\\033[93m'$/;"	v	class:TermColors
-WARNING	scripts/build/dbg/scripts/unittest_runner.py	/^    WARNING = '\\033[93m'$/;"	v	class:TermColors
-WARNING	scripts/build/dstruct/scripts/unittest_runner.py	/^    WARNING = '\\033[93m'$/;"	v	class:TermColors
-WARNING	scripts/build/munit/scripts/unittest_runner.py	/^    WARNING = '\\033[93m'$/;"	v	class:TermColors
 WARNING	scripts/unittest_runner.py	/^    WARNING = '\\033[93m'$/;"	v	class:TermColors
-_COMPARATOR_H_	scripts/build/al/include/comparator.h	2;"	d
-_CROSSOVER_H_	include/crossover.h	2;"	d
-_CRT_SECURE_NO_WARNINGS	scripts/build/dstruct/src/bstrlib.c	44;"	d	file:
-_DARRAY_H_	scripts/build/dstruct/include/darray.h	2;"	d
-_DBG_H_	scripts/build/dbg/src/dbg.h	2;"	d
-_DOUBLY_LINKED_LIST_	scripts/build/dstruct/include/doubly_linked_list.h	2;"	d
+_CROSSOVER_H_	include/ga/crossover.h	2;"	d
 _EVOLVE_H_	include/evolve.h	2;"	d
 _EVOLVE_MONITOR_H_	include/evolve_monitor.h	2;"	d
-_HASHMAP_H_	scripts/build/dstruct/include/hashmap.h	2;"	d
-_MUNIT_H_	scripts/build/munit/src/munit.h	2;"	d
-_MUTATE_H_	include/mutation.h	2;"	d
+_MUTATE_H_	include/ga/mutation.h	2;"	d
 _POPULATION_H_	include/population.h	2;"	d
-_SEARCH_H_	scripts/build/al/include/search.h	2;"	d
-_SELECTION_H_	include/selection.h	2;"	d
-_SORT_H_	scripts/build/al/include/sort.h	2;"	d
+_SELECTION_H_	include/ga/selection.h	2;"	d
 _TEST_UTILS_H_	include/test_utils.h	2;"	d
-_TEST_UTILS_H_	scripts/build/al/include/test_utils.h	2;"	d
-_UTILS_H_	scripts/build/al/include/utils.h	2;"	d
 analyze_exec_times	examples/experiment_analyzer.py	/^def analyze_exec_times(exec_times, file_names):$/;"	f
 analyze_log_file	examples/experiment_analyzer.py	/^def analyze_log_file(data_dir):$/;"	f
 analyze_log_files	examples/experiment_analyzer.py	/^def analyze_log_files(data_dir):$/;"	f
-array	scripts/build/dstruct/tests/darray_tests.c	/^static struct darray *array = NULL;$/;"	v	typeref:struct:darray	file:
-assert_sorted_array	scripts/build/al/tests/test_utils.c	/^int assert_sorted_array($/;"	f
-assert_sorted_array	tests/test_utils.c	/^int assert_sorted_array($/;"	f
-assert_sorted_gstats	tests/test_utils.c	/^int assert_sorted_gstats($/;"	f
-assert_sorted_population	tests/test_utils.c	/^int assert_sorted_population($/;"	f
-b	scripts/build/dstruct/src/bstrlib.c	/^        bstring b;$/;"	m	struct:genBstrList	file:
-bBlockCopy	scripts/build/dstruct/src/bstrlib.c	57;"	d	file:
-bNgetc	scripts/build/dstruct/include/bstrlib.h	/^typedef int (*bNgetc)(void *parm);$/;"	t
-bNread	scripts/build/dstruct/include/bstrlib.h	/^typedef size_t (*bNread)(void *buff, size_t elsize, size_t nelem, void *parm);$/;"	t
-bStream	scripts/build/dstruct/src/bstrlib.c	/^struct bStream {$/;"	s	file:
-balloc	scripts/build/dstruct/src/bstrlib.c	/^balloc(bstring b, int olen)$/;"	f
-ballocmin	scripts/build/dstruct/src/bstrlib.c	/^ballocmin(bstring b, int len)$/;"	f
-bar	scripts/build/munit/src/example.c	/^int bar = 5;$/;"	v
-bassign	scripts/build/dstruct/src/bstrlib.c	/^bassign(bstring a, const bstring b)$/;"	f
-bassignblk	scripts/build/dstruct/src/bstrlib.c	/^bassignblk(bstring a, const void *s, int len)$/;"	f
-bassigncstr	scripts/build/dstruct/src/bstrlib.c	/^bassigncstr(bstring a, const char *str)$/;"	f
-bassignformat	scripts/build/dstruct/src/bstrlib.c	/^bassignformat(bstring b, const char *fmt, ...)$/;"	f
-bassigngets	scripts/build/dstruct/src/bstrlib.c	/^bassigngets(bstring b, bNgetc getcPtr, void *parm, char terminator)$/;"	f
-bassignmidstr	scripts/build/dstruct/src/bstrlib.c	/^bassignmidstr(bstring a, const bstring b, int left, int len)$/;"	f
-bcatblk	scripts/build/dstruct/src/bstrlib.c	/^bcatblk(bstring b, const void *s, int len)$/;"	f
-bcatcstr	scripts/build/dstruct/src/bstrlib.c	/^bcatcstr(bstring b, const char *s)$/;"	f
-bchar	scripts/build/dstruct/include/bstrlib.h	1473;"	d
-bchare	scripts/build/dstruct/include/bstrlib.h	1462;"	d
-bconcat	scripts/build/dstruct/src/bstrlib.c	/^bconcat(bstring b0, const bstring b1)$/;"	f
-bconchar	scripts/build/dstruct/src/bstrlib.c	/^bconchar(bstring b, char c)$/;"	f
-bcstrfree	scripts/build/dstruct/src/bstrlib.c	/^bcstrfree(char *s)$/;"	f
-bdata	scripts/build/dstruct/include/bstrlib.h	1453;"	d
-bdatae	scripts/build/dstruct/include/bstrlib.h	1445;"	d
-bdataofs	scripts/build/dstruct/include/bstrlib.h	1437;"	d
-bdataofse	scripts/build/dstruct/include/bstrlib.h	1427;"	d
-bdelete	scripts/build/dstruct/src/bstrlib.c	/^bdelete(bstring b, int pos, int len)$/;"	f
-bdestroy	scripts/build/dstruct/src/bstrlib.c	/^bdestroy(bstring b)$/;"	f
+assert_sorted_array	tests/ga/test_utils.c	/^int assert_sorted_array($/;"	f
+assert_sorted_gstats	tests/ga/test_utils.c	/^int assert_sorted_gstats($/;"	f
+assert_sorted_population	tests/ga/test_utils.c	/^int assert_sorted_population($/;"	f
 best_chromosomes	include/evolve_monitor.h	/^        struct darray *best_chromosomes;$/;"	m	struct:evolve_monitor	typeref:struct:evolve_monitor::darray
 best_scores	include/evolve_monitor.h	/^        struct darray *best_scores;$/;"	m	struct:evolve_monitor	typeref:struct:evolve_monitor::darray
-bfindreplace	scripts/build/dstruct/src/bstrlib.c	/^bfindreplace(bstring b, const bstring find, const bstring repl, int pos)$/;"	f
-bfindreplacecaseless	scripts/build/dstruct/src/bstrlib.c	/^bfindreplacecaseless(bstring b, const bstring find, const bstring repl, int pos)$/;"	f
-bformat	scripts/build/dstruct/src/bstrlib.c	/^bformat(const char *fmt, ...)$/;"	f
-bformata	scripts/build/dstruct/src/bstrlib.c	/^bformata(bstring b, const char *fmt, ...)$/;"	f
-bfromcstr	scripts/build/dstruct/src/bstrlib.c	/^bfromcstr(const char *str)$/;"	f
-bfromcstralloc	scripts/build/dstruct/src/bstrlib.c	/^bfromcstralloc(int mlen, const char *str)$/;"	f
-bgets	scripts/build/dstruct/src/bstrlib.c	/^bgets(bNgetc getcPtr, void *parm, char terminator)$/;"	f
-bgetsa	scripts/build/dstruct/src/bstrlib.c	/^bgetsa(bstring b, bNgetc getcPtr, void *parm, char terminator)$/;"	f
-binary_search	scripts/build/al/src/search.c	/^int binary_search($/;"	f
-binchr	scripts/build/dstruct/src/bstrlib.c	/^binchr(const bstring b0, int pos, const bstring b1)$/;"	f
-binchrCF	scripts/build/dstruct/src/bstrlib.c	/^binchrCF(const unsigned char *data, int len, int pos,$/;"	f	file:
-binchrr	scripts/build/dstruct/src/bstrlib.c	/^binchrr(const bstring b0, int pos, const bstring b1)$/;"	f
-binchrrCF	scripts/build/dstruct/src/bstrlib.c	/^binchrrCF(const unsigned char *data, int pos, const struct charField *cf)$/;"	f	file:
 binomial_coefficient	examples/csp.c	/^static int binomial_coefficient(int n, int m)$/;"	f	file:
-binsert	scripts/build/dstruct/src/bstrlib.c	/^binsert(bstring b1, int pos, const bstring b2, unsigned char fill)$/;"	f
-binsertch	scripts/build/dstruct/src/bstrlib.c	/^binsertch(bstring b, int pos, int len, unsigned char fill)$/;"	f
-binstr	scripts/build/dstruct/src/bstrlib.c	/^binstr(const bstring b1, int pos, const bstring b2)$/;"	f
-binstrcaseless	scripts/build/dstruct/src/bstrlib.c	/^binstrcaseless(const bstring b1, int pos, const bstring b2)$/;"	f
-binstrr	scripts/build/dstruct/src/bstrlib.c	/^binstrr(const bstring b1, int pos, const bstring b2)$/;"	f
-binstrrcaseless	scripts/build/dstruct/src/bstrlib.c	/^binstrrcaseless(const bstring b1, int pos, const bstring b2)$/;"	f
-biseq	scripts/build/dstruct/src/bstrlib.c	/^biseq(const bstring b0, const bstring b1)$/;"	f
-biseqcaseless	scripts/build/dstruct/src/bstrlib.c	/^biseqcaseless(const bstring b0, const bstring b1)$/;"	f
-biseqcstr	scripts/build/dstruct/src/bstrlib.c	/^biseqcstr(const bstring b, const char *s)$/;"	f
-biseqcstrcaseless	scripts/build/dstruct/src/bstrlib.c	/^biseqcstrcaseless(const bstring b, const char *s)$/;"	f
-bisstemeqblk	scripts/build/dstruct/src/bstrlib.c	/^bisstemeqblk(const bstring b0, const void *blk, int len)$/;"	f
-bisstemeqcaselessblk	scripts/build/dstruct/src/bstrlib.c	/^bisstemeqcaselessblk(const bstring b0, const void *blk, int len)$/;"	f
-biswriteprotected	scripts/build/dstruct/include/bstrlib.h	1758;"	d
-bjoin	scripts/build/dstruct/src/bstrlib.c	/^bjoin(const struct bstrList *bl, const bstring sep)$/;"	f
-bl	scripts/build/dstruct/src/bstrlib.c	/^        struct bstrList *bl;$/;"	m	struct:genBstrList	typeref:struct:genBstrList::bstrList	file:
-blength	scripts/build/dstruct/include/bstrlib.h	1419;"	d
-blengthe	scripts/build/dstruct/include/bstrlib.h	1409;"	d
-blk2bstr	scripts/build/dstruct/src/bstrlib.c	/^blk2bstr(const void *blk, int len)$/;"	f
-blk2tbstr	scripts/build/dstruct/include/bstrlib.h	1559;"	d
-bltrimws	scripts/build/dstruct/src/bstrlib.c	/^bltrimws(bstring b)$/;"	f
-bmid2tbstr	scripts/build/dstruct/include/bstrlib.h	1597;"	d
-bmidstr	scripts/build/dstruct/src/bstrlib.c	/^bmidstr(const bstring b, int left, int len)$/;"	f
-bninchr	scripts/build/dstruct/src/bstrlib.c	/^bninchr(const bstring b0, int pos, const bstring b1)$/;"	f
-bninchrr	scripts/build/dstruct/src/bstrlib.c	/^bninchrr(const bstring b0, int pos, const bstring b1)$/;"	f
-bpattern	scripts/build/dstruct/src/bstrlib.c	/^bpattern(bstring b, int len)$/;"	f
-bread	scripts/build/dstruct/src/bstrlib.c	/^bread(bNread readPtr, void *parm)$/;"	f
-breada	scripts/build/dstruct/src/bstrlib.c	/^breada(bstring b, bNread readPtr, void *parm)$/;"	f
-breplace	scripts/build/dstruct/src/bstrlib.c	/^breplace(bstring b1, int pos, int len, const bstring b2, unsigned char fill)$/;"	f
-brtrimws	scripts/build/dstruct/src/bstrlib.c	/^brtrimws(bstring b)$/;"	f
-bsStatic	scripts/build/dstruct/include/bstrlib.h	1497;"	d
-bsStatic	scripts/build/dstruct/include/bstrlib.h	1503;"	d
-bsStaticBlkParms	scripts/build/dstruct/include/bstrlib.h	1526;"	d
-bsStaticMlen	scripts/build/dstruct/include/bstrlib.h	1480;"	d
-bsbufflength	scripts/build/dstruct/src/bstrlib.c	/^int bsbufflength(struct bStream *s, int sz)$/;"	f
-bscb	scripts/build/dstruct/src/bstrlib.c	/^bscb(void *parm, int ofs, int len)$/;"	f	file:
-bsclose	scripts/build/dstruct/src/bstrlib.c	/^bsclose(struct bStream *s)$/;"	f
-bseof	scripts/build/dstruct/src/bstrlib.c	/^bseof(const struct bStream *s)$/;"	f
-bsetstr	scripts/build/dstruct/src/bstrlib.c	/^bsetstr(bstring b0, int pos, const bstring b1, unsigned char fill)$/;"	f
-bsopen	scripts/build/dstruct/src/bstrlib.c	/^bsopen (bNread readPtr, void *parm)$/;"	f
-bspeek	scripts/build/dstruct/src/bstrlib.c	/^bspeek(bstring r, const struct bStream *s)$/;"	f
-bsplit	scripts/build/dstruct/src/bstrlib.c	/^bsplit(const bstring str, unsigned char splitChar)$/;"	f
-bsplitcb	scripts/build/dstruct/src/bstrlib.c	/^bsplitcb(const bstring str, unsigned char splitChar, int pos,$/;"	f
-bsplits	scripts/build/dstruct/src/bstrlib.c	/^bsplits(const bstring str, const bstring splitStr)$/;"	f
-bsplitscb	scripts/build/dstruct/src/bstrlib.c	/^bsplitscb(const bstring str, const bstring splitStr, int pos,$/;"	f
-bsplitstr	scripts/build/dstruct/src/bstrlib.c	/^bsplitstr(const bstring str, const bstring splitStr)$/;"	f
-bsplitstrcb	scripts/build/dstruct/src/bstrlib.c	/^bsplitstrcb(const bstring str, const bstring splitStr, int pos,$/;"	f
-bsread	scripts/build/dstruct/src/bstrlib.c	/^bsread(bstring r, struct bStream *s, int n)$/;"	f
-bsreada	scripts/build/dstruct/src/bstrlib.c	/^bsreada(bstring r, struct bStream *s, int n)$/;"	f
-bsreadln	scripts/build/dstruct/src/bstrlib.c	/^bsreadln(bstring r, struct bStream *s, char terminator)$/;"	f
-bsreadlna	scripts/build/dstruct/src/bstrlib.c	/^bsreadlna(bstring r, struct bStream *s, char terminator)$/;"	f
-bsreadlns	scripts/build/dstruct/src/bstrlib.c	/^bsreadlns(bstring r, struct bStream *s, const bstring term)$/;"	f
-bsreadlnsa	scripts/build/dstruct/src/bstrlib.c	/^bsreadlnsa(bstring r, struct bStream *s, const bstring term)$/;"	f
-bssplitscb	scripts/build/dstruct/src/bstrlib.c	/^bssplitscb(struct bStream *s, const bstring splitStr,$/;"	f
-bssplitstrcb	scripts/build/dstruct/src/bstrlib.c	/^bssplitstrcb(struct bStream *s, const bstring splitStr,$/;"	f
-bstr2cstr	scripts/build/dstruct/src/bstrlib.c	/^bstr2cstr(const bstring b, char z)$/;"	f
-bstrList	scripts/build/dstruct/include/bstrlib.h	/^struct bstrList {$/;"	s
-bstrListAlloc	scripts/build/dstruct/src/bstrlib.c	/^bstrListAlloc(struct bstrList *sl, int msz)$/;"	f
-bstrListAllocMin	scripts/build/dstruct/src/bstrlib.c	/^bstrListAllocMin(struct bstrList *sl, int msz)$/;"	f
-bstrListCreate	scripts/build/dstruct/src/bstrlib.c	/^bstrListCreate(void)$/;"	f
-bstrListDestroy	scripts/build/dstruct/src/bstrlib.c	/^bstrListDestroy(struct bstrList *sl)$/;"	f
-bstrchr	scripts/build/dstruct/include/bstrlib.h	624;"	d
-bstrchrp	scripts/build/dstruct/src/bstrlib.c	/^bstrchrp(const bstring b, int c, int pos)$/;"	f
-bstrcmp	scripts/build/dstruct/src/bstrlib.c	/^bstrcmp(const bstring b0, const bstring b1)$/;"	f
-bstrcpy	scripts/build/dstruct/src/bstrlib.c	/^bstrcpy(const bstring b)$/;"	f
-bstricmp	scripts/build/dstruct/src/bstrlib.c	/^bstricmp(const bstring b0, const bstring b1)$/;"	f
-bstring	scripts/build/dstruct/include/bstrlib.h	/^typedef struct tagbstring *bstring;$/;"	t	typeref:struct:tagbstring
-bstrncmp	scripts/build/dstruct/src/bstrlib.c	/^bstrncmp(const bstring b0, const bstring b1, int n)$/;"	f
-bstrnicmp	scripts/build/dstruct/src/bstrlib.c	/^bstrnicmp(const bstring b0, const bstring b1, int n)$/;"	f
-bstrrchr	scripts/build/dstruct/include/bstrlib.h	633;"	d
-bstrrchrp	scripts/build/dstruct/src/bstrlib.c	/^bstrrchrp(const bstring b, int c, int pos)$/;"	f
-bsunread	scripts/build/dstruct/src/bstrlib.c	/^bsunread(struct bStream *s, const bstring b)$/;"	f
-btfromblk	scripts/build/dstruct/include/bstrlib.h	1580;"	d
-btfromblkltrimws	scripts/build/dstruct/include/bstrlib.h	1638;"	d
-btfromblkrtrimws	scripts/build/dstruct/include/bstrlib.h	1668;"	d
-btfromblktrimws	scripts/build/dstruct/include/bstrlib.h	1698;"	d
-btfromcstr	scripts/build/dstruct/include/bstrlib.h	1548;"	d
-btolower	scripts/build/dstruct/src/bstrlib.c	/^btolower(bstring b)$/;"	f
-btoupper	scripts/build/dstruct/src/bstrlib.c	/^btoupper(bstring b)$/;"	f
-btrimws	scripts/build/dstruct/src/bstrlib.c	/^btrimws(bstring b)$/;"	f
-btrunc	scripts/build/dstruct/src/bstrlib.c	/^btrunc(bstring b, int n)$/;"	f
-buckets	scripts/build/dstruct/include/hashmap.h	/^        struct darray *buckets;$/;"	m	struct:hashmap	typeref:struct:hashmap::darray
-buff	scripts/build/dstruct/src/bstrlib.c	/^        bstring buff; \/* Buffer for over-reads *\/$/;"	m	struct:bStream	file:
-buildCharField	scripts/build/dstruct/src/bstrlib.c	/^buildCharField(struct charField *cf, const bstring b)$/;"	f	file:
-build_heap	scripts/build/al/src/sort.c	/^void build_heap($/;"	f
-bvcformata	scripts/build/dstruct/src/bstrlib.c	/^bvcformata(bstring b, int count, const char *fmt, va_list arg)$/;"	f
-bvformata	scripts/build/dstruct/include/bstrlib.h	1086;"	d
-bwriteallow	scripts/build/dstruct/include/bstrlib.h	1748;"	d
-bwriteprotect	scripts/build/dstruct/include/bstrlib.h	1729;"	d
-c_1_orig	tests/crossover_tests.c	/^char *c_1_orig = "123456789\\0";$/;"	v
-c_2_orig	tests/crossover_tests.c	/^char *c_2_orig = "ABCDEFGHI\\0";$/;"	v
-c_pair	tests/crossover_tests.c	/^struct chromosome_pair *c_pair;$/;"	v	typeref:struct:chromosome_pair
-charField	scripts/build/dstruct/src/bstrlib.c	/^struct charField {$/;"	s	file:
-check	scripts/build/dbg/src/dbg.h	44;"	d
-check_debug	scripts/build/dbg/src/dbg.h	49;"	d
-check_debug_wrapper	scripts/build/dbg/src/dbg_tests.c	/^int check_debug_wrapper()$/;"	f
-check_mem	scripts/build/dbg/src/dbg.h	48;"	d
-check_mem_wrapper	scripts/build/dbg/src/dbg_tests.c	/^int check_mem_wrapper()$/;"	f
-check_wrapper	scripts/build/dbg/src/dbg_tests.c	/^int check_wrapper()$/;"	f
+c_1_orig	tests/ga/crossover_tests.c	/^char *c_1_orig = "123456789\\0";$/;"	v
+c_2_orig	tests/ga/crossover_tests.c	/^char *c_2_orig = "ABCDEFGHI\\0";$/;"	v
+c_pair	tests/ga/crossover_tests.c	/^struct chromosome_pair *c_pair;$/;"	v	typeref:struct:chromosome_pair
 chromo	include/evolve_monitor.h	/^        char *chromo;$/;"	m	struct:evolve_monitor
-chromo_1	tests/crossover_tests.c	/^void *chromo_1;$/;"	v
-chromo_2	tests/crossover_tests.c	/^void *chromo_2;$/;"	v
+chromo_1	tests/ga/crossover_tests.c	/^void *chromo_1;$/;"	v
+chromo_2	tests/ga/crossover_tests.c	/^void *chromo_2;$/;"	v
 chromosomes	include/population.h	/^        struct darray *chromosomes;$/;"	m	struct:population	typeref:struct:population::darray
-clean_errno	scripts/build/dbg/src/dbg.h	20;"	d
-compare	scripts/build/dstruct/include/hashmap.h	/^        int (*compare)(void *, void *);$/;"	m	struct:hashmap
 compilation_database_folder	.ycm_extra_conf.py	/^compilation_database_folder = ''$/;"	v
-content	scripts/build/dstruct/src/bstrlib.c	/^        LONG_TYPE content[CFCLEN];$/;"	m	struct:charField	file:
-content	scripts/build/dstruct/src/bstrlib.c	/^        unsigned char content[CFCLEN];$/;"	m	struct:charField	file:
-contents	scripts/build/dstruct/include/darray.h	/^    void **contents;$/;"	m	struct:darray
 convergence_rate	include/evolve_monitor.h	/^        float convergence_rate;$/;"	m	struct:evolve_monitor
 convergence_rates	include/evolve_monitor.h	/^        struct darray *convergence_rates;$/;"	m	struct:evolve_monitor	typeref:struct:evolve_monitor::darray
-count	scripts/build/dstruct/include/doubly_linked_list.h	/^        int count;$/;"	m	struct:dbly_linked_list
-create_empty_population	src/selection.c	/^static struct population *create_empty_population(struct population *p)$/;"	f	file:
-crossover	src/crossover.c	/^void crossover($/;"	f
+create_empty_population	src/ga/selection.c	/^static struct population *create_empty_population(struct population *p)$/;"	f	file:
+crossover	src/ga/crossover.c	/^void crossover($/;"	f
 crossover_func	include/evolve.h	/^        int (*crossover_func)(void **, void **, int);$/;"	m	struct:evolution_settings
 crossover_prob	examples/experiment_runner.py	/^    crossover_prob = [0.8, 0.6, 0.4, 0.2]$/;"	v
 crossover_prob	include/evolve.h	/^        float crossover_prob;$/;"	m	struct:evolution_settings
-crossover_prob	tests/evolve_monitor_tests.c	/^float *crossover_prob;$/;"	v
-crossover_prob	tests/evolve_tests.c	/^float *crossover_prob;$/;"	v
-cstr2bstr	scripts/build/dstruct/include/bstrlib.h	87;"	d
-cstr2tbstr	scripts/build/dstruct/include/bstrlib.h	1533;"	d
-darray	scripts/build/dstruct/include/darray.h	/^struct darray {$/;"	s
-darray_clear	scripts/build/dstruct/src/darray.c	/^void darray_clear(struct darray *array)$/;"	f
-darray_clear_destroy	scripts/build/dstruct/src/darray.c	/^void darray_clear_destroy(struct darray *array)$/;"	f
-darray_contract	scripts/build/dstruct/src/darray.c	/^int darray_contract(struct darray *array)$/;"	f
-darray_count	scripts/build/dstruct/include/darray.h	30;"	d
-darray_create	scripts/build/dstruct/src/darray.c	/^struct darray *darray_create(size_t element_size, size_t initial_max)$/;"	f
-darray_destroy	scripts/build/dstruct/src/darray.c	/^void darray_destroy(struct darray *array)$/;"	f
-darray_end	scripts/build/dstruct/include/darray.h	29;"	d
-darray_expand	scripts/build/dstruct/src/darray.c	/^int darray_expand(struct darray *array)$/;"	f
-darray_first	scripts/build/dstruct/include/darray.h	28;"	d
-darray_free	scripts/build/dstruct/include/darray.h	32;"	d
-darray_get	scripts/build/dstruct/include/darray.h	/^static inline void *darray_get(struct darray *array, int i)$/;"	f
-darray_last	scripts/build/dstruct/include/darray.h	27;"	d
-darray_max	scripts/build/dstruct/include/darray.h	31;"	d
-darray_new	scripts/build/dstruct/include/darray.h	/^static inline void *darray_new(struct darray *array)$/;"	f
-darray_pop	scripts/build/dstruct/src/darray.c	/^void *darray_pop(struct darray *array)$/;"	f
-darray_push	scripts/build/dstruct/src/darray.c	/^int darray_push(struct darray *array, void *el)$/;"	f
-darray_remove	scripts/build/dstruct/include/darray.h	/^static inline void *darray_remove(struct darray *array, int i)$/;"	f
-darray_resize	scripts/build/dstruct/src/darray.c	/^static inline int darray_resize(struct darray *array, size_t newsize)$/;"	f	file:
-darray_set	scripts/build/dstruct/include/darray.h	/^static inline void darray_set(struct darray *array, int i, void *el)$/;"	f
-darray_update	scripts/build/dstruct/include/darray.h	/^static inline void darray_update(struct darray* array, int i, void *el)$/;"	f
-data	scripts/build/dstruct/include/bstrlib.h	/^    unsigned char *data;$/;"	m	struct:tagbstring
-data	scripts/build/dstruct/include/hashmap.h	/^        void *data;$/;"	m	struct:hashmap_node
+crossover_prob	tests/ga/evolve_monitor_tests.c	/^float *crossover_prob;$/;"	v
+crossover_prob	tests/ga/evolve_tests.c	/^float *crossover_prob;$/;"	v
 data_dir	examples/experiment_analyzer.py	/^data_dir = "."$/;"	v
 data_dir	examples/experiment_runner.py	/^data_dir = "log_data"$/;"	v
 data_file_pattern	examples/experiment_analyzer.py	/^data_file_pattern = "^[a-zA-Z0-9_]*.dat$"$/;"	v
 data_fp	examples/experiment_runner.py	/^data_fp = "hello_world.dat"$/;"	v
 database	.ycm_extra_conf.py	/^  database = None$/;"	v
 database	.ycm_extra_conf.py	/^  database = ycm_core.CompilationDatabase( compilation_database_folder )$/;"	v
-dbly_linked_list	scripts/build/dstruct/include/doubly_linked_list.h	/^struct dbly_linked_list {$/;"	s
-dbly_linked_list_clear	scripts/build/dstruct/src/doubly_linked_list.c	/^void dbly_linked_list_clear(struct dbly_linked_list *list)$/;"	f
-dbly_linked_list_clear_destroy	scripts/build/dstruct/src/doubly_linked_list.c	/^void dbly_linked_list_clear_destroy(struct dbly_linked_list *list)$/;"	f
-dbly_linked_list_count	scripts/build/dstruct/include/doubly_linked_list.h	20;"	d
-dbly_linked_list_create	scripts/build/dstruct/src/doubly_linked_list.c	/^struct dbly_linked_list *dbly_linked_list_create()$/;"	f
-dbly_linked_list_destroy	scripts/build/dstruct/src/doubly_linked_list.c	/^void dbly_linked_list_destroy(struct dbly_linked_list *list)$/;"	f
-dbly_linked_list_first	scripts/build/dstruct/include/doubly_linked_list.h	21;"	d
-dbly_linked_list_foreach	scripts/build/dstruct/include/doubly_linked_list.h	23;"	d
-dbly_linked_list_last	scripts/build/dstruct/include/doubly_linked_list.h	22;"	d
-dbly_linked_list_node	scripts/build/dstruct/include/doubly_linked_list.h	/^struct dbly_linked_list_node {$/;"	s
-dbly_linked_list_pop	scripts/build/dstruct/src/doubly_linked_list.c	/^void *dbly_linked_list_pop(struct dbly_linked_list *list)$/;"	f
-dbly_linked_list_push	scripts/build/dstruct/src/doubly_linked_list.c	/^void dbly_linked_list_push(struct dbly_linked_list *list, void *value)$/;"	f
-dbly_linked_list_remove	scripts/build/dstruct/src/doubly_linked_list.c	/^void *dbly_linked_list_remove($/;"	f
-dbly_linked_list_shift	scripts/build/dstruct/src/doubly_linked_list.c	/^void *dbly_linked_list_shift(struct dbly_linked_list *list)$/;"	f
-dbly_linked_list_unshift	scripts/build/dstruct/src/doubly_linked_list.c	/^void dbly_linked_list_unshift(struct dbly_linked_list *list, void *value)$/;"	f
-debug	scripts/build/dbg/src/dbg.h	11;"	d
-debug	scripts/build/dbg/src/dbg.h	9;"	d
-default_compare	scripts/build/dstruct/src/hashmap.c	/^static inline int default_compare(void *a, void *b)$/;"	f	file:
-default_hash	scripts/build/dstruct/src/hashmap.c	/^static uint32_t default_hash(void *a)$/;"	f	file:
 destroy_evolve_monitor	src/evolve_monitor.c	/^void destroy_evolve_monitor(struct evolve_monitor **m)$/;"	f
 destroy_population	src/population.c	/^void destroy_population(struct population **p)$/;"	f
-downcase	scripts/build/dstruct/src/bstrlib.c	544;"	d	file:
-element_size	scripts/build/dstruct/include/darray.h	/^    size_t element_size;$/;"	m	struct:darray
-end	scripts/build/dstruct/include/darray.h	/^    int end;$/;"	m	struct:darray
-entry	scripts/build/dstruct/include/bstrlib.h	/^    bstring *entry;$/;"	m	struct:bstrList
-error	scripts/build/al/scripts/unittest_runner.py	/^            error = True$/;"	v
-error	scripts/build/al/scripts/unittest_runner.py	/^    error = False$/;"	v
-error	scripts/build/dbg/scripts/unittest_runner.py	/^            error = True$/;"	v
-error	scripts/build/dbg/scripts/unittest_runner.py	/^    error = False$/;"	v
-error	scripts/build/dstruct/scripts/unittest_runner.py	/^            error = True$/;"	v
-error	scripts/build/dstruct/scripts/unittest_runner.py	/^    error = False$/;"	v
-error	scripts/build/munit/scripts/unittest_runner.py	/^            error = True$/;"	v
-error	scripts/build/munit/scripts/unittest_runner.py	/^    error = False$/;"	v
 error	scripts/unittest_runner.py	/^            error = True$/;"	v
 error	scripts/unittest_runner.py	/^    error = False$/;"	v
 eval_func	include/evolve.h	/^        float (*eval_func)(char *);$/;"	m	struct:evolution_settings
 evaluate_chromosomes	src/population.c	/^int evaluate_chromosomes(float (eval_func)(char *), struct population **p)$/;"	f
 evolution_settings	include/evolve.h	/^struct evolution_settings$/;"	s
 evolve_monitor	include/evolve_monitor.h	/^struct evolve_monitor$/;"	s
-expand_rate	scripts/build/dstruct/include/darray.h	/^    size_t expand_rate;$/;"	m	struct:darray
-expect1	scripts/build/dstruct/tests/hashmap_tests.c	/^struct tagbstring expect1 = bsStatic("THE VALUE 1");$/;"	v	typeref:struct:tagbstring
-expect2	scripts/build/dstruct/tests/hashmap_tests.c	/^struct tagbstring expect2 = bsStatic("THE VALUE 2");$/;"	v	typeref:struct:tagbstring
-expect3	scripts/build/dstruct/tests/hashmap_tests.c	/^struct tagbstring expect3 = bsStatic("THE VALUE 3");$/;"	v	typeref:struct:tagbstring
 extend_max_generation	src/population.c	/^void extend_max_generation(struct population *p, int extension_size)$/;"	f
-exvsnprintf	scripts/build/dstruct/src/bstrlib.c	2746;"	d	file:
-failed	scripts/build/munit/src/munit.h	/^int failed;$/;"	v
-file_dest	scripts/build/al/src/random_data_generator.c	/^        char *file_dest;$/;"	m	struct:options	file:
-file_list	scripts/build/al/scripts/unittest_runner.py	/^    file_list = os.listdir(unittests_bin_dir)$/;"	v
-file_list	scripts/build/dbg/scripts/unittest_runner.py	/^    file_list = os.listdir(unittests_bin_dir)$/;"	v
-file_list	scripts/build/dstruct/scripts/unittest_runner.py	/^    file_list = os.listdir(unittests_bin_dir)$/;"	v
-file_list	scripts/build/munit/scripts/unittest_runner.py	/^    file_list = os.listdir(unittests_bin_dir)$/;"	v
 file_list	scripts/unittest_runner.py	/^    file_list = os.listdir(unittests_bin_dir)$/;"	v
 fill_leader_board	src/evolve_monitor.c	/^static int fill_leader_board($/;"	f	file:
 find_best_chromosome	src/evolve_monitor.c	/^static int find_best_chromosome($/;"	f	file:
-findreplaceengine	scripts/build/dstruct/src/bstrlib.c	/^findreplaceengine(bstring b, const bstring find, const bstring repl,$/;"	f	file:
-first	scripts/build/dstruct/include/doubly_linked_list.h	/^        struct dbly_linked_list_node *first;$/;"	m	struct:dbly_linked_list	typeref:struct:dbly_linked_list::dbly_linked_list_node
 fitness_function	examples/csp.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
 fitness_function	examples/hello_world.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
-fitness_function	tests/evolve_monitor_tests.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
-fitness_function	tests/evolve_tests.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
-fitness_function	tests/population_tests.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
-fitness_function	tests/selection_tests.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
+fitness_function	tests/ga/evolve_monitor_tests.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
+fitness_function	tests/ga/evolve_tests.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
+fitness_function	tests/ga/population_tests.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
+fitness_function	tests/ga/selection_tests.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
 flags	.ycm_extra_conf.py	/^flags = [$/;"	v
-float_cmp	scripts/build/al/src/comparator.c	/^inline int float_cmp(const void *val_1, const void *val_2)$/;"	f
-float_cmp_asc	scripts/build/al/src/comparator.c	/^inline int float_cmp_asc(const void *val_1, const void *val_2)$/;"	f
-float_cmp_desc	scripts/build/al/src/comparator.c	/^inline int float_cmp_desc(const void *val_1, const void *val_2)$/;"	f
-float_epsilon_cmp	scripts/build/al/src/comparator.c	/^inline int float_epsilon_cmp($/;"	f
-float_epsilon_cmp_asc	scripts/build/al/src/comparator.c	/^inline int float_epsilon_cmp_asc($/;"	f
-float_epsilon_cmp_desc	scripts/build/al/src/comparator.c	/^inline int float_epsilon_cmp_desc($/;"	f
-foo	scripts/build/munit/src/example.c	/^int foo = 7;$/;"	v
-free_bucket	scripts/build/dstruct/src/hashmap.c	/^static void free_bucket(struct darray **bucket)$/;"	f	file:
-free_buckets	scripts/build/dstruct/src/hashmap.c	/^static void free_buckets(struct hashmap **map)$/;"	f	file:
-genBstrList	scripts/build/dstruct/src/bstrlib.c	/^struct genBstrList {$/;"	s	file:
 gen_init_chromosomes	src/population.c	/^void gen_init_chromosomes(struct population **p, char *(*mutator)(int))$/;"	f
 generation	include/evolve_monitor.h	/^        float generation;$/;"	m	struct:evolve_monitor
 generation	include/population.h	/^        int generation;$/;"	m	struct:population
@@ -936,415 +345,172 @@ goal	include/population.h	/^        float goal;$/;"	m	struct:population
 goal_distance	include/evolve_monitor.h	/^        float goal_distance;$/;"	m	struct:evolve_monitor
 goal_distances	include/evolve_monitor.h	/^        struct darray *goal_distances;$/;"	m	struct:evolve_monitor	typeref:struct:evolve_monitor::darray
 hamming_dist	examples/csp.c	/^static float hamming_dist(char *s1, char *s2)$/;"	f	file:
-hash	scripts/build/dstruct/include/hashmap.h	/^        uint32_t (*hash)(void *);$/;"	m	struct:hashmap
-hash	scripts/build/dstruct/include/hashmap.h	/^        uint32_t hash;$/;"	m	struct:hashmap_node
-hashmap	scripts/build/dstruct/include/hashmap.h	/^struct hashmap {$/;"	s
-hashmap_create	scripts/build/dstruct/src/hashmap.c	/^struct hashmap *hashmap_create($/;"	f
-hashmap_delete	scripts/build/dstruct/src/hashmap.c	/^void *hashmap_delete(struct hashmap *map, void *key)$/;"	f
-hashmap_destroy	scripts/build/dstruct/src/hashmap.c	/^void hashmap_destroy(struct hashmap *map)$/;"	f
-hashmap_find_bucket	scripts/build/dstruct/src/hashmap.c	/^static inline struct darray *hashmap_find_bucket($/;"	f	file:
-hashmap_get	scripts/build/dstruct/src/hashmap.c	/^void *hashmap_get(struct hashmap *map, void *key)$/;"	f
-hashmap_get_node	scripts/build/dstruct/src/hashmap.c	/^static inline int hashmap_get_node($/;"	f	file:
-hashmap_node	scripts/build/dstruct/include/hashmap.h	/^struct hashmap_node {$/;"	s
-hashmap_node_create	scripts/build/dstruct/src/hashmap.c	/^static inline struct hashmap_node *hashmap_node_create($/;"	f	file:
-hashmap_set	scripts/build/dstruct/src/hashmap.c	/^int hashmap_set(struct hashmap *map, void *key, void *data)$/;"	f
-hashmap_traverse	scripts/build/dstruct/src/hashmap.c	/^int hashmap_traverse(struct hashmap *map, int (*hashmap_traverse_cb)(struct hashmap_node *))$/;"	f
-heap_sort	scripts/build/al/src/sort.c	/^void heap_sort($/;"	f
-heapify	scripts/build/al/src/sort.c	/^void heapify($/;"	f
 info_arch	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	/^char const* info_arch = "INFO" ":" "arch[" ARCHITECTURE_ID "]";$/;"	v
 info_arch	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_arch = "INFO" ":" "arch[" ARCHITECTURE_ID "]";$/;"	v
-info_arch	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_arch = "INFO" ":" "arch[" ARCHITECTURE_ID "]";$/;"	v
-info_arch	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_arch = "INFO" ":" "arch[" ARCHITECTURE_ID "]";$/;"	v
-info_arch	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_arch = "INFO" ":" "arch[" ARCHITECTURE_ID "]";$/;"	v
 info_compiler	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	/^char const* info_compiler = "INFO" ":" "compiler[" COMPILER_ID "]";$/;"	v
 info_compiler	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_compiler = "INFO" ":" "compiler[" COMPILER_ID "]";$/;"	v
-info_compiler	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_compiler = "INFO" ":" "compiler[" COMPILER_ID "]";$/;"	v
-info_compiler	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_compiler = "INFO" ":" "compiler[" COMPILER_ID "]";$/;"	v
-info_compiler	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_compiler = "INFO" ":" "compiler[" COMPILER_ID "]";$/;"	v
 info_platform	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	/^char const* info_platform = "INFO" ":" "platform[" PLATFORM_ID "]";$/;"	v
 info_platform	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_platform = "INFO" ":" "platform[" PLATFORM_ID "]";$/;"	v
-info_platform	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_platform = "INFO" ":" "platform[" PLATFORM_ID "]";$/;"	v
-info_platform	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_platform = "INFO" ":" "platform[" PLATFORM_ID "]";$/;"	v
-info_platform	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_platform = "INFO" ":" "platform[" PLATFORM_ID "]";$/;"	v
 info_version	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	/^char const info_version[] = {$/;"	v
 info_version	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_version[] = {$/;"	v
-info_version	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_version[] = {$/;"	v
-info_version	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_version[] = {$/;"	v
-info_version	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_version[] = {$/;"	v
 init_evolve_monitor	src/evolve_monitor.c	/^struct evolve_monitor *init_evolve_monitor($/;"	f
 init_population	src/population.c	/^struct population *init_population($/;"	f
-init_testdata	scripts/build/al/tests/test_utils.c	/^void *init_testdata($/;"	f
-insertion_sort	scripts/build/al/src/sort.c	/^void insertion_sort($/;"	f
 insertion_sort_population	src/population.c	/^void insertion_sort_population($/;"	f
 insertion_sort_scores	examples/csp.c	/^static void insertion_sort_scores($/;"	f	file:
-instr_fnptr	scripts/build/dstruct/src/bstrlib.c	/^typedef int (*instr_fnptr)(const bstring s1, int pos, const bstring s2);$/;"	t	file:
-int_cmp	scripts/build/al/src/comparator.c	/^inline int int_cmp(const void *val_1, const void *val_2)$/;"	f
-int_cmp_asc	scripts/build/al/src/comparator.c	/^inline int int_cmp_asc(const void *val_1, const void *val_2)$/;"	f
-int_cmp_desc	scripts/build/al/src/comparator.c	/^inline int int_cmp_desc(const void *val_1, const void *val_2)$/;"	f
-invertCharField	scripts/build/dstruct/src/bstrlib.c	/^invertCharField (struct charField *cf)$/;"	f	file:
-isEOF	scripts/build/dstruct/src/bstrlib.c	/^        int isEOF; \/* track file's EOF state *\/$/;"	m	struct:bStream	file:
 k	examples/csp.c	/^int k = 5;  \/* number of elements *\/$/;"	v
-keep_unittest_logs	scripts/build/al/scripts/unittest_runner.py	/^keep_unittest_logs = True$/;"	v
-keep_unittest_logs	scripts/build/dbg/scripts/unittest_runner.py	/^keep_unittest_logs = True$/;"	v
-keep_unittest_logs	scripts/build/dstruct/scripts/unittest_runner.py	/^keep_unittest_logs = False$/;"	v
-keep_unittest_logs	scripts/build/munit/scripts/unittest_runner.py	/^keep_unittest_logs = True$/;"	v
 keep_unittest_logs	scripts/unittest_runner.py	/^keep_unittest_logs = False$/;"	v
-key	scripts/build/dstruct/include/hashmap.h	/^        void *key;$/;"	m	struct:hashmap_node
-last	scripts/build/dstruct/include/doubly_linked_list.h	/^        struct dbly_linked_list_node *last;$/;"	m	struct:dbly_linked_list	typeref:struct:dbly_linked_list::dbly_linked_list_node
 len	examples/csp.c	/^int len = 20;  \/* length of each element *\/$/;"	v
-len	scripts/build/al/tests/search_tests.c	/^int len = 30;$/;"	v
-len	scripts/build/al/tests/sort_tests.c	/^int len = 30;$/;"	v
-list	scripts/build/dstruct/tests/doubly_linked_list_tests.c	/^static struct dbly_linked_list *list = NULL;$/;"	v	typeref:struct:dbly_linked_list	file:
-log_err	scripts/build/dbg/src/dbg.h	21;"	d
 log_fp	include/evolve_monitor.h	/^        FILE *log_fp;$/;"	m	struct:evolve_monitor
 log_generation_stats	src/evolve_monitor.c	/^static void log_generation_stats($/;"	f	file:
-log_info	scripts/build/dbg/src/dbg.h	37;"	d
 log_stats	include/evolve_monitor.h	/^        int log_stats;$/;"	m	struct:evolve_monitor
-log_warn	scripts/build/dbg/src/dbg.h	29;"	d
-lower_bound	scripts/build/al/src/random_data_generator.c	/^        int lower_bound;$/;"	m	struct:options	file:
 m	include/evolve.h	/^        struct evolve_monitor *m;$/;"	m	struct:evolution_settings	typeref:struct:evolution_settings::evolve_monitor
-m	tests/evolve_monitor_tests.c	/^struct evolve_monitor *m;$/;"	v	typeref:struct:evolve_monitor
-m	tests/evolve_tests.c	/^struct evolve_monitor *m;$/;"	v	typeref:struct:evolve_monitor
-m	tests/population_tests.c	/^struct evolve_monitor *m;$/;"	v	typeref:struct:evolve_monitor
+m	tests/ga/evolve_monitor_tests.c	/^struct evolve_monitor *m;$/;"	v	typeref:struct:evolve_monitor
+m	tests/ga/evolve_tests.c	/^struct evolve_monitor *m;$/;"	v	typeref:struct:evolve_monitor
+m	tests/ga/population_tests.c	/^struct evolve_monitor *m;$/;"	v	typeref:struct:evolve_monitor
 main	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	/^int main(int argc, char* argv[])$/;"	f
 main	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	/^void main() {}$/;"	f
 main	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^int main(int argc, char* argv[])$/;"	f
 main	examples/csp.c	/^int main(int argc, char *argv[])$/;"	f
 main	examples/hello_world.c	/^int main(int argc, char *argv[])$/;"	f
-main	scripts/build/al/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^int main(int argc, char* argv[])$/;"	f
-main	scripts/build/al/src/random_data_generator.c	/^int main(int argc, char *argv[])$/;"	f
-main	scripts/build/al/tests/comparator_tests.c	/^int main()$/;"	f
-main	scripts/build/al/tests/search_tests.c	/^int main()$/;"	f
-main	scripts/build/al/tests/sort_tests.c	/^int main()$/;"	f
-main	scripts/build/al/tests/utils_tests.c	/^int main()$/;"	f
-main	scripts/build/dbg/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^int main(int argc, char* argv[])$/;"	f
-main	scripts/build/dbg/src/dbg_tests.c	/^int main()$/;"	f
-main	scripts/build/dstruct/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^int main(int argc, char* argv[])$/;"	f
-main	scripts/build/dstruct/tests/darray_tests.c	/^int main()$/;"	f
-main	scripts/build/dstruct/tests/doubly_linked_list_tests.c	/^int main()$/;"	f
-main	scripts/build/dstruct/tests/hashmap_tests.c	/^int main()$/;"	f
-main	scripts/build/munit/src/example.c	/^int main()$/;"	f
-main	tests/crossover_tests.c	/^int main()$/;"	f
-main	tests/evolve_monitor_tests.c	/^int main()$/;"	f
-main	tests/evolve_tests.c	/^int main()$/;"	f
-main	tests/mutation_tests.c	/^int main()$/;"	f
-main	tests/population_tests.c	/^int main()$/;"	f
-main	tests/selection_tests.c	/^int main()$/;"	f
-map	scripts/build/dstruct/tests/hashmap_tests.c	/^struct hashmap *map = NULL;$/;"	v	typeref:struct:hashmap
-max	scripts/build/dstruct/include/darray.h	/^    int max;$/;"	m	struct:darray
-maxBuffSz	scripts/build/dstruct/src/bstrlib.c	/^        int maxBuffSz;$/;"	m	struct:bStream	file:
+main	tests/ga/crossover_tests.c	/^int main()$/;"	f
+main	tests/ga/evolve_monitor_tests.c	/^int main()$/;"	f
+main	tests/ga/evolve_tests.c	/^int main()$/;"	f
+main	tests/ga/mutation_tests.c	/^int main()$/;"	f
+main	tests/ga/population_tests.c	/^int main()$/;"	f
+main	tests/ga/selection_tests.c	/^int main()$/;"	f
 max_generation	include/population.h	/^        int max_generation;$/;"	m	struct:population
-max_pop	tests/evolve_tests.c	/^int max_pop = 10;$/;"	v
-max_pop	tests/population_tests.c	/^int max_pop = 10;$/;"	v
+max_pop	tests/ga/evolve_tests.c	/^int max_pop = 10;$/;"	v
+max_pop	tests/ga/population_tests.c	/^int max_pop = 10;$/;"	v
 max_population	include/population.h	/^        int max_population;$/;"	m	struct:population
-median_sort	scripts/build/al/src/sort.c	/^void median_sort($/;"	f
 min_hd	examples/csp.c	/^float min_hd;$/;"	v
-mlen	scripts/build/dstruct/include/bstrlib.h	/^    int mlen;$/;"	m	struct:tagbstring
-mlen	scripts/build/dstruct/include/bstrlib.h	/^    int qty, mlen;$/;"	m	struct:bstrList
-mu_assert	scripts/build/munit/src/munit.h	21;"	d
-mu_report	scripts/build/munit/src/munit.h	61;"	d
-mu_run_test	scripts/build/munit/src/munit.h	36;"	d
-mutate	src/mutation.c	/^void mutate($/;"	f
-mutate_alphanum	src/mutation.c	/^void mutate_alphanum(char **str)$/;"	f
-mutate_dna	src/mutation.c	/^void mutate_dna(char **str)$/;"	f
-mutate_num	src/mutation.c	/^void mutate_num(char **str)$/;"	f
+mutate	src/ga/mutation.c	/^void mutate($/;"	f
+mutate_alphanum	src/ga/mutation.c	/^void mutate_alphanum(char **str)$/;"	f
+mutate_dna	src/ga/mutation.c	/^void mutate_dna(char **str)$/;"	f
+mutate_num	src/ga/mutation.c	/^void mutate_num(char **str)$/;"	f
 mutate_numstr	examples/csp.c	/^static void mutate_numstr(char **str)$/;"	f	file:
 mutate_prob	examples/csp.c	/^float *mutate_prob;$/;"	v
 mutate_prob	include/evolve.h	/^        float *mutate_prob;$/;"	m	struct:evolution_settings
-mutate_prob	tests/evolve_monitor_tests.c	/^float *mutate_prob;$/;"	v
-mutate_prob	tests/evolve_tests.c	/^float *mutate_prob;$/;"	v
-mutate_str	src/mutation.c	/^void mutate_str(char **str)$/;"	f
+mutate_prob	tests/ga/evolve_monitor_tests.c	/^float *mutate_prob;$/;"	v
+mutate_prob	tests/ga/evolve_tests.c	/^float *mutate_prob;$/;"	v
+mutate_str	src/ga/mutation.c	/^void mutate_str(char **str)$/;"	f
 mutation_func	include/evolve.h	/^        void (*mutation_func)(char **);$/;"	m	struct:evolution_settings
 mutation_prob	examples/experiment_runner.py	/^    mutation_prob = [0.8, 0.6, 0.4, 0.2, 0.1, 0.01]$/;"	v
-new_val1	scripts/build/dstruct/tests/darray_tests.c	/^static int *new_val1 = NULL;$/;"	v	file:
-new_val2	scripts/build/dstruct/tests/darray_tests.c	/^static int *new_val2 = NULL;$/;"	v	file:
-next	scripts/build/dstruct/include/doubly_linked_list.h	/^        struct dbly_linked_list_node *next;$/;"	m	struct:dbly_linked_list_node	typeref:struct:dbly_linked_list_node::dbly_linked_list_node
 normalize_fitness_values	src/population.c	/^void normalize_fitness_values(struct population **p)$/;"	f
 obtain_convergence_equations	examples/experiment_analyzer.py	/^def obtain_convergence_equations(exec_time_summary):$/;"	f
-one_pt_crossover	src/crossover.c	/^int one_pt_crossover(void **chromo_1, void **chromo_2, int index)$/;"	f
-options	scripts/build/al/src/random_data_generator.c	/^struct options$/;"	s	file:
-orig_cwd	scripts/build/al/scripts/unittest_runner.py	/^    orig_cwd = os.getcwd()$/;"	v
-orig_cwd	scripts/build/dbg/scripts/unittest_runner.py	/^    orig_cwd = os.getcwd()$/;"	v
-orig_cwd	scripts/build/dstruct/scripts/unittest_runner.py	/^    orig_cwd = os.getcwd()$/;"	v
-orig_cwd	scripts/build/munit/scripts/unittest_runner.py	/^    orig_cwd = os.getcwd()$/;"	v
+one_pt_crossover	src/ga/crossover.c	/^int one_pt_crossover(void **chromo_1, void **chromo_2, int index)$/;"	f
 orig_cwd	scripts/unittest_runner.py	/^    orig_cwd = os.getcwd()$/;"	v
-output	tests/population_tests.c	/^int output;$/;"	v
+output	tests/ga/population_tests.c	/^int output;$/;"	v
 p	include/evolve.h	/^        struct population **p;$/;"	m	struct:evolution_settings	typeref:struct:evolution_settings::population
-p	tests/evolve_monitor_tests.c	/^struct population *p;$/;"	v	typeref:struct:population
-p	tests/evolve_tests.c	/^struct population *p;$/;"	v	typeref:struct:population
-p	tests/population_tests.c	/^struct population *p;$/;"	v	typeref:struct:population
-p	tests/selection_tests.c	/^struct population *p;$/;"	v	typeref:struct:population
+p	tests/ga/evolve_monitor_tests.c	/^struct population *p;$/;"	v	typeref:struct:population
+p	tests/ga/evolve_tests.c	/^struct population *p;$/;"	v	typeref:struct:population
+p	tests/ga/population_tests.c	/^struct population *p;$/;"	v	typeref:struct:population
+p	tests/ga/selection_tests.c	/^struct population *p;$/;"	v	typeref:struct:population
 parameters	include/population.h	/^        int parameters;$/;"	m	struct:population
-parm	scripts/build/dstruct/src/bstrlib.c	/^        void *parm; \/* The stream handle for core stream *\/$/;"	m	struct:bStream	file:
-parse_args	scripts/build/al/src/random_data_generator.c	/^struct options *parse_args(int argc, char *argv[])$/;"	f
-partition	scripts/build/al/src/sort.c	/^int partition($/;"	f
 partition_population	src/population.c	/^int partition_population($/;"	f
-passed	scripts/build/munit/src/munit.h	/^int passed;$/;"	v
 pivot_index	include/evolve.h	/^        int pivot_index;$/;"	m	struct:evolution_settings
 plot_scatter_graph	examples/experiment_analyzer.py	/^def plot_scatter_graph(title, x_axis, y_axis, x_label, y_label):$/;"	f
 plot_time_vs_generations	examples/experiment_analyzer.py	/^def plot_time_vs_generations():$/;"	f
 populate	src/population.c	/^void populate($/;"	f
 population	include/population.h	/^        int population;$/;"	m	struct:population
 population	include/population.h	/^struct population {$/;"	s
-prev	scripts/build/dstruct/include/doubly_linked_list.h	/^        struct dbly_linked_list_node *prev;$/;"	m	struct:dbly_linked_list_node	typeref:struct:dbly_linked_list_node::dbly_linked_list_node
-print_after_pivot	tests/crossover_tests.c	/^void print_after_pivot()$/;"	f
-print_array	scripts/build/al/tests/test_utils.c	/^void print_array(void *array, int len, int type)$/;"	f
-print_before_pivot	tests/crossover_tests.c	/^void print_before_pivot()$/;"	f
+print_after_pivot	tests/ga/crossover_tests.c	/^void print_after_pivot()$/;"	f
+print_before_pivot	tests/ga/crossover_tests.c	/^void print_before_pivot()$/;"	f
 print_chromosome	src/population.c	/^void print_chromosome(struct population *p, int index)$/;"	f
 print_chromosomes	src/population.c	/^void print_chromosomes(struct population *p)$/;"	f
 print_evolve_results	examples/csp.c	/^static void print_evolve_results(struct population *p)$/;"	f	file:
 print_evolve_results	examples/hello_world.c	/^static void print_evolve_results(struct population *p)$/;"	f	file:
 print_generation_stats	src/evolve_monitor.c	/^void print_generation_stats(struct evolve_monitor *m)$/;"	f
 print_population	src/population.c	/^void print_population(struct population *p)$/;"	f
-print_setup	tests/population_tests.c	/^static void print_setup(int max_pop, int max_gen)$/;"	f	file:
+print_setup	tests/ga/population_tests.c	/^static void print_setup(int max_pop, int max_gen)$/;"	f	file:
 print_stdout	scripts/unittest_runner.py	/^def print_stdout(unittest_output_fp):$/;"	f
 print_top_chromosomes	examples/csp.c	/^static void print_top_chromosomes(struct evolve_monitor *m, int top)$/;"	f	file:
 print_top_chromosomes	examples/hello_world.c	/^static void print_top_chromosomes(struct evolve_monitor *m, int top)$/;"	f	file:
-print_usage	scripts/build/al/src/random_data_generator.c	/^void print_usage()$/;"	f
-qty	scripts/build/dstruct/include/bstrlib.h	/^    int qty, mlen;$/;"	m	struct:bstrList
-quick_select	scripts/build/al/src/sort.c	/^int quick_select($/;"	f
-quick_sort	scripts/build/al/src/sort.c	/^void quick_sort($/;"	f
 quick_sort_population	src/population.c	/^void quick_sort_population($/;"	f
-randfile_gen	scripts/build/al/src/random_data_generator.c	/^int randfile_gen(struct options *options)$/;"	f
-randnum_f	scripts/build/al/src/random_data_generator.c	/^float randnum_f(float l_bound, float u_bound)$/;"	f
-randnum_f	scripts/build/al/src/utils.c	/^float randnum_f(float l_bound, float u_bound)$/;"	f
-randnum_i	scripts/build/al/src/random_data_generator.c	/^int randnum_i(int l_bound, int u_bound)$/;"	f
-randnum_i	scripts/build/al/src/utils.c	/^int randnum_i(int l_bound, int u_bound)$/;"	f
 randnumstr	examples/csp.c	/^static char *randnumstr(int length)$/;"	f	file:
-randstr	scripts/build/al/src/random_data_generator.c	/^char *randstr(int length)$/;"	f
-randstr	scripts/build/al/src/utils.c	/^char *randstr(int length)$/;"	f
-readFnPtr	scripts/build/dstruct/src/bstrlib.c	/^        bNread readFnPtr; \/* fread compatible fnptr for core stream *\/$/;"	m	struct:bStream	file:
-read_file	tests/population_tests.c	/^static int read_file(char* fp)$/;"	f	file:
+read_file	tests/ga/population_tests.c	/^static int read_file(char* fp)$/;"	f	file:
 record_generation_stats	src/evolve_monitor.c	/^void record_generation_stats($/;"	f
-redirect_stdout	tests/population_tests.c	/^static void redirect_stdout()$/;"	f	file:
-restore_stdout	tests/population_tests.c	/^static void restore_stdout()$/;"	f	file:
-return_val	scripts/build/al/scripts/unittest_runner.py	/^        return_val = subprocess.check_call($/;"	v
-return_val	scripts/build/dbg/scripts/unittest_runner.py	/^        return_val = subprocess.check_call($/;"	v
-return_val	scripts/build/dstruct/scripts/unittest_runner.py	/^        return_val = subprocess.check_call($/;"	v
-return_val	scripts/build/munit/scripts/unittest_runner.py	/^        return_val = subprocess.check_call($/;"	v
+redirect_stdout	tests/ga/population_tests.c	/^static void redirect_stdout()$/;"	f	file:
+restore_stdout	tests/ga/population_tests.c	/^static void restore_stdout()$/;"	f	file:
 return_val	scripts/unittest_runner.py	/^            return_val = subprocess.check_call($/;"	v
 return_val	scripts/unittest_runner.py	/^    return_val = 0$/;"	v
-roulette_wheel_selection	src/selection.c	/^void roulette_wheel_selection(struct population **p, int *select)$/;"	f
+roulette_wheel_selection	src/ga/selection.c	/^void roulette_wheel_selection(struct population **p, int *select)$/;"	f
 run_evolution	src/evolve.c	/^int run_evolution($/;"	f
 run_ga	examples/experiment_runner.py	/^def run_ga(crossover_prob, mutation_prob):$/;"	f
 runs	examples/experiment_runner.py	/^runs = 1000$/;"	v
-save_stdout	tests/population_tests.c	/^int save_stdout;$/;"	v
+save_stdout	tests/ga/population_tests.c	/^int save_stdout;$/;"	v
 score	include/evolve_monitor.h	/^        float score;$/;"	m	struct:evolve_monitor
 scores	include/population.h	/^        struct darray *scores;$/;"	m	struct:population	typeref:struct:population::darray
 scrape_log_file	examples/experiment_analyzer.py	/^def scrape_log_file(log_file):$/;"	f
 select	include/evolve.h	/^        int *select;$/;"	m	struct:evolution_settings
 selection_func	include/evolve.h	/^        void (*selection_func)(struct population **, int *);$/;"	m	struct:evolution_settings
-selection_sort	scripts/build/al/src/sort.c	/^void selection_sort($/;"	f
-sequential_search	scripts/build/al/src/search.c	/^int sequential_search($/;"	f
-setInCharField	scripts/build/dstruct/src/bstrlib.c	1264;"	d	file:
-setInCharField	scripts/build/dstruct/src/bstrlib.c	1277;"	d	file:
-setup	scripts/build/al/tests/search_tests.c	/^void *setup(int type)$/;"	f
-setup	scripts/build/al/tests/sort_tests.c	/^void setup(int type)$/;"	f
-setup	tests/crossover_tests.c	/^static void setup()$/;"	f	file:
-setup	tests/population_tests.c	/^static void setup(int max_pop, int max_gen)$/;"	f	file:
-setup	tests/selection_tests.c	/^static void setup()$/;"	f	file:
+setup	tests/ga/crossover_tests.c	/^static void setup()$/;"	f	file:
+setup	tests/ga/population_tests.c	/^static void setup(int max_pop, int max_gen)$/;"	f	file:
+setup	tests/ga/selection_tests.c	/^static void setup()$/;"	f	file:
 setup_strings	examples/csp.c	/^static void setup_strings(int k, int len)$/;"	f	file:
 signal_handler	examples/csp.c	/^static void signal_handler(int signnum)$/;"	f	file:
-size	scripts/build/al/src/random_data_generator.c	/^        int size;$/;"	m	struct:options	file:
-slen	scripts/build/dstruct/include/bstrlib.h	/^    int slen;$/;"	m	struct:tagbstring
-snapUpSize	scripts/build/dstruct/src/bstrlib.c	/^snapUpSize(int i) {$/;"	f	file:
 solution	include/population.h	/^        char *solution;$/;"	m	struct:population
 sort_generation_stats	src/evolve_monitor.c	/^void sort_generation_stats($/;"	f
 sort_population	src/population.c	/^void sort_population($/;"	f
-sort_test_setup	tests/evolve_monitor_tests.c	/^static void sort_test_setup(int max_gen, int max_pop)$/;"	f	file:
-sort_test_teardown	tests/evolve_monitor_tests.c	/^static void sort_test_teardown()$/;"	f	file:
-sort_tournament	src/selection.c	/^static void sort_tournament($/;"	f	file:
-std_crossover_asserts	tests/crossover_tests.c	/^int std_crossover_asserts()$/;"	f
-stderr	scripts/build/al/scripts/unittest_runner.py	/^            stderr=unittest_output$/;"	v
-stderr	scripts/build/dbg/scripts/unittest_runner.py	/^            stderr=unittest_output$/;"	v
-stderr	scripts/build/dstruct/scripts/unittest_runner.py	/^            stderr=unittest_output$/;"	v
-stderr	scripts/build/munit/scripts/unittest_runner.py	/^            stderr=unittest_output$/;"	v
+sort_test_setup	tests/ga/evolve_monitor_tests.c	/^static void sort_test_setup(int max_gen, int max_pop)$/;"	f	file:
+sort_test_teardown	tests/ga/evolve_monitor_tests.c	/^static void sort_test_teardown()$/;"	f	file:
+sort_tournament	src/ga/selection.c	/^static void sort_tournament($/;"	f	file:
+std_crossover_asserts	tests/ga/crossover_tests.c	/^int std_crossover_asserts()$/;"	f
 stderr	scripts/unittest_runner.py	/^                stderr=unittest_output$/;"	v
-stdout	scripts/build/al/scripts/unittest_runner.py	/^            stdout=unittest_output,$/;"	v
-stdout	scripts/build/dbg/scripts/unittest_runner.py	/^            stdout=unittest_output,$/;"	v
-stdout	scripts/build/dstruct/scripts/unittest_runner.py	/^            stdout=unittest_output,$/;"	v
-stdout	scripts/build/munit/scripts/unittest_runner.py	/^            stdout=unittest_output,$/;"	v
 stdout	scripts/unittest_runner.py	/^                stdout=unittest_output,$/;"	v
 stop_signal	examples/csp.c	/^volatile sig_atomic_t stop_signal = 0;$/;"	v
 stop_signal	include/evolve.h	/^        volatile sig_atomic_t *stop_signal;$/;"	m	struct:evolution_settings
-stop_signal	tests/evolve_monitor_tests.c	/^volatile sig_atomic_t stop_signal = 0;$/;"	v
-stop_signal	tests/evolve_tests.c	/^volatile sig_atomic_t stop_signal = 0;$/;"	v
-str_cmp	scripts/build/al/src/comparator.c	/^inline int str_cmp(const void *val_1, const void *val_2)$/;"	f
-str_cmp_asc	scripts/build/al/src/comparator.c	/^inline int str_cmp_asc(const void *val_1, const void *val_2)$/;"	f
-str_cmp_desc	scripts/build/al/src/comparator.c	/^inline int str_cmp_desc(const void *val_1, const void *val_2)$/;"	f
-str_len	scripts/build/al/src/random_data_generator.c	/^        int str_len;$/;"	m	struct:options	file:
+stop_signal	tests/ga/evolve_monitor_tests.c	/^volatile sig_atomic_t stop_signal = 0;$/;"	v
+stop_signal	tests/ga/evolve_tests.c	/^volatile sig_atomic_t stop_signal = 0;$/;"	v
 strings	examples/csp.c	/^char *strings[5];$/;"	v
 swap_darray_elem	src/population.c	/^static void swap_darray_elem(struct darray *arr, int index_1, int index_2)$/;"	f	file:
-swap_el	scripts/build/al/src/utils.c	/^inline void swap_el(void *arr, size_t el_sz, int el_1, int el_2)$/;"	f
-swap_ptr	scripts/build/al/src/utils.c	/^inline void swap_ptr(void **arr, int index_1, int index_2)$/;"	f
-t_arr	scripts/build/al/tests/search_tests.c	/^void *t_arr;$/;"	v
 t_vs_g	examples/experiment_analyzer.py	/^def t_vs_g(exec_time, generation):$/;"	f
-tagbstring	scripts/build/dstruct/include/bstrlib.h	/^struct tagbstring {$/;"	s
-teardown	scripts/build/al/tests/search_tests.c	/^int teardown(int result)$/;"	f
-teardown	scripts/build/al/tests/sort_tests.c	/^int teardown(int data_type, int (*cmp)(const void *, const void *))$/;"	f
-teardown	tests/crossover_tests.c	/^static void teardown()$/;"	f	file:
-teardown	tests/population_tests.c	/^static void teardown()$/;"	f	file:
-teardown	tests/selection_tests.c	/^static void teardown()$/;"	f	file:
+teardown	tests/ga/crossover_tests.c	/^static void teardown()$/;"	f	file:
+teardown	tests/ga/population_tests.c	/^static void teardown()$/;"	f	file:
+teardown	tests/ga/selection_tests.c	/^static void teardown()$/;"	f	file:
 teardown_strings	examples/csp.c	/^static void teardown_strings()$/;"	f	file:
-test1	scripts/build/dstruct/tests/doubly_linked_list_tests.c	/^char *test1 = "test1 data";$/;"	v
-test1	scripts/build/dstruct/tests/hashmap_tests.c	/^struct tagbstring test1 = bsStatic("test data 1");$/;"	v	typeref:struct:tagbstring
-test2	scripts/build/dstruct/tests/doubly_linked_list_tests.c	/^char *test2 = "test2 data";$/;"	v
-test2	scripts/build/dstruct/tests/hashmap_tests.c	/^struct tagbstring test2 = bsStatic("test data 2");$/;"	v	typeref:struct:tagbstring
-test3	scripts/build/dstruct/tests/doubly_linked_list_tests.c	/^char *test3 = "test3 data";$/;"	v
-test3	scripts/build/dstruct/tests/hashmap_tests.c	/^struct tagbstring test3 = bsStatic("xest data 3");$/;"	v	typeref:struct:tagbstring
-testInCharField	scripts/build/dstruct/src/bstrlib.c	1262;"	d	file:
-testInCharField	scripts/build/dstruct/src/bstrlib.c	1275;"	d	file:
-test_array	scripts/build/al/tests/sort_tests.c	/^void *test_array;$/;"	v
-test_bar	scripts/build/munit/src/example.c	/^int test_bar()$/;"	f
-test_binary_search_float	scripts/build/al/tests/search_tests.c	/^int test_binary_search_float()$/;"	f
-test_binary_search_int	scripts/build/al/tests/search_tests.c	/^int test_binary_search_int()$/;"	f
-test_check	scripts/build/dbg/src/dbg_tests.c	/^int test_check()$/;"	f
-test_check_debug	scripts/build/dbg/src/dbg_tests.c	/^int test_check_debug()$/;"	f
-test_check_mem	scripts/build/dbg/src/dbg_tests.c	/^int test_check_mem()$/;"	f
-test_create	scripts/build/dstruct/tests/darray_tests.c	/^int test_create()$/;"	f
-test_create	scripts/build/dstruct/tests/doubly_linked_list_tests.c	/^int test_create()$/;"	f
-test_create	scripts/build/dstruct/tests/hashmap_tests.c	/^int test_create()$/;"	f
-test_debug	scripts/build/dbg/src/dbg_tests.c	/^int test_debug()$/;"	f
-test_delete	scripts/build/dstruct/tests/hashmap_tests.c	/^int test_delete()$/;"	f
-test_destroy	scripts/build/dstruct/tests/darray_tests.c	/^int test_destroy()$/;"	f
-test_destroy	scripts/build/dstruct/tests/doubly_linked_list_tests.c	/^int test_destroy()$/;"	f
-test_destroy	scripts/build/dstruct/tests/hashmap_tests.c	/^int test_destroy()$/;"	f
-test_destroy_evolve_monitor	tests/evolve_monitor_tests.c	/^int test_destroy_evolve_monitor()$/;"	f
-test_destroy_population	tests/population_tests.c	/^int test_destroy_population()$/;"	f
-test_epsilon_float_cmp	scripts/build/al/tests/comparator_tests.c	/^int test_epsilon_float_cmp()$/;"	f
-test_evaluate_chromosomes	tests/population_tests.c	/^int test_evaluate_chromosomes()$/;"	f
-test_expand_contract	scripts/build/dstruct/tests/darray_tests.c	/^int test_expand_contract()$/;"	f
-test_extend_max_generation	tests/population_tests.c	/^int test_extend_max_generation()$/;"	f
-test_file	scripts/build/dbg/src/dbg_tests.c	/^char *test_file = "..\/src\/dbg_tests.c";$/;"	v
-test_float_cmp	scripts/build/al/tests/comparator_tests.c	/^int test_float_cmp()$/;"	f
-test_foo	scripts/build/munit/src/example.c	/^int test_foo()$/;"	f
-test_gen_init_chromosomes	tests/population_tests.c	/^int test_gen_init_chromosomes()$/;"	f
-test_get	scripts/build/dstruct/tests/darray_tests.c	/^int test_get()$/;"	f
-test_get_set	scripts/build/dstruct/tests/hashmap_tests.c	/^int test_get_set()$/;"	f
-test_heap_sort_float_ascending	scripts/build/al/tests/sort_tests.c	/^int test_heap_sort_float_ascending()$/;"	f
-test_heap_sort_float_descending	scripts/build/al/tests/sort_tests.c	/^int test_heap_sort_float_descending()$/;"	f
-test_heap_sort_int_ascending	scripts/build/al/tests/sort_tests.c	/^int test_heap_sort_int_ascending()$/;"	f
-test_heap_sort_int_descending	scripts/build/al/tests/sort_tests.c	/^int test_heap_sort_int_descending()$/;"	f
-test_init_evolve_monitor	tests/evolve_monitor_tests.c	/^int test_init_evolve_monitor()$/;"	f
-test_init_population	tests/population_tests.c	/^int test_init_population()$/;"	f
-test_insertion_sort_float_ascending	scripts/build/al/tests/sort_tests.c	/^int test_insertion_sort_float_ascending()$/;"	f
-test_insertion_sort_float_descending	scripts/build/al/tests/sort_tests.c	/^int test_insertion_sort_float_descending()$/;"	f
-test_insertion_sort_int_ascending	scripts/build/al/tests/sort_tests.c	/^int test_insertion_sort_int_ascending()$/;"	f
-test_insertion_sort_int_descending	scripts/build/al/tests/sort_tests.c	/^int test_insertion_sort_int_descending()$/;"	f
-test_insertion_sort_population	tests/population_tests.c	/^int test_insertion_sort_population()$/;"	f
-test_int_cmp	scripts/build/al/tests/comparator_tests.c	/^int test_int_cmp()$/;"	f
-test_log_err	scripts/build/dbg/src/dbg_tests.c	/^int test_log_err()$/;"	f
-test_log_info	scripts/build/dbg/src/dbg_tests.c	/^int test_log_info()$/;"	f
-test_log_warn	scripts/build/dbg/src/dbg_tests.c	/^int test_log_warn()$/;"	f
-test_median_sort_float_ascending	scripts/build/al/tests/sort_tests.c	/^int test_median_sort_float_ascending()$/;"	f
-test_median_sort_float_descending	scripts/build/al/tests/sort_tests.c	/^int test_median_sort_float_descending()$/;"	f
-test_median_sort_int_ascending	scripts/build/al/tests/sort_tests.c	/^int test_median_sort_int_ascending()$/;"	f
-test_median_sort_int_descending	scripts/build/al/tests/sort_tests.c	/^int test_median_sort_int_descending()$/;"	f
-test_mutate_alphanum	tests/mutation_tests.c	/^int test_mutate_alphanum()$/;"	f
-test_mutate_dna	tests/mutation_tests.c	/^int test_mutate_dna()$/;"	f
-test_mutate_num	tests/mutation_tests.c	/^int test_mutate_num()$/;"	f
-test_mutate_str	tests/mutation_tests.c	/^int test_mutate_str()$/;"	f
-test_new	scripts/build/dstruct/tests/darray_tests.c	/^int test_new()$/;"	f
-test_normalize_fitness_values	tests/population_tests.c	/^int test_normalize_fitness_values()$/;"	f
-test_one_ptr_crossover	tests/crossover_tests.c	/^int test_one_ptr_crossover()$/;"	f
-test_partition	scripts/build/al/tests/sort_tests.c	/^int test_partition()$/;"	f
-test_partition_population	tests/population_tests.c	/^int test_partition_population()$/;"	f
-test_populate	tests/population_tests.c	/^int test_populate()$/;"	f
-test_print_chromosome	tests/population_tests.c	/^int test_print_chromosome()$/;"	f
-test_print_chromosomes	tests/population_tests.c	/^int test_print_chromosomes()$/;"	f
-test_print_population	tests/population_tests.c	/^int test_print_population()$/;"	f
-test_push_pop	scripts/build/dstruct/tests/darray_tests.c	/^int test_push_pop()$/;"	f
-test_push_pop	scripts/build/dstruct/tests/doubly_linked_list_tests.c	/^int test_push_pop()$/;"	f
-test_quick_select	scripts/build/al/tests/sort_tests.c	/^int test_quick_select()$/;"	f
-test_quick_sort_float_ascending	scripts/build/al/tests/sort_tests.c	/^int test_quick_sort_float_ascending()$/;"	f
-test_quick_sort_float_descending	scripts/build/al/tests/sort_tests.c	/^int test_quick_sort_float_descending()$/;"	f
-test_quick_sort_int_ascending	scripts/build/al/tests/sort_tests.c	/^int test_quick_sort_int_ascending()$/;"	f
-test_quick_sort_int_descending	scripts/build/al/tests/sort_tests.c	/^int test_quick_sort_int_descending()$/;"	f
-test_quick_sort_population	tests/population_tests.c	/^int test_quick_sort_population()$/;"	f
-test_randnum_f	scripts/build/al/tests/utils_tests.c	/^int test_randnum_f()$/;"	f
-test_randnum_i	scripts/build/al/tests/utils_tests.c	/^int test_randnum_i()$/;"	f
-test_randstr	scripts/build/al/tests/utils_tests.c	/^int test_randstr()$/;"	f
-test_record_generation_stats	tests/evolve_monitor_tests.c	/^int test_record_generation_stats()$/;"	f
-test_remove	scripts/build/dstruct/tests/darray_tests.c	/^int test_remove()$/;"	f
-test_remove	scripts/build/dstruct/tests/doubly_linked_list_tests.c	/^int test_remove()$/;"	f
-test_roulette_wheel_selection	tests/selection_tests.c	/^int test_roulette_wheel_selection()$/;"	f
-test_run_evolution	tests/evolve_tests.c	/^int test_run_evolution()$/;"	f
-test_selection_sort_float_ascending	scripts/build/al/tests/sort_tests.c	/^int test_selection_sort_float_ascending()$/;"	f
-test_selection_sort_float_descending	scripts/build/al/tests/sort_tests.c	/^int test_selection_sort_float_descending()$/;"	f
-test_selection_sort_int_ascending	scripts/build/al/tests/sort_tests.c	/^int test_selection_sort_int_ascending()$/;"	f
-test_selection_sort_int_descending	scripts/build/al/tests/sort_tests.c	/^int test_selection_sort_int_descending()$/;"	f
-test_sequential_search_float	scripts/build/al/tests/search_tests.c	/^int test_sequential_search_float()$/;"	f
-test_sequential_search_int	scripts/build/al/tests/search_tests.c	/^int test_sequential_search_int()$/;"	f
-test_set	scripts/build/dstruct/tests/darray_tests.c	/^int test_set()$/;"	f
-test_shift	scripts/build/dstruct/tests/doubly_linked_list_tests.c	/^int test_shift()$/;"	f
-test_sort_generation_stats	tests/evolve_monitor_tests.c	/^int test_sort_generation_stats()$/;"	f
-test_sort_population	tests/population_tests.c	/^int test_sort_population()$/;"	f
-test_str_cmp	scripts/build/al/tests/comparator_tests.c	/^int test_str_cmp()$/;"	f
-test_suite	scripts/build/al/tests/comparator_tests.c	/^void test_suite()$/;"	f
-test_suite	scripts/build/al/tests/search_tests.c	/^void test_suite()$/;"	f
-test_suite	scripts/build/al/tests/sort_tests.c	/^void test_suite()$/;"	f
-test_suite	scripts/build/al/tests/utils_tests.c	/^void test_suite()$/;"	f
-test_suite	scripts/build/dbg/src/dbg_tests.c	/^void test_suite()$/;"	f
-test_suite	scripts/build/dstruct/tests/darray_tests.c	/^void test_suite()$/;"	f
-test_suite	scripts/build/dstruct/tests/doubly_linked_list_tests.c	/^void test_suite() {$/;"	f
-test_suite	scripts/build/dstruct/tests/hashmap_tests.c	/^void test_suite()$/;"	f
-test_suite	scripts/build/munit/src/example.c	/^void test_suite()$/;"	f
-test_suite	tests/crossover_tests.c	/^void test_suite()$/;"	f
-test_suite	tests/evolve_monitor_tests.c	/^void test_suite()$/;"	f
-test_suite	tests/evolve_tests.c	/^void test_suite()$/;"	f
-test_suite	tests/mutation_tests.c	/^void test_suite()$/;"	f
-test_suite	tests/population_tests.c	/^void test_suite()$/;"	f
-test_suite	tests/selection_tests.c	/^void test_suite()$/;"	f
-test_tournament_selection	tests/selection_tests.c	/^int test_tournament_selection()$/;"	f
-test_traverse	scripts/build/dstruct/tests/hashmap_tests.c	/^int test_traverse()$/;"	f
-test_two_ptr_crossover	tests/crossover_tests.c	/^int test_two_ptr_crossover()$/;"	f
-test_unshift	scripts/build/dstruct/tests/doubly_linked_list_tests.c	/^int test_unshift()$/;"	f
-test_update	scripts/build/dstruct/tests/darray_tests.c	/^int test_update()$/;"	f
-tests	scripts/build/munit/src/munit.h	/^int tests;$/;"	v
-testsuite_cleanup	tests/population_tests.c	/^static void testsuite_cleanup()$/;"	f	file:
+test_destroy_evolve_monitor	tests/ga/evolve_monitor_tests.c	/^int test_destroy_evolve_monitor()$/;"	f
+test_destroy_population	tests/ga/population_tests.c	/^int test_destroy_population()$/;"	f
+test_evaluate_chromosomes	tests/ga/population_tests.c	/^int test_evaluate_chromosomes()$/;"	f
+test_extend_max_generation	tests/ga/population_tests.c	/^int test_extend_max_generation()$/;"	f
+test_gen_init_chromosomes	tests/ga/population_tests.c	/^int test_gen_init_chromosomes()$/;"	f
+test_init_evolve_monitor	tests/ga/evolve_monitor_tests.c	/^int test_init_evolve_monitor()$/;"	f
+test_init_population	tests/ga/population_tests.c	/^int test_init_population()$/;"	f
+test_insertion_sort_population	tests/ga/population_tests.c	/^int test_insertion_sort_population()$/;"	f
+test_mutate_alphanum	tests/ga/mutation_tests.c	/^int test_mutate_alphanum()$/;"	f
+test_mutate_dna	tests/ga/mutation_tests.c	/^int test_mutate_dna()$/;"	f
+test_mutate_num	tests/ga/mutation_tests.c	/^int test_mutate_num()$/;"	f
+test_mutate_str	tests/ga/mutation_tests.c	/^int test_mutate_str()$/;"	f
+test_normalize_fitness_values	tests/ga/population_tests.c	/^int test_normalize_fitness_values()$/;"	f
+test_one_ptr_crossover	tests/ga/crossover_tests.c	/^int test_one_ptr_crossover()$/;"	f
+test_partition_population	tests/ga/population_tests.c	/^int test_partition_population()$/;"	f
+test_populate	tests/ga/population_tests.c	/^int test_populate()$/;"	f
+test_print_chromosome	tests/ga/population_tests.c	/^int test_print_chromosome()$/;"	f
+test_print_chromosomes	tests/ga/population_tests.c	/^int test_print_chromosomes()$/;"	f
+test_print_population	tests/ga/population_tests.c	/^int test_print_population()$/;"	f
+test_quick_sort_population	tests/ga/population_tests.c	/^int test_quick_sort_population()$/;"	f
+test_record_generation_stats	tests/ga/evolve_monitor_tests.c	/^int test_record_generation_stats()$/;"	f
+test_roulette_wheel_selection	tests/ga/selection_tests.c	/^int test_roulette_wheel_selection()$/;"	f
+test_run_evolution	tests/ga/evolve_tests.c	/^int test_run_evolution()$/;"	f
+test_sort_generation_stats	tests/ga/evolve_monitor_tests.c	/^int test_sort_generation_stats()$/;"	f
+test_sort_population	tests/ga/population_tests.c	/^int test_sort_population()$/;"	f
+test_suite	tests/ga/crossover_tests.c	/^void test_suite()$/;"	f
+test_suite	tests/ga/evolve_monitor_tests.c	/^void test_suite()$/;"	f
+test_suite	tests/ga/evolve_tests.c	/^void test_suite()$/;"	f
+test_suite	tests/ga/mutation_tests.c	/^void test_suite()$/;"	f
+test_suite	tests/ga/population_tests.c	/^void test_suite()$/;"	f
+test_suite	tests/ga/selection_tests.c	/^void test_suite()$/;"	f
+test_tournament_selection	tests/ga/selection_tests.c	/^int test_tournament_selection()$/;"	f
+test_two_ptr_crossover	tests/ga/crossover_tests.c	/^int test_two_ptr_crossover()$/;"	f
+testsuite_cleanup	tests/ga/population_tests.c	/^static void testsuite_cleanup()$/;"	f	file:
 top	include/evolve_monitor.h	/^        long top;$/;"	m	struct:evolve_monitor
 total_score	include/population.h	/^        float total_score;$/;"	m	struct:population
-tournament_selection	src/selection.c	/^void tournament_selection(struct population **p, int *select)$/;"	f
-traverse_called	scripts/build/dstruct/tests/hashmap_tests.c	/^static int traverse_called = 0;$/;"	v	file:
-traverse_fail_cb	scripts/build/dstruct/tests/hashmap_tests.c	/^static int traverse_fail_cb(struct hashmap_node *node)$/;"	f	file:
-traverse_good_cb	scripts/build/dstruct/tests/hashmap_tests.c	/^static int traverse_good_cb(struct hashmap_node *node)$/;"	f	file:
-two_pt_crossover	src/crossover.c	/^int two_pt_crossover(void **chromo_1, void **chromo_2, int index)$/;"	f
-type	scripts/build/al/src/random_data_generator.c	/^        int type;$/;"	m	struct:options	file:
-unittest_output	scripts/build/al/scripts/unittest_runner.py	/^        unittest_output = open(unittest_output_fp, 'w')$/;"	v
-unittest_output	scripts/build/dbg/scripts/unittest_runner.py	/^        unittest_output = open(unittest_output_fp, 'w')$/;"	v
-unittest_output	scripts/build/dstruct/scripts/unittest_runner.py	/^        unittest_output = open(unittest_output_fp, 'w')$/;"	v
-unittest_output	scripts/build/munit/scripts/unittest_runner.py	/^        unittest_output = open(unittest_output_fp, 'w')$/;"	v
+tournament_selection	src/ga/selection.c	/^void tournament_selection(struct population **p, int *select)$/;"	f
+two_pt_crossover	src/ga/crossover.c	/^int two_pt_crossover(void **chromo_1, void **chromo_2, int index)$/;"	f
 unittest_output	scripts/unittest_runner.py	/^            unittest_output = open(unittest_output_fp, 'w')$/;"	v
-unittest_output_fp	scripts/build/al/scripts/unittest_runner.py	/^        unittest_output_fp = os.path.join($/;"	v
-unittest_output_fp	scripts/build/dbg/scripts/unittest_runner.py	/^        unittest_output_fp = os.path.join($/;"	v
-unittest_output_fp	scripts/build/dstruct/scripts/unittest_runner.py	/^        unittest_output_fp = os.path.join($/;"	v
-unittest_output_fp	scripts/build/munit/scripts/unittest_runner.py	/^        unittest_output_fp = os.path.join($/;"	v
 unittest_output_fp	scripts/unittest_runner.py	/^            unittest_output_fp = os.path.join($/;"	v
-unittests	scripts/build/al/scripts/unittest_runner.py	/^    unittests = []$/;"	v
-unittests	scripts/build/dbg/scripts/unittest_runner.py	/^    unittests = []$/;"	v
-unittests	scripts/build/dstruct/scripts/unittest_runner.py	/^    unittests = []$/;"	v
-unittests	scripts/build/munit/scripts/unittest_runner.py	/^    unittests = []$/;"	v
 unittests	scripts/unittest_runner.py	/^    unittests = []$/;"	v
-unittests_bin_dir	scripts/build/al/scripts/unittest_runner.py	/^unittests_bin_dir = "..\/bin"$/;"	v
-unittests_bin_dir	scripts/build/dbg/scripts/unittest_runner.py	/^unittests_bin_dir = "..\/bin"$/;"	v
-unittests_bin_dir	scripts/build/dstruct/scripts/unittest_runner.py	/^unittests_bin_dir = "..\/bin"$/;"	v
-unittests_bin_dir	scripts/build/munit/scripts/unittest_runner.py	/^unittests_bin_dir = "..\/bin"$/;"	v
 unittests_bin_dir	scripts/unittest_runner.py	/^unittests_bin_dir = "bin"$/;"	v
-unittests_file_pattern	scripts/build/al/scripts/unittest_runner.py	/^unittests_file_pattern = "^[a-zA-Z0-9_]*_tests$"$/;"	v
-unittests_file_pattern	scripts/build/dbg/scripts/unittest_runner.py	/^unittests_file_pattern = "^[a-zA-Z0-9_]*_tests$"$/;"	v
-unittests_file_pattern	scripts/build/dstruct/scripts/unittest_runner.py	/^unittests_file_pattern = "^[a-zA-Z0-9_]*_tests$"$/;"	v
-unittests_file_pattern	scripts/build/munit/scripts/unittest_runner.py	/^unittests_file_pattern = "^[a-zA-Z0-9_]*_tests$"$/;"	v
 unittests_file_pattern	scripts/unittest_runner.py	/^unittests_file_pattern = "^[a-zA-Z0-9_]*_tests$"$/;"	v
-unittests_log_dir	scripts/build/al/scripts/unittest_runner.py	/^unittests_log_dir = "unittests_log"$/;"	v
-unittests_log_dir	scripts/build/dbg/scripts/unittest_runner.py	/^unittests_log_dir = "unittests_log"$/;"	v
-unittests_log_dir	scripts/build/dstruct/scripts/unittest_runner.py	/^unittests_log_dir = "unittests_log"$/;"	v
-unittests_log_dir	scripts/build/munit/scripts/unittest_runner.py	/^unittests_log_dir = "unittests_log"$/;"	v
 unittests_log_dir	scripts/unittest_runner.py	/^unittests_log_dir = "unittests_log"$/;"	v
-upcase	scripts/build/dstruct/src/bstrlib.c	541;"	d	file:
 update_leaderboard	src/evolve_monitor.c	/^static int update_leaderboard($/;"	f	file:
-upper_bound	scripts/build/al/src/random_data_generator.c	/^        int upper_bound;$/;"	m	struct:options	file:
-val1	scripts/build/dstruct/tests/darray_tests.c	/^static int *val1 = NULL;$/;"	v	file:
-val2	scripts/build/dstruct/tests/darray_tests.c	/^static int *val2 = NULL;$/;"	v	file:
-value	scripts/build/dstruct/include/doubly_linked_list.h	/^        void *value;$/;"	m	struct:dbly_linked_list_node
 wait_signal	include/evolve.h	/^        int wait_signal;$/;"	m	struct:evolution_settings
-wspace	scripts/build/dstruct/src/bstrlib.c	547;"	d	file:

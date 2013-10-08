@@ -12,6 +12,11 @@
 #include <dstruct/darray.h>
 
 #include "evolve.h"
+#include "evolve_monitor.h"
+#include "population.h"
+#include "ga/selection.h"
+#include "ga/crossover.h"
+#include "ga/mutation.h"
 
 #define MAXN 100
 #define NUM_LBOUND 49
@@ -160,7 +165,7 @@ static void setup_strings(int k, int len)
                         scores[index] = hamming_dist(strings[i], strings[j]);
 
                         /* make combination string */
-                        cache = calloc(1, (sizeof(char) * len * 2) + 1);
+                        cache = calloc(1, (sizeof(char) * len * 2) + 2);
                         strcpy(cache, strings[i]);
                         strcat(cache, " ");
                         strcat(cache, strings[j]);
@@ -292,7 +297,8 @@ int main(int argc, char *argv[])
         struct evolve_monitor *m = init_evolve_monitor(
                 p->chromosomes->element_size,  /* chromosome size */
                 5,
-                "csp.dat"
+                /* "csp.dat" */
+                NULL
         );
 
         /* run evolution */

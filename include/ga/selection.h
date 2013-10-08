@@ -1,7 +1,7 @@
 #ifndef _SELECTION_H_
 #define _SELECTION_H_
 
-#include "evolve.h"
+#include "../evolve.h"
 
 /* MACROS */
 #define DEFAULT_SELECT NULL

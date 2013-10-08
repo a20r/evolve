@@ -7,8 +7,8 @@
 #include <al/comparator.h>
 #include <al/utils.h>
 
-#include "ga/evolve.h"
-#include "ga/population.h"
+#include "evolve.h"
+#include "population.h"
 #include "ga/selection.h"
 #include "ga/crossover.h"
 #include "ga/mutation.h"

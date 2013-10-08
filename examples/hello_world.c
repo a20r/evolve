@@ -9,6 +9,11 @@
 #include <dstruct/darray.h>
 
 #include "evolve.h"
+#include "evolve_monitor.h"
+#include "population.h"
+#include "ga/selection.h"
+#include "ga/crossover.h"
+#include "ga/mutation.h"
 
 #define TARGET_SOLUTION "hello world!"
 
@@ -104,7 +109,8 @@ int main(int argc, char *argv[])
         struct evolve_monitor *m = init_evolve_monitor(
                 p->chromosomes->element_size,  /* chromosome size */
                 5,
-                "hello_world.dat"
+                /* "hello_world.dat" */
+                NULL
         );
 
         /* run evolution */

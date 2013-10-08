@@ -5,8 +5,8 @@
 #include <al/utils.h>
 
 #include "population.h"
-#include "crossover.h"
-#include "mutation.h"
+#include "ga/crossover.h"
+#include "ga/mutation.h"
 
 
 struct population *init_population(

@@ -2,9 +2,9 @@
 #include <dbg/dbg.h>
 #include <al/comparator.h>
 
-#include "ga/evolve.h"
-#include "ga/evolve_monitor.h"
-#include "ga/population.h"
+#include "evolve.h"
+#include "evolve_monitor.h"
+#include "population.h"
 
 
 int run_evolution(

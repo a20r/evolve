@@ -5,8 +5,8 @@
 #include <munit/munit.h>
 #include <dstruct/darray.h>
 
-#include "ga/test_utils.h"
-#include "ga/population.h"
+#include "test_utils.h"
+#include "population.h"
 
 
 int assert_sorted_array(

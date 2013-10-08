@@ -5,7 +5,7 @@
 
 #include <al/utils.h>
 
-#include "ga/evolve.h"
+#include "evolve.h"
 
 char ALPHA[52] = {
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',

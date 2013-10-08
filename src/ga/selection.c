@@ -6,9 +6,9 @@
 #include <al/utils.h>
 #include <dstruct/darray.h>
 
+#include "evolve.h"
+#include "population.h"
 #include "ga/selection.h"
-#include "ga/population.h"
-#include "ga/evolve.h"
 
 
 static struct population *create_empty_population(struct population *p)

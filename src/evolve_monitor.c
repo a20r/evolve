@@ -5,7 +5,7 @@
 #include <al/comparator.h>
 #include <dstruct/darray.h>
 
-#include "ga/evolve_monitor.h"
+#include "evolve_monitor.h"
 
 
 struct evolve_monitor *init_evolve_monitor(
