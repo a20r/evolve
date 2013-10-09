@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
                 fitness_function,
 
                 /* selection */
-                roulette_wheel_selection,
+                tournament_selection,
                 DEFAULT_SELECT,
 
                 /* crossover */
