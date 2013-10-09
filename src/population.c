@@ -334,7 +334,7 @@ void populate(
 {
         int i = 0;
         int j = 0;
-        int offspring_pair = 0;
+        int child_pair = 0;
 
         void *p_1;  /* parents 1 */
         void *p_2;  /* parents 2 */
@@ -346,7 +346,6 @@ void populate(
 
         struct darray *old_chromos = (*p)->chromosomes;
         int population = (*p)->population;
-
 
         /* initialize new population */
         struct population *new_p = init_population(
@@ -369,7 +368,7 @@ void populate(
 
                 for (j = 0; j < 2; j++) {
                         /* make sure number of offspring < max_population */
-                        if (i + j + offspring_pair  == (*p)->max_population) {
+                        if (i + j + child_pair  == (*p)->max_population) {
                                 break;
                         }
 
@@ -391,10 +390,10 @@ void populate(
                         mutate(&c_2, mutate_prob, mutation_func);
 
                         /* put children into new population */
-                        darray_set(new_chromos, i + j + offspring_pair, c_1);
-                        darray_set(new_chromos, i + j + offspring_pair + 1, c_2);
+                        darray_set(new_chromos, i + j + child_pair, c_1);
+                        darray_set(new_chromos, i + j + child_pair + 1, c_2);
                         new_p->population += 2;
-                        offspring_pair++;
+                        child_pair++;
                 }
         }
 

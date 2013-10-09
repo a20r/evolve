@@ -29,11 +29,11 @@ static struct population *create_empty_population(struct population *p)
 void roulette_wheel_selection(struct population **p, int *select)
 {
         int i = 0;
-        int arr_index = 0;
         int selected = 0;
         int max_select = 0;
         float randnum = 0.0;
 
+        float curr_score;
         void *score;
         void *chromo;
         size_t chromo_sz;
@@ -41,6 +41,7 @@ void roulette_wheel_selection(struct population **p, int *select)
 
         struct population *new_p;
         float cumulative_prob = 0.0;
+        int max_pop;
 
         /* setup */
         chromo_sz = (*p)->chromosomes->element_size;
@@ -48,9 +49,8 @@ void roulette_wheel_selection(struct population **p, int *select)
         new_p = create_empty_population(*p);
         max_select = (select == NULL ? (*p)->max_population / 2 : *select);
 
-        /* noramlize fitness values and sort by descending order */
+        /* noramlize fitness values */
         normalize_fitness_values(&(*p));
-        sort_population(*p, float_cmp_asc);
 
         /* make sure number of selection is an even number! */
         if (max_select % 2 != 0) {
@@ -58,43 +58,51 @@ void roulette_wheel_selection(struct population **p, int *select)
         }
 
         /* select chromosomes */
-        randnum = randnum_f(0.0, 1.0);
-        for (i = 0; i < (*p)->max_population; i++) {
+        max_pop = (*p)->max_population;
+        while (selected != max_select) {
 
-                /* chromosome and score */
-                chromo = calloc(1, chromo_sz);
-                score = calloc(1, score_sz);
-                memcpy(chromo, darray_get((*p)->chromosomes, i), chromo_sz);
-                memcpy(score, darray_get((*p)->scores, i), score_sz);
+                /* spin the wheel */
+                randnum = randnum_f(0.0, 1.0);
+                cumulative_prob = 0.0;
+                for (i = 0; i < max_pop; i++) {
 
-                /* select if chromosome score is larger than random number */
-                cumulative_prob += *(float *) score;
-                if (cumulative_prob >= randnum) {
-                        darray_set(new_p->chromosomes, arr_index, chromo);
-                        darray_set(new_p->scores, arr_index, score);
+                        /* select if score is larger than random number */
+                        curr_score = *(float *) darray_get((*p)->scores, i);
+                        cumulative_prob += curr_score;
+                        if (cumulative_prob >= randnum) {
+                                /* make a copy of chromosome and score */
+                                chromo = calloc(1, chromo_sz);
+                                score = calloc(1, score_sz);
+                                memcpy(
+                                        chromo,
+                                        darray_get((*p)->chromosomes, i),
+                                        chromo_sz
+                                );
+                                memcpy(
+                                        score,
+                                        darray_get((*p)->scores, i),
+                                        score_sz
+                                );
 
-                        i = 0; /* reset wheel */
-                        cumulative_prob = 0.0;  /* reset cumulative_prob */
-                        randnum = randnum_f(0.0, 1.0);  /* reset probability */
-                        selected++;
-                        arr_index++;
-                        new_p->population += 1;
-                } else {
-                        free(score);
-                        free(chromo);
-                }
+                                /* set the selected chromosome and score */
+                                darray_set(
+                                        new_p->chromosomes,
+                                        selected,
+                                        chromo
+                                );
+                                darray_set(
+                                        new_p->scores,
+                                        selected,
+                                        score
+                                );
 
-                /* loop conditions */
-                if (selected == max_select) {
-                        break;
-                } else if ((i + 1) >= (*p)->max_population) {
-                        i = 0; /* reset wheel */
-                        cumulative_prob = 0.0;  /* reset cumulative_prob */
-                        randnum = randnum_f(0.0, 1.0);  /* reset probability */
+                                selected++;
+                                new_p->population++;
+                                break;
+                        }
                 }
         }
 
-        /* clean up */
         destroy_population(&(*p));
         *p = new_p;
 }

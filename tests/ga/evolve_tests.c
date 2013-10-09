@@ -38,8 +38,8 @@ int test_run_evolution()
 {
         struct population *p;
         struct evolve_monitor *m;
-        int max_pop = 10;
-        int max_gen = 2;
+        int max_pop = 30;
+        int max_gen = 20;
         float *crossover_prob;
         float *mutate_prob;
 
@@ -57,8 +57,8 @@ int test_run_evolution()
 
         /* init crossover and mutation probability */
         crossover_prob = calloc(1, sizeof(float));
-        *crossover_prob = 0.5;
         mutate_prob = calloc(1, sizeof(float));
+        *crossover_prob = 0.5;
         *mutate_prob = 0.2;
 
         gen_init_chromosomes(&p, randstr);
