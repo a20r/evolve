@@ -6,6 +6,7 @@ SET(CMAKE_C_FLAGS_DEBUG "-Wall -g")
 SET(CMAKE_C_FLAGS_RELEASE "-Wall -DNDEBUG")
 
 INCLUDE_DIRECTORIES(../include)
+INCLUDE_DIRECTORIES(/usr/local/include/)
 
 LINK_DIRECTORIES(/usr/local/lib)
 LINK_DIRECTORIES(/usr/lib)

@@ -18,8 +18,8 @@ TARGET_LINK_LIBRARIES(evolve_tests ${LIBRARY_NAME})
 ADD_EXECUTABLE(
     evolve_monitor_tests
 
-    test_utils.c
     evolve_monitor_tests.c
+    test_utils.c
 )
 TARGET_LINK_LIBRARIES(evolve_monitor_tests ${LIBRARY_NAME})
 
@@ -27,8 +27,8 @@ TARGET_LINK_LIBRARIES(evolve_monitor_tests ${LIBRARY_NAME})
 ADD_EXECUTABLE(
     population_tests
 
-    test_utils.c
     population_tests.c
+    test_utils.c
 )
 TARGET_LINK_LIBRARIES(population_tests ${LIBRARY_NAME})
 
@@ -36,8 +36,8 @@ TARGET_LINK_LIBRARIES(population_tests ${LIBRARY_NAME})
 ADD_EXECUTABLE(
     ga_selection_tests
 
-    test_utils.c
     selection_tests.c
+    test_utils.c
 )
 TARGET_LINK_LIBRARIES(ga_selection_tests ${LIBRARY_NAME})
 
