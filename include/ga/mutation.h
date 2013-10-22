@@ -1,7 +1,6 @@
-#ifndef _MUTATE_H_
-#define _MUTATE_H_
+#ifndef _GA_MUTATE_H_
+#define _GA_MUTATE_H_
 
-#include "evolve.h"
 
 /* FUNCTIONS */
 void mutate_str(char **str);

@@ -8,7 +8,7 @@
 
 #include "evolve.h"
 #include "population.h"
-#include "ga/selection.h"
+#include "selection.h"
 
 
 static struct population *create_empty_population(struct population *p)

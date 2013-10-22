@@ -32,5 +32,15 @@ ADD_EXECUTABLE(
 )
 TARGET_LINK_LIBRARIES(population_tests ${LIBRARY_NAME})
 
+# selection
+ADD_EXECUTABLE(
+    ga_selection_tests
+
+    test_utils.c
+    selection_tests.c
+)
+TARGET_LINK_LIBRARIES(ga_selection_tests ${LIBRARY_NAME})
+
+
 SUBDIRS(ga)
 # SUBDIRS(gp)

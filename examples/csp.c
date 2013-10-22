@@ -14,14 +14,15 @@
 #include "evolve.h"
 #include "evolve_monitor.h"
 #include "population.h"
-#include "ga/selection.h"
+#include "selection.h"
 #include "ga/crossover.h"
 #include "ga/mutation.h"
+
+#include "example_utils.h"
 
 #define MAXN 100
 #define NUM_LBOUND 49
 #define NUM_UBOUND 52
-
 
 /* GLOBAL VARS */
 int k = 5;  /* number of elements */
@@ -201,7 +202,7 @@ static void teardown_strings()
         }
 }
 
-static float fitness_function(char *chromosome)
+float fitness_function(char *chromosome)
 {
         int i;
         float scores[k];
@@ -214,55 +215,6 @@ static float fitness_function(char *chromosome)
         insertion_sort(scores, sizeof(float), 0, k - 1, float_cmp_desc);
 
         return max_score - fabs(min_hd - scores[0]);
-}
-
-static void print_evolve_results(struct population *p)
-{
-        if (p->solution != NULL) {
-                printf("SUCCESS! FOUND SOLUTION!\n");
-                printf("Solution: %s\n", p->solution);
-                printf("Score: %.2f\n", fitness_function(p->solution));
-                printf("Goal: %.2f\n", p->goal);
-                printf("Took %d Generations\n", p->generation);
-        } else {
-                printf("Failed to find solution . . . \n");
-        }
-}
-
-static void print_top_chromosomes(struct evolve_monitor *m, int top)
-{
-        int i = 0;
-
-        /* sort results */
-        printf("SORTING RESULTS!\n");
-        sort_generation_stats(m, float_cmp_desc);
-
-        /* print top chromosomes */
-        if (m->top >= top) {
-                printf("\nTOP %d CHROMOSOMES:\n", top);
-                for (i = 0; i < top; i++) {
-                        printf(
-                                "chromosome: %s\n",
-                                (char *) darray_get(m->best_chromosomes, i)
-                        );
-                        printf(
-                                "score: %.2f\n",
-                                *(float *) darray_get(m->best_scores, i)
-                        );
-                        printf(
-                                "generation: %d\n",
-                                *(int *) darray_get(m->generations, i)
-                        );
-                        printf(
-                                "convergence rate: %.2f\n",
-                                *(float *) darray_get(m->convergence_rates, i)
-                        );
-                        printf(
-                                "goal distance: %.2f\n\n",
-                                *(float *) darray_get(m->goal_distances, i)
-                        );
-                }
-        }
 }
 
 int main(int argc, char *argv[])
@@ -330,7 +282,7 @@ int main(int argc, char *argv[])
         );
 
         /* print results */
-        print_evolve_results(p);
+        print_evolve_results(p, fitness_function);
         print_top_chromosomes(m, 5);
 
         /* clean up */

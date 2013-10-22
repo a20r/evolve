@@ -14,7 +14,6 @@ LINK_DIRECTORIES(/usr/lib)
 ADD_LIBRARY(
     ${LIBRARY_NAME}
 
-    selection.c
     crossover.c
     mutation.c
 )

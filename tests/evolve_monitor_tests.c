@@ -12,7 +12,7 @@
 #include "evolve.h"
 #include "population.h"
 #include "evolve_monitor.h"
-#include "ga/selection.h"
+#include "selection.h"
 #include "ga/crossover.h"
 #include "ga/mutation.h"
 

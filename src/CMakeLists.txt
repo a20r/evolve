@@ -17,6 +17,7 @@ ADD_LIBRARY(
     evolve.c
     evolve_monitor.c
     population.c
+    selection.c
 )
 TARGET_LINK_LIBRARIES(${LIBRARY_NAME} evolve_ga)
 
