@@ -16,6 +16,15 @@ TARGET_LINK_LIBRARIES(evolve_tests ${LIBRARY_NAME})
 
 # evolve_monitor
 ADD_EXECUTABLE(
+    evolve_config_tests
+
+    evolve_config_tests.c
+    test_utils.c
+)
+TARGET_LINK_LIBRARIES(evolve_config_tests ${LIBRARY_NAME})
+
+# evolve_monitor
+ADD_EXECUTABLE(
     evolve_monitor_tests
 
     evolve_monitor_tests.c

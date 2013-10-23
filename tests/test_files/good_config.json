@@ -1,0 +1,13 @@
+{
+    "selection" : {
+        "select" : "default"
+    },
+    "crossover" : {
+        "probability" : 0.8,
+        "pivot_index" : "default"
+    },
+    "mutation" : {
+        "probability" : 0.1,
+        "mutation_point" : "default"
+    }
+}
