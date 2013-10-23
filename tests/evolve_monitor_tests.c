@@ -199,16 +199,13 @@ int test_sort_generation_stats()
 
 void test_suite()
 {
+        /* seed random - VERY IMPORTANT! */
+        srand(10);  /* DO NOT CHANGE SEED - asserts are based on this seed */
+
         mu_run_test(test_init_evolve_monitor);
         mu_run_test(test_destroy_evolve_monitor);
         mu_run_test(test_record_generation_stats);
         mu_run_test(test_sort_generation_stats);
 }
 
-int main()
-{
-        /* seed random - VERY IMPORTANT! */
-        srand(10);  /* DO NOT CHANGE SEED - asserts are based on this seed */
-        test_suite();
-        mu_report();
-}
+mu_run_test_suite(test_suite);

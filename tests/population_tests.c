@@ -498,6 +498,9 @@ int test_destroy_population()
 
 void test_suite()
 {
+        /* seed random - VERY IMPORTANT! */
+        srand(time(NULL));
+
         /* tests population functions */
         mu_run_test(test_init_population);
         mu_run_test(test_extend_max_generation);
@@ -523,10 +526,4 @@ void test_suite()
         testsuite_cleanup();
 }
 
-int main()
-{
-        /* seed random - VERY IMPORTANT! */
-        srand(time(NULL));
-        test_suite();
-        mu_report();
-}
+mu_run_test_suite(test_suite);

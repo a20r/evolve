@@ -80,14 +80,11 @@ int test_tournament_selection()
 
 void test_suite()
 {
+        /* seed random - VERY IMPORTANT! */
+        srand(time(NULL));
+
         mu_run_test(test_roulette_wheel_selection);
         mu_run_test(test_tournament_selection);
 }
 
-int main()
-{
-        /* seed random - VERY IMPORTANT! */
-        srand(time(NULL));
-        test_suite();
-        mu_report();
-}
+mu_run_test_suite(test_suite);

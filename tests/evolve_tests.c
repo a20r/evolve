@@ -93,13 +93,9 @@ int test_run_evolution()
 
 void test_suite()
 {
+        /* seed random - VERY IMPORTANT! */
+        srand(time(NULL));
         mu_run_test(test_run_evolution);
 }
 
-int main()
-{
-        /* seed random - VERY IMPORTANT! */
-        srand(time(NULL));
-        test_suite();
-        mu_report();
-}
+mu_run_test_suite(test_suite);
