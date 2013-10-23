@@ -68,23 +68,6 @@ void extend_max_generation(struct population *p, int extension_size)
         p->max_generation += extension_size;
 }
 
-void gen_init_individuals(struct population **p, char *(*mutator)(int))
-{
-        int i = 0;
-        size_t individual_sz = (*p)->individuals->element_size;
-
-        check(individual_sz != 0, "Individual size should be > 0!");
-
-        /* fill initial random individual */
-        for (i = 0; i < (*p)->max_population; i++) {
-                darray_set((*p)->individuals, i, (*mutator)(individual_sz));
-                (*p)->population++;
-        }
-
-error:
-        return;
-}
-
 int evaluate_individuals(float (eval_func)(char *), struct population **p)
 {
         int i = 0;

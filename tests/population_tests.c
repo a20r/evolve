@@ -15,6 +15,7 @@
 
 #include "population.h"
 #include "selection.h"
+#include "ga/initialize.h"
 #include "ga/crossover.h"
 #include "ga/mutation.h"
 
@@ -90,7 +91,7 @@ static void print_setup(int max_pop, int max_gen)
                 max_pop,  /* max_pop */
                 max_gen /* max_gen */
         );
-        gen_init_individuals(&p, randstr);
+        init_individuals(&p, randstr);
         evaluate_individuals(fitness_function, &p);
 }
 
@@ -166,14 +167,14 @@ int test_extend_max_generation()
         return 0;
 }
 
-int test_gen_init_individuals()
+int test_init_individuals()
 {
         int i = 0;
         char *individual = '\0';
         char *last_individual = '\0';
 
         setup(max_pop, 1);
-        gen_init_individuals(&p, randstr);
+        init_individuals(&p, randstr);
 
         /* assert tests */
         for (i = 0; i < p->max_population; i++) {
@@ -204,7 +205,7 @@ int test_evaluate_individuals()
 
         /* setup */
         setup(max_pop, 1);
-        gen_init_individuals(&p, randstr);
+        init_individuals(&p, randstr);
 
         /* replace last individual to match the solution */
         solution = malloc(p->individuals->element_size);
@@ -252,7 +253,7 @@ int test_normalize_fitness_values()
 
         /* setup */
         setup(10, 1);
-        gen_init_individuals(&p, randstr);
+        init_individuals(&p, randstr);
         evaluate_individuals(fitness_function, &p);
 
         printf("Before Normalization\n");
@@ -366,7 +367,7 @@ int test_partition_population()
 
         /* setup */
         setup(max_pop, max_gen);
-        gen_init_individuals(&p, randstr);
+        init_individuals(&p, randstr);
         evaluate_individuals(fitness_function, &p);
 
         printf("Before Population Sort\n");
@@ -464,7 +465,7 @@ int test_populate()
 {
         /* setup */
         setup(max_pop, 1);
-        gen_init_individuals(&p, randstr);
+        init_individuals(&p, randstr);
         evaluate_individuals(fitness_function, &p);
         roulette_wheel_selection(&p, NULL);
 
@@ -507,7 +508,7 @@ void test_suite()
         /* tests population functions */
         mu_run_test(test_init_population);
         mu_run_test(test_extend_max_generation);
-        mu_run_test(test_gen_init_individuals);
+        mu_run_test(test_init_individuals);
         mu_run_test(test_evaluate_individuals);
         mu_run_test(test_normalize_fitness_values);
         mu_run_test(test_destroy_population);

@@ -12,6 +12,7 @@
 #include "evolve_monitor.h"
 #include "population.h"
 #include "selection.h"
+#include "ga/initialize.h"
 #include "ga/crossover.h"
 #include "ga/mutation.h"
 
@@ -61,7 +62,7 @@ int test_run_evolution()
         *crossover_prob = 0.5;
         *mutate_prob = 0.2;
 
-        gen_init_individuals(&p, randstr);
+        init_individuals(&p, randstr);
         run_evolution(
                 &p,
                 fitness_function,

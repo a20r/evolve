@@ -1,7 +1,7 @@
 #ifndef _GA_CROSSOVER_H_
 #define _GA_CROSSOVER_H_
 
-#include "../evolve.h"
+#include "evolve.h"
 
 /* MACROS */
 #define DEFAULT_PIVOT -1

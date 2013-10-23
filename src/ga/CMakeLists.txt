@@ -6,6 +6,7 @@ SET(LIBRARY_NAME evolve_ga)
 ADD_LIBRARY(
     ${LIBRARY_NAME}
 
+    initialize.c
     crossover.c
     mutation.c
 )

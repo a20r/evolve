@@ -13,6 +13,7 @@
 #include "population.h"
 #include "evolve_monitor.h"
 #include "selection.h"
+#include "ga/initialize.h"
 #include "ga/crossover.h"
 #include "ga/mutation.h"
 
@@ -50,7 +51,7 @@ static void sort_test_setup(int max_gen, int max_pop)
                 max_gen /* max_gen */
         );
         m = init_evolve_monitor(chromo_sz, 5, NULL);
-        gen_init_individuals(&p, randstr);
+        init_individuals(&p, randstr);
 
         crossover_prob = calloc(1, sizeof(float));
         *crossover_prob = 0.8;
@@ -138,7 +139,7 @@ int test_record_generation_stats()
                 5 /* max_gen */
         );
         m = init_evolve_monitor(chromo_sz, 5, NULL);
-        gen_init_individuals(&p, randstr);
+        init_individuals(&p, randstr);
         evaluate_individuals(fitness_function, &p);
 
         /* record generation stats */

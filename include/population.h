@@ -33,7 +33,6 @@ struct population *init_population(
 );
 void destroy_population(struct population **p);
 void extend_max_generation(struct population *p, int extension_size);
-void gen_init_individuals(struct population **p, char *(*mutator)(int));
 int evaluate_individuals(float (eval_func)(char *), struct population **p);
 void normalize_fitness_values(struct population **p);
 void print_individual(struct population *p, int index);

@@ -9,6 +9,7 @@
 #include "evolve.h"
 #include "population.h"
 #include "selection.h"
+#include "ga/initialize.h"
 
 /* GLOBAL VAR */
 struct population *p;
@@ -35,7 +36,7 @@ static void setup()
                 10,  /* max_pop */
                 1 /* max_gen */
         );
-        gen_init_individuals(&p, randstr);
+        init_individuals(&p, randstr);
         evaluate_individuals(fitness_function, &p);
 }
 

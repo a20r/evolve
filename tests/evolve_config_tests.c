@@ -8,7 +8,7 @@
 
 #include "evolve_config.h"
 
-#define TEST_CONFIG_FILE "tests/test_files/good_config.json"
+#define TEST_CONFIG_FILE "../tests/test_files/good_config.json"
 
 /* GLOBAL VARS */
 struct evolve_config *config;

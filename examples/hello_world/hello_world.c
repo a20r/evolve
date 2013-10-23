@@ -12,6 +12,7 @@
 #include "evolve_monitor.h"
 #include "population.h"
 #include "selection.h"
+#include "ga/initialize.h"
 #include "ga/crossover.h"
 #include "ga/mutation.h"
 
@@ -71,7 +72,7 @@ int main(int argc, char *argv[])
         printf("RUNNING GA!\n");
         printf("Crossover Probability [%.4f]!\n", *p_c);
         printf("Mutation Probability [%.4f]!\n", *p_m);
-        gen_init_individuals(&p, randstr);
+        init_individuals(&p, randstr);
         run_evolution(
                 &p,
                 fitness_function,
