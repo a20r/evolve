@@ -7,7 +7,7 @@ compiler:
 
 before_script:
     - sudo apt-get install cmake
-    - sudo apt-get install libjansson4
+    - sudo apt-get install libjansson4 libjansson-dev
     - sudo bash scripts/install_dependencies.sh
 
 script:
