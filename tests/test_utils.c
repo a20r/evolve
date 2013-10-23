@@ -39,7 +39,7 @@ int assert_sorted_population(
 )
 {
         int i = 0;
-        int end = p->chromosomes->end;
+        int end = p->individuals->end;
         int res = 0;
 
         for (i = 1; i <= end; i++) {

@@ -202,7 +202,7 @@ static void teardown_strings()
         }
 }
 
-float fitness_function(char *chromosome)
+float fitness_function(char *individual)
 {
         int i;
         float scores[k];
@@ -210,7 +210,7 @@ float fitness_function(char *chromosome)
 
         /* evaulate closest string */
         for (i = 0; i < k; i++) {
-                scores[i] = hamming_dist(chromosome, strings[i]);
+                scores[i] = hamming_dist(individual, strings[i]);
         }
         insertion_sort(scores, sizeof(float), 0, k - 1, float_cmp_desc);
 
@@ -247,7 +247,7 @@ int main(int argc, char *argv[])
                 max_gen  /* max_gen */
         );
         struct evolve_monitor *m = init_evolve_monitor(
-                p->chromosomes->element_size,  /* chromosome size */
+                p->individuals->element_size,  /* individual size */
                 5,
                 /* "csp.dat" */
                 NULL
@@ -257,7 +257,7 @@ int main(int argc, char *argv[])
         printf("RUNNING GA!\n");
         printf("Crossover Probability [%.2f]!\n", *p_c);
         printf("Mutation Probability [%.2f]!\n", *p_m);
-        gen_init_chromosomes(&p, randnumstr);
+        gen_init_individuals(&p, randnumstr);
 
         run_evolution(
                 &p,
@@ -283,7 +283,7 @@ int main(int argc, char *argv[])
 
         /* print results */
         print_evolve_results(p, fitness_function);
-        print_top_chromosomes(m, 5);
+        print_top_individuals(m, 5);
 
         /* clean up */
         destroy_evolve_monitor(&m);

@@ -1,15 +1,15 @@
 #ifndef _POPULATION_H_
 #define _POPULATION_H_
 
+#include <dstruct/darray.h>
 
 /* DEFINES */
 #define QSORT_MIN_SIZE 20
 
 /* STRUCTS */
 struct population {
-        /* chromosomes */
-        struct darray *chromosomes;
-        int chromosome_length;
+        /* individuals */
+        struct darray *individuals;
         struct darray *scores;
         float total_score;
 
@@ -26,18 +26,18 @@ struct population {
 
 /* FUNCTIONS */
 struct population *init_population(
-        int chromo_length,
+        size_t individual_size,
         float goal,
         int max_pop,
         int max_gen
 );
 void destroy_population(struct population **p);
 void extend_max_generation(struct population *p, int extension_size);
-void gen_init_chromosomes(struct population **p, char *(*mutator)(int));
-int evaluate_chromosomes(float (eval_func)(char *), struct population **p);
+void gen_init_individuals(struct population **p, char *(*mutator)(int));
+int evaluate_individuals(float (eval_func)(char *), struct population **p);
 void normalize_fitness_values(struct population **p);
-void print_chromosome(struct population *p, int index);
-void print_chromosomes(struct population *p);
+void print_individual(struct population *p, int index);
+void print_individuals(struct population *p);
 void print_population(struct population *p);
 void insertion_sort_population(
         struct population *p,

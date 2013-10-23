@@ -19,7 +19,7 @@ struct evolve_monitor
         long top;
 
         /* leader board */
-        struct darray *best_chromosomes;
+        struct darray *best_individuals;
         struct darray *best_scores;
         struct darray *generations;
         struct darray *convergence_rates;

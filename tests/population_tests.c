@@ -29,14 +29,14 @@ int output;
 int save_stdout;
 
 
-static float fitness_function(char *chromosome)
+static float fitness_function(char *individual)
 {
         char *target = "hello world!";
         float total = 0;
         int i = 0;
 
-        for (i = 0; i <= (int) strlen(chromosome); i++) {
-                total += fabsf(roundf(target[i] - chromosome[i]));
+        for (i = 0; i <= (int) strlen(individual); i++) {
+                total += fabsf(roundf(target[i] - individual[i]));
         }
 
         return total;
@@ -90,8 +90,8 @@ static void print_setup(int max_pop, int max_gen)
                 max_pop,  /* max_pop */
                 max_gen /* max_gen */
         );
-        gen_init_chromosomes(&p, randstr);
-        evaluate_chromosomes(fitness_function, &p);
+        gen_init_individuals(&p, randstr);
+        evaluate_individuals(fitness_function, &p);
 }
 
 static void teardown()
@@ -131,13 +131,12 @@ int test_init_population()
 {
         setup(max_pop, 1);
 
-        /* chromosomes */
-        mu_assert(p->chromosomes != NULL, "Chromosomes should not be NULL!");
+        /* individuals */
+        mu_assert(p->individuals != NULL, "individuals should not be NULL!");
         mu_assert(p->scores != NULL, "Scores should not be NULL!");
         mu_assert(p->total_score == 0.0, "Sum of scores should be 0.0!");
 
         /* fitness details */
-        mu_assert(p->chromosome_length == 12, "Chromo length should be 12!");
         mu_assert(p->goal == 0.0, "Goal should be 0.0!");
 
         /* population details */
@@ -167,26 +166,26 @@ int test_extend_max_generation()
         return 0;
 }
 
-int test_gen_init_chromosomes()
+int test_gen_init_individuals()
 {
         int i = 0;
-        char *chromosome = '\0';
-        char *last_chromosome = '\0';
+        char *individual = '\0';
+        char *last_individual = '\0';
 
         setup(max_pop, 1);
-        gen_init_chromosomes(&p, randstr);
+        gen_init_individuals(&p, randstr);
 
         /* assert tests */
         for (i = 0; i < p->max_population; i++) {
-                chromosome = darray_get(p->chromosomes, i);
+                individual = darray_get(p->individuals, i);
 
                 mu_assert(
-                                chromosome != last_chromosome,
+                                individual != last_individual,
                                 "num == last_num!"
                          );
                 mu_assert(p->population == max_pop,"Invalid population!");
 
-                last_chromosome = chromosome;
+                last_individual = individual;
         }
 
         teardown();
@@ -194,31 +193,31 @@ int test_gen_init_chromosomes()
         return 0;
 }
 
-int test_evaluate_chromosomes()
+int test_evaluate_individuals()
 {
         int i = 0;
         int goal_reached = 0;
         float score = 0.0;
         float last_score = 0.0;
-        char *chromosome_solution = "hello world!";
+        char *individual_solution = "hello world!";
         char *solution;
 
         /* setup */
         setup(max_pop, 1);
-        gen_init_chromosomes(&p, randstr);
+        gen_init_individuals(&p, randstr);
 
-        /* replace last chromosome to match the solution */
-        solution = malloc(sizeof(char *) * p->chromosome_length);
+        /* replace last individual to match the solution */
+        solution = malloc(p->individuals->element_size);
         memcpy(
                 solution,
-                chromosome_solution,
-                sizeof(char *) * p->chromosome_length
+                individual_solution,
+                p->individuals->element_size
         );
-        free(darray_get(p->chromosomes, 4));  /* MUST FREE BEFORE REPLACING! */
-        darray_set(p->chromosomes, 4, solution);
+        free(darray_get(p->individuals, 4));  /* MUST FREE BEFORE REPLACING! */
+        darray_set(p->individuals, 4, solution);
 
         /* evaluate */
-        goal_reached = evaluate_chromosomes(fitness_function, &p);
+        goal_reached = evaluate_individuals(fitness_function, &p);
         mu_assert(goal_reached == 1, "Goal should have been reached!");
 
         /* loop through and check scores */
@@ -253,8 +252,8 @@ int test_normalize_fitness_values()
 
         /* setup */
         setup(10, 1);
-        gen_init_chromosomes(&p, randstr);
-        evaluate_chromosomes(fitness_function, &p);
+        gen_init_individuals(&p, randstr);
+        evaluate_individuals(fitness_function, &p);
 
         printf("Before Normalization\n");
         print_population(p);
@@ -279,7 +278,7 @@ int test_normalize_fitness_values()
         return 0;
 }
 
-int test_print_chromosome()
+int test_print_individual()
 {
         int max_pop = 10;
         int max_gen = 5;
@@ -287,7 +286,7 @@ int test_print_chromosome()
         redirect_stdout();
         print_setup(max_pop, max_gen);
 
-        print_chromosome(p, 0);
+        print_individual(p, 0);
 
         teardown();
         restore_stdout();
@@ -297,7 +296,7 @@ int test_print_chromosome()
         return 0;
 }
 
-int test_print_chromosomes()
+int test_print_individuals()
 {
         int max_pop = 10;
         int max_gen = 5;
@@ -305,7 +304,7 @@ int test_print_chromosomes()
         redirect_stdout();
         print_setup(max_pop, max_gen);
 
-        print_chromosomes(p);
+        print_individuals(p);
 
         teardown();
         restore_stdout();
@@ -342,13 +341,13 @@ int test_insertion_sort_population()
         setup(max_pop, max_gen);
 
         printf("Before Population Sort\n");
-        print_chromosomes(p);
+        print_individuals(p);
 
         /* sort population */
-        insertion_sort_population(p, 0, p->chromosomes->end, float_cmp_asc);
+        insertion_sort_population(p, 0, p->individuals->end, float_cmp_asc);
 
         printf("After Population Sort\n");
-        print_chromosomes(p);
+        print_individuals(p);
 
         /* #<{(| assert tests |)}># */
         res = assert_sorted_population(p, float_cmp_asc);
@@ -367,11 +366,11 @@ int test_partition_population()
 
         /* setup */
         setup(max_pop, max_gen);
-        gen_init_chromosomes(&p, randstr);
-        evaluate_chromosomes(fitness_function, &p);
+        gen_init_individuals(&p, randstr);
+        evaluate_individuals(fitness_function, &p);
 
         printf("Before Population Sort\n");
-        print_chromosomes(p);
+        print_individuals(p);
 
         /* keep pivot value for reference */
         int pivot_index = 2;
@@ -385,15 +384,15 @@ int test_partition_population()
                 p,
                 pivot_index,
                 0,
-                p->chromosomes->end,
+                p->individuals->end,
                 float_cmp_asc
         );
 
         printf("After Population Sort\n");
-        print_chromosomes(p);
+        print_individuals(p);
 
         /* assert tests */
-        insertion_sort_population(p, 0, p->chromosomes->end, float_cmp_asc);
+        insertion_sort_population(p, 0, p->individuals->end, float_cmp_asc);
         float value = *(float *) darray_get(p->scores, res);
 
         /* assert test */
@@ -418,13 +417,13 @@ int test_quick_sort_population()
 
 
         printf("Before Population Sort\n");
-        print_chromosomes(p);
+        print_individuals(p);
 
         /* sort population */
-        quick_sort_population(p, 0, p->chromosomes->end, float_cmp_asc);
+        quick_sort_population(p, 0, p->individuals->end, float_cmp_asc);
 
         printf("After Population Sort\n");
-        print_chromosomes(p);
+        print_individuals(p);
 
         /* #<{(| assert tests |)}># */
         res = assert_sorted_population(p, float_cmp_asc);
@@ -444,13 +443,13 @@ int test_sort_population()
         setup(max_pop, max_gen);
 
         printf("Before Population Sort\n");
-        print_chromosomes(p);
+        print_individuals(p);
 
         /* sort population */
         sort_population(p, float_cmp_asc);
 
         printf("After Population Sort\n");
-        print_chromosomes(p);
+        print_individuals(p);
 
         /* #<{(| assert tests |)}># */
         res = assert_sorted_population(p, float_cmp_asc);
@@ -465,8 +464,8 @@ int test_populate()
 {
         /* setup */
         setup(max_pop, 1);
-        gen_init_chromosomes(&p, randstr);
-        evaluate_chromosomes(fitness_function, &p);
+        gen_init_individuals(&p, randstr);
+        evaluate_individuals(fitness_function, &p);
         roulette_wheel_selection(&p, NULL);
 
         float *crossover_prob = calloc(1, sizeof(float));
@@ -483,7 +482,7 @@ int test_populate()
         );
 
         /* assert tests */
-        mu_assert(p->chromosomes->end == max_pop - 1, "Invalid end value!");
+        mu_assert(p->individuals->end == max_pop - 1, "Invalid end value!");
         mu_assert(p->population == max_pop, "Invalid current population!");
 
         /* teardown */
@@ -508,14 +507,14 @@ void test_suite()
         /* tests population functions */
         mu_run_test(test_init_population);
         mu_run_test(test_extend_max_generation);
-        mu_run_test(test_gen_init_chromosomes);
-        mu_run_test(test_evaluate_chromosomes);
+        mu_run_test(test_gen_init_individuals);
+        mu_run_test(test_evaluate_individuals);
         mu_run_test(test_normalize_fitness_values);
         mu_run_test(test_destroy_population);
 
         /* print functions */
-        mu_run_test(test_print_chromosome);
-        mu_run_test(test_print_chromosomes);
+        mu_run_test(test_print_individual);
+        mu_run_test(test_print_individuals);
         mu_run_test(test_print_population);
 
         /* sort functions */

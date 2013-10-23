@@ -22,6 +22,7 @@ int test_parse_config()
         float crossover_prob = 0.8;
         float mutation_prob = 0.1;
 
+        /* parse config file */
         config = parse_config(TEST_CONFIG_FILE);
         selection = config->selection;
         crossover = config->crossover;
@@ -53,7 +54,9 @@ int test_parse_config()
                 "Failed to get mutation_point!"
         );
 
+        /* clean up */
         config_destroy(config);
+
         return 0;
 }
 

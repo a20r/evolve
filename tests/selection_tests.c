@@ -14,14 +14,14 @@
 struct population *p;
 
 
-static float fitness_function(char *chromosome)
+static float fitness_function(char *individual)
 {
         char *target = "hello world!";
         float total = 0;
         int i = 0;
 
-        for (i = 0; i <= (int) strlen(chromosome); i++) {
-                total += fabsf(roundf(target[i] - chromosome[i]));
+        for (i = 0; i <= (int) strlen(individual); i++) {
+                total += fabsf(roundf(target[i] - individual[i]));
         }
 
         return total;
@@ -35,8 +35,8 @@ static void setup()
                 10,  /* max_pop */
                 1 /* max_gen */
         );
-        gen_init_chromosomes(&p, randstr);
-        evaluate_chromosomes(fitness_function, &p);
+        gen_init_individuals(&p, randstr);
+        evaluate_individuals(fitness_function, &p);
 }
 
 static void teardown()
@@ -52,7 +52,7 @@ int test_roulette_wheel_selection()
         roulette_wheel_selection(&p, NULL);
         print_population(p);
 
-        mu_assert(p->chromosomes->end == 5, "End should be 5!");
+        mu_assert(p->individuals->end == 5, "End should be 5!");
         mu_assert(p->scores->end == 5, "End should be 5!");
         mu_assert(p->population == 6, "Current population should be 6!");
         mu_assert(p->max_population == 10, "Max population should be 10!");
@@ -69,7 +69,7 @@ int test_tournament_selection()
         tournament_selection(&p, NULL);
         print_population(p);
 
-        mu_assert(p->chromosomes->end == 5, "End should be 5!");
+        mu_assert(p->individuals->end == 5, "End should be 5!");
         mu_assert(p->scores->end == 5, "End should be 5!");
         mu_assert(p->population == 6, "Current population should be 6!");
         mu_assert(p->max_population == 10, "Max population should be 10!");

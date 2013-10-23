@@ -29,7 +29,7 @@ int run_evolution(
         /* loop til max_gen reached, goal achieved, or receive stop signal */
         while ((*p)->generation < max_gen && *stop_signal == 0) {
                 /* evaluate and record */
-                goal_reached = evaluate_chromosomes(eval_func, &(*p));
+                goal_reached = evaluate_individuals(eval_func, &(*p));
                 if (m != NULL) {
                         record_generation_stats(*p, m, float_cmp_desc);
                 }

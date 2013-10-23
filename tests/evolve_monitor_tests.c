@@ -26,14 +26,14 @@ float *crossover_prob;
 float *mutate_prob;
 volatile sig_atomic_t stop_signal = 0;
 
-static float fitness_function(char *chromosome)
+static float fitness_function(char *individual)
 {
         char *target = TEST_SOLUTION;
         float total = 0;
         int i = 0;
 
-        for (i = 0; i <= (int) strlen(chromosome); i++) {
-                total += fabsf(roundf(target[i] - chromosome[i]));
+        for (i = 0; i <= (int) strlen(individual); i++) {
+                total += fabsf(roundf(target[i] - individual[i]));
         }
 
         return total;
@@ -50,7 +50,7 @@ static void sort_test_setup(int max_gen, int max_pop)
                 max_gen /* max_gen */
         );
         m = init_evolve_monitor(chromo_sz, 5, NULL);
-        gen_init_chromosomes(&p, randstr);
+        gen_init_individuals(&p, randstr);
 
         crossover_prob = calloc(1, sizeof(float));
         *crossover_prob = 0.8;
@@ -98,8 +98,8 @@ int test_init_evolve_monitor()
         m = init_evolve_monitor(chromo_sz, max_gen, NULL);
 
         mu_assert(
-                m->best_chromosomes->max == max_gen,
-                "Darray size of best_chromosomes is invalid!"
+                m->best_individuals->max == max_gen,
+                "Darray size of best_individuals is invalid!"
         );
         mu_assert(
                 m->best_scores->max == max_gen,
@@ -138,8 +138,8 @@ int test_record_generation_stats()
                 5 /* max_gen */
         );
         m = init_evolve_monitor(chromo_sz, 5, NULL);
-        gen_init_chromosomes(&p, randstr);
-        evaluate_chromosomes(fitness_function, &p);
+        gen_init_individuals(&p, randstr);
+        evaluate_individuals(fitness_function, &p);
 
         /* record generation stats */
         record_generation_stats(p, m, float_cmp_asc);
@@ -149,8 +149,8 @@ int test_record_generation_stats()
         mu_assert(best_score != 0, "Failed to record best score!");
 
         mu_assert(
-                m->best_chromosomes->end != 0,
-                "best_chromosomes length should not be 0!"
+                m->best_individuals->end != 0,
+                "best_individuals length should not be 0!"
         );
         mu_assert(
                 m->best_scores->end != 0,
@@ -161,7 +161,7 @@ int test_record_generation_stats()
                 "generations length should not be 0!"
         );
 
-        mu_assert(m->best_chromosomes->max == 5, "Chromosomes array is not 5!");
+        mu_assert(m->best_individuals->max == 5, "individuals array is not 5!");
         mu_assert(m->best_scores->max == 5, "Scores array is not 5!");
         mu_assert(m->generations->max == 5, "Generations array is not 5!");
 

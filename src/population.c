@@ -10,7 +10,7 @@
 
 
 struct population *init_population(
-        int chromo_length,
+        size_t individual_size,
         float goal,
         int max_pop,
         int max_gen
@@ -19,16 +19,14 @@ struct population *init_population(
         struct population *p = malloc(sizeof(struct population));
 
         /* checks */
-        check(chromo_length > 0, "Chromosome length has to be > 0");
         check((max_pop % 2) == 0, "Max population has to be even!");
         check(max_gen > 0, "Max generation has to be bigger than 0!");
 
-        /* chromosomes */
-        p->chromosomes = darray_create(
-                sizeof(char) * (chromo_length + 1),
+        /* individuals */
+        p->individuals = darray_create(
+                individual_size,
                 max_pop
         );
-        p->chromosome_length = chromo_length;
         p->scores = darray_create(sizeof(float), max_pop);
         p->total_score = 0.0;
 
@@ -52,8 +50,8 @@ void destroy_population(struct population **p)
 {
         if ((*p)) {
 
-                if ((*p)->chromosomes){
-                        darray_clear_destroy((*p)->chromosomes);
+                if ((*p)->individuals){
+                        darray_clear_destroy((*p)->individuals);
                 }
 
                 if ((*p)->scores) {
@@ -70,14 +68,16 @@ void extend_max_generation(struct population *p, int extension_size)
         p->max_generation += extension_size;
 }
 
-void gen_init_chromosomes(struct population **p, char *(*mutator)(int))
+void gen_init_individuals(struct population **p, char *(*mutator)(int))
 {
         int i = 0;
-        int chromo_length = (*p)->chromosome_length;
+        size_t individual_sz = (*p)->individuals->element_size;
 
-        /* fill initial random chromosome */
+        check(individual_sz != 0, "Individual size should be > 0!");
+
+        /* fill initial random individual */
         for (i = 0; i < (*p)->max_population; i++) {
-                darray_set((*p)->chromosomes, i, (*mutator)(chromo_length));
+                darray_set((*p)->individuals, i, (*mutator)(individual_sz));
                 (*p)->population++;
         }
 
@@ -85,25 +85,25 @@ error:
         return;
 }
 
-int evaluate_chromosomes(float (eval_func)(char *), struct population **p)
+int evaluate_individuals(float (eval_func)(char *), struct population **p)
 {
         int i = 0;
         float *goal = &(*p)->goal;
         int goal_reached = 0;
         float *old_score;
         float *score;
-        char *chromosome;
+        char *individual;
         float epsilon = 0.001;
 
         for (i = 0; i < (*p)->max_population; i++) {
-                /* obtain and evaluate chromosome from population */
-                chromosome = darray_get((*p)->chromosomes, i);
+                /* obtain and evaluate individual from population */
+                individual = darray_get((*p)->individuals, i);
                 score = malloc(sizeof(float));
-                *score = (eval_func)(chromosome);
+                *score = (eval_func)(individual);
 
-                /* check goal is reached with the current chromosome */
+                /* check goal is reached with the current individual */
                 if (float_epsilon_cmp_asc(score, goal, epsilon) == 0) {
-                        (*p)->solution = chromosome;
+                        (*p)->solution = individual;
                         goal_reached = 1;
                 }
 
@@ -146,16 +146,16 @@ void normalize_fitness_values(struct population **p)
        }
 }
 
-void print_chromosome(struct population *p, int index)
+void print_individual(struct population *p, int index)
 {
-        char *chromo = (char *) darray_get(p->chromosomes, index);
+        char *chromo = (char *) darray_get(p->individuals, index);
         float score = *(float *) darray_get(p->scores, index);
 
-        printf("chromosome [%s]\n", chromo);
-        printf("chromosome score: %f\n\n", score);
+        printf("individual [%s]\n", chromo);
+        printf("individual score: %f\n\n", score);
 }
 
-void print_chromosomes(struct population *p)
+void print_individuals(struct population *p)
 {
         int i = 0;
         float score = 0.0;
@@ -163,14 +163,14 @@ void print_chromosomes(struct population *p)
         float total_score = (double) p->total_score;
 
         for (i = 0; i < p->population; i++) {
-                chromo = (char *) darray_get(p->chromosomes, i);
+                chromo = (char *) darray_get(p->individuals, i);
                 score = *(float *) darray_get(p->scores, i);
 
-                printf("chromosome [%s]\n", chromo);
-                printf( "chromosome score: [%f]\n\n", score);
+                printf("individual [%s]\n", chromo);
+                printf( "individual score: [%f]\n\n", score);
         }
 
-        printf("chromosome total_score: %f\n\n", total_score);
+        printf("individual total_score: %f\n\n", total_score);
 }
 
 void print_population(struct population *p)
@@ -181,7 +181,7 @@ void print_population(struct population *p)
         printf("population[generation]: %d\n", p->generation);
         printf("population[max_generation]: %d\n\n", p->max_generation);
 
-        print_chromosomes(p);
+        print_individuals(p);
 }
 
 static void swap_darray_elem(struct darray *arr, int index_1, int index_2)
@@ -200,7 +200,7 @@ void insertion_sort_population(
 {
         int j;
         size_t score_sz = p->scores->element_size;
-        size_t chromo_sz = p->chromosomes->element_size;
+        size_t chromo_sz = p->individuals->element_size;
         void *score;
         void *chromo;
 
@@ -208,15 +208,15 @@ void insertion_sort_population(
         for (j = left + 1; j <= right; j++) {
                 int i = j - 1;
 
-                /* obtain chromosome and score */
-                chromo = darray_new(p->chromosomes);
+                /* obtain individual and score */
+                chromo = darray_new(p->individuals);
                 score = darray_new(p->scores);
 
-                memcpy(chromo, darray_get(p->chromosomes, j), chromo_sz);
+                memcpy(chromo, darray_get(p->individuals, j), chromo_sz);
                 memcpy(score, darray_get(p->scores, j), score_sz);
 
                 /* very important! */
-                free(darray_get(p->chromosomes, j));
+                free(darray_get(p->individuals, j));
                 free(darray_get(p->scores, j));
 
                 while (
@@ -226,14 +226,14 @@ void insertion_sort_population(
                                 score
                         ) > 0
                 ) {
-                        /* chromosome */
+                        /* individual */
                         darray_set(
-                                p->chromosomes,
+                                p->individuals,
                                 (i + 1),
-                                darray_get(p->chromosomes, i)
+                                darray_get(p->individuals, i)
                         );
 
-                        /* chromosome score */
+                        /* individual score */
                         darray_set(
                                 p->scores,
                                 (i + 1),
@@ -243,8 +243,8 @@ void insertion_sort_population(
                         i--;
                 }
 
-                /* chromosome and score */
-                darray_set(p->chromosomes, (i + 1), chromo);
+                /* individual and score */
+                darray_set(p->individuals, (i + 1), chromo);
                 darray_set(p->scores, (i + 1), score);
         }
 }
@@ -265,7 +265,7 @@ int partition_population(
 
 
         /* move pivot elements to the end of the array */
-        swap_darray_elem(p->chromosomes, pivot_index, right);
+        swap_darray_elem(p->individuals, pivot_index, right);
         swap_darray_elem(p->scores, pivot_index, right);
 
         /* values <= pivot, moved to front of pivot
@@ -274,14 +274,14 @@ int partition_population(
         for (i = left; i < right; i++) {
                 if (cmp(darray_get(p->scores, i), pivot) <= 0) {
 
-                        swap_darray_elem(p->chromosomes, i, store);
+                        swap_darray_elem(p->individuals, i, store);
                         swap_darray_elem(p->scores, i, store);
 
                         store++;
                 }
         }
 
-        swap_darray_elem(p->chromosomes, right, store);
+        swap_darray_elem(p->individuals, right, store);
         swap_darray_elem(p->scores, right, store);
 
         return store;
@@ -320,7 +320,7 @@ void sort_population(
         int (*cmp)(const void *, const void *)
 )
 {
-        quick_sort_population(p, 0, p->chromosomes->end, cmp);
+        quick_sort_population(p, 0, p->individuals->end, cmp);
 }
 
 void populate(
@@ -344,19 +344,19 @@ void populate(
         int c_1_len = 0;
         int c_2_len = 0;
 
-        struct darray *old_chromos = (*p)->chromosomes;
+        struct darray *old_chromos = (*p)->individuals;
         int population = (*p)->population;
 
         /* initialize new population */
         struct population *new_p = init_population(
-                (*p)->chromosome_length,
+                (*p)->individuals->element_size,
                 (*p)->goal,
                 (*p)->max_population,
                 (*p)->max_generation
         );
         new_p->generation = (*p)->generation;
         new_p->solution = (*p)->solution;
-        struct darray *new_chromos = new_p->chromosomes;
+        struct darray *new_chromos = new_p->individuals;
 
         /* crossover and mutate */
         for (i = 0; i < population; i += 2) {

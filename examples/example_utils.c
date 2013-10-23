@@ -19,7 +19,7 @@ void print_evolve_results(struct population *p, float (*fitness_func)(char *))
         }
 }
 
-void print_top_chromosomes(struct evolve_monitor *m, int top)
+void print_top_individuals(struct evolve_monitor *m, int top)
 {
         int i = 0;
 
@@ -27,13 +27,13 @@ void print_top_chromosomes(struct evolve_monitor *m, int top)
         printf("SORTING RESULTS!\n");
         sort_generation_stats(m, float_cmp_desc);
 
-        /* print top chromosomes */
+        /* print top individuals */
         if (m->top >= top) {
-                printf("\nTOP %d CHROMOSOMES:\n", top);
+                printf("\nTOP %d INDIVIDUALS:\n", top);
                 for (i = 0; i < top; i++) {
                         printf(
-                                "chromosome: %s\n",
-                                (char *) darray_get(m->best_chromosomes, i)
+                                "individual: %s\n",
+                                (char *) darray_get(m->best_individuals, i)
                         );
                         printf(
                                 "score: %.2f\n",

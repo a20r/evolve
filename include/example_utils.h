@@ -5,6 +5,6 @@
 #include "evolve_monitor.h"
 
 void print_evolve_results(struct population *p, float (*fitness_func)(char *));
-void print_top_chromosomes(struct evolve_monitor *m, int top);
+void print_top_individuals(struct evolve_monitor *m, int top);
 
 #endif

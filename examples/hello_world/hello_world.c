@@ -20,15 +20,15 @@
 #define TARGET_SOLUTION "hello world!"
 
 
-static float fitness_function(char *chromosome)
+static float fitness_function(char *individual)
 {
         char *target = TARGET_SOLUTION;
-        float max_score = 122 * strlen(chromosome);
+        float max_score = 122 * strlen(individual);
         float total = 0;
         int i = 0;
 
-        for (i = 0; i <= (int) strlen(chromosome); i++) {
-                total += fabsf(roundf(target[i] - chromosome[i]));
+        for (i = 0; i <= (int) strlen(individual); i++) {
+                total += fabsf(roundf(target[i] - individual[i]));
         }
 
         return max_score - total;
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
                 max_gen  /* max_gen */
         );
         m = init_evolve_monitor(
-                p->chromosomes->element_size,  /* chromosome size */
+                p->individuals->element_size,  /* individual size */
                 5,
                 NULL
         );
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
         printf("RUNNING GA!\n");
         printf("Crossover Probability [%.4f]!\n", *p_c);
         printf("Mutation Probability [%.4f]!\n", *p_m);
-        gen_init_chromosomes(&p, randstr);
+        gen_init_individuals(&p, randstr);
         run_evolution(
                 &p,
                 fitness_function,
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
 
         /* print results */
         print_evolve_results(p, fitness_function);
-        print_top_chromosomes(m, 5);
+        print_top_individuals(m, 5);
 
         /* clean up */
         destroy_evolve_monitor(&m);
