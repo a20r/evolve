@@ -75,7 +75,7 @@ static void restore_stdout()
 static void setup(int max_pop, int max_gen)
 {
         p = init_population(
-                (int) strlen("hello world!"),  /* param */
+                (int) strlen("hello world!"),  /* chromo_length */
                 0.0,  /* goal */
                 max_pop,  /* max_pop */
                 max_gen /* max_gen */
@@ -85,7 +85,7 @@ static void setup(int max_pop, int max_gen)
 static void print_setup(int max_pop, int max_gen)
 {
         p = init_population(
-                (int) strlen("hello world!"),  /* param */
+                (int) strlen("hello world!"),  /* chromo_length */
                 0.0,  /* goal */
                 max_pop,  /* max_pop */
                 max_gen /* max_gen */
@@ -137,7 +137,7 @@ int test_init_population()
         mu_assert(p->total_score == 0.0, "Sum of scores should be 0.0!");
 
         /* fitness details */
-        mu_assert(p->parameters == 12, "Parameters should be 12!");
+        mu_assert(p->chromosome_length == 12, "Chromo length should be 12!");
         mu_assert(p->goal == 0.0, "Goal should be 0.0!");
 
         /* population details */
@@ -208,8 +208,12 @@ int test_evaluate_chromosomes()
         gen_init_chromosomes(&p, randstr);
 
         /* replace last chromosome to match the solution */
-        solution = malloc(sizeof(char *) * p->parameters);
-        memcpy(solution, chromosome_solution, sizeof(char *) * p->parameters);
+        solution = malloc(sizeof(char *) * p->chromosome_length);
+        memcpy(
+                solution,
+                chromosome_solution,
+                sizeof(char *) * p->chromosome_length
+        );
         free(darray_get(p->chromosomes, 4));  /* MUST FREE BEFORE REPLACING! */
         darray_set(p->chromosomes, 4, solution);
 

@@ -15,7 +15,7 @@ static struct population *create_empty_population(struct population *p)
 {
         struct population *new_p;
         new_p = init_population(
-                p->parameters,
+                p->chromosome_length,
                 p->goal,
                 p->max_population,
                 p->max_generation

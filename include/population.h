@@ -9,11 +9,11 @@
 struct population {
         /* chromosomes */
         struct darray *chromosomes;
+        int chromosome_length;
         struct darray *scores;
         float total_score;
 
         /* fitness details */
-        int parameters;
         float goal;
 
         /* evolution details */
@@ -26,7 +26,7 @@ struct population {
 
 /* FUNCTIONS */
 struct population *init_population(
-        int param,
+        int chromo_length,
         float goal,
         int max_pop,
         int max_gen

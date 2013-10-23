@@ -10,7 +10,7 @@
 
 
 struct population *init_population(
-        int param,
+        int chromo_length,
         float goal,
         int max_pop,
         int max_gen
@@ -19,12 +19,16 @@ struct population *init_population(
         struct population *p = malloc(sizeof(struct population));
 
         /* checks */
-        check(param > 0, "Parameters has to be bigger than 0!");
+        check(chromo_length > 0, "Chromosome length has to be > 0");
         check((max_pop % 2) == 0, "Max population has to be even!");
         check(max_gen > 0, "Max generation has to be bigger than 0!");
 
         /* chromosomes */
-        p->chromosomes = darray_create(sizeof(char) * (param + 1), max_pop);
+        p->chromosomes = darray_create(
+                sizeof(char) * (chromo_length + 1),
+                max_pop
+        );
+        p->chromosome_length = chromo_length;
         p->scores = darray_create(sizeof(float), max_pop);
         p->total_score = 0.0;
 
@@ -36,7 +40,6 @@ struct population *init_population(
         p->solution = NULL;
 
         /* fitness details */
-        p->parameters = param;
         p->goal = goal;
 
         return p;
@@ -70,13 +73,11 @@ void extend_max_generation(struct population *p, int extension_size)
 void gen_init_chromosomes(struct population **p, char *(*mutator)(int))
 {
         int i = 0;
-        int param = (*p)->parameters;
-
-        check(param != 0, "Parameters should be greater than 0!");
+        int chromo_length = (*p)->chromosome_length;
 
         /* fill initial random chromosome */
         for (i = 0; i < (*p)->max_population; i++) {
-                darray_set((*p)->chromosomes, i, (*mutator)(param));
+                darray_set((*p)->chromosomes, i, (*mutator)(chromo_length));
                 (*p)->population++;
         }
 
@@ -174,7 +175,6 @@ void print_chromosomes(struct population *p)
 
 void print_population(struct population *p)
 {
-        printf("population[paramters]: %d\n", p->parameters);
         printf("population[goal]: %f\n", p->goal);
         printf("population[population]: %d\n", p->population);
         printf("population[max_population]: %d\n", p->max_population);
@@ -349,7 +349,7 @@ void populate(
 
         /* initialize new population */
         struct population *new_p = init_population(
-                (*p)->parameters,
+                (*p)->chromosome_length,
                 (*p)->goal,
                 (*p)->max_population,
                 (*p)->max_generation
