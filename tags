@@ -4,6 +4,7 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ADD	include/gp/function_set.h	/^    ADD,$/;"	e	enum:default_function_set
 ALPHA	src/ga/mutation.c	/^char ALPHA[52] = {$/;"	v
 ALPHANUM	src/ga/mutation.c	/^char ALPHANUM[62] = {$/;"	v
 ARCHITECTURE_ID	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	276;"	d	file:
@@ -20,18 +21,24 @@ ARCHITECTURE_ID	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	276;"	d	file:
 ARCHITECTURE_ID	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	280;"	d	file:
 CMAKE_BINARY_DIR	Makefile	/^CMAKE_BINARY_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
 CMAKE_BINARY_DIR	examples/Makefile	/^CMAKE_BINARY_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
+CMAKE_BINARY_DIR	examples/csp/Makefile	/^CMAKE_BINARY_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
+CMAKE_BINARY_DIR	examples/hello_world/Makefile	/^CMAKE_BINARY_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
 CMAKE_BINARY_DIR	src/Makefile	/^CMAKE_BINARY_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
 CMAKE_BINARY_DIR	src/ga/Makefile	/^CMAKE_BINARY_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
 CMAKE_BINARY_DIR	tests/Makefile	/^CMAKE_BINARY_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
 CMAKE_BINARY_DIR	tests/ga/Makefile	/^CMAKE_BINARY_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
 CMAKE_COMMAND	Makefile	/^CMAKE_COMMAND = \/usr\/bin\/cmake$/;"	m
 CMAKE_COMMAND	examples/Makefile	/^CMAKE_COMMAND = \/usr\/bin\/cmake$/;"	m
+CMAKE_COMMAND	examples/csp/Makefile	/^CMAKE_COMMAND = \/usr\/bin\/cmake$/;"	m
+CMAKE_COMMAND	examples/hello_world/Makefile	/^CMAKE_COMMAND = \/usr\/bin\/cmake$/;"	m
 CMAKE_COMMAND	src/Makefile	/^CMAKE_COMMAND = \/usr\/bin\/cmake$/;"	m
 CMAKE_COMMAND	src/ga/Makefile	/^CMAKE_COMMAND = \/usr\/bin\/cmake$/;"	m
 CMAKE_COMMAND	tests/Makefile	/^CMAKE_COMMAND = \/usr\/bin\/cmake$/;"	m
 CMAKE_COMMAND	tests/ga/Makefile	/^CMAKE_COMMAND = \/usr\/bin\/cmake$/;"	m
 CMAKE_SOURCE_DIR	Makefile	/^CMAKE_SOURCE_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
 CMAKE_SOURCE_DIR	examples/Makefile	/^CMAKE_SOURCE_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
+CMAKE_SOURCE_DIR	examples/csp/Makefile	/^CMAKE_SOURCE_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
+CMAKE_SOURCE_DIR	examples/hello_world/Makefile	/^CMAKE_SOURCE_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
 CMAKE_SOURCE_DIR	src/Makefile	/^CMAKE_SOURCE_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
 CMAKE_SOURCE_DIR	src/ga/Makefile	/^CMAKE_SOURCE_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
 CMAKE_SOURCE_DIR	tests/Makefile	/^CMAKE_SOURCE_DIR = \/home\/chutsu\/Dropbox\/proj\/toys\/evolve$/;"	m
@@ -171,15 +178,20 @@ COMPILER_VERSION_TWEAK	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	132;"	d	file:
 COMPILER_VERSION_TWEAK	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	20;"	d	file:
 COMPILER_VERSION_TWEAK	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	131;"	d	file:
 COMPILER_VERSION_TWEAK	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	22;"	d	file:
+CONSTANT	include/gp/terminal_set.h	/^    CONSTANT$/;"	e	enum:default_terminal_set
+COS	include/gp/function_set.h	/^    COS,$/;"	e	enum:default_function_set
 DEC	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	296;"	d	file:
 DEC	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	284;"	d	file:
 DEFAULT_PIVOT	include/ga/crossover.h	7;"	d
-DEFAULT_SELECT	include/ga/selection.h	7;"	d
+DEFAULT_SELECT	include/selection.h	7;"	d
+DIV	include/gp/function_set.h	/^    DIV,$/;"	e	enum:default_function_set
 DNA	src/ga/mutation.c	/^char DNA[4] = {$/;"	v
 DirectoryOfThisScript	.ycm_extra_conf.py	/^def DirectoryOfThisScript():$/;"	f
 ENDC	scripts/unittest_runner.py	/^    ENDC = '\\033[0m'$/;"	v	class:TermColors
 EQUALS	Makefile	/^EQUALS = =$/;"	m
 EQUALS	examples/Makefile	/^EQUALS = =$/;"	m
+EQUALS	examples/csp/Makefile	/^EQUALS = =$/;"	m
+EQUALS	examples/hello_world/Makefile	/^EQUALS = =$/;"	m
 EQUALS	src/Makefile	/^EQUALS = =$/;"	m
 EQUALS	src/ga/Makefile	/^EQUALS = =$/;"	m
 EQUALS	tests/Makefile	/^EQUALS = =$/;"	m
@@ -190,12 +202,14 @@ HEADER	scripts/unittest_runner.py	/^    HEADER = '\\033[95m'$/;"	v	class:TermCol
 HEX	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	307;"	d	file:
 HEX	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	295;"	d	file:
 ID_VOID_MAIN	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	9;"	d	file:
-LOOP	tests/ga/mutation_tests.c	10;"	d	file:
-MAXN	examples/csp.c	21;"	d	file:
+LOOP	tests/ga/mutation_tests.c	11;"	d	file:
+MAXN	examples/csp/csp.c	23;"	d	file:
+MOD	include/gp/function_set.h	/^    MOD,$/;"	e	enum:default_function_set
+MUL	include/gp/function_set.h	/^    MUL,$/;"	e	enum:default_function_set
 MakeRelativePathsInFlagsAbsolute	.ycm_extra_conf.py	/^def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):$/;"	f
 NUMERIC	src/ga/mutation.c	/^char NUMERIC[10] = {$/;"	v
-NUM_LBOUND	examples/csp.c	22;"	d	file:
-NUM_UBOUND	examples/csp.c	23;"	d	file:
+NUM_LBOUND	examples/csp/csp.c	24;"	d	file:
+NUM_UBOUND	examples/csp/csp.c	25;"	d	file:
 OKBLUE	scripts/unittest_runner.py	/^    OKBLUE = '\\033[94m'$/;"	v	class:TermColors
 OKGREEN	scripts/unittest_runner.py	/^    OKGREEN = '\\033[92m'$/;"	v	class:TermColors
 PLATFORM_ID	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	187;"	d	file:
@@ -250,51 +264,71 @@ PLATFORM_ID	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	244;"	d	file:
 PLATFORM_ID	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	247;"	d	file:
 PLATFORM_ID	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	250;"	d	file:
 PLATFORM_ID	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	253;"	d	file:
+POW	include/gp/function_set.h	/^    POW,$/;"	e	enum:default_function_set
 QSORT_MIN_SIZE	include/evolve_monitor.h	12;"	d
 QSORT_MIN_SIZE	include/population.h	6;"	d
 RM	Makefile	/^RM = \/usr\/bin\/cmake -E remove -f$/;"	m
 RM	examples/Makefile	/^RM = \/usr\/bin\/cmake -E remove -f$/;"	m
+RM	examples/csp/Makefile	/^RM = \/usr\/bin\/cmake -E remove -f$/;"	m
+RM	examples/hello_world/Makefile	/^RM = \/usr\/bin\/cmake -E remove -f$/;"	m
 RM	src/Makefile	/^RM = \/usr\/bin\/cmake -E remove -f$/;"	m
 RM	src/ga/Makefile	/^RM = \/usr\/bin\/cmake -E remove -f$/;"	m
 RM	tests/Makefile	/^RM = \/usr\/bin\/cmake -E remove -f$/;"	m
 RM	tests/ga/Makefile	/^RM = \/usr\/bin\/cmake -E remove -f$/;"	m
 SHELL	Makefile	/^SHELL = \/bin\/sh$/;"	m
 SHELL	examples/Makefile	/^SHELL = \/bin\/sh$/;"	m
+SHELL	examples/csp/Makefile	/^SHELL = \/bin\/sh$/;"	m
+SHELL	examples/hello_world/Makefile	/^SHELL = \/bin\/sh$/;"	m
 SHELL	src/Makefile	/^SHELL = \/bin\/sh$/;"	m
 SHELL	src/ga/Makefile	/^SHELL = \/bin\/sh$/;"	m
 SHELL	tests/Makefile	/^SHELL = \/bin\/sh$/;"	m
 SHELL	tests/ga/Makefile	/^SHELL = \/bin\/sh$/;"	m
+SIN	include/gp/function_set.h	/^    SIN,$/;"	e	enum:default_function_set
+SQRT	include/gp/function_set.h	/^    SQRT,$/;"	e	enum:default_function_set
+SUB	include/gp/function_set.h	/^    SUB,$/;"	e	enum:default_function_set
 SUFFIXES	Makefile	/^SUFFIXES =$/;"	m
 SUFFIXES	examples/Makefile	/^SUFFIXES =$/;"	m
+SUFFIXES	examples/csp/Makefile	/^SUFFIXES =$/;"	m
+SUFFIXES	examples/hello_world/Makefile	/^SUFFIXES =$/;"	m
 SUFFIXES	src/Makefile	/^SUFFIXES =$/;"	m
 SUFFIXES	src/ga/Makefile	/^SUFFIXES =$/;"	m
 SUFFIXES	tests/Makefile	/^SUFFIXES =$/;"	m
 SUFFIXES	tests/ga/Makefile	/^SUFFIXES =$/;"	m
-TARGET_SOLUTION	examples/hello_world.c	18;"	d	file:
-TEST_ALPHANUM	tests/ga/mutation_tests.c	12;"	d	file:
-TEST_DNA	tests/ga/mutation_tests.c	14;"	d	file:
-TEST_NUM	tests/ga/mutation_tests.c	13;"	d	file:
-TEST_OUTPUT	tests/ga/population_tests.c	21;"	d	file:
-TEST_SOLUTION	tests/ga/evolve_monitor_tests.c	19;"	d	file:
-TEST_STR	tests/ga/mutation_tests.c	11;"	d	file:
+TAN	include/gp/function_set.h	/^    TAN,$/;"	e	enum:default_function_set
+TARGET_SOLUTION	examples/hello_world/hello_world.c	20;"	d	file:
+TARGET_SOLUTION	tests/evolve_tests.c	18;"	d	file:
+TEST_ALPHANUM	tests/ga/mutation_tests.c	13;"	d	file:
+TEST_CONFIG_FILE	tests/evolve_config_tests.c	10;"	d	file:
+TEST_DNA	tests/ga/mutation_tests.c	15;"	d	file:
+TEST_NUM	tests/ga/mutation_tests.c	14;"	d	file:
+TEST_OUTPUT	tests/population_tests.c	21;"	d	file:
+TEST_SOLUTION	tests/evolve_monitor_tests.c	19;"	d	file:
+TEST_STR	tests/ga/mutation_tests.c	12;"	d	file:
 TermColors	scripts/unittest_runner.py	/^class TermColors:$/;"	c
+VARIABLE	include/gp/terminal_set.h	/^    VARIABLE,$/;"	e	enum:default_terminal_set
 WARNING	scripts/unittest_runner.py	/^    WARNING = '\\033[93m'$/;"	v	class:TermColors
-_CROSSOVER_H_	include/ga/crossover.h	2;"	d
+_EVOLVE_CONFIG_H_	include/evolve_config.h	2;"	d
 _EVOLVE_H_	include/evolve.h	2;"	d
 _EVOLVE_MONITOR_H_	include/evolve_monitor.h	2;"	d
-_MUTATE_H_	include/ga/mutation.h	2;"	d
+_EXAMPLE_UTILS_H_	include/example_utils.h	2;"	d
+_FUNCTION_SET_H_	include/gp/function_set.h	2;"	d
+_GA_CROSSOVER_H_	include/ga/crossover.h	2;"	d
+_GA_MUTATE_H_	include/ga/mutation.h	2;"	d
+_GA_SELECTION_H_	include/selection.h	2;"	d
+_GP_INTIALIZE_H_	include/gp/initialize.h	2;"	d
 _POPULATION_H_	include/population.h	2;"	d
-_SELECTION_H_	include/ga/selection.h	2;"	d
+_PROGRAM_PARSER_H_	include/gp/program_parser.h	2;"	d
+_TERMINAL_SET_H_	include/gp/terminal_set.h	2;"	d
 _TEST_UTILS_H_	include/test_utils.h	2;"	d
-analyze_exec_times	examples/experiment_analyzer.py	/^def analyze_exec_times(exec_times, file_names):$/;"	f
-analyze_log_file	examples/experiment_analyzer.py	/^def analyze_log_file(data_dir):$/;"	f
-analyze_log_files	examples/experiment_analyzer.py	/^def analyze_log_files(data_dir):$/;"	f
-assert_sorted_array	tests/ga/test_utils.c	/^int assert_sorted_array($/;"	f
-assert_sorted_gstats	tests/ga/test_utils.c	/^int assert_sorted_gstats($/;"	f
-assert_sorted_population	tests/ga/test_utils.c	/^int assert_sorted_population($/;"	f
+analyze_exec_times	scripts/experiment_analyzer.py	/^def analyze_exec_times(exec_times, file_names):$/;"	f
+analyze_log_file	scripts/experiment_analyzer.py	/^def analyze_log_file(data_dir):$/;"	f
+analyze_log_files	scripts/experiment_analyzer.py	/^def analyze_log_files(data_dir):$/;"	f
+assert_sorted_array	tests/test_utils.c	/^int assert_sorted_array($/;"	f
+assert_sorted_gstats	tests/test_utils.c	/^int assert_sorted_gstats($/;"	f
+assert_sorted_population	tests/test_utils.c	/^int assert_sorted_population($/;"	f
 best_chromosomes	include/evolve_monitor.h	/^        struct darray *best_chromosomes;$/;"	m	struct:evolve_monitor	typeref:struct:evolve_monitor::darray
 best_scores	include/evolve_monitor.h	/^        struct darray *best_scores;$/;"	m	struct:evolve_monitor	typeref:struct:evolve_monitor::darray
-binomial_coefficient	examples/csp.c	/^static int binomial_coefficient(int n, int m)$/;"	f	file:
+binomial_coefficient	examples/csp/csp.c	/^static int binomial_coefficient(int n, int m)$/;"	f	file:
 c_1_orig	tests/ga/crossover_tests.c	/^char *c_1_orig = "123456789\\0";$/;"	v
 c_2_orig	tests/ga/crossover_tests.c	/^char *c_2_orig = "ABCDEFGHI\\0";$/;"	v
 c_pair	tests/ga/crossover_tests.c	/^struct chromosome_pair *c_pair;$/;"	v	typeref:struct:chromosome_pair
@@ -303,21 +337,27 @@ chromo_1	tests/ga/crossover_tests.c	/^void *chromo_1;$/;"	v
 chromo_2	tests/ga/crossover_tests.c	/^void *chromo_2;$/;"	v
 chromosomes	include/population.h	/^        struct darray *chromosomes;$/;"	m	struct:population	typeref:struct:population::darray
 compilation_database_folder	.ycm_extra_conf.py	/^compilation_database_folder = ''$/;"	v
+config	tests/evolve_config_tests.c	/^struct evolve_config *config;$/;"	v	typeref:struct:evolve_config
+config_create	src/evolve_config.c	/^static struct evolve_config *config_create()$/;"	f	file:
+config_destroy	src/evolve_config.c	/^void config_destroy(struct evolve_config *c)$/;"	f
 convergence_rate	include/evolve_monitor.h	/^        float convergence_rate;$/;"	m	struct:evolve_monitor
 convergence_rates	include/evolve_monitor.h	/^        struct darray *convergence_rates;$/;"	m	struct:evolve_monitor	typeref:struct:evolve_monitor::darray
-create_empty_population	src/ga/selection.c	/^static struct population *create_empty_population(struct population *p)$/;"	f	file:
+create_empty_population	src/selection.c	/^static struct population *create_empty_population(struct population *p)$/;"	f	file:
+crossover	include/evolve_config.h	/^    struct crossover_settings *crossover;$/;"	m	struct:evolve_config	typeref:struct:evolve_config::crossover_settings
 crossover	src/ga/crossover.c	/^void crossover($/;"	f
 crossover_func	include/evolve.h	/^        int (*crossover_func)(void **, void **, int);$/;"	m	struct:evolution_settings
-crossover_prob	examples/experiment_runner.py	/^    crossover_prob = [0.8, 0.6, 0.4, 0.2]$/;"	v
 crossover_prob	include/evolve.h	/^        float crossover_prob;$/;"	m	struct:evolution_settings
-crossover_prob	tests/ga/evolve_monitor_tests.c	/^float *crossover_prob;$/;"	v
-crossover_prob	tests/ga/evolve_tests.c	/^float *crossover_prob;$/;"	v
-data_dir	examples/experiment_analyzer.py	/^data_dir = "."$/;"	v
-data_dir	examples/experiment_runner.py	/^data_dir = "log_data"$/;"	v
-data_file_pattern	examples/experiment_analyzer.py	/^data_file_pattern = "^[a-zA-Z0-9_]*.dat$"$/;"	v
-data_fp	examples/experiment_runner.py	/^data_fp = "hello_world.dat"$/;"	v
+crossover_prob	scripts/experiment_runner.py	/^    crossover_prob = [0.8, 0.6, 0.4, 0.2]$/;"	v
+crossover_prob	tests/evolve_monitor_tests.c	/^float *crossover_prob;$/;"	v
+crossover_settings	include/evolve_config.h	/^struct crossover_settings$/;"	s
+data_dir	scripts/experiment_analyzer.py	/^data_dir = "."$/;"	v
+data_dir	scripts/experiment_runner.py	/^data_dir = "log_data"$/;"	v
+data_file_pattern	scripts/experiment_analyzer.py	/^data_file_pattern = "^[a-zA-Z0-9_]*.dat$"$/;"	v
+data_fp	scripts/experiment_runner.py	/^data_fp = "hello_world.dat"$/;"	v
 database	.ycm_extra_conf.py	/^  database = None$/;"	v
 database	.ycm_extra_conf.py	/^  database = ycm_core.CompilationDatabase( compilation_database_folder )$/;"	v
+default_function_set	include/gp/function_set.h	/^enum default_function_set$/;"	g
+default_terminal_set	include/gp/terminal_set.h	/^enum default_terminal_set$/;"	g
 destroy_evolve_monitor	src/evolve_monitor.c	/^void destroy_evolve_monitor(struct evolve_monitor **m)$/;"	f
 destroy_population	src/population.c	/^void destroy_population(struct population **p)$/;"	f
 error	scripts/unittest_runner.py	/^            error = True$/;"	v
@@ -325,17 +365,18 @@ error	scripts/unittest_runner.py	/^    error = False$/;"	v
 eval_func	include/evolve.h	/^        float (*eval_func)(char *);$/;"	m	struct:evolution_settings
 evaluate_chromosomes	src/population.c	/^int evaluate_chromosomes(float (eval_func)(char *), struct population **p)$/;"	f
 evolution_settings	include/evolve.h	/^struct evolution_settings$/;"	s
+evolve_config	include/evolve_config.h	/^struct evolve_config$/;"	s
 evolve_monitor	include/evolve_monitor.h	/^struct evolve_monitor$/;"	s
 extend_max_generation	src/population.c	/^void extend_max_generation(struct population *p, int extension_size)$/;"	f
 file_list	scripts/unittest_runner.py	/^    file_list = os.listdir(unittests_bin_dir)$/;"	v
 fill_leader_board	src/evolve_monitor.c	/^static int fill_leader_board($/;"	f	file:
 find_best_chromosome	src/evolve_monitor.c	/^static int find_best_chromosome($/;"	f	file:
-fitness_function	examples/csp.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
-fitness_function	examples/hello_world.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
-fitness_function	tests/ga/evolve_monitor_tests.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
-fitness_function	tests/ga/evolve_tests.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
-fitness_function	tests/ga/population_tests.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
-fitness_function	tests/ga/selection_tests.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
+fitness_function	examples/csp/csp.c	/^float fitness_function(char *chromosome)$/;"	f
+fitness_function	examples/hello_world/hello_world.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
+fitness_function	tests/evolve_monitor_tests.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
+fitness_function	tests/evolve_tests.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
+fitness_function	tests/population_tests.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
+fitness_function	tests/selection_tests.c	/^static float fitness_function(char *chromosome)$/;"	f	file:
 flags	.ycm_extra_conf.py	/^flags = [$/;"	v
 gen_init_chromosomes	src/population.c	/^void gen_init_chromosomes(struct population **p, char *(*mutator)(int))$/;"	f
 generation	include/evolve_monitor.h	/^        float generation;$/;"	m	struct:evolve_monitor
@@ -344,7 +385,9 @@ generations	include/evolve_monitor.h	/^        struct darray *generations;$/;"	m
 goal	include/population.h	/^        float goal;$/;"	m	struct:population
 goal_distance	include/evolve_monitor.h	/^        float goal_distance;$/;"	m	struct:evolve_monitor
 goal_distances	include/evolve_monitor.h	/^        struct darray *goal_distances;$/;"	m	struct:evolve_monitor	typeref:struct:evolve_monitor::darray
-hamming_dist	examples/csp.c	/^static float hamming_dist(char *s1, char *s2)$/;"	f	file:
+gp_default_function_factory	src/gp/function_set.c	/^struct ast *gp_default_function_factory(enum default_function_set func_type)$/;"	f
+hamming_dist	examples/csp/csp.c	/^static float hamming_dist(char *s1, char *s2)$/;"	f	file:
+index	include/evolve_config.h	/^    int index;$/;"	m	struct:crossover_settings
 info_arch	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	/^char const* info_arch = "INFO" ":" "arch[" ARCHITECTURE_ID "]";$/;"	v
 info_arch	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_arch = "INFO" ":" "arch[" ARCHITECTURE_ID "]";$/;"	v
 info_compiler	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	/^char const* info_compiler = "INFO" ":" "compiler[" COMPILER_ID "]";$/;"	v
@@ -355,61 +398,61 @@ info_version	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	/^char const info_version
 info_version	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_version[] = {$/;"	v
 init_evolve_monitor	src/evolve_monitor.c	/^struct evolve_monitor *init_evolve_monitor($/;"	f
 init_population	src/population.c	/^struct population *init_population($/;"	f
+init_tree_full	src/gp/initialize.c	/^struct ast *init_tree_full()$/;"	f
+init_tree_grow	src/gp/initialize.c	/^struct ast *init_tree_grow()$/;"	f
+init_tree_ramped_half_and_half	src/gp/initialize.c	/^struct ast *init_tree_ramped_half_and_half()$/;"	f
 insertion_sort_population	src/population.c	/^void insertion_sort_population($/;"	f
-insertion_sort_scores	examples/csp.c	/^static void insertion_sort_scores($/;"	f	file:
-k	examples/csp.c	/^int k = 5;  \/* number of elements *\/$/;"	v
+insertion_sort_scores	examples/csp/csp.c	/^static void insertion_sort_scores($/;"	f	file:
+k	examples/csp/csp.c	/^int k = 5;  \/* number of elements *\/$/;"	v
 keep_unittest_logs	scripts/unittest_runner.py	/^keep_unittest_logs = False$/;"	v
-len	examples/csp.c	/^int len = 20;  \/* length of each element *\/$/;"	v
+len	examples/csp/csp.c	/^int len = 20;  \/* length of each element *\/$/;"	v
 log_fp	include/evolve_monitor.h	/^        FILE *log_fp;$/;"	m	struct:evolve_monitor
 log_generation_stats	src/evolve_monitor.c	/^static void log_generation_stats($/;"	f	file:
 log_stats	include/evolve_monitor.h	/^        int log_stats;$/;"	m	struct:evolve_monitor
 m	include/evolve.h	/^        struct evolve_monitor *m;$/;"	m	struct:evolution_settings	typeref:struct:evolution_settings::evolve_monitor
-m	tests/ga/evolve_monitor_tests.c	/^struct evolve_monitor *m;$/;"	v	typeref:struct:evolve_monitor
-m	tests/ga/evolve_tests.c	/^struct evolve_monitor *m;$/;"	v	typeref:struct:evolve_monitor
-m	tests/ga/population_tests.c	/^struct evolve_monitor *m;$/;"	v	typeref:struct:evolve_monitor
+m	tests/evolve_monitor_tests.c	/^struct evolve_monitor *m;$/;"	v	typeref:struct:evolve_monitor
+m	tests/population_tests.c	/^struct evolve_monitor *m;$/;"	v	typeref:struct:evolve_monitor
 main	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	/^int main(int argc, char* argv[])$/;"	f
 main	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	/^void main() {}$/;"	f
 main	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^int main(int argc, char* argv[])$/;"	f
-main	examples/csp.c	/^int main(int argc, char *argv[])$/;"	f
-main	examples/hello_world.c	/^int main(int argc, char *argv[])$/;"	f
+main	examples/csp/csp.c	/^int main(int argc, char *argv[])$/;"	f
+main	examples/hello_world/hello_world.c	/^int main(int argc, char *argv[])$/;"	f
 main	tests/ga/crossover_tests.c	/^int main()$/;"	f
-main	tests/ga/evolve_monitor_tests.c	/^int main()$/;"	f
-main	tests/ga/evolve_tests.c	/^int main()$/;"	f
 main	tests/ga/mutation_tests.c	/^int main()$/;"	f
-main	tests/ga/population_tests.c	/^int main()$/;"	f
-main	tests/ga/selection_tests.c	/^int main()$/;"	f
 max_generation	include/population.h	/^        int max_generation;$/;"	m	struct:population
-max_pop	tests/ga/evolve_tests.c	/^int max_pop = 10;$/;"	v
-max_pop	tests/ga/population_tests.c	/^int max_pop = 10;$/;"	v
+max_pop	tests/population_tests.c	/^int max_pop = 10;$/;"	v
 max_population	include/population.h	/^        int max_population;$/;"	m	struct:population
-min_hd	examples/csp.c	/^float min_hd;$/;"	v
+min_hd	examples/csp/csp.c	/^float min_hd;$/;"	v
 mutate	src/ga/mutation.c	/^void mutate($/;"	f
 mutate_alphanum	src/ga/mutation.c	/^void mutate_alphanum(char **str)$/;"	f
 mutate_dna	src/ga/mutation.c	/^void mutate_dna(char **str)$/;"	f
 mutate_num	src/ga/mutation.c	/^void mutate_num(char **str)$/;"	f
-mutate_numstr	examples/csp.c	/^static void mutate_numstr(char **str)$/;"	f	file:
-mutate_prob	examples/csp.c	/^float *mutate_prob;$/;"	v
+mutate_numstr	examples/csp/csp.c	/^static void mutate_numstr(char **str)$/;"	f	file:
+mutate_prob	examples/csp/csp.c	/^float *mutate_prob;$/;"	v
 mutate_prob	include/evolve.h	/^        float *mutate_prob;$/;"	m	struct:evolution_settings
-mutate_prob	tests/ga/evolve_monitor_tests.c	/^float *mutate_prob;$/;"	v
-mutate_prob	tests/ga/evolve_tests.c	/^float *mutate_prob;$/;"	v
+mutate_prob	tests/evolve_monitor_tests.c	/^float *mutate_prob;$/;"	v
 mutate_str	src/ga/mutation.c	/^void mutate_str(char **str)$/;"	f
+mutation	include/evolve_config.h	/^    struct mutation_settings *mutation;$/;"	m	struct:evolve_config	typeref:struct:evolve_config::mutation_settings
 mutation_func	include/evolve.h	/^        void (*mutation_func)(char **);$/;"	m	struct:evolution_settings
-mutation_prob	examples/experiment_runner.py	/^    mutation_prob = [0.8, 0.6, 0.4, 0.2, 0.1, 0.01]$/;"	v
+mutation_prob	scripts/experiment_runner.py	/^    mutation_prob = [0.8, 0.6, 0.4, 0.2, 0.1, 0.01]$/;"	v
+mutation_settings	include/evolve_config.h	/^struct mutation_settings$/;"	s
 normalize_fitness_values	src/population.c	/^void normalize_fitness_values(struct population **p)$/;"	f
-obtain_convergence_equations	examples/experiment_analyzer.py	/^def obtain_convergence_equations(exec_time_summary):$/;"	f
+obtain_convergence_equations	scripts/experiment_analyzer.py	/^def obtain_convergence_equations(exec_time_summary):$/;"	f
 one_pt_crossover	src/ga/crossover.c	/^int one_pt_crossover(void **chromo_1, void **chromo_2, int index)$/;"	f
 orig_cwd	scripts/unittest_runner.py	/^    orig_cwd = os.getcwd()$/;"	v
-output	tests/ga/population_tests.c	/^int output;$/;"	v
+output	tests/population_tests.c	/^int output;$/;"	v
 p	include/evolve.h	/^        struct population **p;$/;"	m	struct:evolution_settings	typeref:struct:evolution_settings::population
-p	tests/ga/evolve_monitor_tests.c	/^struct population *p;$/;"	v	typeref:struct:population
-p	tests/ga/evolve_tests.c	/^struct population *p;$/;"	v	typeref:struct:population
-p	tests/ga/population_tests.c	/^struct population *p;$/;"	v	typeref:struct:population
-p	tests/ga/selection_tests.c	/^struct population *p;$/;"	v	typeref:struct:population
+p	tests/evolve_monitor_tests.c	/^struct population *p;$/;"	v	typeref:struct:population
+p	tests/population_tests.c	/^struct population *p;$/;"	v	typeref:struct:population
+p	tests/selection_tests.c	/^struct population *p;$/;"	v	typeref:struct:population
 parameters	include/population.h	/^        int parameters;$/;"	m	struct:population
+parse_config	src/evolve_config.c	/^struct evolve_config *parse_config(char *fp)$/;"	f
+parse_program	src/gp/program_parser.c	/^int parse_program(struct ast *tree)$/;"	f
 partition_population	src/population.c	/^int partition_population($/;"	f
 pivot_index	include/evolve.h	/^        int pivot_index;$/;"	m	struct:evolution_settings
-plot_scatter_graph	examples/experiment_analyzer.py	/^def plot_scatter_graph(title, x_axis, y_axis, x_label, y_label):$/;"	f
-plot_time_vs_generations	examples/experiment_analyzer.py	/^def plot_time_vs_generations():$/;"	f
+plot_scatter_graph	scripts/experiment_analyzer.py	/^def plot_scatter_graph(title, x_axis, y_axis, x_label, y_label):$/;"	f
+plot_time_vs_generations	scripts/experiment_analyzer.py	/^def plot_time_vs_generations():$/;"	f
+point	include/evolve_config.h	/^    int point;$/;"	m	struct:mutation_settings
 populate	src/population.c	/^void populate($/;"	f
 population	include/population.h	/^        int population;$/;"	m	struct:population
 population	include/population.h	/^struct population {$/;"	s
@@ -417,94 +460,107 @@ print_after_pivot	tests/ga/crossover_tests.c	/^void print_after_pivot()$/;"	f
 print_before_pivot	tests/ga/crossover_tests.c	/^void print_before_pivot()$/;"	f
 print_chromosome	src/population.c	/^void print_chromosome(struct population *p, int index)$/;"	f
 print_chromosomes	src/population.c	/^void print_chromosomes(struct population *p)$/;"	f
-print_evolve_results	examples/csp.c	/^static void print_evolve_results(struct population *p)$/;"	f	file:
-print_evolve_results	examples/hello_world.c	/^static void print_evolve_results(struct population *p)$/;"	f	file:
+print_evolve_results	examples/example_utils.c	/^void print_evolve_results(struct population *p, float (*fitness_func)(char *))$/;"	f
 print_generation_stats	src/evolve_monitor.c	/^void print_generation_stats(struct evolve_monitor *m)$/;"	f
 print_population	src/population.c	/^void print_population(struct population *p)$/;"	f
-print_setup	tests/ga/population_tests.c	/^static void print_setup(int max_pop, int max_gen)$/;"	f	file:
+print_setup	tests/population_tests.c	/^static void print_setup(int max_pop, int max_gen)$/;"	f	file:
 print_stdout	scripts/unittest_runner.py	/^def print_stdout(unittest_output_fp):$/;"	f
-print_top_chromosomes	examples/csp.c	/^static void print_top_chromosomes(struct evolve_monitor *m, int top)$/;"	f	file:
-print_top_chromosomes	examples/hello_world.c	/^static void print_top_chromosomes(struct evolve_monitor *m, int top)$/;"	f	file:
+print_top_chromosomes	examples/example_utils.c	/^void print_top_chromosomes(struct evolve_monitor *m, int top)$/;"	f
+probability	include/evolve_config.h	/^    float *probability;$/;"	m	struct:crossover_settings
+probability	include/evolve_config.h	/^    float *probability;$/;"	m	struct:mutation_settings
+program_traverse_cb	src/gp/program_parser.c	/^int program_traverse_cb(struct ast *node)$/;"	f
 quick_sort_population	src/population.c	/^void quick_sort_population($/;"	f
-randnumstr	examples/csp.c	/^static char *randnumstr(int length)$/;"	f	file:
-read_file	tests/ga/population_tests.c	/^static int read_file(char* fp)$/;"	f	file:
+randnumstr	examples/csp/csp.c	/^static char *randnumstr(int length)$/;"	f	file:
+read_config	src/evolve_config.c	/^static void read_config(char *fp)$/;"	f	file:
+read_file	src/evolve_config.c	/^static char *read_file(char *fp)$/;"	f	file:
+read_file	tests/population_tests.c	/^static int read_file(char* fp)$/;"	f	file:
 record_generation_stats	src/evolve_monitor.c	/^void record_generation_stats($/;"	f
-redirect_stdout	tests/ga/population_tests.c	/^static void redirect_stdout()$/;"	f	file:
-restore_stdout	tests/ga/population_tests.c	/^static void restore_stdout()$/;"	f	file:
+redirect_stdout	tests/population_tests.c	/^static void redirect_stdout()$/;"	f	file:
+restore_stdout	tests/population_tests.c	/^static void restore_stdout()$/;"	f	file:
 return_val	scripts/unittest_runner.py	/^            return_val = subprocess.check_call($/;"	v
 return_val	scripts/unittest_runner.py	/^    return_val = 0$/;"	v
-roulette_wheel_selection	src/ga/selection.c	/^void roulette_wheel_selection(struct population **p, int *select)$/;"	f
+roulette_wheel_selection	src/selection.c	/^void roulette_wheel_selection(struct population **p, int *select)$/;"	f
 run_evolution	src/evolve.c	/^int run_evolution($/;"	f
-run_ga	examples/experiment_runner.py	/^def run_ga(crossover_prob, mutation_prob):$/;"	f
-runs	examples/experiment_runner.py	/^runs = 1000$/;"	v
-save_stdout	tests/ga/population_tests.c	/^int save_stdout;$/;"	v
+run_ga	scripts/experiment_runner.py	/^def run_ga(crossover_prob, mutation_prob):$/;"	f
+runs	scripts/experiment_runner.py	/^runs = 1000$/;"	v
+save_stdout	tests/population_tests.c	/^int save_stdout;$/;"	v
 score	include/evolve_monitor.h	/^        float score;$/;"	m	struct:evolve_monitor
 scores	include/population.h	/^        struct darray *scores;$/;"	m	struct:population	typeref:struct:population::darray
-scrape_log_file	examples/experiment_analyzer.py	/^def scrape_log_file(log_file):$/;"	f
+scrape_log_file	scripts/experiment_analyzer.py	/^def scrape_log_file(log_file):$/;"	f
 select	include/evolve.h	/^        int *select;$/;"	m	struct:evolution_settings
+select	include/evolve_config.h	/^    int select;$/;"	m	struct:selection_settings
+selection	include/evolve_config.h	/^    struct selection_settings *selection;$/;"	m	struct:evolve_config	typeref:struct:evolve_config::selection_settings
 selection_func	include/evolve.h	/^        void (*selection_func)(struct population **, int *);$/;"	m	struct:evolution_settings
+selection_settings	include/evolve_config.h	/^struct selection_settings$/;"	s
 setup	tests/ga/crossover_tests.c	/^static void setup()$/;"	f	file:
-setup	tests/ga/population_tests.c	/^static void setup(int max_pop, int max_gen)$/;"	f	file:
-setup	tests/ga/selection_tests.c	/^static void setup()$/;"	f	file:
-setup_strings	examples/csp.c	/^static void setup_strings(int k, int len)$/;"	f	file:
-signal_handler	examples/csp.c	/^static void signal_handler(int signnum)$/;"	f	file:
+setup	tests/population_tests.c	/^static void setup(int max_pop, int max_gen)$/;"	f	file:
+setup	tests/selection_tests.c	/^static void setup()$/;"	f	file:
+setup_strings	examples/csp/csp.c	/^static void setup_strings(int k, int len)$/;"	f	file:
+signal_handler	examples/csp/csp.c	/^static void signal_handler(int signnum)$/;"	f	file:
 solution	include/population.h	/^        char *solution;$/;"	m	struct:population
 sort_generation_stats	src/evolve_monitor.c	/^void sort_generation_stats($/;"	f
 sort_population	src/population.c	/^void sort_population($/;"	f
-sort_test_setup	tests/ga/evolve_monitor_tests.c	/^static void sort_test_setup(int max_gen, int max_pop)$/;"	f	file:
-sort_test_teardown	tests/ga/evolve_monitor_tests.c	/^static void sort_test_teardown()$/;"	f	file:
-sort_tournament	src/ga/selection.c	/^static void sort_tournament($/;"	f	file:
+sort_test_setup	tests/evolve_monitor_tests.c	/^static void sort_test_setup(int max_gen, int max_pop)$/;"	f	file:
+sort_test_teardown	tests/evolve_monitor_tests.c	/^static void sort_test_teardown()$/;"	f	file:
+sort_tournament	src/selection.c	/^static void sort_tournament($/;"	f	file:
 std_crossover_asserts	tests/ga/crossover_tests.c	/^int std_crossover_asserts()$/;"	f
 stderr	scripts/unittest_runner.py	/^                stderr=unittest_output$/;"	v
 stdout	scripts/unittest_runner.py	/^                stdout=unittest_output,$/;"	v
-stop_signal	examples/csp.c	/^volatile sig_atomic_t stop_signal = 0;$/;"	v
+stop_signal	examples/csp/csp.c	/^volatile sig_atomic_t stop_signal = 0;$/;"	v
 stop_signal	include/evolve.h	/^        volatile sig_atomic_t *stop_signal;$/;"	m	struct:evolution_settings
-stop_signal	tests/ga/evolve_monitor_tests.c	/^volatile sig_atomic_t stop_signal = 0;$/;"	v
-stop_signal	tests/ga/evolve_tests.c	/^volatile sig_atomic_t stop_signal = 0;$/;"	v
-strings	examples/csp.c	/^char *strings[5];$/;"	v
+stop_signal	tests/evolve_monitor_tests.c	/^volatile sig_atomic_t stop_signal = 0;$/;"	v
+stop_signal	tests/evolve_tests.c	/^volatile sig_atomic_t stop_signal = 0;$/;"	v
+strings	examples/csp/csp.c	/^char *strings[5];$/;"	v
 swap_darray_elem	src/population.c	/^static void swap_darray_elem(struct darray *arr, int index_1, int index_2)$/;"	f	file:
-t_vs_g	examples/experiment_analyzer.py	/^def t_vs_g(exec_time, generation):$/;"	f
+t_vs_g	scripts/experiment_analyzer.py	/^def t_vs_g(exec_time, generation):$/;"	f
 teardown	tests/ga/crossover_tests.c	/^static void teardown()$/;"	f	file:
-teardown	tests/ga/population_tests.c	/^static void teardown()$/;"	f	file:
-teardown	tests/ga/selection_tests.c	/^static void teardown()$/;"	f	file:
-teardown_strings	examples/csp.c	/^static void teardown_strings()$/;"	f	file:
-test_destroy_evolve_monitor	tests/ga/evolve_monitor_tests.c	/^int test_destroy_evolve_monitor()$/;"	f
-test_destroy_population	tests/ga/population_tests.c	/^int test_destroy_population()$/;"	f
-test_evaluate_chromosomes	tests/ga/population_tests.c	/^int test_evaluate_chromosomes()$/;"	f
-test_extend_max_generation	tests/ga/population_tests.c	/^int test_extend_max_generation()$/;"	f
-test_gen_init_chromosomes	tests/ga/population_tests.c	/^int test_gen_init_chromosomes()$/;"	f
-test_init_evolve_monitor	tests/ga/evolve_monitor_tests.c	/^int test_init_evolve_monitor()$/;"	f
-test_init_population	tests/ga/population_tests.c	/^int test_init_population()$/;"	f
-test_insertion_sort_population	tests/ga/population_tests.c	/^int test_insertion_sort_population()$/;"	f
+teardown	tests/population_tests.c	/^static void teardown()$/;"	f	file:
+teardown	tests/selection_tests.c	/^static void teardown()$/;"	f	file:
+teardown_strings	examples/csp/csp.c	/^static void teardown_strings()$/;"	f	file:
+test_destroy_evolve_monitor	tests/evolve_monitor_tests.c	/^int test_destroy_evolve_monitor()$/;"	f
+test_destroy_population	tests/population_tests.c	/^int test_destroy_population()$/;"	f
+test_evaluate_chromosomes	tests/population_tests.c	/^int test_evaluate_chromosomes()$/;"	f
+test_extend_max_generation	tests/population_tests.c	/^int test_extend_max_generation()$/;"	f
+test_gen_init_chromosomes	tests/population_tests.c	/^int test_gen_init_chromosomes()$/;"	f
+test_init_evolve_monitor	tests/evolve_monitor_tests.c	/^int test_init_evolve_monitor()$/;"	f
+test_init_population	tests/population_tests.c	/^int test_init_population()$/;"	f
+test_insertion_sort_population	tests/population_tests.c	/^int test_insertion_sort_population()$/;"	f
 test_mutate_alphanum	tests/ga/mutation_tests.c	/^int test_mutate_alphanum()$/;"	f
 test_mutate_dna	tests/ga/mutation_tests.c	/^int test_mutate_dna()$/;"	f
 test_mutate_num	tests/ga/mutation_tests.c	/^int test_mutate_num()$/;"	f
 test_mutate_str	tests/ga/mutation_tests.c	/^int test_mutate_str()$/;"	f
-test_normalize_fitness_values	tests/ga/population_tests.c	/^int test_normalize_fitness_values()$/;"	f
+test_normalize_fitness_values	tests/population_tests.c	/^int test_normalize_fitness_values()$/;"	f
 test_one_ptr_crossover	tests/ga/crossover_tests.c	/^int test_one_ptr_crossover()$/;"	f
-test_partition_population	tests/ga/population_tests.c	/^int test_partition_population()$/;"	f
-test_populate	tests/ga/population_tests.c	/^int test_populate()$/;"	f
-test_print_chromosome	tests/ga/population_tests.c	/^int test_print_chromosome()$/;"	f
-test_print_chromosomes	tests/ga/population_tests.c	/^int test_print_chromosomes()$/;"	f
-test_print_population	tests/ga/population_tests.c	/^int test_print_population()$/;"	f
-test_quick_sort_population	tests/ga/population_tests.c	/^int test_quick_sort_population()$/;"	f
-test_record_generation_stats	tests/ga/evolve_monitor_tests.c	/^int test_record_generation_stats()$/;"	f
-test_roulette_wheel_selection	tests/ga/selection_tests.c	/^int test_roulette_wheel_selection()$/;"	f
-test_run_evolution	tests/ga/evolve_tests.c	/^int test_run_evolution()$/;"	f
-test_sort_generation_stats	tests/ga/evolve_monitor_tests.c	/^int test_sort_generation_stats()$/;"	f
-test_sort_population	tests/ga/population_tests.c	/^int test_sort_population()$/;"	f
+test_parse_config	tests/evolve_config_tests.c	/^int test_parse_config()$/;"	f
+test_partition_population	tests/population_tests.c	/^int test_partition_population()$/;"	f
+test_populate	tests/population_tests.c	/^int test_populate()$/;"	f
+test_print_chromosome	tests/population_tests.c	/^int test_print_chromosome()$/;"	f
+test_print_chromosomes	tests/population_tests.c	/^int test_print_chromosomes()$/;"	f
+test_print_population	tests/population_tests.c	/^int test_print_population()$/;"	f
+test_quick_sort_population	tests/population_tests.c	/^int test_quick_sort_population()$/;"	f
+test_record_generation_stats	tests/evolve_monitor_tests.c	/^int test_record_generation_stats()$/;"	f
+test_roulette_wheel_selection	tests/selection_tests.c	/^int test_roulette_wheel_selection()$/;"	f
+test_run_evolution	tests/evolve_tests.c	/^int test_run_evolution()$/;"	f
+test_sort_generation_stats	tests/evolve_monitor_tests.c	/^int test_sort_generation_stats()$/;"	f
+test_sort_population	tests/population_tests.c	/^int test_sort_population()$/;"	f
+test_suite	tests/evolve_config_tests.c	/^mu_run_test_suite(test_suite);$/;"	v
+test_suite	tests/evolve_config_tests.c	/^void test_suite()$/;"	f
+test_suite	tests/evolve_monitor_tests.c	/^mu_run_test_suite(test_suite);$/;"	v
+test_suite	tests/evolve_monitor_tests.c	/^void test_suite()$/;"	f
+test_suite	tests/evolve_tests.c	/^mu_run_test_suite(test_suite);$/;"	v
+test_suite	tests/evolve_tests.c	/^void test_suite()$/;"	f
 test_suite	tests/ga/crossover_tests.c	/^void test_suite()$/;"	f
-test_suite	tests/ga/evolve_monitor_tests.c	/^void test_suite()$/;"	f
-test_suite	tests/ga/evolve_tests.c	/^void test_suite()$/;"	f
 test_suite	tests/ga/mutation_tests.c	/^void test_suite()$/;"	f
-test_suite	tests/ga/population_tests.c	/^void test_suite()$/;"	f
-test_suite	tests/ga/selection_tests.c	/^void test_suite()$/;"	f
-test_tournament_selection	tests/ga/selection_tests.c	/^int test_tournament_selection()$/;"	f
+test_suite	tests/population_tests.c	/^mu_run_test_suite(test_suite);$/;"	v
+test_suite	tests/population_tests.c	/^void test_suite()$/;"	f
+test_suite	tests/selection_tests.c	/^mu_run_test_suite(test_suite);$/;"	v
+test_suite	tests/selection_tests.c	/^void test_suite()$/;"	f
+test_tournament_selection	tests/selection_tests.c	/^int test_tournament_selection()$/;"	f
 test_two_ptr_crossover	tests/ga/crossover_tests.c	/^int test_two_ptr_crossover()$/;"	f
-testsuite_cleanup	tests/ga/population_tests.c	/^static void testsuite_cleanup()$/;"	f	file:
+testsuite_cleanup	tests/population_tests.c	/^static void testsuite_cleanup()$/;"	f	file:
 top	include/evolve_monitor.h	/^        long top;$/;"	m	struct:evolve_monitor
 total_score	include/population.h	/^        float total_score;$/;"	m	struct:population
-tournament_selection	src/ga/selection.c	/^void tournament_selection(struct population **p, int *select)$/;"	f
+tournament_selection	src/selection.c	/^void tournament_selection(struct population **p, int *select)$/;"	f
 two_pt_crossover	src/ga/crossover.c	/^int two_pt_crossover(void **chromo_1, void **chromo_2, int index)$/;"	f
 unittest_output	scripts/unittest_runner.py	/^            unittest_output = open(unittest_output_fp, 'w')$/;"	v
 unittest_output_fp	scripts/unittest_runner.py	/^            unittest_output_fp = os.path.join($/;"	v

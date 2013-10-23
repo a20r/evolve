@@ -22,8 +22,8 @@ int one_pt_crossover(void **chromo_1, void **chromo_2, int index)
         );
 
         /* set child_1 and child_2 */
-        memcpy(child_1, *chromo_1, sizeof(char) * len);
-        memcpy(child_2, *chromo_2, sizeof(char) * len);
+        strcpy(child_1, *chromo_1);
+        strcpy(child_2, *chromo_2);
 
         /* pivot at pivot point and swap chromosomes */
         memcpy(child_1, *chromo_1, sizeof(char) * i);
@@ -31,13 +31,9 @@ int one_pt_crossover(void **chromo_1, void **chromo_2, int index)
         memcpy(child_1 + i, *chromo_2 + i, sizeof(char) * (len - i));
         memcpy(child_2 + i, *chromo_1 + i, sizeof(char) * (len - i));
 
-        /* add null terminator for safety */
-        memset(child_1 + len - 1, '\0', sizeof(char));
-        memset(child_2 + len - 1, '\0', sizeof(char));
-
         /* replace old chromo with new */
-        memcpy(*chromo_1, child_1, sizeof(char) * len);
-        memcpy(*chromo_2, child_2, sizeof(char) * len);
+        strcpy(*chromo_1, child_1);
+        strcpy(*chromo_2, child_2);
 
         /* clean up */
         if (child_1) free(child_1);
