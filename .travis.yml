@@ -8,8 +8,6 @@ compiler:
 before_script:
     - sudo apt-get install cmake
     - sudo apt-get install libjansson-dev
-    - sudo apt-get install libjansson-dbg
-    - sudo apt-get install libjansson-doc
     - sudo bash scripts/install_dependencies.sh
 
 script:
