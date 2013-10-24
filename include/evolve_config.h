@@ -3,18 +3,35 @@
 
 
 /* STRUCTS */
-struct selection_settings
+struct gp_tree_config
+{
+    int *max_pop;
+    int *max_gen;
+
+    int *max_depth;
+    int *max_size;
+
+};
+
+struct ga_config
+{
+    int *max_pop;
+    int *max_gen;
+
+};
+
+struct selection_config
 {
     char *select;
 };
 
-struct crossover_settings
+struct crossover_config
 {
     float *probability;
     char *pivot_index;
 };
 
-struct mutation_settings
+struct mutation_config
 {
     float *probability;
     char *mutation_point;
@@ -22,9 +39,10 @@ struct mutation_settings
 
 struct evolve_config
 {
-    struct selection_settings *selection;
-    struct crossover_settings *crossover;
-    struct mutation_settings *mutation;
+    char *mode;
+    struct selection_config *selection;
+    struct crossover_config *crossover;
+    struct mutation_config *mutation;
 };
 
 

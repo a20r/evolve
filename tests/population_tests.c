@@ -167,33 +167,6 @@ int test_extend_max_generation()
         return 0;
 }
 
-int test_init_individuals()
-{
-        int i = 0;
-        char *individual = '\0';
-        char *last_individual = '\0';
-
-        setup(max_pop, 1);
-        init_individuals(&p, randstr);
-
-        /* assert tests */
-        for (i = 0; i < p->max_population; i++) {
-                individual = darray_get(p->individuals, i);
-
-                mu_assert(
-                                individual != last_individual,
-                                "num == last_num!"
-                         );
-                mu_assert(p->population == max_pop,"Invalid population!");
-
-                last_individual = individual;
-        }
-
-        teardown();
-
-        return 0;
-}
-
 int test_evaluate_individuals()
 {
         int i = 0;
@@ -508,7 +481,6 @@ void test_suite()
         /* tests population functions */
         mu_run_test(test_init_population);
         mu_run_test(test_extend_max_generation);
-        mu_run_test(test_init_individuals);
         mu_run_test(test_evaluate_individuals);
         mu_run_test(test_normalize_fitness_values);
         mu_run_test(test_destroy_population);

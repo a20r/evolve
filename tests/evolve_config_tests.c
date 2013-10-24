@@ -15,18 +15,27 @@ struct evolve_config *config;
 
 int test_parse_config()
 {
-        struct selection_settings *selection;
-        struct crossover_settings *crossover;
-        struct mutation_settings *mutation;
+        struct selection_config *selection;
+        struct crossover_config *crossover;
+        struct mutation_config *mutation;
 
         float crossover_prob = 0.8;
         float mutation_prob = 0.1;
 
         /* parse config file */
         config = parse_config(TEST_CONFIG_FILE);
+        mu_assert(config != NULL, "Failed to parse config!");
+
         selection = config->selection;
         crossover = config->crossover;
         mutation = config->mutation;
+
+        /* mode */
+        printf("SELECT: %s\n", selection->select);
+        mu_assert(
+                strcmp(selection->select, "default") == 0,
+                "Failed to get select!"
+        );
 
         /* select */
         mu_assert(
@@ -62,8 +71,6 @@ int test_parse_config()
 
 void test_suite()
 {
-        /* seed random - VERY IMPORTANT! */
-        srand(time(NULL));
         mu_run_test(test_parse_config);
 }
 
