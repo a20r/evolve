@@ -14,14 +14,14 @@ static struct evolve_config *config_create()
         config = calloc(1, sizeof(struct evolve_config));
 
         /* selection */
-        config->selection = calloc(1, sizeof(struct selection_settings));
+        config->selection = calloc(1, sizeof(struct selection_config));
 
         /* crossover */
-        config->crossover = calloc(1, sizeof(struct crossover_settings));
+        config->crossover = calloc(1, sizeof(struct crossover_config));
         config->crossover->probability = calloc(1, sizeof(float));
 
         /* mutation */
-        config->mutation = calloc(1, sizeof(struct mutation_settings));
+        config->mutation = calloc(1, sizeof(struct mutation_config));
         config->mutation->probability = calloc(1, sizeof(float));
 
         return config;
@@ -29,6 +29,9 @@ static struct evolve_config *config_create()
 
 void config_destroy(struct evolve_config *config)
 {
+        /* general */
+        free(config->mode);
+
         /* selection */
         free(config->selection->select);
         free(config->selection);
@@ -46,64 +49,92 @@ void config_destroy(struct evolve_config *config)
         free(config);
 }
 
-static int parse_selection_config(struct evolve_config *config, json_t *root)
+static int parse_str(json_t *obj, char *path, char **target)
 {
         json_t *value;
+        const char *str;
+
+        /* get json value */
+        value = json_object_get(obj, path);
+        silent_check(json_is_string(value));
+
+        /* stringify json value and set target */
+        str = json_string_value(value);
+        *target = calloc(1, sizeof(char) * strlen(str) + 1);
+        strcpy(*target, str);
+
+        return 0;
+error:
+        return -1;
+}
+
+static int parse_real(json_t *obj, char *path, float *target)
+{
+        json_t *value;
+
+        value = json_object_get(obj, path);
+        silent_check(json_is_real(value));
+        *(target) = json_real_value(value);
+
+        return 0;
+error:
+        return -1;
+}
+
+static int parse_general_config(struct evolve_config *config, json_t *root)
+{
+        int res = 0;
+
+        /* mode */
+        res = parse_str(root, "mode", &(config->mode));
+        check(res == 0, "Failed to parse mode!");
+
+        return 0;
+error:
+        return -1;
+}
+
+static int parse_selection_config(struct selection_config *config, json_t *root)
+{
+        int res = 0;
 
         /* select */
-        value = json_object_get(root, "select");
-        check(json_is_string(value), "Invalid selection select value!");
-        config->selection->select= calloc(
-                1,
-                sizeof(char) * strlen(json_string_value(value)) + 1
-        );
-        strcpy(config->selection->select, json_string_value(value));
+        res = parse_str(root, "select", &(config->select));
+        check(res == 0, "Failed to obtain number of individuals to select!");
 
         return 0;
 error:
         return -1;
 }
 
-static int parse_crossover_config(struct evolve_config *config, json_t *root)
+static int parse_crossover_config(struct crossover_config *config, json_t *root)
 {
-        json_t *value;
+        int res = 0;
 
         /* probability */
-        value = json_object_get(root, "probability");
-        check(json_is_real(value), "Failed to obtain crossover probability!");
-        *(config->crossover->probability) = json_real_value(value);
+        res = parse_real(root, "probability", config->probability);
+        check(res == 0, "Failed to obtain crossover probability!");
 
         /* pivot_index */
-        value = json_object_get(root, "pivot_index");
-        check(json_is_string(value), "Invalid crossover pivot_index value!");
-        config->crossover->pivot_index = calloc(
-                1,
-                sizeof(char) * strlen(json_string_value(value)) + 1
-        );
-        strcpy(config->crossover->pivot_index, json_string_value(value));
+        res = parse_str(root, "pivot_index", &(config->pivot_index));
+        check(res == 0, "Failed to obtain pivot_index!");
 
         return 0;
 error:
         return -1;
 }
 
-static int parse_mutation_config(struct evolve_config *config, json_t *root)
+static int parse_mutation_config(struct mutation_config *config, json_t *root)
 {
-        json_t *value;
+        int res = 0;
 
         /* probability */
-        value = json_object_get(root, "probability");
-        check(json_is_real(value), "Failed to obtain mutation probability!");
-        *(config->mutation->probability) = json_real_value(value);
+        res = parse_real(root, "probability", config->probability);
+        check(res == 0, "Failed to obtain mutation probability!");
 
         /* mutation_point */
-        value = json_object_get(root, "mutation_point");
-        check(json_is_string(value), "Invalid mutation mutation_point value!");
-        config->mutation->mutation_point = calloc(
-                1,
-                sizeof(char) * strlen(json_string_value(value)) + 1
-        );
-        strcpy(config->mutation->mutation_point, json_string_value(value));
+        res = parse_str(root, "mutation_point", &(config->mutation_point));
+        check(res == 0, "Failed to obtain mutation point!");
 
         return 0;
 error:
@@ -118,13 +149,20 @@ struct evolve_config *parse_config(char *fp)
         json_t *crossover;
         json_t *mutation;
 
-        struct evolve_config *config = config_create();
+        struct evolve_config *config;
+        int res = 0;
 
         /* read entire config file */
-        root = json_load_file(fp, JSON_DECODE_ANY, &error);
+        config = config_create();
+        root = json_load_file(fp, 0, &error);
         check(root != NULL, "Failed to read config file!");
 
         /* parse config file */
+        check(
+                parse_general_config(config, root) == 0,
+                "Failed to parse general config!"
+        );
+
         selection = json_object_get(root, "selection");
         crossover = json_object_get(root, "crossover");
         mutation = json_object_get(root, "mutation");
@@ -133,18 +171,17 @@ struct evolve_config *parse_config(char *fp)
         check(json_is_object(crossover), "Missing crossover settings!");
         check(json_is_object(mutation), "Missing mutation settings!");
 
-        check(
-                parse_selection_config(config, selection) == 0,
-                "Failed to parse selection config!"
-        );
-        check(
-                parse_crossover_config(config, crossover) == 0,
-                "Failed to parse crossover config!"
-        );
-        check(
-                parse_mutation_config(config, mutation) == 0,
-                "Failed to parse mutation config!"
-        );
+        /* parse selection config */
+        res = parse_selection_config(config->selection, selection);
+        check(res == 0, "Failed to parse selection config!");
+
+        /* parse crossover config */
+        res = parse_crossover_config(config->crossover, crossover);
+        check(res == 0, "Failed to parse crossover config!");
+
+        /* parse mutation config */
+        res = parse_mutation_config(config->mutation, mutation);
+        check(res == 0, "Failed to parse mutation config!");
 
         /* clean up */
         json_decref(root);
