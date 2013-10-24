@@ -2,7 +2,7 @@
 evolve is a Gentic Algorithm implemented in C. Currently features:
 
 - **Encoding**
-    - One dimensional bit-string
+    - One dimensional fixed length bit-string
 - **Selection**
     - Roulette selection
     - Tournament selection
