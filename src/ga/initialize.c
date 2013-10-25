@@ -3,14 +3,15 @@
 #include "ga/initialize.h"
 #include "population.h"
 
-void init_individuals(struct population **p, char *(*mutator)(int))
+
+void init_individuals(struct population *p, char *(*mutator)(int))
 {
         int i = 0;
-        int chromo_length = (*p)->individuals->element_size;
+        int chromo_length = p->individuals->element_size;
 
         /* fill initial random individual */
-        for (i = 0; i < (*p)->max_population; i++) {
-                darray_set((*p)->individuals, i, (*mutator)(chromo_length));
-                (*p)->population++;
+        for (i = 0; i < p->max_population; i++) {
+                darray_set(p->individuals, i, (*mutator)(chromo_length));
+                p->population++;
         }
 }

@@ -15,13 +15,13 @@ ADD_LIBRARY(
     ${LIBRARY_NAME}
 
     evolve.c
-    evolve_config.c
     evolve_monitor.c
     population.c
     selection.c
 )
+TARGET_LINK_LIBRARIES(${LIBRARY_NAME} config)
 TARGET_LINK_LIBRARIES(${LIBRARY_NAME} evolve_ga)
-TARGET_LINK_LIBRARIES(${LIBRARY_NAME} jansson)
 
+SUBDIRS(config)
 SUBDIRS(ga)
 # SUBDIRS(gp)

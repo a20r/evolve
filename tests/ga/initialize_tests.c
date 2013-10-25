@@ -40,7 +40,7 @@ int test_init_individuals()
         char *last_individual = '\0';
 
         setup(max_pop, 1);
-        init_individuals(&p, randstr);
+        init_individuals(p, randstr);
 
         /* assert tests */
         for (i = 0; i < p->max_population; i++) {

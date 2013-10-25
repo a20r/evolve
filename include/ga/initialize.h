@@ -4,6 +4,6 @@
 #include "population.h"
 
 /* FUNCTIONS */
-void init_individuals(struct population **p, char *(*mutator)(int));
+void init_individuals(struct population *p, char *(*mutator)(int));
 
 #endif

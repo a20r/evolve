@@ -4,17 +4,18 @@
 #include "gp/initialize.h"
 
 
-struct population *init_tree_full()
+void init_tree_full(struct population *p)
+{
+
+
+}
+
+void init_tree_grow(struct population *p)
 {
 
 }
 
-struct population *init_tree_grow()
-{
-
-}
-
-struct population *init_tree_ramped_half_and_half()
+void init_tree_ramped_half_and_half(struct population *p)
 {
 
 }

@@ -10,20 +10,12 @@ INCLUDE_DIRECTORIES(/usr/local/include/)
 LINK_DIRECTORIES(/usr/local/lib)
 LINK_DIRECTORIES(/usr/lib)
 
-# evolve
+# evolve_tests
 ADD_EXECUTABLE(evolve_tests evolve_tests.c)
 TARGET_LINK_LIBRARIES(evolve_tests ${LIBRARY_NAME})
 
-# evolve_monitor
-ADD_EXECUTABLE(
-    evolve_config_tests
 
-    evolve_config_tests.c
-    test_utils.c
-)
-TARGET_LINK_LIBRARIES(evolve_config_tests ${LIBRARY_NAME})
-
-# evolve_monitor
+# evolve_monitor_tests
 ADD_EXECUTABLE(
     evolve_monitor_tests
 
@@ -32,7 +24,7 @@ ADD_EXECUTABLE(
 )
 TARGET_LINK_LIBRARIES(evolve_monitor_tests ${LIBRARY_NAME})
 
-# population
+# population_tests
 ADD_EXECUTABLE(
     population_tests
 
@@ -41,7 +33,7 @@ ADD_EXECUTABLE(
 )
 TARGET_LINK_LIBRARIES(population_tests ${LIBRARY_NAME})
 
-# selection
+# selection_tests
 ADD_EXECUTABLE(
     ga_selection_tests
 
@@ -51,5 +43,6 @@ ADD_EXECUTABLE(
 TARGET_LINK_LIBRARIES(ga_selection_tests ${LIBRARY_NAME})
 
 
+SUBDIRS(config)
 SUBDIRS(ga)
 # SUBDIRS(gp)

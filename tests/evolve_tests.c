@@ -62,7 +62,7 @@ int test_run_evolution()
         *crossover_prob = 0.5;
         *mutate_prob = 0.2;
 
-        init_individuals(&p, randstr);
+        init_individuals(p, randstr);
         run_evolution(
                 &p,
                 fitness_function,
