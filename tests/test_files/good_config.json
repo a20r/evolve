@@ -7,7 +7,7 @@
         "max_depth" : 10,
         "max_size" : 100,
 
-        "functional_set" : [
+        "function_set" : [
             "ADD",
             "SUB",
             "MUL",

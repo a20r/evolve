@@ -70,8 +70,10 @@ void destroy_gp_tree_config(struct gp_tree_config *config)
         free(config->max_gen);
         free(config->max_depth);
         free(config->max_size);
+
         darray_clear_destroy(config->function_set);
         darray_clear_destroy(config->terminal_set);
+
         free(config);
 }
 

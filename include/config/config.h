@@ -16,7 +16,6 @@ struct gp_tree_config
 {
     int *max_pop;
     int *max_gen;
-
     int *max_depth;
     int *max_size;
 

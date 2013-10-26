@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include <jansson.h>
 
@@ -60,23 +61,31 @@ int set_string_array(json_t *obj, char *path, struct darray *target)
         int res = 0;
         json_t *value;
         json_t *data;
+        const char *tmp;
+        char *str;
+        int array_size = 0;
 
         value = json_object_get(obj, path);
-        silent_check(json_is_array(value));
+        silent_check(json_is_array(value) == 1);
 
-        for (i = 0; i < json_array_size(obj); i++) {
+        array_size = json_array_size(value);
+        check(array_size, "Error! array is empty!");
+
+        for (i = 0; i < array_size; i++) {
                 /* get array element */
                 data = json_array_get(value, i);
                 res = json_is_string(data);
-                check(res == 0, "Error! elememnt is not a string!");
+                check(res, "Error! elememnt is not a string!");
 
                 /* set array element */
-                darray_set(target, i, data);
+                tmp = json_string_value(data);
+                str = calloc(strlen(tmp) + 1, sizeof(char));
+                strcpy(str, tmp);
+                darray_set(target, i, str);
         }
 
         return 0;
 error:
-        release_mem(target, darray_clear_destroy);
         return -1;
 }
 
@@ -150,7 +159,7 @@ int parse_gp_tree_config(json_t *obj, struct gp_tree_config *config)
         check(res == 0, "Failed to parse max_pop!");
 
         /* max_gen */
-        res = set_int(obj, "max_gen", config->max_pop);
+        res = set_int(obj, "max_gen", config->max_gen);
         check(res == 0, "Failed to parse max_gen!");
 
         /* max_depth */
@@ -158,16 +167,16 @@ int parse_gp_tree_config(json_t *obj, struct gp_tree_config *config)
         check(res == 0, "Failed to parse max_depth!");
 
         /* max_size */
-        res = set_int(obj, "max_size", config->max_depth);
+        res = set_int(obj, "max_size", config->max_size);
         check(res == 0, "Failed to parse max_size!");
 
         /* function set */
-        /* res = set_string_array(obj, "function_set", config->function_set); */
-        /* check(res == 0, "Failed to parse function_set!"); */
+        res = set_string_array(obj, "function_set", config->function_set);
+        check(res == 0, "Failed to parse function_set!");
 
         /* terminal set */
-        /* res = set_string_array(obj, "terminal_set", config->terminal_set); */
-        /* check(res == 0, "Failed to parse terminal_set!"); */
+        res = set_string_array(obj, "terminal_set", config->terminal_set);
+        check(res == 0, "Failed to parse terminal_set!");
 
         return 0;
 error:
@@ -213,15 +222,11 @@ int parse_general_config(struct evolve_config *config, json_t *root)
                 res = -1;
         }
 
-        /* clean up */
         release_mem(mode, free);
 
         return res;
 error:
-        /* clean up */
         release_mem(mode, free);
-        release_mem(config->general.gp_tree, destroy_gp_tree_config);
-        release_mem(config->general.ga, destroy_ga_config);
 
         return res;
 }
