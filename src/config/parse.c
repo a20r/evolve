@@ -17,6 +17,11 @@ int set_str(json_t *obj, char *path, char **target)
 
         /* get json value */
         value = json_object_get(obj, path);
+        if (value == NULL) {
+                *target = NULL;
+                log_warn("Warning! %s not set!", path);
+                return 0;
+        }
         silent_check(json_is_string(value));
 
         /* stringify json value and set target */
@@ -34,6 +39,11 @@ int set_int(json_t *obj, char *path, int *target)
         json_t *value;
 
         value = json_object_get(obj, path);
+        if (value == NULL) {
+                target = NULL;
+                log_warn("Warning! %s not set!", path);
+                return 0;
+        }
         silent_check(json_is_integer(value));
         *(target) = json_integer_value(value);
 
@@ -47,6 +57,11 @@ int set_real(json_t *obj, char *path, float *target)
         json_t *value;
 
         value = json_object_get(obj, path);
+        if (value == NULL) {
+                target = NULL;
+                log_warn("Warning! %s not set!", path);
+                return 0;
+        }
         silent_check(json_is_real(value));
         *(target) = json_real_value(value);
 
@@ -66,6 +81,11 @@ int set_string_array(json_t *obj, char *path, struct darray *target)
         int array_size = 0;
 
         value = json_object_get(obj, path);
+        if (value == NULL) {
+                target = NULL;
+                log_warn("Warning! %s not set!", path);
+                return 0;
+        }
         silent_check(json_is_array(value) == 1);
 
         array_size = json_array_size(value);
