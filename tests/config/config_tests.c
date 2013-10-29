@@ -13,6 +13,7 @@
 /* GLOBAL VARS */
 struct evolve_config *config;
 
+
 static int validate_gp_tree_config(struct gp_tree_config *config)
 {
         int res = 0;

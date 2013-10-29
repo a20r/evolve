@@ -3,6 +3,7 @@
 #include <dstruct/darray.h>
 #include <al/comparator.h>
 #include <al/utils.h>
+#include <dbg/dbg.h>
 
 #include "population.h"
 #include "ga/crossover.h"
@@ -16,17 +17,14 @@ struct population *init_population(
         int max_gen
 )
 {
-        struct population *p = malloc(sizeof(struct population));
+        struct population *p;
 
-        /* checks */
+        p = malloc(sizeof(struct population));
         check((max_pop % 2) == 0, "Max population has to be even!");
         check(max_gen > 0, "Max generation has to be bigger than 0!");
 
         /* individuals */
-        p->individuals = darray_create(
-                individual_size,
-                max_pop
-        );
+        p->individuals = darray_create(individual_size, max_pop);
         p->scores = darray_create(sizeof(float), max_pop);
         p->total_score = 0.0;
 
@@ -49,15 +47,8 @@ error:
 void destroy_population(struct population **p)
 {
         if ((*p)) {
-
-                if ((*p)->individuals){
-                        darray_clear_destroy((*p)->individuals);
-                }
-
-                if ((*p)->scores) {
-                        darray_clear_destroy((*p)->scores);
-                }
-
+                release_mem((*p)->individuals, darray_clear_destroy);
+                release_mem((*p)->scores, darray_clear_destroy);
                 free(*p);
                 *p = NULL;
         }
@@ -202,13 +193,7 @@ void insertion_sort_population(
                 free(darray_get(p->individuals, j));
                 free(darray_get(p->scores, j));
 
-                while (
-                        i >= 0 &&
-                        cmp(
-                                darray_get(p->scores, i),
-                                score
-                        ) > 0
-                ) {
+                while (i >= 0 && cmp(darray_get(p->scores, i), score) > 0) {
                         /* individual */
                         darray_set(
                                 p->individuals,

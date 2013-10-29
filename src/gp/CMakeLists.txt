@@ -1,10 +1,14 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
-# evolve library
+SET(LIBRARY_NAME evolve_gp)
+
+# evolve_gp library
 ADD_LIBRARY(
    ${LIBRARY_NAME}
 
+   initialize.c
+   function_set.c
 )
-TARGET_LINK_LIBRARIES(evolve m)
-TARGET_LINK_LIBRARIES(evolve al)
-TARGET_LINK_LIBRARIES(evolve dstruct)
+TARGET_LINK_LIBRARIES(${LIBRARY_NAME} m)
+TARGET_LINK_LIBRARIES(${LIBRARY_NAME} al)
+TARGET_LINK_LIBRARIES(${LIBRARY_NAME} dstruct)

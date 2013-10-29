@@ -45,4 +45,4 @@ TARGET_LINK_LIBRARIES(ga_selection_tests ${LIBRARY_NAME})
 
 SUBDIRS(config)
 SUBDIRS(ga)
-# SUBDIRS(gp)
+SUBDIRS(gp)
