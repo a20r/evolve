@@ -1,5 +1,4 @@
 #include <dstruct/ast.h>
-#include <dstruct/stack.h>
 #include <dstruct/linked_list.h>
 #include <al/utils.h>
 
@@ -53,88 +52,98 @@ void gp_tree_destory(struct gp_tree *gp)
 static struct ast *gen_node(
         int depth,
         int max_depth,
-        struct darray *func_set,
-        struct darray *term_set
+        struct darray *function_set,
+        struct darray *terminal_set
 )
 {
-        int i = 0;
+        struct ast *node;
         char *n_type;
-        struct ast *new_node;
+        int *tmp;
+        int i;
 
-        printf("Depth: %d\n", depth);
-        if (depth < max_depth) {
-                i = randnum_i(0, func_set->end);
-                n_type = darray_get(func_set, i);
-                new_node = gp_default_function_factory(n_type);
-        } else if (depth == max_depth) {
-                i = randnum_i(0, term_set->end);
-                n_type = darray_get(term_set, i);
-                new_node = gp_default_function_factory(n_type);
+        if ((depth + 1) == max_depth) {
+                /* next node is max depth, make a terminal node */
+                i = randnum_i(0, terminal_set->end);
+                n_type = darray_get(terminal_set, i);
+
+                tmp = calloc(1, sizeof(int));
+                *tmp = 1;
+
+                node = ast_make_exp(INTEGER, tmp);
+                n_type = "1";
+                printf("TERM\n");
+        } else {
+                /* else make function node */
+                i = randnum_i(0, function_set->end);
+                n_type = darray_get(function_set, i);
+                node = gp_default_function_factory(n_type);
+                printf("NODE: %s\n", node->type.binary->op_name);
         }
 
-        return new_node;
+        return node;
 }
 
-static void full_method(
+static int full_method(
         struct gp_tree *tree,
-        struct stack *s,
         struct ast *node,
         int depth,
-        int max_depth,
-        struct darray *func_set,
-        struct darray *term_set
+        int max_depth
 )
 {
+        struct darray *function_set;
+        struct darray *terminal_set;
         struct ast *n;
+        int res = 0;
+
+        function_set = tree->function_set;
+        terminal_set = tree->terminal_set;
 
         /* fill tree */
-        stack_push(s, gp->tree);
-        while ((node = stack_pop(s))) {
-                if (node->tag == UNARY_OP) {
-                        /* generate node */
-                        n = gen_node(depth, max_depth, func_set, term_set);
-                        node->type.unary->value = n;
+        if (depth == max_depth) {
+                return 0;
+        } else if (node->tag == UNARY_OP) {
+                n = gen_node(depth, max_depth, function_set, terminal_set);
+                node->type.unary->value = n;
 
-                        /* push to stack */
-                        stack_push(s, node->type.unary->value);
-                        tree->depth++;
+                res = full_method(tree, n, depth + 1, max_depth);
+                check(res == 0, "Failed to intialize tree!");
 
-                } else if (node->tag == START || node->tag == BINARY_OP) {
-                        /* generate nodes */
-                        n = gen_node(depth, max_depth, func_set, term_set);
-                        node->type.binary->left= n;
+        } else if (node->tag == START || node->tag == BINARY_OP) {
+                /* left */
+                n = gen_node(depth, max_depth, function_set, terminal_set);
+                node->type.binary->left= n;
 
-                        n = gen_node(depth, max_depth, func_set, term_set);
-                        node->type.binary->right= n;
+                res = full_method(tree, n, depth + 1, max_depth);
+                check(res == 0, "Failed to intialize tree!");
 
-                        /* push to stack */
-                        stack_push(s, node->type.binary->left);
-                        stack_push(s, node->type.binary->right);
-                        tree->depth++;
-                } else {
-                        return gp;
-                }
+                /* right */
+                n = gen_node(depth, max_depth, function_set, terminal_set);
+                node->type.binary->right= n;
+
+                res = full_method(tree, n, depth + 1, max_depth);
+                check(res == 0, "Failed to intialize tree!");
+        } else {
+                return -1;
         }
 
-        return gp;
+        return 0;
+error:
+        return -1;
 }
 
 struct gp_tree *init_tree_full(struct gp_tree_config *config)
 {
         struct gp_tree *gp;
-        struct stack *s;
-        struct ast *node;
+        struct darray *function_set = config->function_set;
+        struct darray *terminal_set = config->terminal_set;
 
-        struct darray *func_set = config->function_set;
-        struct darray *term_set = config->terminal_set;
-
-        /* initialize gp_tree */
+        /* initialize gp tree */
         gp = gp_tree_create(config->max_depth, config->max_size, config);
-        s = stack_create(0);
+        gp->function_set = function_set;
+        gp->terminal_set = terminal_set;
 
-
-        /* clean up */
-        stack_destroy(s);
+        full_method(gp, gp->tree, gp->depth, *gp->max_depth);
+        printf("\n\n");
 
         return gp;
 }
