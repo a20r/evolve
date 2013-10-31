@@ -77,9 +77,17 @@ static int validate_gp_tree_config(struct gp_tree_config *config)
                         printf("%d: %d\n", i, node->type.integer);
                 } else if (node->tag == REAL) {
                         printf("%d: %f\n", i, node->type.real);
+                } else if (node->tag == STRING) {
+                        printf("%d: %s\n", i, node->type.string);
                 }
                 mu_assert(node != NULL, "Invalid value!");
         }
+
+        /* clean up */
+        free(max_pop_solution);
+        free(max_gen_solution);
+        free(max_depth_solution);
+        free(max_size_solution);
 
         return 0;
 }

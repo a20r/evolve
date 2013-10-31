@@ -27,11 +27,11 @@
         ],
         "terminal_set" : [
             {
-                "tag": "REAL",
+                "tag": "STRING",
                 "value": "x"
             },
             {
-                "tag": "REAL",
+                "tag": "STRING",
                 "value": "y"
             },
             {

@@ -83,12 +83,12 @@ void destroy_gp_tree_config(struct gp_tree_config *config)
                 ast_destroy(node);
         }
 
-        /* for (i = 0; i <= config->terminal_set->end; i++) { */
-        /*         node = darray_get(config->terminal_set, i); */
-        /*         ast_destroy(node); */
-        /* } */
-        /* darray_destroy(config->function_set); */
-        /* darray_destroy(config->terminal_set); */
+        for (i = 0; i <= config->terminal_set->end; i++) {
+                node = darray_get(config->terminal_set, i);
+                ast_destroy(node);
+        }
+        darray_destroy(config->function_set);
+        darray_destroy(config->terminal_set);
 
         free(config);
 }
