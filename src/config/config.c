@@ -3,6 +3,7 @@
 
 #include <jansson.h>
 #include <dbg/dbg.h>
+#include <dstruct/ast.h>
 
 #include "config/config.h"
 #include "config/parse.h"
@@ -45,14 +46,17 @@ struct gp_tree_config *init_gp_tree_config()
 
         gp_tree = calloc(1, sizeof(struct gp_tree_config));
 
+        /* general  */
         gp_tree->max_pop = calloc(1, sizeof(int));
         gp_tree->max_gen = calloc(1, sizeof(int));
 
+        /* tree */
         gp_tree->max_depth = calloc(1, sizeof(int));
         gp_tree->max_size = calloc(1, sizeof(int));
 
-        gp_tree->function_set = darray_create(sizeof(char) * 256, 100);
-        gp_tree->terminal_set  = darray_create(sizeof(char) * 256, 100);
+        /* primitives */
+        gp_tree->function_set = darray_create(sizeof(struct ast), 100);
+        gp_tree->terminal_set  = darray_create(sizeof(struct ast), 100);
 
         return gp_tree;
 }
@@ -66,13 +70,25 @@ void destroy_ga_config(struct ga_config *config)
 
 void destroy_gp_tree_config(struct gp_tree_config *config)
 {
+        struct ast *node;
+        int i = 0;
+
         free(config->max_pop);
         free(config->max_gen);
         free(config->max_depth);
         free(config->max_size);
 
-        darray_clear_destroy(config->function_set);
-        darray_clear_destroy(config->terminal_set);
+        for (i = 0; i <= config->function_set->end; i++) {
+                node = darray_get(config->function_set, i);
+                ast_destroy(node);
+        }
+
+        /* for (i = 0; i <= config->terminal_set->end; i++) { */
+        /*         node = darray_get(config->terminal_set, i); */
+        /*         ast_destroy(node); */
+        /* } */
+        /* darray_destroy(config->function_set); */
+        /* darray_destroy(config->terminal_set); */
 
         free(config);
 }

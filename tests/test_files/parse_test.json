@@ -1,0 +1,51 @@
+{
+    "test_get_str": "Hello World!",
+    "test_get_int": 123,
+    "test_get_real": 9.999,
+    "test_get_json": { "print": "Hello World" },
+    "test_set_str": "testing, testing, 1-2-3, 1-2-3",
+    "test_set_int": 1,
+    "test_set_real": 9.9999,
+    "test_set_string_array": [ "A", "B", "C", "D", "E" ],
+    "test_set_ast_array_function_mode": [
+            {
+                "tag": "BINARY_OP",
+                "type": "ADD"
+            },
+            {
+                "tag": "BINARY_OP",
+                "type": "SUB"
+            },
+            {
+                "tag": "BINARY_OP",
+                "type": "MUL"
+            },
+            {
+                "tag": "BINARY_OP",
+                "type": "DIV"
+            }
+    ],
+    "test_set_ast_array_terminal_mode": [
+            {
+                "tag": "STRING",
+                "value": "x"
+            },
+            {
+                "tag": "STRING",
+                "value": "y"
+            },
+            {
+                "tag": "INTEGER",
+                "value": 1
+            },
+            {
+                "tag": "INTEGER",
+                "value": 2
+            },
+            {
+                "tag": "INTEGER",
+                "value": 3
+            }
+    ]
+
+}

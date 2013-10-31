@@ -57,26 +57,17 @@ static struct ast *gen_node(
 )
 {
         struct ast *node;
-        char *n_type;
-        int *tmp;
         int i;
 
         if ((depth + 1) == max_depth) {
                 /* next node is max depth, make a terminal node */
                 i = randnum_i(0, terminal_set->end);
-                n_type = darray_get(terminal_set, i);
-
-                tmp = calloc(1, sizeof(int));
-                *tmp = 1;
-
-                node = ast_make_exp(INTEGER, tmp);
-                n_type = "1";
+                node = darray_get(terminal_set, i);
                 printf("TERM\n");
         } else {
                 /* else make function node */
                 i = randnum_i(0, function_set->end);
-                n_type = darray_get(function_set, i);
-                node = gp_default_function_factory(n_type);
+                node = darray_get(function_set, i);
                 printf("NODE: %s\n", node->type.binary->op_name);
         }
 

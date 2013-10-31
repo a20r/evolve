@@ -4,18 +4,80 @@
     "gp_tree" :  {
         "max_pop" : 1000,
         "max_gen" : 1000,
-        "max_depth" : 2,
+        "max_depth" : 20,
         "max_size" : 100,
 
         "function_set" : [
-            "ADD",
-            "SUB",
-            "MUL",
-            "DIV"
+            {
+                "tag": "BINARY_OP",
+                "type": "ADD"
+            },
+            {
+                "tag": "BINARY_OP",
+                "type": "SUB"
+            },
+            {
+                "tag": "BINARY_OP",
+                "type": "MUL"
+            },
+            {
+                "tag": "BINARY_OP",
+                "type": "DIV"
+            }
         ],
         "terminal_set" : [
-            "x",
-            "y"
+            {
+                "tag": "REAL",
+                "value": "x"
+            },
+            {
+                "tag": "REAL",
+                "value": "y"
+            },
+            {
+                "tag": "INTEGER",
+                "value": 0
+            },
+            {
+                "tag": "INTEGER",
+                "value": 1
+            },
+            {
+                "tag": "INTEGER",
+                "value": 2
+            },
+            {
+                "tag": "INTEGER",
+                "value": 3
+            },
+            {
+                "tag": "INTEGER",
+                "value": 4
+            },
+            {
+                "tag": "INTEGER",
+                "value": 5
+            },
+            {
+                "tag": "INTEGER",
+                "value": 6
+            },
+            {
+                "tag": "INTEGER",
+                "value": 7
+            },
+            {
+                "tag": "INTEGER",
+                "value": 8
+            },
+            {
+                "tag": "INTEGER",
+                "value": 9
+            },
+            {
+                "tag": "INTEGER",
+                "value": 10
+            }
         ]
     },
 

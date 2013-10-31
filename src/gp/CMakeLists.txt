@@ -8,6 +8,7 @@ ADD_LIBRARY(
 
    initialize.c
    function_set.c
+   terminal_set.c
 )
 TARGET_LINK_LIBRARIES(${LIBRARY_NAME} m)
 TARGET_LINK_LIBRARIES(${LIBRARY_NAME} al)

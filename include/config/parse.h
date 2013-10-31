@@ -5,14 +5,24 @@
 
 #include <dstruct/darray.h>
 
+#include "config/config.h"
+
+
+/* DEFINES */
+#define FUNCTION_MODE 1
+#define TERMINAL_MODE 2
+
 
 /* FUNCTIONS */
-int set_str(json_t *obj, char *path, char **target);
-int set_int(json_t *obj, char *path, int *target);
-int set_real(json_t *obj, char *path, float *target);
 char *get_str(json_t *obj, char *path);
 int get_int(json_t *obj, char *path);
 float get_real(json_t *obj, char *path);
+json_t *get_json(json_t *obj, char *path);
+int set_str(json_t *obj, char *path, char **target);
+int set_int(json_t *obj, char *path, int *target);
+int set_real(json_t *obj, char *path, float *target);
+int set_string_array(json_t *obj, char *path, struct darray *target);
+int set_ast_array(json_t *obj, char *path, struct darray *target, int mode);
 
 int parse_ga_config(json_t *obj, struct ga_config *config);
 int parse_gp_tree_config(json_t *obj, struct gp_tree_config *config);

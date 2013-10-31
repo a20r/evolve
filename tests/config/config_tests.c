@@ -5,6 +5,7 @@
 
 #include <munit/munit.h>
 #include <al/comparator.h>
+#include <dstruct/ast.h>
 
 #include "config/config.h"
 
@@ -24,7 +25,7 @@ static int validate_gp_tree_config(struct gp_tree_config *config)
         int *max_size_solution;
         struct darray *function_set;
         struct darray *terminal_set;
-        char *value;
+        struct ast *node;
         int array_size;
 
         /* setup */
@@ -34,7 +35,7 @@ static int validate_gp_tree_config(struct gp_tree_config *config)
         max_size_solution = calloc(1, sizeof(int));
         *max_pop_solution = 1000;
         *max_gen_solution = 1000;
-        *max_depth_solution = 10;
+        *max_depth_solution = 20;
         *max_size_solution = 100;
 
         /* max pop */
@@ -57,9 +58,13 @@ static int validate_gp_tree_config(struct gp_tree_config *config)
         function_set = config->function_set;
         array_size = function_set->end + 1;
         for (i = 0; i < array_size; i++) {
-                value = (char *) darray_get(function_set, i);
-                printf("%d: %s\n", i, value);
-                mu_assert(value != NULL, "Invalid value!");
+                node = (struct ast *) darray_get(function_set, i);
+                if (node->tag == UNARY_OP) {
+                        printf("%d: %s\n", i, node->type.unary->op_name);
+                } else if (node->tag == BINARY_OP) {
+                        printf("%d: %s\n", i, node->type.binary->op_name);
+                }
+                mu_assert(node != NULL, "Invalid value!");
         }
         printf("\n");
 
@@ -67,9 +72,13 @@ static int validate_gp_tree_config(struct gp_tree_config *config)
         terminal_set = config->terminal_set;
         array_size = terminal_set->end + 1;
         for (i = 0; i < array_size; i++) {
-                value = (char *) darray_get(terminal_set, i);
-                printf("%d: %s\n", i, value);
-                mu_assert(value != NULL, "Invalid value!");
+                node = (struct ast *) darray_get(terminal_set, i);
+                if (node->tag == INTEGER) {
+                        printf("%d: %d\n", i, node->type.integer);
+                } else if (node->tag == REAL) {
+                        printf("%d: %f\n", i, node->type.real);
+                }
+                mu_assert(node != NULL, "Invalid value!");
         }
 
         return 0;

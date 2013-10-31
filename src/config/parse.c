@@ -5,9 +5,67 @@
 
 #include <dbg/dbg.h>
 #include <dstruct/darray.h>
+#include <dstruct/ast.h>
 
 #include "config/config.h"
 #include "config/parse.h"
+#include "gp/function_set.h"
+#include "gp/terminal_set.h"
+
+
+char *get_str(json_t *obj, char *path)
+{
+        json_t *value;
+        const char *str;
+        char *res;
+
+        /* get json value */
+        value = json_object_get(obj, path);
+        silent_check(json_is_string(value));
+
+        /* stringify json value and set enum*/
+        str = json_string_value(value);
+        res = malloc(sizeof(char) * strlen(str) + 1);
+        strcpy(res, str);
+
+        return res;
+error:
+        return NULL;
+}
+
+int get_int(json_t *obj, char *path)
+{
+        json_t *value;
+        int integer;
+
+        /* get integer value */
+        value = json_object_get(obj, path);
+        integer = json_integer_value(value);
+
+        return integer;
+}
+
+float get_real(json_t *obj, char *path)
+{
+        json_t *value;
+        float real;
+
+        /* get real value */
+        value = json_object_get(obj, path);
+        real = json_real_value(value);
+
+        return real;
+}
+
+json_t *get_json(json_t *obj, char *path)
+{
+        json_t *value;
+
+        /* get json value */
+        value = json_object_get(obj, path);
+
+        return value;
+}
 
 
 int set_str(json_t *obj, char *path, char **target)
@@ -80,6 +138,7 @@ int set_string_array(json_t *obj, char *path, struct darray *target)
         char *str;
         int array_size = 0;
 
+        /* get string array */
         value = json_object_get(obj, path);
         if (value == NULL) {
                 target = NULL;
@@ -88,14 +147,14 @@ int set_string_array(json_t *obj, char *path, struct darray *target)
         }
         silent_check(json_is_array(value) == 1);
 
+        /* loop through array */
         array_size = json_array_size(value);
         check(array_size, "Error! array is empty!");
-
         for (i = 0; i < array_size; i++) {
                 /* get array element */
                 data = json_array_get(value, i);
                 res = json_is_string(data);
-                check(res, "Error! elememnt is not a string!");
+                check(res, "Error! element is not a string!");
 
                 /* set array element */
                 tmp = json_string_value(data);
@@ -109,49 +168,86 @@ error:
         return -1;
 }
 
-char *get_str(json_t *obj, char *path)
+int set_ast_array(json_t *obj, char *path, struct darray *target, int mode)
 {
-        json_t *value;
-        const char *str;
-        char *res;
+        json_t *array;
+        json_t *element;
 
-        /* get json value */
-        value = json_object_get(obj, path);
-        silent_check(json_is_string(value));
+        int i = 0;
+        int array_size = 0;
 
-        /* stringify json value and set enum*/
-        str = json_string_value(value);
-        res = calloc(1, sizeof(char) * strlen(str) + 1);
-        strcpy(res, str);
-
-        return res;
-error:
-        return NULL;
-}
-
-int get_int(json_t *obj, char *path)
-{
-        json_t *value;
+        struct ast *node;
+        char *tag;
+        char *type;
+        char *str;
         int integer;
-
-        /* get integer value */
-        value = json_object_get(obj, path);
-        integer = json_integer_value(value);
-
-        return integer;
-}
-
-float get_real(json_t *obj, char *path)
-{
-        json_t *value;
         float real;
 
-        /* get real value */
-        value = json_object_get(obj, path);
-        real = json_real_value(value);
+        /* get json array */
+        array = json_object_get(obj, path);
+        if (array == NULL) {
+                target = NULL;
+                log_warn("Warning! %s not set!", path);
+                return 0;
+        }
+        silent_check(json_is_array(array) == 1);
 
-        return real;
+        /* loop through array */
+        array_size = json_array_size(array);
+        check(array_size, "Error! array is empty!");
+        for (i = 0; i < array_size; i++) {
+                /* get array element */
+                element = json_array_get(array, i);
+
+                /* parse element */
+                if (mode == FUNCTION_MODE) {
+                        tag = get_str(element, "tag");
+                        type = get_str(element, "type");
+
+                        if (strcmp(tag, "UNARY_OP") == 0) {
+                                node = ast_make_unary_exp(type, NULL);
+                        } else if (strcmp(tag, "BINARY_OP") == 0) {
+                                node = ast_make_binary_exp(type, NULL, NULL);
+                        } else {
+                                log_err("Error! Unknown type [%s]\n", tag);
+                                goto error;
+                        }
+
+                        check(node, "Error! Failed to create function node!");
+                        free(tag);
+                        free(type);
+
+                } else if (mode == TERMINAL_MODE) {
+                        tag = get_str(element, "tag");
+
+                        if (strcmp(tag, "INTEGER") == 0) {
+                                integer = get_int(element, "value");
+                                node = ast_make_exp(INTEGER, &integer);
+                        } else if (strcmp(tag, "REAL") == 0) {
+                                real = get_real(element, "value");
+                                node = ast_make_exp(REAL, &real);
+                        } else if (strcmp(tag, "STRING") == 0) {
+                                str = get_str(element, "value");
+                                node = ast_make_exp(STRING, str);
+                        } else {
+                                log_err("Error! Unknown type [%s]\n", tag);
+                                goto error;
+                        }
+
+                        check(node, "Error! Failed to create terminal node!");
+                        free(tag);
+                }
+
+                /* set array element */
+                silent_check(node);
+                darray_set(target, i, node);
+        }
+
+        return 0;
+error:
+        return -1;
 }
+
 
 int parse_ga_config(json_t *obj, struct ga_config *config)
 {
@@ -173,6 +269,8 @@ error:
 int parse_gp_tree_config(json_t *obj, struct gp_tree_config *config)
 {
         int res = 0;
+        struct darray *function_set = config->function_set;
+        struct darray *terminal_set = config->terminal_set;
 
         /* max_pop */
         res = set_int(obj, "max_pop", config->max_pop);
@@ -191,11 +289,11 @@ int parse_gp_tree_config(json_t *obj, struct gp_tree_config *config)
         check(res == 0, "Failed to parse max_size!");
 
         /* function set */
-        res = set_string_array(obj, "function_set", config->function_set);
+        res = set_ast_array(obj, "function_set", function_set, FUNCTION_MODE);
         check(res == 0, "Failed to parse function_set!");
 
         /* terminal set */
-        res = set_string_array(obj, "terminal_set", config->terminal_set);
+        res = set_ast_array(obj, "terminal_set", terminal_set, TERMINAL_MODE);
         check(res == 0, "Failed to parse terminal_set!");
 
         return 0;
