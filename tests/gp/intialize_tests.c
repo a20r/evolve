@@ -36,14 +36,16 @@ static void teardown()
 
 static int dot_graph_cb(struct ast *node)
 {
-        if (
-                node->tag == INTEGER
-                || node->tag == REAL
-                || node->tag == STRING
-                || node->tag == CHARACTER
-                || node->tag == BOOL
-        ) {
-                printf("TERM\n");
+        if (node->tag == INTEGER) {
+                printf("NODE: %d\n", node->type.integer);
+        } else if (node->tag == REAL) {
+                printf("NODE: %f\n", node->type.real);
+        } else if (node->tag == STRING) {
+                printf("NODE: %s\n", node->type.string);
+        } else if (node->tag == CHARACTER) {
+                printf("NODE: %c\n", node->type.character);
+        } else if (node->tag == BOOL) {
+                printf("NODE: %d\n", node->type.boolean);
         } else if (node->tag == UNARY_OP) {
                 printf("NODE: %s\n", node->type.unary->op_name);
         } else if (node->tag == BINARY_OP || node->tag == START) {
@@ -56,7 +58,7 @@ static int dot_graph_cb(struct ast *node)
 int test_init_tree_full()
 {
         gp = init_tree_full(gp_config);
-        /* ast_traverse(gp->tree, dot_graph_cb); */
+        ast_traverse(gp->tree, dot_graph_cb);
 
         return 0;
 }
