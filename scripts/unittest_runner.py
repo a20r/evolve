@@ -21,6 +21,7 @@ class TermColors:
     FAIL = '\033[91m'
     ENDC = '\033[0m'
 
+
 def print_stdout(unittest_output_fp):
     # open unittest stdout log file
     unittest_output = open(unittest_output_fp, 'r')
@@ -48,7 +49,6 @@ if __name__ == "__main__":
             unittests.append(f)
 
     # execute all unittests
-    os.chdir(unittests_bin_dir)
     error = False
     return_val = 0
     for unittest in unittests:
@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
             unittest_output = open(unittest_output_fp, 'w')
             return_val = subprocess.check_call(
-                "./{0}".format(unittest),
+                "./{0}/{1}".format(unittests_bin_dir, unittest),
                 stdout=unittest_output,
                 stderr=unittest_output
             )
@@ -76,7 +76,6 @@ if __name__ == "__main__":
             print("{0}FAILED!{1}".format(TermColors.FAIL, TermColors.ENDC))
             print_stdout(unittest_output_fp)
             error = True
-
 
     # remove unittest stdout dir
     os.chdir(orig_cwd)

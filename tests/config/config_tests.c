@@ -9,7 +9,7 @@
 
 #include "config/config.h"
 
-#define TEST_CONFIG_FILE "../tests/test_files/good_config.json"
+#define TEST_CONFIG_FILE "tests/test_files/good_config.json"
 
 /* GLOBAL VARS */
 struct evolve_config *config;
@@ -57,6 +57,7 @@ static int validate_gp_tree_config(struct gp_tree_config *config)
         /* function set */
         function_set = config->function_set;
         array_size = function_set->end + 1;
+        printf("FUNCTION SET:\n");
         for (i = 0; i < array_size; i++) {
                 node = (struct ast *) darray_get(function_set, i);
                 if (node->tag == UNARY_OP) {
@@ -71,6 +72,7 @@ static int validate_gp_tree_config(struct gp_tree_config *config)
         /* terminal set */
         terminal_set = config->terminal_set;
         array_size = terminal_set->end + 1;
+        printf("TERMINAL SET:\n");
         for (i = 0; i < array_size; i++) {
                 node = (struct ast *) darray_get(terminal_set, i);
                 if (node->tag == INTEGER) {

@@ -25,7 +25,7 @@ char *get_str(json_t *obj, char *path)
 
         /* stringify json value and set enum*/
         str = json_string_value(value);
-        res = malloc(sizeof(char) * strlen(str) + 1);
+        res = calloc(1, sizeof(char) * strlen(str) + 1);
         strcpy(res, str);
 
         return res;

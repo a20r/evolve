@@ -10,7 +10,7 @@
 
 #include "config/parse.h"
 
-#define TEST_CONFIG_FILE "../tests/test_files/parse_test.json"
+#define TEST_CONFIG_FILE "tests/test_files/parse_test.json"
 #define TEST_GET_STR "Hello World!"
 #define TEST_GET_INT 123
 #define TEST_GET_REAL 9.999

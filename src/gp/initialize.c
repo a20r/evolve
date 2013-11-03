@@ -36,13 +36,25 @@ static struct gp_tree *gp_tree_create(
         return gp;
 }
 
-void gp_tree_destory(struct gp_tree *gp)
+void gp_tree_destroy(struct gp_tree *gp)
 {
+        int i = 0;
+        struct ast *node;
+
         ast_tree_destroy(gp->tree);
 
         free(gp->max_size);
         free(gp->max_depth);
 
+        for (i = 0; i <= gp->function_set->end; i++) {
+                node = darray_get(gp->function_set, i);
+                ast_destroy(node);
+        }
+
+        for (i = 0; i <= gp->terminal_set->end; i++) {
+                node = darray_get(gp->terminal_set, i);
+                ast_destroy(node);
+        }
         darray_destroy(gp->function_set);
         darray_destroy(gp->terminal_set);
 
@@ -130,11 +142,13 @@ struct gp_tree *init_tree_full(struct gp_tree_config *config)
 
         /* initialize gp tree */
         gp = gp_tree_create(config->max_depth, config->max_size, config);
+
+        /* should make a copy rather than ref */
         gp->function_set = function_set;
         gp->terminal_set = terminal_set;
 
-        full_method(gp, gp->tree, gp->depth, *gp->max_depth);
-        printf("\n\n");
+        /* full_method(gp, gp->tree, gp->depth, *gp->max_depth); */
+        /* printf("\n\n"); */
 
         return gp;
 }

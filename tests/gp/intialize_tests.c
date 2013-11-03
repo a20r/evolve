@@ -12,7 +12,7 @@
 #include "selection.h"
 #include "gp/initialize.h"
 
-#define TEST_CONFIG_FILE "../tests/test_files/good_config.json"
+#define TEST_CONFIG_FILE "tests/test_files/init_test.json"
 
 /* GLOBAL VAR */
 struct evolve_config *config;
@@ -29,6 +29,7 @@ static void setup()
 
 static void teardown()
 {
+        gp_tree_destroy(gp);
         config_destroy(config);
        /* destroy_population(&p); */
 }
@@ -55,7 +56,7 @@ static int dot_graph_cb(struct ast *node)
 int test_init_tree_full()
 {
         gp = init_tree_full(gp_config);
-        ast_traverse(gp->tree, dot_graph_cb);
+        /* ast_traverse(gp->tree, dot_graph_cb); */
 
         return 0;
 }
