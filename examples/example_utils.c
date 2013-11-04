@@ -22,6 +22,11 @@ void print_evolve_results(struct population *p, float (*fitness_func)(char *))
 void print_top_individuals(struct evolve_monitor *m, int top)
 {
         int i = 0;
+        char *chromo;
+        float score;
+        int generation;
+        float rate;
+        float goal_dist;
 
         /* sort results */
         printf("SORTING RESULTS!\n");
@@ -30,27 +35,19 @@ void print_top_individuals(struct evolve_monitor *m, int top)
         /* print top individuals */
         if (m->top >= top) {
                 printf("\nTOP %d INDIVIDUALS:\n", top);
+
                 for (i = 0; i < top; i++) {
-                        printf(
-                                "individual: %s\n",
-                                (char *) darray_get(m->best_individuals, i)
-                        );
-                        printf(
-                                "score: %.2f\n",
-                                *(float *) darray_get(m->best_scores, i)
-                        );
-                        printf(
-                                "generation: %d\n",
-                                *(int *) darray_get(m->generations, i)
-                        );
-                        printf(
-                                "convergence rate: %.2f\n",
-                                *(float *) darray_get(m->convergence_rates, i)
-                        );
-                        printf(
-                                "goal distance: %.2f\n\n",
-                                *(float *) darray_get(m->goal_distances, i)
-                        );
+                        chromo = (char *) darray_get(m->best_individuals, i);
+                        score = *(float *) darray_get(m->best_scores, i);
+                        generation = *(int *) darray_get(m->generations, i);
+                        rate = *(float *) darray_get(m->convergence_rates, i);
+                        goal_dist = *(float *) darray_get(m->goal_distances, i);
+
+                        printf("individual: %s\n", chromo);
+                        printf("score: %.2f\n", score);
+                        printf("generation: %d\n", generation);
+                        printf("convergence rate: %.2f\n", rate);
+                        printf("goal distance: %.2f\n\n", goal_dist);
                 }
         }
 }

@@ -44,14 +44,14 @@ static void sort_test_setup(int max_gen, int max_pop)
 {
         /* run an evolution to fill the monitor struct */
         int chromo_sz = strlen(TEST_SOLUTION);
-        p = init_population(
+        p = population_create(
                 chromo_sz,  /* param */
                 122 * strlen(TEST_SOLUTION),  /* goal */
                 max_pop,  /* max_pop */
                 max_gen /* max_gen */
         );
         m = init_evolve_monitor(chromo_sz, 5, NULL);
-        init_individuals(p, randstr);
+        initialize_population(p, randstr);
 
         crossover_prob = calloc(1, sizeof(float));
         *crossover_prob = 0.8;
@@ -84,7 +84,7 @@ static void sort_test_setup(int max_gen, int max_pop)
 
 static void sort_test_teardown()
 {
-        destroy_population(&p);
+        population_destroy(&p, free);
         destroy_evolve_monitor(&m);
         p = NULL;
         m = NULL;
@@ -132,14 +132,14 @@ int test_destroy_evolve_monitor()
 int test_record_generation_stats()
 {
         int chromo_sz = strlen(TEST_SOLUTION) * sizeof(char);
-        struct population *p = init_population(
+        struct population *p = population_create(
                 chromo_sz,  /* param */
                 0.0,  /* goal */
                 10,  /* max_pop */
                 5 /* max_gen */
         );
         m = init_evolve_monitor(chromo_sz, 5, NULL);
-        init_individuals(p, randstr);
+        initialize_population(p, randstr);
         evaluate_individuals(fitness_function, &p);
 
         /* record generation stats */
@@ -167,7 +167,7 @@ int test_record_generation_stats()
         mu_assert(m->generations->max == 5, "Generations array is not 5!");
 
         /* clean up */
-        destroy_population(&p);
+        population_destroy(&p, free);
         destroy_evolve_monitor(&m);
         return 0;
 }

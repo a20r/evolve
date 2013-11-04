@@ -241,7 +241,7 @@ int main(int argc, char *argv[])
         signal(SIGINT, signal_handler);
 
         /* initialize evolution */
-        struct population *p = init_population(
+        struct population *p = population_create(
                 len,  /* param */
                 len * k,  /* goal */
                 max_pop,  /* max_pop */
@@ -258,7 +258,7 @@ int main(int argc, char *argv[])
         printf("RUNNING GA!\n");
         printf("Crossover Probability [%.2f]!\n", *p_c);
         printf("Mutation Probability [%.2f]!\n", *p_m);
-        init_individuals(p, randnumstr);
+        initialize_population(p, randnumstr);
 
         run_evolution(
                 &p,
@@ -284,11 +284,11 @@ int main(int argc, char *argv[])
 
         /* print results */
         print_evolve_results(p, fitness_function);
-        print_top_individuals(m, 5);
+        /* print_top_individuals(m, 5); */
 
         /* clean up */
         destroy_evolve_monitor(&m);
-        destroy_population(&p);
+        population_destroy(&p, free);
         teardown_strings();
         free(p_c);
         free(p_m);

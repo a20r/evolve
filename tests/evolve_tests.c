@@ -44,7 +44,7 @@ int test_run_evolution()
         float *crossover_prob;
         float *mutate_prob;
 
-        p = init_population(
+        p = population_create(
                 (int) strlen(TARGET_SOLUTION),  /* param */
                 122 * strlen(TARGET_SOLUTION),  /* goal */
                 max_pop,  /* max_pop */
@@ -62,7 +62,7 @@ int test_run_evolution()
         *crossover_prob = 0.5;
         *mutate_prob = 0.2;
 
-        init_individuals(p, randstr);
+        initialize_population(p, randstr);
         run_evolution(
                 &p,
                 fitness_function,
@@ -85,7 +85,7 @@ int test_run_evolution()
                 0,
                 &stop_signal
         );
-        destroy_population(&p);
+        population_destroy(&p, free);
 
         mu_assert(p == NULL, "Population should be NULL!");
 

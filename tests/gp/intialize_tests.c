@@ -11,6 +11,7 @@
 #include "population.h"
 #include "selection.h"
 #include "gp/initialize.h"
+#include "gp/tree_parser.h"
 
 #define TEST_CONFIG_FILE "tests/test_files/init_test.json"
 
@@ -31,34 +32,12 @@ static void teardown()
 {
         gp_tree_destroy(gp);
         config_destroy(config);
-       /* destroy_population(&p); */
-}
-
-static int dot_graph_cb(struct ast *node)
-{
-        if (node->tag == INTEGER) {
-                printf("NODE: %d\n", node->type.integer);
-        } else if (node->tag == REAL) {
-                printf("NODE: %f\n", node->type.real);
-        } else if (node->tag == STRING) {
-                printf("NODE: %s\n", node->type.string);
-        } else if (node->tag == CHARACTER) {
-                printf("NODE: %c\n", node->type.character);
-        } else if (node->tag == BOOL) {
-                printf("NODE: %d\n", node->type.boolean);
-        } else if (node->tag == UNARY_OP) {
-                printf("NODE: %s\n", node->type.unary->op_name);
-        } else if (node->tag == BINARY_OP || node->tag == START) {
-                printf("NODE: %s\n", node->type.binary->op_name);
-        }
-
-        return 0;
 }
 
 int test_init_tree_full()
 {
         gp = init_tree_full(gp_config);
-        ast_traverse(gp->tree, dot_graph_cb);
+        print_gp_tree_structure(gp->tree);
 
         return 0;
 }
@@ -75,6 +54,17 @@ int test_init_tree_ramped_half_and_half()
 
 int test_population_initialize()
 {
+        int i = 0;
+        struct gp_tree *tree;
+
+        p = population_initialize(init_tree_full, gp_config);
+
+        for (i = 0; i < p->max_population; i++) {
+                tree = darray_get(p->individuals, i);
+                print_gp_tree_structure(tree->tree);
+                gp_tree_destroy(tree);
+        }
+        population_destroy(&p, free);
 
         return 0;
 }
@@ -83,12 +73,14 @@ void test_suite()
 {
         setup();
 
-        /* seed random - VERY IMPORTANT! */
-        srand(time(NULL));
+        srand(time(NULL)); /* seed random - VERY IMPORTANT! */
+
+
 
         mu_run_test(test_init_tree_full);
         /* mu_run_test(test_init_tree_grow); */
         /* mu_run_test(test_init_tree_ramped_half_and_half); */
+        mu_run_test(test_population_initialize);
 
         teardown();
 }

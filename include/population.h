@@ -25,13 +25,13 @@ struct population {
 };
 
 /* FUNCTIONS */
-struct population *init_population(
+struct population *population_create(
         size_t individual_size,
         float goal,
         int max_pop,
         int max_gen
 );
-void destroy_population(struct population **p);
+void population_destroy(struct population **p, void (*free_func)(void *));
 void extend_max_generation(struct population *p, int extension_size);
 int evaluate_individuals(float (eval_func)(char *), struct population **p);
 void normalize_fitness_values(struct population **p);

@@ -19,7 +19,10 @@ struct gp_tree
 /* FUNCTIONS */
 struct gp_tree *init_tree_full(struct gp_tree_config *config);
 void gp_tree_destroy(struct gp_tree *gp);
-// void init_tree_grow(struct population *p);
-// void init_tree_ramped_half_and_half(struct population *p);
+struct gp_tree *init_tree_full(struct gp_tree_config *config);
+struct population *population_initialize(
+        struct gp_tree *(*tree_initializer)(struct gp_tree_config *),
+        struct gp_tree_config *config
+);
 
 #endif

@@ -14,7 +14,7 @@
 static struct population *create_empty_population(struct population *p)
 {
         struct population *new_p;
-        new_p = init_population(
+        new_p = population_create(
                 p->individuals->element_size,
                 p->goal,
                 p->max_population,
@@ -103,7 +103,7 @@ void roulette_wheel_selection(struct population **p, int *select)
                 }
         }
 
-        destroy_population(&(*p));
+        population_destroy(&(*p), free);
         *p = new_p;
 }
 
@@ -244,6 +244,6 @@ void tournament_selection(struct population **p, int *select)
         /* clean up */
         darray_clear_destroy(t_chromos);
         darray_clear_destroy(t_scores);
-        destroy_population(&(*p));
+        population_destroy(&(*p), free);
         *p = new_p;
 }

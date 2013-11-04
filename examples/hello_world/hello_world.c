@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
         srand(time(NULL));
 
         /* initialize evolution */
-        p = init_population(
+        p = population_create(
                 (int) strlen(TARGET_SOLUTION),  /* param */
                 122 * strlen(TARGET_SOLUTION),  /* goal */
                 max_pop,  /* max_pop */
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
         printf("RUNNING GA!\n");
         printf("Crossover Probability [%.4f]!\n", *p_c);
         printf("Mutation Probability [%.4f]!\n", *p_m);
-        init_individuals(p, randstr);
+        initialize_population(p, randstr);
         run_evolution(
                 &p,
                 fitness_function,
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
 
         /* clean up */
         destroy_evolve_monitor(&m);
-        destroy_population(&p);
+        population_destroy(&p, free);
         free(p_c);
         free(p_m);
 

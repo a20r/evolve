@@ -10,7 +10,7 @@
 #include "ga/mutation.h"
 
 
-struct population *init_population(
+struct population *population_create(
         size_t individual_size,
         float goal,
         int max_pop,
@@ -44,11 +44,22 @@ error:
         return p;
 }
 
-void destroy_population(struct population **p)
+void population_destroy(struct population **p, void (*free_func)(void *))
 {
+        int i = 0;
+
         if ((*p)) {
-                release_mem((*p)->individuals, darray_clear_destroy);
+                /* individuals */
+                if ((*p)->individuals) {
+                        for (i = 0; i < (*p)->population; i++) {
+                                free_func(darray_get((*p)->individuals, i));
+                        }
+                }
+                darray_destroy((*p)->individuals);
+
+                /* scores */
                 release_mem((*p)->scores, darray_clear_destroy);
+
                 free(*p);
                 *p = NULL;
         }
@@ -309,14 +320,11 @@ void populate(
         void *c_1;  /* child 1 */
         void *c_2;  /* child 2 */
 
-        int c_1_len = 0;
-        int c_2_len = 0;
-
         struct darray *old_chromos = (*p)->individuals;
         int population = (*p)->population;
 
         /* initialize new population */
-        struct population *new_p = init_population(
+        struct population *new_p = population_create(
                 (*p)->individuals->element_size,
                 (*p)->goal,
                 (*p)->max_population,
@@ -329,20 +337,18 @@ void populate(
         /* crossover and mutate */
         for (i = 0; i < population; i += 2) {
                 /* obtain parents for reproduction */
-                c_1_len = strlen(darray_get(old_chromos, i));
-                c_2_len = strlen(darray_get(old_chromos, i + 1));
                 p_1 = darray_get(old_chromos, i);
                 p_2 = darray_get(old_chromos, i + 1);
 
                 for (j = 0; j < 2; j++) {
                         /* make sure number of offspring < max_population */
-                        if (i + j + child_pair  == (*p)->max_population) {
+                        if (i + j + child_pair == (*p)->max_population) {
                                 break;
                         }
 
                         /* prepare children c_1 and c_2 */
-                        c_1 = calloc(1, sizeof(char) * (c_1_len + 1));
-                        c_2 = calloc(1, sizeof(char) * (c_2_len + 1));
+                        c_1 = calloc(1, old_chromos->element_size + 1);
+                        c_2 = calloc(1, old_chromos->element_size + 1);
                         memcpy(c_1, p_1, old_chromos->element_size);
                         memcpy(c_2, p_2, old_chromos->element_size);
 
@@ -366,6 +372,6 @@ void populate(
         }
 
         /* clean up */
-        destroy_population(&(*p));
+        population_destroy(&(*p), free);
         *p = new_p;
 }

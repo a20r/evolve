@@ -30,19 +30,19 @@ static float fitness_function(char *individual)
 
 static void setup()
 {
-        p = init_population(
+        p = population_create(
                 (int) strlen("hello world!"),  /* param */
                 0.0,  /* goal */
                 10,  /* max_pop */
                 1 /* max_gen */
         );
-        init_individuals(p, randstr);
+        initialize_population(p, randstr);
         evaluate_individuals(fitness_function, &p);
 }
 
 static void teardown()
 {
-        destroy_population(&p);
+        population_destroy(&p, free);
 }
 
 int test_roulette_wheel_selection()

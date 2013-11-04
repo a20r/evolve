@@ -75,7 +75,7 @@ static void restore_stdout()
 
 static void setup(int max_pop, int max_gen)
 {
-        p = init_population(
+        p = population_create(
                 (int) strlen("hello world!"),  /* chromo_length */
                 0.0,  /* goal */
                 max_pop,  /* max_pop */
@@ -85,19 +85,19 @@ static void setup(int max_pop, int max_gen)
 
 static void print_setup(int max_pop, int max_gen)
 {
-        p = init_population(
+        p = population_create(
                 (int) strlen("hello world!"),  /* chromo_length */
                 0.0,  /* goal */
                 max_pop,  /* max_pop */
                 max_gen /* max_gen */
         );
-        init_individuals(p, randstr);
+        initialize_population(p, randstr);
         evaluate_individuals(fitness_function, &p);
 }
 
 static void teardown()
 {
-        destroy_population(&p);
+        population_destroy(&p, free);
 }
 
 static void testsuite_cleanup()
@@ -128,7 +128,7 @@ static int read_file(char* fp)
         return line_counter;
 }
 
-int test_init_population()
+int test_population_create()
 {
         setup(max_pop, 1);
 
@@ -178,7 +178,7 @@ int test_evaluate_individuals()
 
         /* setup */
         setup(max_pop, 1);
-        init_individuals(p, randstr);
+        initialize_population(p, randstr);
 
         /* replace last individual to match the solution */
         solution = malloc(p->individuals->element_size);
@@ -226,7 +226,7 @@ int test_normalize_fitness_values()
 
         /* setup */
         setup(10, 1);
-        init_individuals(p, randstr);
+        initialize_population(p, randstr);
         evaluate_individuals(fitness_function, &p);
 
         printf("Before Normalization\n");
@@ -340,7 +340,7 @@ int test_partition_population()
 
         /* setup */
         setup(max_pop, max_gen);
-        init_individuals(p, randstr);
+        initialize_population(p, randstr);
         evaluate_individuals(fitness_function, &p);
 
         printf("Before Population Sort\n");
@@ -425,7 +425,7 @@ int test_sort_population()
         printf("After Population Sort\n");
         print_individuals(p);
 
-        /* #<{(| assert tests |)}># */
+        /* assert tests */
         res = assert_sorted_population(p, float_cmp_asc);
         mu_assert(res == 0, "Failed to sort population!");
 
@@ -438,7 +438,7 @@ int test_populate()
 {
         /* setup */
         setup(max_pop, 1);
-        init_individuals(p, randstr);
+        initialize_population(p, randstr);
         evaluate_individuals(fitness_function, &p);
         roulette_wheel_selection(&p, NULL);
 
@@ -459,15 +459,17 @@ int test_populate()
         mu_assert(p->individuals->end == max_pop - 1, "Invalid end value!");
         mu_assert(p->population == max_pop, "Invalid current population!");
 
-        /* teardown */
+        /* clean up*/
         teardown();
+        free(crossover_prob);
+        free(mutate_prob);
 
         return 0;
 }
 
-int test_destroy_population()
+int test_population_destroy()
 {
-        destroy_population(&p);
+        population_destroy(&p, free);
         mu_assert(p == NULL, "Struct population should be NULL!");
 
         return 0;
@@ -479,11 +481,11 @@ void test_suite()
         srand(time(NULL));
 
         /* tests population functions */
-        mu_run_test(test_init_population);
+        mu_run_test(test_population_create);
         mu_run_test(test_extend_max_generation);
         mu_run_test(test_evaluate_individuals);
         mu_run_test(test_normalize_fitness_values);
-        mu_run_test(test_destroy_population);
+        mu_run_test(test_population_destroy);
 
         /* print functions */
         mu_run_test(test_print_individual);

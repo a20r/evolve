@@ -9,7 +9,9 @@ ADD_LIBRARY(
    initialize.c
    function_set.c
    terminal_set.c
+   tree_parser.c
 )
 TARGET_LINK_LIBRARIES(${LIBRARY_NAME} m)
 TARGET_LINK_LIBRARIES(${LIBRARY_NAME} al)
 TARGET_LINK_LIBRARIES(${LIBRARY_NAME} dstruct)
+TARGET_LINK_LIBRARIES(${LIBRARY_NAME} evolve)

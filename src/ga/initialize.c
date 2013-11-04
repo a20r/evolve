@@ -4,7 +4,7 @@
 #include "population.h"
 
 
-void init_individuals(struct population *p, char *(*mutator)(int))
+void initialize_population(struct population *p, char *(*mutator)(int))
 {
         int i = 0;
         int chromo_length = p->individuals->element_size;

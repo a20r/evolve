@@ -2,9 +2,9 @@
     "mode" :  "GP_TREE",
 
     "gp_tree" :  {
-        "max_pop" : 1000,
-        "max_gen" : 1000,
-        "max_depth" : 5,
+        "max_pop" : 10,
+        "max_gen" : 10,
+        "max_depth" : 3,
         "max_size" : 200,
 
         "function_set" : [
