@@ -61,10 +61,11 @@ int test_population_initialize()
 
         for (i = 0; i < p->max_population; i++) {
                 tree = darray_get(p->individuals, i);
+                printf("TREE[%d]\n", i);
                 print_gp_tree_structure(tree->tree);
-                gp_tree_destroy(tree);
+                printf("\n\n");
         }
-        population_destroy(&p, free);
+        population_destroy(&p, gp_tree_destroy);
 
         return 0;
 }

@@ -24,9 +24,9 @@ static struct gp_tree *gp_tree_create()
         return gp;
 }
 
-void gp_tree_destroy(struct gp_tree *gp)
+void gp_tree_destroy(void *gp)
 {
-        ast_tree_destroy(gp->tree);
+        ast_tree_destroy(((struct gp_tree *) gp)->tree);
         free(gp);
 }
 
