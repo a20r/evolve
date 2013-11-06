@@ -37,7 +37,7 @@ static void teardown()
 int test_init_tree_full()
 {
         gp = init_tree_full(gp_config);
-        print_gp_tree_structure(gp->tree);
+        print_gp_tree(gp->tree);
 
         mu_assert(gp != NULL, "Failed to intialize gp tree!");
 
@@ -64,7 +64,7 @@ int test_population_initialize()
         for (i = 0; i < p->max_population; i++) {
                 tree = darray_get(p->individuals, i);
                 printf("TREE[%d]\n", i);
-                print_gp_tree_structure(tree->tree);
+                print_gp_tree(tree->tree);
                 printf("\n\n");
         }
         population_destroy(&p, gp_tree_destroy);
