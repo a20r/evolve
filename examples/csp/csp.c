@@ -242,7 +242,7 @@ int main(int argc, char *argv[])
 
         /* initialize evolution */
         struct population *p = population_create(
-                len,  /* param */
+                len,  /* individual size */
                 len * k,  /* goal */
                 max_pop,  /* max_pop */
                 max_gen  /* max_gen */

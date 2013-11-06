@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 
         /* initialize evolution */
         p = population_create(
-                (int) strlen(TARGET_SOLUTION),  /* param */
+                (int) strlen(TARGET_SOLUTION),  /* individual size */
                 122 * strlen(TARGET_SOLUTION),  /* goal */
                 max_pop,  /* max_pop */
                 max_gen  /* max_gen */

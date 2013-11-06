@@ -39,6 +39,8 @@ int test_init_tree_full()
         gp = init_tree_full(gp_config);
         print_gp_tree_structure(gp->tree);
 
+        mu_assert(gp != NULL, "Failed to intialize gp tree!");
+
         return 0;
 }
 
@@ -74,9 +76,8 @@ void test_suite()
 {
         setup();
 
-        srand(time(NULL)); /* seed random - VERY IMPORTANT! */
-
-
+        /* seed random - VERY IMPORTANT! */
+        srand(time(NULL));
 
         mu_run_test(test_init_tree_full);
         /* mu_run_test(test_init_tree_grow); */

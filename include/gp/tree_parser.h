@@ -3,5 +3,4 @@
 
 /* FUNCTIONS */
 int print_gp_tree_structure(struct ast *node);
-
 #endif
