@@ -2,10 +2,10 @@
 
 #include <dbg/dbg.h>
 #include <dstruct/ast.h>
-#include <dstruct/linked_list.h>
+#include <dstruct/queue.h>
 
 
-static int dot_graph_list_node(struct ast*node)
+static int dot_graph_q_node(struct ast*node)
 {
         if (node->tag == INTEGER) {
                 printf("\"%d", node->type.integer);
@@ -36,7 +36,7 @@ static int dot_graph_list_node(struct ast*node)
                 printf("%p\"", &node->type.binary->op_name);
                 printf("[label=\"%s\"];\n", node->type.binary->op_name);
         } else {
-                log_err("OPPS! Unknown node type to list!");
+                log_err("OPPS! Unknown node type to q!");
                 return -1;
         }
 
@@ -65,7 +65,7 @@ static int dot_graph_print_node(struct ast *node)
                 printf("%p\"", &node->type.unary->op_name);
         } else if (node->tag == BINARY_OP || node->tag == START) {
                 printf("\"%s", node->type.binary->op_name);
-                printf("%p", &node->type.binary->op_name);
+                printf("%p\"", &node->type.binary->op_name);
         } else {
                 log_err("OPPS! Unknown node type to print!");
                 return -1;
@@ -77,7 +77,7 @@ static int dot_graph_print_node(struct ast *node)
 static int dot_graph_print_relation(
         struct ast *from,
         struct ast *to,
-        struct linked_list *node_list
+        struct queue *node_list
 )
 {
         /* print */
@@ -86,13 +86,13 @@ static int dot_graph_print_relation(
         dot_graph_print_node(to);
         printf(";\n");
 
-        /* push node to list */
-        linked_list_push(node_list, to);
+        /* push node to q */
+        queue_enqueue(node_list, to);
 
         return 0;
 }
 
-static int print_tree_structure(struct ast *node, struct linked_list *node_list)
+static int print_tree_structure(struct ast *node, struct queue *node_list)
 {
         int res = 0;
 
@@ -115,30 +115,94 @@ error:
         return res;
 }
 
-int print_gp_tree_structure(struct ast *node)
+int print_gp_tree(struct ast *node)
 {
         int i = 0;
-        struct linked_list *node_list;
+        int node_count = 0;
+        struct queue *node_list;
         struct ast *n;
-        int node_count;
 
         /* setup */
-        node_list = linked_list_create();
-        linked_list_push(node_list, node);
+        node_list = queue_create(0);
+        queue_enqueue(node_list, node);
 
         /* print nodes and relationships */
         print_tree_structure(node, node_list);
         printf("\n");
 
-        /* print node list */
+        /* print node q */
         node_count = node_list->count;
         for (i = 0; i < node_count; i++) {
-                n = linked_list_pop(node_list);
-                dot_graph_list_node(n);
+                n = queue_dequeue(node_list);
+                dot_graph_q_node(n);
         }
 
         /* clean up */
-        linked_list_destroy(node_list);
+        queue_destroy(node_list);
 
         return 0;
+}
+
+static int post_order_traverse(struct ast *node, struct queue *q)
+{
+        int status = 0;
+        struct ast *node_copy;
+
+        /* POST-ORDER TRAVERSAL */
+        if (node->tag == INTEGER
+                || node->tag == REAL
+                || node->tag == STRING
+                || node->tag == CHARACTER
+                || node->tag == BOOL
+        ) {
+                node_copy = ast_copy_node(node);
+                queue_enqueue(q, node_copy);
+
+        } else if (node->tag == UNARY_OP) {
+                /* value */
+                status = post_order_traverse(node->type.unary->value, q);
+                check(status == 0, "Failed to traverse unary node!");
+
+                /* root */
+                node_copy = ast_copy_node(node);
+                queue_enqueue(q, node_copy);
+
+        } else if (node->tag == BINARY_OP || node->tag == START) {
+                /* left */
+                status = post_order_traverse(node->type.binary->left, q);
+                check(status == 0, "Failed to traverse binary->left node!");
+
+                /* right */
+                status = post_order_traverse(node->type.binary->right, q);
+                check(status == 0, "Failed to traverse binary->right node!");
+
+                /* root */
+                node_copy = ast_copy_node(node);
+                queue_enqueue(q, node_copy);
+        } else {
+                log_err("OPPS! Unknown node type to q!");
+                goto error;
+        }
+
+        return 0;
+error:
+        return -1;
+}
+
+
+struct queue *parse_gp_tree(struct ast *node)
+{
+        int status = 0;
+        struct queue *q;
+
+        /* setup */
+        q = queue_create(0);
+
+        /* parse gp tree */
+        status = post_order_traverse(node, q);
+        check(status == 0, "Failed to traverse gp tree!");
+
+        return q;
+error:
+        return NULL;
 }

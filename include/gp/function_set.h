@@ -2,7 +2,11 @@
 #define _FUNCTION_SET_H_
 
 /* FUNCTIONS */
-struct ast *gp_default_function_factory(char *func_type);
-struct ast *gp_function_factory(char *tag, char *op_name);
+struct ast *execute_unary_function(struct ast *node, struct ast *value);
+struct ast *execute_binary_function(
+        struct ast *node,
+        struct ast *x,
+        struct ast *y
+);
 
 #endif

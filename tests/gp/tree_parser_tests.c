@@ -5,12 +5,10 @@
 #include <munit/munit.h>
 #include <al/utils.h>
 #include <dstruct/darray.h>
-#include <dstruct/linked_list.h>
+#include <dstruct/queue.h>
 
 #include "config/config.h"
-#include "evolve.h"
 #include "population.h"
-#include "selection.h"
 #include "gp/initialize.h"
 #include "gp/tree_parser.h"
 
@@ -18,6 +16,7 @@
 
 /* GLOBAL VAR */
 struct evolve_config *config;
+struct gp_tree_config *gp_config;
 struct gp_tree *gp;
 
 
@@ -73,27 +72,32 @@ int test_parse_gp_tree()
         int i = 0;
         int len = 0;
         int status = 0;
-        struct linked_list *list;
+        struct queue *q;
         struct ast *node;
 
-        list = parse_gp_tree(gp->tree);
-        mu_assert(list != NULL, "Failed to parse gp tree!");
+        q = parse_gp_tree(gp->tree);
+        mu_assert(q != NULL, "Failed to parse gp tree!");
 
-        len = list->count;
+        len = q->count;
         for (i = 0; i < len; i++) {
-                node = linked_list_pop(list);
-                mu_assert(node != NULL, "Node from list should not be NULL!");
+                node = queue_dequeue(q);
+                mu_assert(node != NULL, "Node from q should not be NULL!");
 
                 status = print_node(node);
                 mu_assert(status != -1, "Unrecognised node!");
+
+                ast_destroy(node);
         }
-        linked_list_destroy(list);
+        queue_destroy(q);
 
         return 0;
 }
 
 void test_suite()
 {
+        /* seed random - VERY IMPORTANT! */
+        srand(time(NULL));
+
         setup();
 
         mu_run_test(test_print_gp_tree);

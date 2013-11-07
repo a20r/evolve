@@ -10,6 +10,7 @@ ADD_LIBRARY(
    function_set.c
    terminal_set.c
    tree_parser.c
+   tree_evaluator.c
 )
 TARGET_LINK_LIBRARIES(${LIBRARY_NAME} m)
 TARGET_LINK_LIBRARIES(${LIBRARY_NAME} al)

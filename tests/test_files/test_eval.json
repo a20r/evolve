@@ -2,10 +2,10 @@
     "mode" :  "GP_TREE",
 
     "gp_tree" :  {
-        "max_pop" : 10,
-        "max_gen" : 10,
-        "max_depth" : 2,
-        "max_size" : 200,
+        "max_pop" : 1000,
+        "max_gen" : 1000,
+        "max_depth" : 3,
+        "max_size" : 100,
 
         "function_set" : [
             {
@@ -27,32 +27,24 @@
         ],
         "terminal_set" : [
             {
-                "tag": "STRING",
-                "value": "x"
+                "tag": "REAL",
+                "value": 0.0
             },
             {
-                "tag": "STRING",
-                "value": "y"
+                "tag": "REAL",
+                "value": 1.0
             },
             {
-                "tag": "INTEGER",
-                "value": 0
+                "tag": "REAL",
+                "value": 2.0
             },
             {
-                "tag": "INTEGER",
-                "value": 1
+                "tag": "REAL",
+                "value": 3.0
             },
             {
-                "tag": "INTEGER",
-                "value": 2
-            },
-            {
-                "tag": "INTEGER",
-                "value": 3
-            },
-            {
-                "tag": "INTEGER",
-                "value": 4
+                "tag": "REAL",
+                "value": 4.0
             },
             {
                 "tag": "REAL",

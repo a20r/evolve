@@ -39,12 +39,12 @@
                 "value": 1
             },
             {
-                "tag": "INTEGER",
-                "value": 2
+                "tag": "REAL",
+                "value": 2.0
             },
             {
-                "tag": "INTEGER",
-                "value": 3
+                "tag": "REAL",
+                "value": 3.0
             }
     ]
 

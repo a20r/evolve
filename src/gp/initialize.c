@@ -9,13 +9,17 @@
 #include "gp/terminal_set.h"
 
 
-static struct gp_tree *gp_tree_create()
+static struct gp_tree *gp_tree_create(struct gp_tree_config *config)
 {
+        int i = 0;
         struct gp_tree *gp;
+        struct ast *node;
 
         /* initialize empty tree */
         gp = calloc(1, sizeof(struct gp_tree));
-        gp->tree = ast_tree_create();
+        i = randnum_i(0, config->function_set->end);
+        node = darray_get(config->function_set, i);
+        gp->tree = ast_copy_node(node);
 
         /* tree size and depth settings */
         gp->size = 0;
@@ -75,7 +79,7 @@ static int full_method(
                 res = full_method(tree, n, depth + 1, max_depth, f_set, t_set);
                 check(res == 0, "Failed to intialize tree!");
 
-        } else if (node->tag == START || node->tag == BINARY_OP) {
+        } else if (node->tag == BINARY_OP) {
                 /* left */
                 n = full_method_gen_node(depth, max_depth, f_set, t_set);
                 node->type.binary->left= n;
@@ -112,7 +116,7 @@ struct gp_tree *init_tree_full(struct gp_tree_config *config)
         t_set = config->terminal_set;
 
         /* initialize gp tree */
-        gp = gp_tree_create();
+        gp = gp_tree_create(config);
         full_method(gp, gp->tree, gp->depth, max_depth, f_set, t_set);
 
         return gp;

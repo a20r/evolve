@@ -283,6 +283,8 @@ int test_set_ast_array()
                         printf("node: %s\n", solution->type.string);
                 } else if (solution->tag == INTEGER) {
                         printf("node: %d\n", solution->type.integer);
+                } else if (solution->tag == REAL) {
+                        printf("node: %f\n", solution->type.real);
                 }
 
                 mu_assert(solution != NULL, "Failed to set_ast_array()!");

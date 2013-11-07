@@ -1,6 +1,10 @@
 #ifndef _GP_TREE_PARSER_H_
 #define _GP_TREE_PARSER_H_
 
+#include <dstruct/queue.h>
+
 /* FUNCTIONS */
-int print_gp_tree_structure(struct ast *node);
+int print_gp_tree(struct ast *node);
+struct queue *parse_gp_tree(struct ast *node);
+
 #endif
