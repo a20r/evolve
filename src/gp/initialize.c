@@ -22,7 +22,7 @@ static struct gp_tree *gp_tree_create(struct gp_tree_config *config)
         gp->tree = ast_copy_node(node);
 
         /* tree size and depth settings */
-        gp->size = 0;
+        gp->size = 1;
         gp->depth = 0;
 
         return gp;
@@ -73,8 +73,10 @@ static int full_method(
         if (depth == max_depth) {
                 return 0;
         } else if (node->tag == UNARY_OP) {
+                /* value */
                 n = full_method_gen_node(depth, max_depth, f_set, t_set);
                 node->type.unary->value = n;
+                tree->size++;
 
                 res = full_method(tree, n, depth + 1, max_depth, f_set, t_set);
                 check(res == 0, "Failed to intialize tree!");
@@ -83,6 +85,7 @@ static int full_method(
                 /* left */
                 n = full_method_gen_node(depth, max_depth, f_set, t_set);
                 node->type.binary->left= n;
+                tree->size++;
 
                 res = full_method(tree, n, depth + 1, max_depth, f_set, t_set);
                 check(res == 0, "Failed to intialize tree!");
@@ -90,6 +93,7 @@ static int full_method(
                 /* right */
                 n = full_method_gen_node(depth, max_depth, f_set, t_set);
                 node->type.binary->right= n;
+                tree->size++;
 
                 res = full_method(tree, n, depth + 1, max_depth, f_set, t_set);
                 check(res == 0, "Failed to intialize tree!");
@@ -118,6 +122,7 @@ struct gp_tree *init_tree_full(struct gp_tree_config *config)
         /* initialize gp tree */
         gp = gp_tree_create(config);
         full_method(gp, gp->tree, gp->depth, max_depth, f_set, t_set);
+        gp->depth = max_depth;
 
         return gp;
 }

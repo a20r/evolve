@@ -40,6 +40,8 @@ int test_init_tree_full()
         print_gp_tree(gp->tree);
 
         mu_assert(gp != NULL, "Failed to intialize gp tree!");
+        mu_assert(gp->size == 7, "Failed to intialize gp tree!");
+        mu_assert(gp->depth == 2, "Failed to intialize gp tree!");
 
         return 0;
 }
@@ -63,7 +65,9 @@ int test_population_initialize()
 
         for (i = 0; i < p->max_population; i++) {
                 tree = darray_get(p->individuals, i);
-                printf("TREE[%d]\n", i);
+                printf("- TREE[%d]", i);
+                printf(" [size: %d]", tree->size);
+                printf("[depth: %d]\n", tree->depth);
                 print_gp_tree(tree->tree);
                 printf("\n\n");
         }
