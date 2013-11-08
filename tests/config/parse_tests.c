@@ -230,6 +230,8 @@ int test_set_ast_array()
         struct darray *target;
         struct ast *solution = NULL;
 
+        /* FUNCTION MODE */
+        printf("--- FUNCTION SET ---\n");
         /* set target and solution */
         target = darray_create(sizeof(struct ast *), 100);
         res = set_ast_array(
@@ -239,7 +241,6 @@ int test_set_ast_array()
                 FUNCTION_MODE
         );
 
-        /* FUNCTION MODE */
         mu_assert(target->end != 0, "target should not have length 0!");
         mu_assert(res == 0, "Failed to set_ast_array()!");
 
@@ -263,13 +264,53 @@ int test_set_ast_array()
         }
         darray_destroy(target);
 
+
         /* TERMINAL MODE */
+        printf("--- TERMINAL SET ---\n");
         target = darray_create(sizeof(struct ast *), 100);
         res = set_ast_array(
                 root,
                 "test_set_ast_array_terminal_mode",
                 target,
                 TERMINAL_MODE
+        );
+
+        /* assert */
+        mu_assert(target->end != 0, "target should not have length 0!");
+        mu_assert(res == 0, "Failed to set_ast_array()!");
+
+        for (i = 0; i <= target->end; i++) {
+                solution = darray_get(target, i);
+
+                if (solution->tag == STRING) {
+                        printf("node: %s\n", solution->type.string);
+                } else if (solution->tag == INTEGER) {
+                        printf("node: %d\n", solution->type.integer);
+                } else if (solution->tag == REAL) {
+                        printf("node: %f\n", solution->type.real);
+                }
+
+                mu_assert(solution != NULL, "Failed to set_ast_array()!");
+                solution = NULL;
+        }
+
+
+        /* clean up */
+        for (i = 0; i <= target->end; i++) {
+                solution = darray_get(target, i);
+                ast_destroy(solution);
+        }
+        darray_destroy(target);
+
+
+        /* INPUT MODE */
+        printf("--- INPUT SET ---\n");
+        target = darray_create(sizeof(struct ast *), 100);
+        res = set_ast_array(
+                root,
+                "test_set_ast_array_input_mode",
+                target,
+                INPUT_MODE
         );
 
         /* assert */

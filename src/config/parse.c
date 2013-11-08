@@ -236,6 +236,11 @@ int set_ast_array(json_t *obj, char *path, struct darray *target, int mode)
 
                         check(node, "Error! Failed to create terminal node!");
                         free(tag);
+
+                } else if (mode == INPUT_MODE) {
+                        str = get_str(element, "var_name");
+                        node = ast_make_exp(STRING, str);
+                        check(node, "Error! Failed to create input node!");
                 }
 
                 /* set array element */
@@ -295,6 +300,10 @@ int parse_gp_tree_config(json_t *obj, struct gp_tree_config *config)
         /* terminal set */
         res = set_ast_array(obj, "terminal_set", terminal_set, TERMINAL_MODE);
         check(res == 0, "Failed to parse terminal_set!");
+
+        /* input set */
+        res = set_ast_array(obj, "input_set", terminal_set, INPUT_MODE);
+        check(res == 0, "Failed to parse input_set!");
 
         return 0;
 error:

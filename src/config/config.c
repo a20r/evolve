@@ -57,6 +57,7 @@ struct gp_tree_config *init_gp_tree_config()
         /* primitives */
         gp_tree->function_set = darray_create(sizeof(struct ast), 100);
         gp_tree->terminal_set  = darray_create(sizeof(struct ast), 100);
+        gp_tree->input_set = darray_create(sizeof(struct ast), 100);
 
         return gp_tree;
 }
@@ -78,17 +79,32 @@ void destroy_gp_tree_config(struct gp_tree_config *config)
         free(config->max_depth);
         free(config->max_size);
 
-        for (i = 0; i <= config->function_set->end; i++) {
-                node = darray_get(config->function_set, i);
-                ast_destroy(node);
+        /* FUNCTION SET */
+        if (config->function_set->end != 0) {
+                for (i = 0; i <= config->function_set->end; i++) {
+                        node = darray_get(config->function_set, i);
+                        ast_destroy(node);
+                }
         }
 
-        for (i = 0; i <= config->terminal_set->end; i++) {
-                node = darray_get(config->terminal_set, i);
-                ast_destroy(node);
+        /* TERMINAL SET */
+        if (config->terminal_set->end != 0) {
+                for (i = 0; i <= config->terminal_set->end; i++) {
+                        node = darray_get(config->terminal_set, i);
+                        ast_destroy(node);
+                }
+        }
+
+        /* INPUT SET */
+        if (config->input_set->end != 0) {
+                for (i = 0; i <= config->input_set->end; i++) {
+                        node = darray_get(config->input_set, i);
+                        ast_destroy(node);
+                }
         }
         darray_destroy(config->function_set);
         darray_destroy(config->terminal_set);
+        darray_destroy(config->input_set);
 
         free(config);
 }

@@ -11,6 +11,7 @@
 /* DEFINES */
 #define FUNCTION_MODE 1
 #define TERMINAL_MODE 2
+#define INPUT_MODE 3
 
 
 /* FUNCTIONS */
