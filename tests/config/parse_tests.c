@@ -238,7 +238,7 @@ int test_set_ast_array()
                 root,
                 "test_set_ast_array_function_mode",
                 target,
-                FUNCTION_MODE
+                FUNCTION_SET
         );
 
         mu_assert(target->end != 0, "target should not have length 0!");
@@ -272,7 +272,7 @@ int test_set_ast_array()
                 root,
                 "test_set_ast_array_terminal_mode",
                 target,
-                TERMINAL_MODE
+                TERMINAL_SET
         );
 
         /* assert */
@@ -310,7 +310,7 @@ int test_set_ast_array()
                 root,
                 "test_set_ast_array_input_mode",
                 target,
-                INPUT_MODE
+                INPUT_SET
         );
 
         /* assert */

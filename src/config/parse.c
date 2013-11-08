@@ -200,7 +200,7 @@ int set_ast_array(json_t *obj, char *path, struct darray *target, int mode)
                 element = json_array_get(array, i);
 
                 /* parse element */
-                if (mode == FUNCTION_MODE) {
+                if (mode == FUNCTION_SET) {
                         tag = get_str(element, "tag");
                         type = get_str(element, "type");
 
@@ -217,7 +217,7 @@ int set_ast_array(json_t *obj, char *path, struct darray *target, int mode)
                         free(tag);
                         free(type);
 
-                } else if (mode == TERMINAL_MODE) {
+                } else if (mode == TERMINAL_SET) {
                         tag = get_str(element, "tag");
 
                         if (strcmp(tag, "INTEGER") == 0) {
@@ -237,7 +237,7 @@ int set_ast_array(json_t *obj, char *path, struct darray *target, int mode)
                         check(node, "Error! Failed to create terminal node!");
                         free(tag);
 
-                } else if (mode == INPUT_MODE) {
+                } else if (mode == INPUT_SET) {
                         str = get_str(element, "var_name");
                         node = ast_make_exp(STRING, str);
                         check(node, "Error! Failed to create input node!");
@@ -295,15 +295,15 @@ int parse_gp_tree_config(json_t *obj, struct gp_tree_config *config)
         check(res == 0, "Failed to parse max_size!");
 
         /* function set */
-        res = set_ast_array(obj, "function_set", function_set, FUNCTION_MODE);
+        res = set_ast_array(obj, "function_set", function_set, FUNCTION_SET);
         check(res == 0, "Failed to parse function_set!");
 
         /* terminal set */
-        res = set_ast_array(obj, "terminal_set", terminal_set, TERMINAL_MODE);
+        res = set_ast_array(obj, "terminal_set", terminal_set, TERMINAL_SET);
         check(res == 0, "Failed to parse terminal_set!");
 
         /* input set */
-        res = set_ast_array(obj, "input_set", input_set, INPUT_MODE);
+        res = set_ast_array(obj, "input_set", input_set, INPUT_SET);
         check(res == 0, "Failed to parse input_set!");
 
         return 0;

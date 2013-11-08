@@ -9,9 +9,9 @@
 
 
 /* DEFINES */
-#define FUNCTION_MODE 1
-#define TERMINAL_MODE 2
-#define INPUT_MODE 3
+#define FUNCTION_SET 1
+#define TERMINAL_SET 2
+#define INPUT_SET 3
 
 
 /* FUNCTIONS */
