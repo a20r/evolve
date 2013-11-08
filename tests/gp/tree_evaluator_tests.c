@@ -172,11 +172,8 @@ void test_suite()
         /* seed random - VERY IMPORTANT! */
         srand(time(NULL));
 
-
         setup();
-        /* mu_run_test(test_evaluate_node); */
-        /* teardown(); */
-        /* setup(); */
+        mu_run_test(test_evaluate_node);
         mu_run_test(test_evaluate_program);
         teardown();
 
