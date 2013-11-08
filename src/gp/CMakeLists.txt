@@ -7,10 +7,13 @@ ADD_LIBRARY(
    ${LIBRARY_NAME}
 
    initialize.c
+   mutation.c
+   crossover.c
    function_set.c
    terminal_set.c
    tree_parser.c
    tree_evaluator.c
+   tree_validator.c
 )
 TARGET_LINK_LIBRARIES(${LIBRARY_NAME} m)
 TARGET_LINK_LIBRARIES(${LIBRARY_NAME} al)

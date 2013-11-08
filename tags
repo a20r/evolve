@@ -217,6 +217,7 @@ HEADER	scripts/unittest_runner.py	/^    HEADER = '\\033[95m'$/;"	v	class:TermCol
 HEX	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	307;"	d	file:
 HEX	CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	295;"	d	file:
 ID_VOID_MAIN	CMakeFiles/CompilerIdC/CMakeCCompilerId.c	9;"	d	file:
+INPUT_MODE	include/config/parse.h	14;"	d
 LOOP	tests/ga/mutation_tests.c	11;"	d	file:
 MAXN	examples/csp/csp.c	24;"	d	file:
 MakeRelativePathsInFlagsAbsolute	.ycm_extra_conf.py	/^def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):$/;"	f
@@ -322,8 +323,10 @@ TEST_ALPHANUM	tests/ga/mutation_tests.c	13;"	d	file:
 TEST_CONFIG_FILE	tests/config/config_tests.c	12;"	d	file:
 TEST_CONFIG_FILE	tests/config/parse_tests.c	13;"	d	file:
 TEST_CONFIG_FILE	tests/gp/intialize_tests.c	16;"	d	file:
-TEST_CONFIG_FILE	tests/gp/tree_evaluator_tests.c	18;"	d	file:
+TEST_CONFIG_FILE	tests/gp/mutation.c	13;"	d	file:
+TEST_CONFIG_FILE	tests/gp/tree_evaluator_tests.c	19;"	d	file:
 TEST_CONFIG_FILE	tests/gp/tree_parser_tests.c	15;"	d	file:
+TEST_CONFIG_FILE	tests/gp/tree_validator_tests.c	20;"	d	file:
 TEST_DNA	tests/ga/mutation_tests.c	15;"	d	file:
 TEST_GET_INT	tests/config/parse_tests.c	15;"	d	file:
 TEST_GET_JSON	tests/config/parse_tests.c	17;"	d	file:
@@ -347,9 +350,13 @@ _GA_CROSSOVER_H_	include/ga/crossover.h	2;"	d
 _GA_INITIALIZE_H_	include/ga/initialize.h	2;"	d
 _GA_MUTATE_H_	include/ga/mutation.h	2;"	d
 _GA_SELECTION_H_	include/selection.h	2;"	d
+_GP_CROSSOVER_H_	include/gp/crossover.h	2;"	d
 _GP_INTIALIZE_H_	include/gp/initialize.h	2;"	d
+_GP_MUTATION_H_	include/gp/mutation.h	2;"	d
 _GP_TREE_EVALUATOR_H_	include/gp/tree_evaluator.h	2;"	d
 _GP_TREE_PARSER_H_	include/gp/tree_parser.h	2;"	d
+_GP_TREE_TRAVERSER_H_	include/gp/tree_traverser.h	2;"	d
+_GP_TREE_VALIDATOR_H_	include/gp/tree_validator.h	2;"	d
 _PARSE_H_	include/config/parse.h	2;"	d
 _POPULATION_H_	include/population.h	2;"	d
 _PROGRAM_PARSER_H_	include/gp/program_parser.h	2;"	d
@@ -373,13 +380,16 @@ chromo_2	tests/ga/crossover_tests.c	/^void *chromo_2;$/;"	v
 compilation_database_folder	.ycm_extra_conf.py	/^compilation_database_folder = ''$/;"	v
 config	tests/config/config_tests.c	/^struct evolve_config *config;$/;"	v	typeref:struct:evolve_config
 config	tests/gp/intialize_tests.c	/^struct evolve_config *config;$/;"	v	typeref:struct:evolve_config
+config	tests/gp/mutation.c	/^struct evolve_config *config;$/;"	v	typeref:struct:evolve_config
 config	tests/gp/tree_evaluator_tests.c	/^struct evolve_config *config;$/;"	v	typeref:struct:evolve_config
 config	tests/gp/tree_parser_tests.c	/^struct evolve_config *config;$/;"	v	typeref:struct:evolve_config
+config	tests/gp/tree_validator_tests.c	/^struct evolve_config *config;$/;"	v	typeref:struct:evolve_config
 config_create	src/config/config.c	/^static struct evolve_config *config_create()$/;"	f	file:
 config_destroy	src/config/config.c	/^void config_destroy(struct evolve_config *config)$/;"	f
 convergence_rate	include/evolve_monitor.h	/^        float convergence_rate;$/;"	m	struct:evolve_monitor
 convergence_rates	include/evolve_monitor.h	/^        struct darray *convergence_rates;$/;"	m	struct:evolve_monitor	typeref:struct:evolve_monitor::darray
 create_empty_population	src/selection.c	/^static struct population *create_empty_population(struct population *p)$/;"	f	file:
+create_input_check_list	src/gp/tree_validator.c	/^static struct darray *create_input_check_list(struct node_set *nodes)$/;"	f	file:
 crossover	include/config/config.h	/^    struct crossover_config *crossover;$/;"	m	struct:evolve_config	typeref:struct:evolve_config::crossover_config
 crossover	src/ga/crossover.c	/^void crossover($/;"	f
 crossover_config	include/config/config.h	/^struct crossover_config$/;"	s
@@ -397,16 +407,16 @@ depth	include/gp/initialize.h	/^    int depth;$/;"	m	struct:gp_tree
 destroy_evolve_monitor	src/evolve_monitor.c	/^void destroy_evolve_monitor(struct evolve_monitor **m)$/;"	f
 destroy_ga_config	src/config/config.c	/^void destroy_ga_config(struct ga_config *config)$/;"	f
 destroy_gp_tree_config	src/config/config.c	/^void destroy_gp_tree_config(struct gp_tree_config *config)$/;"	f
-dot_graph_list_node	src/gp/tree_parser.c	/^static int dot_graph_list_node(struct ast*node)$/;"	f	file:
 dot_graph_print_node	src/gp/tree_parser.c	/^static int dot_graph_print_node(struct ast *node)$/;"	f	file:
 dot_graph_print_relation	src/gp/tree_parser.c	/^static int dot_graph_print_relation($/;"	f	file:
+dot_graph_q_node	src/gp/tree_parser.c	/^static int dot_graph_q_node(struct ast*node)$/;"	f	file:
 error	scripts/unittest_runner.py	/^            error = True$/;"	v
 error	scripts/unittest_runner.py	/^    error = False$/;"	v
 error	tests/config/parse_tests.c	/^json_error_t error;$/;"	v
 eval_func	include/evolve.h	/^        float (*eval_func)(char *);$/;"	m	struct:evolution_settings
 evaluate_individuals	src/population.c	/^int evaluate_individuals(float (eval_func)(char *), struct population **p)$/;"	f
 evaluate_node	src/gp/tree_evaluator.c	/^int evaluate_node(struct ast *node, struct stack *s)$/;"	f
-evaluate_program	src/gp/tree_evaluator.c	/^int evaluate_program(struct linked_list *program)$/;"	f
+evaluate_program	src/gp/tree_evaluator.c	/^struct ast *evaluate_program(struct queue *program)$/;"	f
 evolution_settings	include/evolve.h	/^struct evolution_settings$/;"	s
 evolve_config	include/config/config.h	/^struct evolve_config$/;"	s
 evolve_mode	include/config/config.h	/^enum evolve_mode$/;"	g
@@ -431,6 +441,7 @@ function_cos	src/gp/function_set.c	/^void *function_cos(struct ast *x)$/;"	f
 function_div	src/gp/function_set.c	/^void *function_div(struct ast *x, struct ast *y)$/;"	f
 function_mul	src/gp/function_set.c	/^void *function_mul(struct ast *x, struct ast *y)$/;"	f
 function_set	include/config/config.h	/^    struct darray *function_set;$/;"	m	struct:gp_tree_config	typeref:struct:gp_tree_config::darray
+function_set	include/gp/initialize.h	/^        struct darray *function_set;$/;"	m	struct:node_set	typeref:struct:node_set::darray
 function_sin	src/gp/function_set.c	/^void *function_sin(struct ast *x)$/;"	f
 function_sub	src/gp/function_set.c	/^void *function_sub(struct ast *x, struct ast *y)$/;"	f
 ga	include/config/config.h	/^    struct ga_config *ga;$/;"	m	union:general_config	typeref:struct:general_config::ga_config
@@ -448,9 +459,15 @@ goal	include/population.h	/^        float goal;$/;"	m	struct:population
 goal_distance	include/evolve_monitor.h	/^        float goal_distance;$/;"	m	struct:evolve_monitor
 goal_distances	include/evolve_monitor.h	/^        struct darray *goal_distances;$/;"	m	struct:evolve_monitor	typeref:struct:evolve_monitor::darray
 gp	tests/gp/intialize_tests.c	/^struct gp_tree *gp;$/;"	v	typeref:struct:gp_tree
+gp	tests/gp/mutation.c	/^struct gp_tree *gp;$/;"	v	typeref:struct:gp_tree
 gp	tests/gp/tree_evaluator_tests.c	/^struct gp_tree *gp;$/;"	v	typeref:struct:gp_tree
 gp	tests/gp/tree_parser_tests.c	/^struct gp_tree *gp;$/;"	v	typeref:struct:gp_tree
+gp	tests/gp/tree_validator_tests.c	/^struct gp_tree *gp;$/;"	v	typeref:struct:gp_tree
 gp_config	tests/gp/intialize_tests.c	/^struct gp_tree_config *gp_config;$/;"	v	typeref:struct:gp_tree_config
+gp_config	tests/gp/mutation.c	/^struct gp_tree_config *gp_config;$/;"	v	typeref:struct:gp_tree_config
+gp_config	tests/gp/tree_evaluator_tests.c	/^struct gp_tree_config *gp_config;$/;"	v	typeref:struct:gp_tree_config
+gp_config	tests/gp/tree_parser_tests.c	/^struct gp_tree_config *gp_config;$/;"	v	typeref:struct:gp_tree_config
+gp_config	tests/gp/tree_validator_tests.c	/^struct gp_tree_config *gp_config;$/;"	v	typeref:struct:gp_tree_config
 gp_tree	include/config/config.h	/^    struct gp_tree_config *gp_tree;$/;"	m	union:general_config	typeref:struct:general_config::gp_tree_config
 gp_tree	include/gp/initialize.h	/^struct gp_tree$/;"	s
 gp_tree_config	include/config/config.h	/^struct gp_tree_config$/;"	s
@@ -471,6 +488,9 @@ init_ga_config	src/config/config.c	/^struct ga_config *init_ga_config()$/;"	f
 init_gp_tree_config	src/config/config.c	/^struct gp_tree_config *init_gp_tree_config()$/;"	f
 init_tree_full	src/gp/initialize.c	/^struct gp_tree *init_tree_full(struct gp_tree_config *config)$/;"	f
 initialize_population	src/ga/initialize.c	/^void initialize_population(struct population *p, char *(*mutator)(int))$/;"	f
+input_nodes	include/gp/initialize.h	/^    struct darray *input_nodes;$/;"	m	struct:gp_tree	typeref:struct:gp_tree::darray
+input_set	include/config/config.h	/^    struct darray *input_set;$/;"	m	struct:gp_tree_config	typeref:struct:gp_tree_config::darray
+input_set	include/gp/initialize.h	/^        struct darray *input_set;$/;"	m	struct:node_set	typeref:struct:node_set::darray
 insertion_sort_population	src/population.c	/^void insertion_sort_population($/;"	f
 insertion_sort_scores	examples/csp/csp.c	/^static void insertion_sort_scores($/;"	f	file:
 k	examples/csp/csp.c	/^int k = 5;  \/* number of elements *\/$/;"	v
@@ -516,8 +536,15 @@ mutation_config	include/config/config.h	/^struct mutation_config$/;"	s
 mutation_func	include/evolve.h	/^        void (*mutation_func)(char **);$/;"	m	struct:evolution_settings
 mutation_point	include/config/config.h	/^    char *mutation_point;$/;"	m	struct:mutation_config
 mutation_prob	scripts/experiment_runner.py	/^    mutation_prob = [0.8, 0.6, 0.4, 0.2, 0.1, 0.01]$/;"	v
+node_boolean_equals	src/gp/tree_validator.c	/^static inline int node_boolean_equals(struct ast *node_1, struct ast *node_2)$/;"	f	file:
+node_character_equals	src/gp/tree_validator.c	/^static inline int node_character_equals(struct ast *node_1, struct ast *node_2)$/;"	f	file:
+node_integer_equals	src/gp/tree_validator.c	/^static inline int node_integer_equals(struct ast *node_1, struct ast *node_2)$/;"	f	file:
+node_real_equals	src/gp/tree_validator.c	/^static inline int node_real_equals(struct ast *node_1, struct ast *node_2)$/;"	f	file:
+node_set	include/gp/initialize.h	/^struct node_set$/;"	s
+node_string_equals	src/gp/tree_validator.c	/^static inline int node_string_equals(struct ast *node_1, struct ast *node_2)$/;"	f	file:
 normalize_fitness_values	src/population.c	/^void normalize_fitness_values(struct population **p)$/;"	f
 obtain_convergence_equations	scripts/experiment_analyzer.py	/^def obtain_convergence_equations(exec_time_summary):$/;"	f
+one_point_crossover	src/gp/crossover.c	/^void one_point_crossover(struct ast* tree, struct gp_tree_config *config)$/;"	f
 one_pt_crossover	src/ga/crossover.c	/^int one_pt_crossover(void **chromo_1, void **chromo_2, int index)$/;"	f
 orig_cwd	scripts/unittest_runner.py	/^    orig_cwd = os.getcwd()$/;"	v
 output	tests/population_tests.c	/^int output;$/;"	v
@@ -530,7 +557,7 @@ p	tests/selection_tests.c	/^struct population *p;$/;"	v	typeref:struct:populatio
 parse_crossover_config	src/config/parse.c	/^int parse_crossover_config(struct crossover_config *config, json_t *root)$/;"	f
 parse_ga_config	src/config/parse.c	/^int parse_ga_config(json_t *obj, struct ga_config *config)$/;"	f
 parse_general_config	src/config/parse.c	/^int parse_general_config(struct evolve_config *config, json_t *root)$/;"	f
-parse_gp_tree	src/gp/tree_parser.c	/^struct linked_list *parse_gp_tree(struct ast *node)$/;"	f
+parse_gp_tree	src/gp/tree_parser.c	/^struct queue *parse_gp_tree(struct ast *node)$/;"	f
 parse_gp_tree_config	src/config/parse.c	/^int parse_gp_tree_config(json_t *obj, struct gp_tree_config *config)$/;"	f
 parse_mutation_config	src/config/parse.c	/^int parse_mutation_config(struct mutation_config *config, json_t *root)$/;"	f
 parse_selection_config	src/config/parse.c	/^int parse_selection_config(struct selection_config *config, json_t *root)$/;"	f
@@ -539,12 +566,14 @@ pivot_index	include/config/config.h	/^    char *pivot_index;$/;"	m	struct:crosso
 pivot_index	include/evolve.h	/^        int pivot_index;$/;"	m	struct:evolution_settings
 plot_scatter_graph	scripts/experiment_analyzer.py	/^def plot_scatter_graph(title, x_axis, y_axis, x_label, y_label):$/;"	f
 plot_time_vs_generations	scripts/experiment_analyzer.py	/^def plot_time_vs_generations():$/;"	f
+point_mutation	src/gp/mutation.c	/^void point_mutation(struct ast *node, struct gp_tree_config *config)$/;"	f
 populate	src/population.c	/^void populate($/;"	f
 population	include/population.h	/^        int population;$/;"	m	struct:population
 population	include/population.h	/^struct population {$/;"	s
 population_create	src/population.c	/^struct population *population_create($/;"	f
 population_destroy	src/population.c	/^void population_destroy(struct population **p, void (*free_func)(void *))$/;"	f
 population_initialize	src/gp/initialize.c	/^struct population *population_initialize($/;"	f
+post_order_traverse	src/gp/tree_parser.c	/^static int post_order_traverse(struct ast *node, struct queue *q)$/;"	f	file:
 print_after_pivot	tests/ga/crossover_tests.c	/^void print_after_pivot()$/;"	f
 print_before_pivot	tests/ga/crossover_tests.c	/^void print_before_pivot()$/;"	f
 print_evolve_results	examples/example_utils.c	/^void print_evolve_results(struct population *p, float (*fitness_func)(char *))$/;"	f
@@ -552,15 +581,18 @@ print_generation_stats	src/evolve_monitor.c	/^void print_generation_stats(struct
 print_gp_tree	src/gp/tree_parser.c	/^int print_gp_tree(struct ast *node)$/;"	f
 print_individual	src/population.c	/^void print_individual(struct population *p, int index)$/;"	f
 print_individuals	src/population.c	/^void print_individuals(struct population *p)$/;"	f
+print_node	tests/gp/tree_evaluator_tests.c	/^static int print_node(struct ast *node)$/;"	f	file:
 print_node	tests/gp/tree_parser_tests.c	/^static int print_node(struct ast *node)$/;"	f	file:
+print_node	tests/gp/tree_validator_tests.c	/^static int print_node(struct ast *node)$/;"	f	file:
 print_population	src/population.c	/^void print_population(struct population *p)$/;"	f
+print_program	tests/gp/tree_evaluator_tests.c	/^static void print_program()$/;"	f	file:
 print_setup	tests/population_tests.c	/^static void print_setup(int max_pop, int max_gen)$/;"	f	file:
 print_stdout	scripts/unittest_runner.py	/^def print_stdout(unittest_output_fp):$/;"	f
 print_top_individuals	examples/example_utils.c	/^void print_top_individuals(struct evolve_monitor *m, int top)$/;"	f
-print_tree_structure	src/gp/tree_parser.c	/^static int print_tree_structure(struct ast *node, struct linked_list *node_list)$/;"	f	file:
+print_tree_structure	src/gp/tree_parser.c	/^static int print_tree_structure(struct ast *node, struct queue *node_list)$/;"	f	file:
 probability	include/config/config.h	/^    float *probability;$/;"	m	struct:crossover_config
 probability	include/config/config.h	/^    float *probability;$/;"	m	struct:mutation_config
-program	tests/gp/tree_evaluator_tests.c	/^struct linked_list *program;$/;"	v	typeref:struct:linked_list
+program	tests/gp/tree_evaluator_tests.c	/^struct queue *program;$/;"	v	typeref:struct:queue
 quick_sort_population	src/population.c	/^void quick_sort_population($/;"	f
 randnumstr	examples/csp/csp.c	/^static char *randnumstr(int length)$/;"	f	file:
 read_file	tests/population_tests.c	/^static int read_file(char* fp)$/;"	f	file:
@@ -592,8 +624,10 @@ setup	tests/config/parse_tests.c	/^static void setup()$/;"	f	file:
 setup	tests/ga/crossover_tests.c	/^static void setup()$/;"	f	file:
 setup	tests/ga/initialize_tests.c	/^static void setup(int max_pop, int max_gen)$/;"	f	file:
 setup	tests/gp/intialize_tests.c	/^static void setup()$/;"	f	file:
+setup	tests/gp/mutation.c	/^static void setup()$/;"	f	file:
 setup	tests/gp/tree_evaluator_tests.c	/^static void setup()$/;"	f	file:
 setup	tests/gp/tree_parser_tests.c	/^static void setup()$/;"	f	file:
+setup	tests/gp/tree_validator_tests.c	/^static void setup()$/;"	f	file:
 setup	tests/population_tests.c	/^static void setup(int max_pop, int max_gen)$/;"	f	file:
 setup	tests/selection_tests.c	/^static void setup()$/;"	f	file:
 setup_strings	examples/csp/csp.c	/^static void setup_strings(int k, int len)$/;"	f	file:
@@ -619,12 +653,17 @@ teardown	tests/config/parse_tests.c	/^static void teardown()$/;"	f	file:
 teardown	tests/ga/crossover_tests.c	/^static void teardown()$/;"	f	file:
 teardown	tests/ga/initialize_tests.c	/^static void teardown()$/;"	f	file:
 teardown	tests/gp/intialize_tests.c	/^static void teardown()$/;"	f	file:
+teardown	tests/gp/mutation.c	/^static void teardown()$/;"	f	file:
 teardown	tests/gp/tree_evaluator_tests.c	/^static void teardown()$/;"	f	file:
 teardown	tests/gp/tree_parser_tests.c	/^static void teardown()$/;"	f	file:
+teardown	tests/gp/tree_validator_tests.c	/^static void teardown()$/;"	f	file:
 teardown	tests/population_tests.c	/^static void teardown()$/;"	f	file:
 teardown	tests/selection_tests.c	/^static void teardown()$/;"	f	file:
 teardown_strings	examples/csp/csp.c	/^static void teardown_strings()$/;"	f	file:
+terminal_nodes	include/gp/initialize.h	/^    struct darray *terminal_nodes;$/;"	m	struct:gp_tree	typeref:struct:gp_tree::darray
+terminal_nodes_equal	src/gp/tree_validator.c	/^int terminal_nodes_equal(struct ast *node_1, struct ast *node_2)$/;"	f
 terminal_set	include/config/config.h	/^    struct darray *terminal_set;$/;"	m	struct:gp_tree_config	typeref:struct:gp_tree_config::darray
+terminal_set	include/gp/initialize.h	/^        struct darray *terminal_set;$/;"	m	struct:node_set	typeref:struct:node_set::darray
 test_destroy_evolve_monitor	tests/evolve_monitor_tests.c	/^int test_destroy_evolve_monitor()$/;"	f
 test_evaluate_individuals	tests/population_tests.c	/^int test_evaluate_individuals()$/;"	f
 test_evaluate_node	tests/gp/tree_evaluator_tests.c	/^int test_evaluate_node()$/;"	f
@@ -645,6 +684,7 @@ test_mutate_dna	tests/ga/mutation_tests.c	/^int test_mutate_dna()$/;"	f
 test_mutate_num	tests/ga/mutation_tests.c	/^int test_mutate_num()$/;"	f
 test_mutate_str	tests/ga/mutation_tests.c	/^int test_mutate_str()$/;"	f
 test_normalize_fitness_values	tests/population_tests.c	/^int test_normalize_fitness_values()$/;"	f
+test_one_point_crossover	tests/gp/mutation.c	/^int test_one_point_crossover()$/;"	f
 test_one_ptr_crossover	tests/ga/crossover_tests.c	/^int test_one_ptr_crossover()$/;"	f
 test_parse_config	tests/config/config_tests.c	/^int test_parse_config()$/;"	f
 test_parse_crossover_config	tests/config/parse_tests.c	/^int test_parse_crossover_config()$/;"	f
@@ -688,21 +728,26 @@ test_suite	tests/ga/initialize_tests.c	/^void test_suite()$/;"	f
 test_suite	tests/ga/mutation_tests.c	/^void test_suite()$/;"	f
 test_suite	tests/gp/intialize_tests.c	/^mu_run_test_suite(test_suite);$/;"	v
 test_suite	tests/gp/intialize_tests.c	/^void test_suite()$/;"	f
+test_suite	tests/gp/mutation.c	/^mu_run_test_suite(test_suite);$/;"	v
+test_suite	tests/gp/mutation.c	/^void test_suite()$/;"	f
 test_suite	tests/gp/tree_evaluator_tests.c	/^mu_run_test_suite(test_suite);$/;"	v
 test_suite	tests/gp/tree_evaluator_tests.c	/^void test_suite()$/;"	f
 test_suite	tests/gp/tree_parser_tests.c	/^mu_run_test_suite(test_suite);$/;"	v
 test_suite	tests/gp/tree_parser_tests.c	/^void test_suite()$/;"	f
+test_suite	tests/gp/tree_validator_tests.c	/^mu_run_test_suite(test_suite);$/;"	v
+test_suite	tests/gp/tree_validator_tests.c	/^void test_suite()$/;"	f
 test_suite	tests/population_tests.c	/^mu_run_test_suite(test_suite);$/;"	v
 test_suite	tests/population_tests.c	/^void test_suite()$/;"	f
 test_suite	tests/selection_tests.c	/^mu_run_test_suite(test_suite);$/;"	v
 test_suite	tests/selection_tests.c	/^void test_suite()$/;"	f
 test_tournament_selection	tests/selection_tests.c	/^int test_tournament_selection()$/;"	f
 test_two_ptr_crossover	tests/ga/crossover_tests.c	/^int test_two_ptr_crossover()$/;"	f
+test_validate_tree	tests/gp/tree_validator_tests.c	/^int test_validate_tree()$/;"	f
 testsuite_cleanup	tests/population_tests.c	/^static void testsuite_cleanup()$/;"	f	file:
 top	include/evolve_monitor.h	/^        long top;$/;"	m	struct:evolve_monitor
 total_score	include/population.h	/^        float total_score;$/;"	m	struct:population
 tournament_selection	src/selection.c	/^void tournament_selection(struct population **p, int *select)$/;"	f
-traverse_gp_tree	src/gp/tree_parser.c	/^static int traverse_gp_tree(struct ast *node, struct linked_list *list)$/;"	f	file:
+traverse_gp_tree	src/gp/tree_traverser.c	/^int traverse_gp_tree($/;"	f
 tree	include/gp/initialize.h	/^    struct ast *tree;$/;"	m	struct:gp_tree	typeref:struct:gp_tree::ast
 two_pt_crossover	src/ga/crossover.c	/^int two_pt_crossover(void **chromo_1, void **chromo_2, int index)$/;"	f
 unittest_output	scripts/unittest_runner.py	/^            unittest_output = open(unittest_output_fp, 'w')$/;"	v
@@ -716,4 +761,5 @@ validate_crossover_config	tests/config/config_tests.c	/^static int validate_cros
 validate_gp_tree_config	tests/config/config_tests.c	/^static int validate_gp_tree_config(struct gp_tree_config *config)$/;"	f	file:
 validate_mutation_config	tests/config/config_tests.c	/^static int validate_mutation_config(struct mutation_config *config)$/;"	f	file:
 validate_selection_config	tests/config/config_tests.c	/^static int validate_selection_config(struct selection_config *config)$/;"	f	file:
+validate_tree	src/gp/tree_validator.c	/^int validate_tree(struct gp_tree *gp, struct node_set *nodes)$/;"	f
 wait_signal	include/evolve.h	/^        int wait_signal;$/;"	m	struct:evolution_settings

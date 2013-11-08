@@ -12,8 +12,19 @@
 struct gp_tree
 {
     struct ast *tree;
+
     int depth;
     int size;
+
+    struct darray *terminal_nodes;
+    struct darray *input_nodes;
+};
+
+struct node_set
+{
+        struct darray *function_set;
+        struct darray *terminal_set;
+        struct darray *input_set;
 };
 
 /* FUNCTIONS */

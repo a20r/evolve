@@ -86,7 +86,7 @@ void test_suite()
         mu_run_test(test_init_tree_full);
         /* mu_run_test(test_init_tree_grow); */
         /* mu_run_test(test_init_tree_ramped_half_and_half); */
-        mu_run_test(test_population_initialize);
+        /* mu_run_test(test_population_initialize); */
 
         teardown();
 }

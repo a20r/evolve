@@ -75,9 +75,11 @@ int test_parse_gp_tree()
         struct queue *q;
         struct ast *node;
 
+        /* parse gp tree */
         q = parse_gp_tree(gp->tree);
         mu_assert(q != NULL, "Failed to parse gp tree!");
 
+        /* loop through program */
         len = q->count;
         for (i = 0; i < len; i++) {
                 node = queue_dequeue(q);
@@ -99,10 +101,8 @@ void test_suite()
         srand(time(NULL));
 
         setup();
-
         mu_run_test(test_print_gp_tree);
         mu_run_test(test_parse_gp_tree);
-
         teardown();
 }
 

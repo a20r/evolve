@@ -80,27 +80,21 @@ void destroy_gp_tree_config(struct gp_tree_config *config)
         free(config->max_size);
 
         /* FUNCTION SET */
-        if (config->function_set->end != 0) {
-                for (i = 0; i <= config->function_set->end; i++) {
-                        node = darray_get(config->function_set, i);
-                        ast_destroy(node);
-                }
+        for (i = 0; i <= config->function_set->end; i++) {
+                node = darray_get(config->function_set, i);
+                release_mem(node, ast_destroy);
         }
 
         /* TERMINAL SET */
-        if (config->terminal_set->end != 0) {
-                for (i = 0; i <= config->terminal_set->end; i++) {
-                        node = darray_get(config->terminal_set, i);
-                        ast_destroy(node);
-                }
+        for (i = 0; i <= config->terminal_set->end; i++) {
+                node = darray_get(config->terminal_set, i);
+                release_mem(node, ast_destroy);
         }
 
         /* INPUT SET */
-        if (config->input_set->end != 0) {
-                for (i = 0; i <= config->input_set->end; i++) {
-                        node = darray_get(config->input_set, i);
-                        ast_destroy(node);
-                }
+        for (i = 0; i <= config->input_set->end; i++) {
+                node = darray_get(config->input_set, i);
+                release_mem(node, ast_destroy);
         }
         darray_destroy(config->function_set);
         darray_destroy(config->terminal_set);

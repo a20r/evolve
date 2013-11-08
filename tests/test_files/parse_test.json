@@ -27,14 +27,6 @@
     ],
     "test_set_ast_array_terminal_mode": [
             {
-                "tag": "STRING",
-                "value": "x"
-            },
-            {
-                "tag": "STRING",
-                "value": "y"
-            },
-            {
                 "tag": "INTEGER",
                 "value": 1
             },
@@ -46,6 +38,13 @@
                 "tag": "REAL",
                 "value": 3.0
             }
+    ],
+    "test_set_ast_array_input_mode": [
+            {
+                "var_name": "x"
+            },
+            {
+                "var_name": "y"
+            }
     ]
-
 }

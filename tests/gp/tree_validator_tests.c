@@ -15,8 +15,9 @@
 #include "gp/initialize.h"
 #include "gp/tree_parser.h"
 #include "gp/tree_evaluator.h"
+#include "gp/tree_validator.h"
 
-#define TEST_CONFIG_FILE "tests/test_files/test_eval.json"
+#define TEST_CONFIG_FILE "tests/test_files/validation_test.json"
 
 /* GLOBAL VAR */
 struct evolve_config *config;
@@ -98,71 +99,27 @@ static void teardown()
         config_destroy(config);
 }
 
-int test_evaluate_node()
+int test_validate_tree()
 {
-        struct stack *s;
-        struct ast *node;
-        struct ast *result;
-        float real;
-        float solution;
-        int status = 0;
-        int cmp_res = 0;
+        int i;
+        int len;
+        int res;
 
-        /* setup */
-        s = stack_create(0);
-        solution = 6.0;
-
-        /* push a real number to stack */
-        real = 2.0;
-        node = ast_make_exp(REAL, &real);
-
-        status = evaluate_node(node, s);
-        mu_assert(status == 0, "Error during node evaluation!");
-        mu_assert(s->count == 1, "Wrong stack count!");
-
-        /* push a second real number to stack */
-        real = 4.0;
-        node = ast_make_exp(REAL, &real);
-        status = evaluate_node(node, s);
-
-        mu_assert(status == 0, "Error during node evaluation!");
-        mu_assert(s->count == 2, "Wrong stack count!");
-
-        /* test add */
-        node = ast_make_binary_exp("ADD", NULL, NULL);
-        evaluate_node(node, s);
-        mu_assert(s->count == 1, "Wrong stack count!");
-
-        result = stack_pop(s);
-        printf("result: %f\n", result->type.real);
-        mu_assert(s->count == 0, "Wrong stack count!");
-
-        cmp_res = float_cmp(&result->type.real, &solution);
-        mu_assert(cmp_res == 0, "Wrong stack count!");
-
-        /* clean up */
-        ast_destroy(result);
-        stack_destroy(s);
-
-        return 0;
-}
-
-int test_evaluate_program()
-{
-        struct ast *res;
-
-        print_gp_tree(gp->tree);
-        res = evaluate_program(program);
-        mu_assert(res != NULL, "Failed to evaluate program!");
-
-        if (res->tag == REAL) {
-                printf("FINAL RESULT: %f\n", res->type.real);
-        } else if (res->tag == INTEGER) {
-                printf("FINAL RESULT: %d\n", res->type.integer);
+        printf("--- TERMINAL NODES ---\n");
+        len = gp->terminal_nodes->end;
+        for (i = 0; i < len; i++) {
+                print_node(darray_get(gp->terminal_nodes, i));
         }
 
-        /* clean up */
-        ast_destroy(res);
+        printf("--- INPUT SET ---\n");
+        len = gp_config->input_set->end + 1;
+        for (i = 0; i < len; i++) {
+                print_node(darray_get(gp_config->input_set, i));
+        }
+
+        res = validate_tree(gp, gp_config->input_set);
+        printf("res: %d\n", res);
+
 
         return 0;
 }
@@ -172,14 +129,9 @@ void test_suite()
         /* seed random - VERY IMPORTANT! */
         srand(time(NULL));
 
-
         setup();
-        /* mu_run_test(test_evaluate_node); */
-        /* teardown(); */
-        /* setup(); */
-        mu_run_test(test_evaluate_program);
+        mu_run_test(test_validate_tree);
         teardown();
-
 }
 
 mu_run_test_suite(test_suite);

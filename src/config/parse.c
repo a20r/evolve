@@ -276,6 +276,7 @@ int parse_gp_tree_config(json_t *obj, struct gp_tree_config *config)
         int res = 0;
         struct darray *function_set = config->function_set;
         struct darray *terminal_set = config->terminal_set;
+        struct darray *input_set = config->input_set;
 
         /* max_pop */
         res = set_int(obj, "max_pop", config->max_pop);
@@ -302,7 +303,7 @@ int parse_gp_tree_config(json_t *obj, struct gp_tree_config *config)
         check(res == 0, "Failed to parse terminal_set!");
 
         /* input set */
-        res = set_ast_array(obj, "input_set", terminal_set, INPUT_MODE);
+        res = set_ast_array(obj, "input_set", input_set, INPUT_MODE);
         check(res == 0, "Failed to parse input_set!");
 
         return 0;

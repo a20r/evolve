@@ -25,33 +25,42 @@ static struct gp_tree *gp_tree_create(struct gp_tree_config *config)
         gp->size = 1;
         gp->depth = 0;
 
+        /* terminal and input node reference */
+        gp->terminal_nodes = darray_create(sizeof(struct ast), 100);
+        gp->input_nodes = darray_create(sizeof(struct ast), 100);
+
         return gp;
 }
 
 void gp_tree_destroy(void *gp)
 {
         ast_tree_destroy(((struct gp_tree *) gp)->tree);
+        darray_destroy(((struct gp_tree *) gp)->terminal_nodes);
+        darray_destroy(((struct gp_tree *) gp)->input_nodes);
         free(gp);
 }
 
 static struct ast *full_method_gen_node(
+        struct gp_tree *tree,
         int depth,
         int max_depth,
-        struct darray *function_set,
-        struct darray *terminal_set
+        struct node_set *nodes
 )
 {
-        struct ast *node;
         int i;
+        struct ast *node;
 
         if ((depth + 1) == max_depth) {
                 /* next node is max depth, make a terminal node */
-                i = randnum_i(0, terminal_set->end);
-                node = darray_get(terminal_set, i);
+                i = randnum_i(0, nodes->terminal_set->end);
+                node = darray_get(nodes->terminal_set, i);
+                darray_push(tree->terminal_nodes, node);
+                tree->size++;
         } else {
                 /* else make function node */
-                i = randnum_i(0, function_set->end);
-                node = darray_get(function_set, i);
+                i = randnum_i(0, nodes->function_set->end);
+                node = darray_get(nodes->function_set, i);
+                tree->size++;
         }
 
         return ast_copy_node(node);
@@ -62,8 +71,7 @@ static int full_method(
         struct ast *node,
         int depth,
         int max_depth,
-        struct darray *f_set,
-        struct darray *t_set
+        struct node_set *nodes
 )
 {
         struct ast *n;
@@ -74,28 +82,25 @@ static int full_method(
                 return 0;
         } else if (node->tag == UNARY_OP) {
                 /* value */
-                n = full_method_gen_node(depth, max_depth, f_set, t_set);
+                n = full_method_gen_node(tree, depth, max_depth, nodes);
                 node->type.unary->value = n;
-                tree->size++;
 
-                res = full_method(tree, n, depth + 1, max_depth, f_set, t_set);
+                res = full_method(tree, n, depth + 1, max_depth, nodes);
                 check(res == 0, "Failed to intialize tree!");
 
         } else if (node->tag == BINARY_OP) {
                 /* left */
-                n = full_method_gen_node(depth, max_depth, f_set, t_set);
+                n = full_method_gen_node(tree, depth, max_depth, nodes);
                 node->type.binary->left= n;
-                tree->size++;
 
-                res = full_method(tree, n, depth + 1, max_depth, f_set, t_set);
+                res = full_method(tree, n, depth + 1, max_depth, nodes);
                 check(res == 0, "Failed to intialize tree!");
 
                 /* right */
-                n = full_method_gen_node(depth, max_depth, f_set, t_set);
+                n = full_method_gen_node(tree, depth, max_depth, nodes);
                 node->type.binary->right= n;
-                tree->size++;
 
-                res = full_method(tree, n, depth + 1, max_depth, f_set, t_set);
+                res = full_method(tree, n, depth + 1, max_depth, nodes);
                 check(res == 0, "Failed to intialize tree!");
 
         } else {
@@ -111,18 +116,22 @@ struct gp_tree *init_tree_full(struct gp_tree_config *config)
 {
         struct gp_tree *gp;
         int max_depth;
-        struct darray *f_set;
-        struct darray *t_set;
+        struct node_set *nodes;
 
         /* setup */
         max_depth = *config->max_depth;
-        f_set = config->function_set;
-        t_set = config->terminal_set;
+        nodes = calloc(1, sizeof(struct node_set));
+        nodes->function_set = config->function_set;
+        nodes->terminal_set = config->terminal_set;
+        nodes->input_set = config->input_set;
 
         /* initialize gp tree */
         gp = gp_tree_create(config);
-        full_method(gp, gp->tree, gp->depth, max_depth, f_set, t_set);
+        full_method(gp, gp->tree, gp->depth, max_depth, nodes);
         gp->depth = max_depth;
+
+        /* clean up */
+        free(nodes);
 
         return gp;
 }

@@ -27,14 +27,6 @@
         ],
         "terminal_set" : [
             {
-                "tag": "STRING",
-                "value": "x"
-            },
-            {
-                "tag": "STRING",
-                "value": "y"
-            },
-            {
                 "tag": "INTEGER",
                 "value": 0
             },
@@ -77,6 +69,14 @@
             {
                 "tag": "REAL",
                 "value": 10.0
+            }
+        ],
+        "input_set" : [
+            {
+                "var_name": "x"
+            },
+            {
+                "var_name": "y"
             }
         ]
     },
