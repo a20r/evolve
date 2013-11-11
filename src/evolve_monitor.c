@@ -9,7 +9,7 @@
 
 
 struct evolve_monitor *init_evolve_monitor(
-        size_t chromo_sz,
+        size_t individual_sz,
         long top,
         char *log_fp
 )
@@ -17,7 +17,7 @@ struct evolve_monitor *init_evolve_monitor(
         struct evolve_monitor *m = malloc(sizeof(struct evolve_monitor));
 
         m->top = top;
-        m->best_individuals = darray_create(chromo_sz, top);
+        m->best_individuals = darray_create(individual_sz, top);
         m->best_scores = darray_create(sizeof(float), top);
         m->generations = darray_create(sizeof(long), top);
         m->convergence_rates = darray_create(sizeof(float), top);
@@ -73,13 +73,13 @@ static int fill_leader_board(
 )
 {
         int i = 0;
-        char *chromo;
+        char *individual;
         float *score;
         float *generation;
         float *convergence_rate;
         float *goal_distance;
 
-        size_t chromo_sz = p->individuals->element_size;
+        size_t individual_sz = p->individuals->element_size;
         size_t score_sz = p->scores->element_size;
 
         check(
@@ -90,19 +90,19 @@ static int fill_leader_board(
         /* find the best initial individual and fill up the leader board */
         for (i = 0; i < m->top; i++) {
                 /* allocate memory */
-                chromo = darray_new(p->individuals);
+                individual = calloc(1, individual_sz + sizeof(char));
                 score = darray_new(p->scores);
                 generation = calloc(1, sizeof(float));
                 convergence_rate = calloc(1, sizeof(float));
                 goal_distance = calloc(1, sizeof(float));
 
-                memcpy(chromo, darray_get(p->individuals, i), chromo_sz);
+                memcpy(individual, darray_get(p->individuals, i), individual_sz);
                 memcpy(score, darray_get(p->scores, i), score_sz);
                 *generation = 0;
                 *convergence_rate = fabs(p->goal - *score);
                 *goal_distance = fabs(p->goal - *score);
 
-                darray_set(m->best_individuals, i, chromo);
+                darray_set(m->best_individuals, i, individual);
                 darray_set(m->best_scores, i, score);
                 darray_set(m->generations, i, generation);
                 darray_set(m->convergence_rates, i, convergence_rate);
@@ -122,7 +122,7 @@ void sort_generation_stats(
         int j = 0;
 
         void *score;
-        void *chromo;
+        void *individual;
         void *gen;
         void *conv_rate;
         void *goal_dist;
@@ -132,7 +132,7 @@ void sort_generation_stats(
                 int i = j - 1;
 
                 /* obtain pointers pointing to individual and score */
-                chromo = darray_get(m->best_individuals, j);
+                individual = darray_get(m->best_individuals, j);
                 score = darray_get(m->best_scores, j);
                 gen = darray_get(m->generations, j);
                 conv_rate = darray_get(m->convergence_rates, j);
@@ -183,7 +183,7 @@ void sort_generation_stats(
                         i--;
                 }
 
-                darray_set(m->best_individuals, i + 1, chromo);
+                darray_set(m->best_individuals, i + 1, individual);
                 darray_set(m->best_scores, i + 1, score);
                 darray_set(m->generations, i + 1, gen);
                 darray_set(m->convergence_rates, i + 1, conv_rate);
@@ -234,7 +234,7 @@ static int find_best_individual(
 
 static int update_leaderboard(
         struct evolve_monitor *m,
-        void *best_chromo,
+        void *best_individual,
         void *best_score,
         void *gen,
         void *conv_rate,
@@ -247,7 +247,7 @@ static int update_leaderboard(
 
         for (i = 0; i < m->top; i++) {
                 if (cmp(darray_get(m->best_scores, i), best_score) > 0) {
-                        darray_update(m->best_individuals, i, best_chromo);
+                        darray_update(m->best_individuals, i, best_individual);
                         darray_update(m->best_scores, i, best_score);
                         darray_update(m->generations, i, gen);
                         darray_update(m->convergence_rates, i, conv_rate);
@@ -266,18 +266,19 @@ void record_generation_stats(
         int (*cmp)(const void *, const void *)
 )
 {
+        /* find the best individual */
+        int best_index = find_best_individual(p, cmp);
+        size_t individual_sz = p->individuals->element_size;
+        size_t score_sz = p->scores->element_size;
+
         /* leaderboard variables */
-        char *best_chromo = darray_new(p->individuals);
+        char *best_individual = calloc(1, individual_sz + sizeof(char));
         float *best_score = darray_new(p->scores);
         int *gen = darray_new(m->generations);
         float *conv_rate = darray_new(m->convergence_rates);
         float *goal_dist = darray_new(m->goal_distances);
 
-        /* find the best individual */
-        int best_index = find_best_individual(p, cmp);
-        size_t chromo_sz = p->individuals->element_size;
-        size_t score_sz = p->scores->element_size;
-        memcpy(best_chromo, darray_get(p->individuals, best_index), chromo_sz);
+        memcpy(best_individual, darray_get(p->individuals, best_index), individual_sz);
         memcpy(best_score, darray_get(p->scores, best_index), score_sz);
 
         /* calculate convergence rate and goal distance */
@@ -297,7 +298,7 @@ void record_generation_stats(
                 log_generation_stats(
                         m->log_fp,
                         p->generation,
-                        best_chromo,
+                        best_individual,
                         *best_score,
                         *conv_rate,
                         *goal_dist
@@ -306,18 +307,18 @@ void record_generation_stats(
 
         /* over-write prev gen details with current */
         m->generation = p->generation;
-        m->chromo = best_chromo;
+        m->individual = best_individual;
         m->score = *best_score;
         m->convergence_rate = *conv_rate;
         m->goal_distance = *goal_dist;
 
         /* printf("\nGEN: %d\n", *gen); */
-        /* printf("BEST CHROMO: %s\n", best_chromo); */
+        /* printf("BEST CHROMO: %s\n", best_individual); */
         /* printf("BEST SCORE: %f\n", *(float *) best_score); */
 
         int leaderboard_updated = update_leaderboard(
                 m,
-                best_chromo,
+                best_individual,
                 best_score,
                 gen,
                 conv_rate,
@@ -327,7 +328,7 @@ void record_generation_stats(
 
         /* cleanup */
         if (leaderboard_updated == 0) {
-                free(best_chromo);
+                free(best_individual);
                 free(best_score);
                 free(gen);
                 free(conv_rate);
@@ -338,7 +339,7 @@ void record_generation_stats(
 void print_generation_stats(struct evolve_monitor *m)
 {
         int i = 0;
-        int elements = m->generations->end + 1;
+        int elements = m->generations->end;
         struct darray *c = m->best_individuals;
         struct darray *s = m->best_scores;
         struct darray *g = m->generations;

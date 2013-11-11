@@ -31,7 +31,7 @@ static float fitness_function(char *individual)
 static void setup()
 {
         p = population_create(
-                (int) strlen("hello world!"),  /* param */
+                (int) strlen("hello world!") + sizeof(char),
                 0.0,  /* goal */
                 10,  /* max_pop */
                 1 /* max_gen */

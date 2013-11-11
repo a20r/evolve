@@ -76,7 +76,7 @@ static void restore_stdout()
 static void setup(int max_pop, int max_gen)
 {
         p = population_create(
-                (int) strlen("hello world!"),  /* chromo_length */
+                (int) strlen("hello world!") + sizeof(char),
                 0.0,  /* goal */
                 max_pop,  /* max_pop */
                 max_gen /* max_gen */
@@ -86,7 +86,7 @@ static void setup(int max_pop, int max_gen)
 static void print_setup(int max_pop, int max_gen)
 {
         p = population_create(
-                (int) strlen("hello world!"),  /* chromo_length */
+                (int) strlen("hello world!") + sizeof(char),
                 0.0,  /* goal */
                 max_pop,  /* max_pop */
                 max_gen /* max_gen */

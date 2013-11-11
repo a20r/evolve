@@ -71,7 +71,7 @@ void roulette_wheel_selection(struct population **p, int *select)
                         cumulative_prob += curr_score;
                         if (cumulative_prob >= randnum) {
                                 /* make a copy of individual and score */
-                                chromo = calloc(1, chromo_sz);
+                                chromo = calloc(1, chromo_sz + sizeof(char));
                                 score = calloc(1, score_sz);
                                 memcpy(
                                         chromo,
@@ -231,7 +231,7 @@ void tournament_selection(struct population **p, int *select)
                 sort_tournament(t_chromos, t_scores, float_cmp_desc);
 
                 /* record the best into new population */
-                chromo = calloc(1, chromo_sz);
+                chromo = calloc(1, chromo_sz + sizeof(char));
                 score = calloc(1, score_sz);
                 memcpy(chromo, darray_get(t_chromos, 0), chromo_sz);
                 memcpy(score, darray_get(t_scores, 0), score_sz);

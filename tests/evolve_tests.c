@@ -86,8 +86,12 @@ int test_run_evolution()
                 &stop_signal
         );
         population_destroy(&p, free);
-
         mu_assert(p == NULL, "Population should be NULL!");
+
+        /* clean up */
+        free(crossover_prob);
+        free(mutate_prob);
+        destroy_evolve_monitor(&m);
 
         return 0;
 }

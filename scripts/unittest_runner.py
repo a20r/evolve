@@ -66,23 +66,14 @@ if __name__ == "__main__":
             return_val = subprocess.check_call(
                 [
                     "valgrind",
-                    "--error-exitcode=666",
+                    "--error-exitcode=1",
                     "./{0}/{1}".format(unittests_bin_dir, unittest)
                 ],
                 stdout=unittest_output,
                 stderr=unittest_output
             )
             unittest_output.close()
-
-            if return_val == 0:
-                print("{0}PASSED!{1}".format(TC.OKGREEN, TC.ENDC))
-            elif return_val == 666:
-                print(
-                    "{0}PASSED BUT WITH MEMORY LEAKS!{1}".format(
-                        TC.OKGREEN,
-                        TC.ENDC
-                    )
-                )
+            print("{0}PASSED!{1}".format(TC.OKGREEN, TC.ENDC))
 
         except:
             unittest_output.close()
