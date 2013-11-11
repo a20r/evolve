@@ -7,13 +7,13 @@ import subprocess
 
 
 # SETTINGS
-keep_unittest_logs = False
+keep_unittest_logs = True
 unittests_bin_dir = "bin"
 unittests_log_dir = "unittests_log"
 unittests_file_pattern = "^[a-zA-Z0-9_]*_tests$"
 
 
-class TermColors:
+class TC:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
@@ -64,22 +64,36 @@ if __name__ == "__main__":
 
             unittest_output = open(unittest_output_fp, 'w')
             return_val = subprocess.check_call(
-                "./{0}/{1}".format(unittests_bin_dir, unittest),
+                [
+                    "valgrind",
+                    "--error-exitcode=666",
+                    "./{0}/{1}".format(unittests_bin_dir, unittest)
+                ],
                 stdout=unittest_output,
                 stderr=unittest_output
             )
             unittest_output.close()
-            print("{0}PASSED!{1}".format(TermColors.OKGREEN, TermColors.ENDC))
+
+            if return_val == 0:
+                print("{0}PASSED!{1}".format(TC.OKGREEN, TC.ENDC))
+            elif return_val == 666:
+                print(
+                    "{0}PASSED BUT WITH MEMORY LEAKS!{1}".format(
+                        TC.OKGREEN,
+                        TC.ENDC
+                    )
+                )
 
         except:
             unittest_output.close()
-            print("{0}FAILED!{1}".format(TermColors.FAIL, TermColors.ENDC))
+            print("{0}FAILED!{1}".format(TC.FAIL, TC.ENDC))
             print_stdout(unittest_output_fp)
             error = True
 
-    # remove unittest stdout dir
     os.chdir(orig_cwd)
-    shutil.rmtree(unittests_log_dir)
+    # keep unittest stdout dir?
+    if keep_unittest_logs is False:
+        shutil.rmtree(unittests_log_dir)
 
     if error is True:
         sys.exit(-1)
