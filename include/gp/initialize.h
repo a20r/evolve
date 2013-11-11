@@ -11,7 +11,7 @@
 /* STRUCTS */
 struct gp_tree
 {
-    struct ast *tree;
+    struct ast *root;
 
     int depth;
     int size;

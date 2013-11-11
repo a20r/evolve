@@ -60,7 +60,7 @@ int test_print_gp_tree()
 {
         int res = 0;
 
-        res = print_gp_tree(gp->tree);
+        res = print_gp_tree(gp->root);
         mu_assert(gp != NULL, "Failed to print gp tree!");
         mu_assert(res == 0, "Failed to print gp tree!");
 
@@ -76,7 +76,7 @@ int test_parse_gp_tree()
         struct ast *node;
 
         /* parse gp tree */
-        q = parse_gp_tree(gp->tree);
+        q = parse_gp_tree(gp->root);
         mu_assert(q != NULL, "Failed to parse gp tree!");
 
         /* loop through program */

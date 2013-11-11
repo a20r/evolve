@@ -78,7 +78,7 @@ static void setup()
         config = load_config(TEST_CONFIG_FILE);
         gp_config = config->general.gp_tree;
         gp = init_tree_full(config->general.gp_tree);
-        program = parse_gp_tree(gp->tree);
+        program = parse_gp_tree(gp->root);
         print_program();
 }
 
@@ -151,7 +151,7 @@ int test_evaluate_program()
 {
         struct ast *res;
 
-        print_gp_tree(gp->tree);
+        print_gp_tree(gp->root);
         res = evaluate_program(program);
         mu_assert(res != NULL, "Failed to evaluate program!");
 

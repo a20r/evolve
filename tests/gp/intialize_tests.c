@@ -37,7 +37,7 @@ static void teardown()
 int test_init_tree_full()
 {
         gp = init_tree_full(gp_config);
-        print_gp_tree(gp->tree);
+        print_gp_tree(gp->root);
 
         mu_assert(gp != NULL, "Failed to intialize gp tree!");
         mu_assert(gp->size == 7, "Failed to intialize gp tree!");
@@ -68,7 +68,7 @@ int test_population_initialize()
                 printf("- TREE[%d]", i);
                 printf(" [size: %d]", tree->size);
                 printf("[depth: %d]\n", tree->depth);
-                print_gp_tree(tree->tree);
+                print_gp_tree(tree->root);
                 printf("\n\n");
         }
         population_destroy(&p, gp_tree_destroy);

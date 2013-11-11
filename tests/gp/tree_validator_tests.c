@@ -79,7 +79,7 @@ static void setup()
         config = load_config(TEST_CONFIG_FILE);
         gp_config = config->general.gp_tree;
         gp = init_tree_full(config->general.gp_tree);
-        program = parse_gp_tree(gp->tree);
+        program = parse_gp_tree(gp->root);
         print_program();
 }
 
@@ -119,7 +119,6 @@ int test_validate_tree()
 
         res = validate_tree(gp, gp_config->input_set);
         printf("res: %d\n", res);
-
 
         return 0;
 }
