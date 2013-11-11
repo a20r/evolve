@@ -25,35 +25,35 @@ static struct darray *create_input_check_list(struct darray *input_set)
         return input_check_list;
 }
 
-int node_integer_equals(struct ast *node_1, struct ast *node_2)
+static inline int node_integer_equals(struct ast *node_1, struct ast *node_2)
 {
         int res;
         res = int_cmp(&node_1->type.integer, &node_2->type.integer);
         return (res == 0 ? 1 : 0);
 }
 
-int node_real_equals(struct ast *node_1, struct ast *node_2)
+static inline int node_real_equals(struct ast *node_1, struct ast *node_2)
 {
         int res;
         res = float_cmp(&node_1->type.integer, &node_2->type.integer);
         return (res == 0 ? 1 : 0);
 }
 
-int node_string_equals(struct ast *node_1, struct ast *node_2)
+static inline int node_string_equals(struct ast *node_1, struct ast *node_2)
 {
         int res;
         res = strcmp(node_1->type.string, node_2->type.string);
         return (res == 0 ? 1 : 0);
 }
 
-int node_character_equals(struct ast *node_1, struct ast *node_2)
+static inline int node_character_equals(struct ast *node_1, struct ast *node_2)
 {
         int res;
         res = int_cmp(&node_1->type.character, &node_2->type.character);
         return (res == 0 ? 1 : 0);
 }
 
-int node_boolean_equals(struct ast *node_1, struct ast *node_2)
+static inline int node_boolean_equals(struct ast *node_1, struct ast *node_2)
 {
         int res;
         res = int_cmp(&node_1->type.boolean, &node_2->type.boolean);

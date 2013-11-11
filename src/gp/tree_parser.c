@@ -5,7 +5,7 @@
 #include <dstruct/darray.h>
 
 
-static int print_node(struct ast *node)
+int print_node(struct ast *node)
 {
         if (node->tag == INTEGER) {
                 printf("\"%d", node->type.integer);
@@ -36,7 +36,7 @@ static int print_node(struct ast *node)
         return 0;
 }
 
-static int print_node_label(struct ast*node)
+int print_node_label(struct ast*node)
 {
         if (node->tag == INTEGER) {
                 printf("[label=\"%d\"];\n", node->type.integer);
@@ -60,7 +60,7 @@ static int print_node_label(struct ast*node)
         return 0;
 }
 
-static int print_relation(
+int print_relation(
         struct ast *from,
         struct ast *to,
         struct darray *node_list
@@ -78,7 +78,7 @@ static int print_relation(
         return 0;
 }
 
-static int print_tree_structure(struct ast *node, struct darray *node_list)
+int print_tree_structure(struct ast *node, struct darray *node_list)
 {
         int res = 0;
 
@@ -128,10 +128,23 @@ int print_gp_tree(struct ast *node)
         return 0;
 }
 
+void print_gp_program(struct darray *program)
+{
+        int i;
+        struct ast *node;
+
+        /* print program */
+        printf("PROGRAM STACK [REVERSE POLISH NOTATION]\n");
+        for (i = 0; i < program->end; i++) {
+                node = darray_get(program, i);
+                print_node(node);
+                printf("\n");
+        }
+}
+
 static int post_order_traverse(struct ast *node, struct darray *program)
 {
         int status = 0;
-        struct ast *node_copy;
 
         /* POST-ORDER TRAVERSAL */
         if (node->tag == INTEGER

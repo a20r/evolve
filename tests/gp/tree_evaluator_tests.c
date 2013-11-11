@@ -24,7 +24,7 @@ struct gp_tree *gp;
 struct darray *program;
 
 
-static int print_node(struct ast *node)
+static int test_print_node(struct ast *node)
 {
         if (node->tag == INTEGER) {
                 printf("NODE[INTEGER]: %d\n", node->type.integer);
@@ -57,7 +57,7 @@ static void print_program()
         printf("PROGRAM STACK [REVERSE POLISH NOTATION]\n");
         for (i = 0; i < program->end; i++) {
                 node = darray_get(program, i);
-                print_node(node);
+                test_print_node(node);
         }
 }
 

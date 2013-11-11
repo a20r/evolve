@@ -31,7 +31,7 @@ static void teardown()
         config_destroy(config);
 }
 
-static int print_node(struct ast *node)
+static int test_print_node(struct ast *node)
 {
         if (node->tag == INTEGER) {
                 printf("NODE[INTEGER]: %d\n", node->type.integer);
@@ -84,7 +84,7 @@ int test_parse_gp_tree()
                 node = darray_get(program, i);
                 mu_assert(node != NULL, "Node should not be NULL!");
 
-                status = print_node(node);
+                status = test_print_node(node);
                 mu_assert(status != -1, "Unrecognised node!");
         }
         darray_destroy(program);

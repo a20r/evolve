@@ -44,7 +44,6 @@ static void sort_test_setup(int max_gen, int max_pop)
 {
         /* run an evolution to fill the monitor struct */
         size_t chromo_sz = strlen(TEST_SOLUTION) + sizeof(char);
-        printf("chromo_sz: %d\n", chromo_sz);
         p = population_create(
                 chromo_sz,  /* param */
                 122 * strlen(TEST_SOLUTION),  /* goal */
