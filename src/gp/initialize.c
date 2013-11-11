@@ -17,6 +17,7 @@ static struct gp_tree *gp_tree_create(struct gp_tree_config *config)
 
         /* initialize empty tree */
         gp = calloc(1, sizeof(struct gp_tree));
+
         i = randnum_i(0, config->function_set->end);
         node = darray_get(config->function_set, i);
         gp->root = ast_copy_node(node);
@@ -35,6 +36,7 @@ static struct gp_tree *gp_tree_create(struct gp_tree_config *config)
 void gp_tree_destroy(void *gp)
 {
         ast_tree_destroy(((struct gp_tree *) gp)->root);
+        darray_destroy(((struct gp_tree *) gp)->program);
         darray_destroy(((struct gp_tree *) gp)->terminal_nodes);
         darray_destroy(((struct gp_tree *) gp)->input_nodes);
         free(gp);

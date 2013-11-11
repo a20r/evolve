@@ -8,7 +8,6 @@
 #include <dstruct/ast.h>
 #include <dstruct/darray.h>
 #include <dstruct/stack.h>
-#include <dstruct/queue.h>
 
 #include "config/config.h"
 #include "population.h"
@@ -22,7 +21,7 @@
 struct evolve_config *config;
 struct gp_tree_config *gp_config;
 struct gp_tree *gp;
-struct queue *program;
+struct darray *program;
 
 
 static int print_node(struct ast *node)
@@ -52,25 +51,14 @@ static int print_node(struct ast *node)
 static void print_program()
 {
         int i;
-        int len;
         struct ast *node;
-        struct queue *program_copy;
-
-        /* setup */
-        program_copy = queue_create(0);
-        len = program->count;
 
         /* print program */
         printf("PROGRAM STACK [REVERSE POLISH NOTATION]\n");
-        for (i = 0; i < len; i++) {
-                node = queue_dequeue(program);
+        for (i = 0; i < program->end; i++) {
+                node = darray_get(program, i);
                 print_node(node);
-                queue_enqueue(program_copy, node);
         }
-        queue_destroy(program);
-
-        /* original points to copy */
-        program = program_copy;
 }
 
 static void setup()
@@ -84,16 +72,7 @@ static void setup()
 
 static void teardown()
 {
-        int i;
-        struct ast *node;
-        int prog_len = program->count;
-
-        for (i = 0; i < prog_len; i++) {
-               node = queue_dequeue(program);
-               ast_destroy(node);
-        }
-        queue_destroy(program);
-
+        darray_destroy(program);
         gp_tree_destroy(gp);
         config_destroy(config);
 }
@@ -176,7 +155,6 @@ void test_suite()
         mu_run_test(test_evaluate_node);
         mu_run_test(test_evaluate_program);
         teardown();
-
 }
 
 mu_run_test_suite(test_suite);

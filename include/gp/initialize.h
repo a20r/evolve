@@ -11,13 +11,14 @@
 /* STRUCTS */
 struct gp_tree
 {
-    struct ast *root;
+        struct ast *root;
+        struct darray *program;
 
-    int depth;
-    int size;
+        int depth;
+        int size;
 
-    struct darray *terminal_nodes;
-    struct darray *input_nodes;
+        struct darray *terminal_nodes;
+        struct darray *input_nodes;
 };
 
 struct node_set

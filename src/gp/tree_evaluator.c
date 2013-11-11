@@ -2,8 +2,8 @@
 
 #include <dbg/dbg.h>
 #include <dstruct/ast.h>
-#include <dstruct/queue.h>
 #include <dstruct/stack.h>
+#include <dstruct/darray.h>
 
 #include "gp/function_set.h"
 #include "gp/terminal_set.h"
@@ -55,22 +55,19 @@ error:
         return -1;
 }
 
-struct ast *evaluate_program(struct queue *program)
+struct ast *evaluate_program(struct darray *program)
 {
         int i;
         int res;
-        int program_length;
         struct stack *s;
         struct ast *node;
-        struct ast *node_copy;
 
         /* setup */
-        program_length = program->count;
         s = stack_create(0);
 
         /* loop through program in reverse polish notation */
-        for (i = 0; i < program_length; i++) {
-                node = queue_dequeue(program);
+        for (i = 0; i < program->end; i++) {
+                node = darray_get(program, i);
                 res = evaluate_node(node, s);
                 check(res == 0, "Failed to evaluate node!");
         }

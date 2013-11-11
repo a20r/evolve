@@ -5,7 +5,6 @@
 #include <munit/munit.h>
 #include <al/utils.h>
 #include <dstruct/darray.h>
-#include <dstruct/queue.h>
 
 #include "config/config.h"
 #include "population.h"
@@ -72,25 +71,25 @@ int test_parse_gp_tree()
         int i = 0;
         int len = 0;
         int status = 0;
-        struct queue *q;
+        struct darray *program;
         struct ast *node;
 
         /* parse gp tree */
-        q = parse_gp_tree(gp->root);
-        mu_assert(q != NULL, "Failed to parse gp tree!");
+        program = parse_gp_tree(gp->root);
+        mu_assert(program != NULL, "Failed to parse gp tree!");
 
         /* loop through program */
-        len = q->count;
+        len = program->end;
         for (i = 0; i < len; i++) {
-                node = queue_dequeue(q);
-                mu_assert(node != NULL, "Node from q should not be NULL!");
+                node = darray_get(program, i);
+                mu_assert(node != NULL, "Node should not be NULL!");
 
                 status = print_node(node);
                 mu_assert(status != -1, "Unrecognised node!");
 
                 ast_destroy(node);
         }
-        queue_destroy(q);
+        darray_destroy(program);
 
         return 0;
 }

@@ -5,6 +5,6 @@
 
 /* FUNCTIONS */
 int print_gp_tree(struct ast *node);
-struct queue *parse_gp_tree(struct ast *node);
+struct darray *parse_gp_tree(struct ast *node);
 
 #endif
