@@ -7,6 +7,7 @@
 #include "gp/initialize.h"
 #include "gp/function_set.h"
 #include "gp/terminal_set.h"
+#include "gp/tree_parser.h"
 
 
 static struct gp_tree *gp_tree_create(struct gp_tree_config *config)
@@ -21,6 +22,9 @@ static struct gp_tree *gp_tree_create(struct gp_tree_config *config)
         i = randnum_i(0, config->function_set->end);
         node = darray_get(config->function_set, i);
         gp->root = ast_copy_node(node);
+
+        /* initialize program */
+        gp->program = NULL;
 
         /* tree size and depth settings */
         gp->size = 1;
@@ -131,6 +135,9 @@ struct gp_tree *init_tree_full(struct gp_tree_config *config)
         gp = gp_tree_create(config);
         full_method(gp, gp->root, gp->depth, max_depth, nodes);
         gp->depth = max_depth;
+
+        /* initialize gp program */
+        gp->program = parse_gp_tree(gp->root);
 
         /* clean up */
         free(nodes);

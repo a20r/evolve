@@ -61,6 +61,7 @@ struct ast *evaluate_program(struct darray *program)
         int res;
         struct stack *s;
         struct ast *node;
+        struct ast *node_copy;
 
         /* setup */
         s = stack_create(0);
@@ -68,7 +69,8 @@ struct ast *evaluate_program(struct darray *program)
         /* loop through program in reverse polish notation */
         for (i = 0; i < program->end; i++) {
                 node = darray_get(program, i);
-                res = evaluate_node(node, s);
+                node_copy = ast_copy_node(node);
+                res = evaluate_node(node_copy, s);
                 check(res == 0, "Failed to evaluate node!");
         }
 

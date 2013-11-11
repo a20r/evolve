@@ -40,6 +40,7 @@ int test_init_tree_full()
         print_gp_tree(gp->root);
 
         mu_assert(gp != NULL, "Failed to intialize gp tree!");
+        mu_assert(gp->program != NULL, "Failed to intialize gp tree!");
         mu_assert(gp->size == 7, "Failed to intialize gp tree!");
         mu_assert(gp->depth == 2, "Failed to intialize gp tree!");
 
@@ -86,7 +87,7 @@ void test_suite()
         mu_run_test(test_init_tree_full);
         /* mu_run_test(test_init_tree_grow); */
         /* mu_run_test(test_init_tree_ramped_half_and_half); */
-        /* mu_run_test(test_population_initialize); */
+        mu_run_test(test_population_initialize);
 
         teardown();
 }

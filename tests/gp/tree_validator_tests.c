@@ -73,15 +73,7 @@ static void setup()
 
 static void teardown()
 {
-        int i;
-        struct ast *node;
-
-        for (i = 0; i < program->end; i++) {
-                node = darray_get(program, i);
-                ast_destroy(node);
-        }
         darray_destroy(program);
-
         gp_tree_destroy(gp);
         config_destroy(config);
 }

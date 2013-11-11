@@ -140,8 +140,7 @@ static int post_order_traverse(struct ast *node, struct darray *program)
                 || node->tag == CHARACTER
                 || node->tag == BOOL
         ) {
-                node_copy = ast_copy_node(node);
-                darray_push(program, node_copy);
+                darray_push(program, node);
 
         } else if (node->tag == UNARY_OP) {
                 /* value */
@@ -149,8 +148,7 @@ static int post_order_traverse(struct ast *node, struct darray *program)
                 check(status == 0, "Failed to traverse unary node!");
 
                 /* root */
-                node_copy = ast_copy_node(node);
-                darray_push(program, node_copy);
+                darray_push(program, node);
 
         } else if (node->tag == BINARY_OP || node->tag == START) {
                 /* left */
@@ -162,8 +160,7 @@ static int post_order_traverse(struct ast *node, struct darray *program)
                 check(status == 0, "Failed to traverse binary->right node!");
 
                 /* root */
-                node_copy = ast_copy_node(node);
-                darray_push(program, node_copy);
+                darray_push(program, node);
 
         } else {
                 log_err("OPPS! Unknown node type to q!");

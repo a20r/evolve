@@ -86,8 +86,6 @@ int test_parse_gp_tree()
 
                 status = print_node(node);
                 mu_assert(status != -1, "Unrecognised node!");
-
-                ast_destroy(node);
         }
         darray_destroy(program);
 
