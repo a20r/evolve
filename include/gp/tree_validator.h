@@ -3,6 +3,7 @@
 
 /* FUNCTIONS */
 int terminal_nodes_equal(struct ast *node_1, struct ast *node_2);
+int function_nodes_equal(struct ast *node_1, struct ast *node_2);
 int validate_tree(struct gp_tree *gp, struct darray *input_set);
 
 #endif

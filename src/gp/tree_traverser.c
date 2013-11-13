@@ -1,6 +1,7 @@
 #include <dbg/dbg.h>
 #include <dstruct/ast.h>
 
+#include "gp/terminal_set.h"
 #include "gp/tree_traverser.h"
 
 
@@ -11,12 +12,7 @@ int traverse_gp_tree(
 {
         int res = 0;
 
-        if (node->tag == INTEGER
-                || node->tag == REAL
-                || node->tag == STRING
-                || node->tag == CHARACTER
-                || node->tag == BOOL
-        ) {
+        if (node_is_terminal(node)) {
                 /* terminal */
                 res = traverse_cb(node);
                 silent_check(res == 0);

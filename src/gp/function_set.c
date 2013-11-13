@@ -229,3 +229,21 @@ struct ast *execute_unary_function(struct ast *node, struct ast *value)
 error:
         return NULL;
 }
+
+
+int node_is_function(struct ast *node)
+{
+        int i;
+        enum ast_tag tags[2] = {
+                BINARY_OP,
+                UNARY_OP
+        };
+
+        for (i = 0; i < 2; i++) {
+                if (node->tag == tags[i]) {
+                        return 1;
+                }
+        }
+
+        return 0;
+}

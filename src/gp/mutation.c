@@ -7,9 +7,126 @@
 #include "config/config.h"
 #include "gp/initialize.h"
 #include "gp/mutation.h"
+#include "gp/terminal_set.h"
+#include "gp/function_set.h"
 #include "gp/tree_parser.h"
 #include "gp/tree_validator.h"
 
+#define VALUE_BRANCH 1
+#define LEFT_BRANCH 2
+#define RIGHT_BRANCH 3
+
+
+static void shallow_free_node(struct ast *node)
+{
+        printf("FREE NODE: ");
+        print_node(node);
+        printf("\n");
+
+        if (node_is_function(node)) {
+                if (node->tag == UNARY_OP) {
+                       free(node->type.unary->op_name);
+                } else if (node->tag == BINARY_OP) {
+                       free(node->type.binary->op_name);
+                }
+                free(node);
+
+        } else if (node_is_terminal(node)) {
+                if (node->tag == STRING) {
+                        free(node->type.string);
+                }
+                free(node);
+
+        }
+}
+
+static int node_is_value_of(
+        struct ast *node,
+        struct ast *value_node
+)
+{
+        struct ast *left;
+        struct ast *right;
+        struct ast *value;
+
+        if (node->tag == UNARY_OP) {
+                value = node->type.unary->value;
+
+                if (node_is_terminal(value_node)) {
+                        if (function_nodes_equal(value, value_node)) {
+                                return VALUE_BRANCH;
+                        }
+                } else if (node_is_function(value_node)){
+                        if (function_nodes_equal(value, value_node)) {
+                                return VALUE_BRANCH;
+                        }
+                }
+
+        } else if (node->tag == BINARY_OP) {
+                left = node->type.binary->left;
+                right = node->type.binary->right;
+
+                /* determine which branch node belongs in func_node */
+                /* left */
+                if (node_is_terminal(left)) {
+                        if (terminal_nodes_equal(left, value_node)) {
+                                printf("LEFT!\n");
+                                return LEFT_BRANCH;
+                        }
+                } else if (node_is_function(left)) {
+                        if (function_nodes_equal(left, value_node)) {
+                                printf("LEFT!\n");
+                                return LEFT_BRANCH;
+                        }
+                }
+
+                /* right */
+                if (node_is_terminal(right)) {
+                        if (terminal_nodes_equal(right, value_node)) {
+                                printf("RIGHT!\n");
+                                return RIGHT_BRANCH;
+                        }
+                } else if (node_is_function(right)) {
+                        if (function_nodes_equal(right, value_node)) {
+                                printf("RIGHT!\n");
+                                return RIGHT_BRANCH;
+                        }
+                }
+
+        }
+
+        return 0;
+}
+
+static struct ast *get_new_function_node(
+        struct ast *node,
+        enum ast_tag tag,
+        struct gp_tree_config *config
+)
+{
+        int i = 0;
+        int index = 0;
+        int limit = 100;
+        int equals = 0;
+        struct ast *new_node = NULL;
+
+        while (i != limit) {
+                /* get new function node */
+                index = randnum_i(0, config->function_set->end);
+                new_node = darray_get(config->function_set, index);
+                new_node = ast_copy_node(new_node);
+
+                /* terminate conditions */
+                equals = function_nodes_equal(new_node, node);
+                if (equals == 0 && new_node->tag == tag) {
+                        break;
+                }
+
+                i++;
+        }
+
+        return new_node;
+}
 
 static struct ast *get_new_terminal_node(
         struct ast *node,
@@ -21,12 +138,13 @@ static struct ast *get_new_terminal_node(
         int limit = 100;
         struct ast *new_node = NULL;
 
-
         while (i != limit) {
+                /* get new terminal node */
                 index = randnum_i(0, config->terminal_set->end);
                 new_node = darray_get(config->terminal_set, index);
                 new_node = ast_copy_node(new_node);
 
+                /* terminate conditions */
                 if (terminal_nodes_equal(new_node, node) == 0) {
                         break;
                 }
@@ -36,176 +154,156 @@ static struct ast *get_new_terminal_node(
 
         return new_node;
 }
-/* static int point_mutate_function_node( */
-/*         struct ast **node, */
-/*         struct gp_tree_config *config */
-/* ) */
-/* { */
-/*         int index; */
-/*         struct ast *new_node; */
-/*         struct ast *value; */
-/*         struct ast *left; */
-/*         struct ast *right; */
-/*  */
-/*  */
-/*         if ((*node)->tag == UNARY_OP) { */
-/*                 value = (*node)->type.unary->value; */
-/*  */
-/*                 #<{(| get new function node |)}># */
-/*                 while (1) { */
-/*                         index = randnum_i(0, config->function_set->end); */
-/*                         new_node = darray_get(config->function_set, index); */
-/*                         new_node = ast_copy_node(new_node); */
-/*  */
-/*                         if (new_node->tag == UNARY_OP) { */
-/*                                 break; */
-/*                         } */
-/*                 } */
-/*  */
-/*                 new_node->type.unary->value = value; */
-/*                 ast_destroy((*node)); */
-/*                 *node = new_node; */
-/*  */
-/*         } else if ((*node)->tag == BINARY_OP) { */
-/*                 left = (*node)->type.binary->left; */
-/*                 right = (*node)->type.binary->right; */
-/*  */
-/*                 #<{(| get new function node |)}># */
-/*                 while (1) { */
-/*                         index = randnum_i(0, config->function_set->end); */
-/*                         new_node = darray_get(config->function_set, index); */
-/*                         new_node = ast_copy_node(new_node); */
-/*  */
-/*                         if (new_node->tag == BINARY_OP) { */
-/*                                 break; */
-/*                         } */
-/*                 } */
-/*  */
-/*                 new_node->type.binary->left = left; */
-/*                 new_node->type.binary->right = right; */
-/*                 ast_destroy((*node)); */
-/*                 *node = new_node; */
-/*  */
-/*         } else { */
-/*                 log_err("Error! Unrecognised node tag!"); */
-/*                 return -1; */
-/*         } */
-/*  */
-/*         return 0; */
-/* } */
-
-static int point_mutate_term_node(
-        struct ast *node,
-        struct ast *func_node,
-        struct gp_tree_config *config
-)
-{
-        int left = 0;
-        int right = 0;
-        struct ast *new_node;
-        struct ast *left_node;
-        struct ast *right_node;
-
-        /* get new term node */
-        new_node = get_new_terminal_node(node, config);
-
-        printf("\nMutation Terminal Node\n");
-        print_node(new_node);
-
-        if (func_node->tag == BINARY_OP) {
-                left_node = func_node->type.binary->left;
-                right_node = func_node->type.binary->right;
-
-                left = terminal_nodes_equal(node, left_node);
-                right = terminal_nodes_equal(node, right_node);
-
-                if (left) {
-                        printf("\nLEFT!\n");
-                        ast_destroy(func_node->type.binary->left);
-                        func_node->type.binary->left = new_node;
-                } else if (right) {
-                        printf("\nRIGHT!\n");
-                        ast_destroy(func_node->type.binary->right);
-                        func_node->type.binary->right = new_node;
-                }
-        }
-
-
-
-        return 0;
-}
 
 static struct ast *get_linked_func_node(
+        struct ast *node,
         struct darray *program,
         int index
 )
 {
-        struct ast *func_node;
+        int res = 0;
+        int limit = 0;
+        struct ast *linked_node;
 
-        while(1) {
-                func_node = darray_get(program, index);
-                if (func_node->tag == UNARY_OP
-                        || func_node->tag == BINARY_OP
-                )
-                {
-                        break;
-                } else if (index == 0) {
-                        return NULL;
+        limit = program->end;
+        while (index != limit) {
+                linked_node = darray_get(program, index);
+
+                if (node_is_terminal(node)) {
+                        if (node_is_function(linked_node)) {
+                                break;
+                        }
+                } else if (node_is_function(node)){
+                        if (node_is_value_of(linked_node, node)) {
+                                break;
+                        }
                 }
 
                 index++;
         }
 
-        return func_node;
+        return linked_node;
 }
 
-int point_mutation(
-        struct gp_tree *tree,
+static int replace_node(struct ast *old, struct ast *new, struct ast *func_node)
+{
+        int branch = 0;
+
+        if (func_node->tag == UNARY_OP) {
+                ast_destroy(func_node->type.unary->value);
+                func_node->type.unary->value = new;
+
+        } else if (func_node->tag == BINARY_OP) {
+                branch = node_is_value_of(func_node, old);
+
+                if (branch == LEFT_BRANCH) {
+                        shallow_free_node(func_node->type.binary->left);
+                        func_node->type.binary->left = new;
+                } else if (branch == RIGHT_BRANCH) {
+                        shallow_free_node(func_node->type.binary->right);
+                        func_node->type.binary->right = new;
+                }
+        }
+
+        return 0;
+}
+
+static int point_mutate_function_node(
+        struct ast *node,
+        struct ast *func_node,
         struct gp_tree_config *config
 )
 {
-        int index = 0;
-        int res = 0;
-        struct ast *prev_node;
-        struct ast *node;
-        struct darray *program;
+        /* int res = 0; */
+        int branch = 0;
+        struct ast *new_node;
+        /* struct ast *value; */
 
-        program = tree->program;
-        while (1) {
-                index = randnum_i(1, tree->size - 1);
-                node = darray_get(program, index);
+        if (node->tag == UNARY_OP) {
+                /* new function node */
+                new_node = get_new_function_node(node, UNARY_OP, config);
+                new_node->type.unary->value= node->type.unary->value;
 
+                /* destroy old node in func_node */
+                replace_node(node, new_node, func_node);
 
-                /* if (node->tag == UNARY_OP || node->tag == BINARY_OP) { */
-                /*         res = point_mutate_function_node(&node, config); */
-                /*         break; */
-                /* } else if (node->tag == INTEGER */
-                if (node->tag == INTEGER
-                        || node->tag == REAL
-                        || node->tag == STRING
-                        || node->tag == CHARACTER
-                        || node->tag == BOOL
-                )
-                {
-                        prev_node = get_linked_func_node(program, index);
+        } else if (node->tag == BINARY_OP) {
+                /* new function node */
+                new_node = get_new_function_node(node, BINARY_OP, config);
+                new_node->type.binary->left = node->type.binary->left;
+                new_node->type.binary->right= node->type.binary->right;
 
-                        printf("\n");
-                        printf("selected: ");
-                        print_node(node);
-                        printf("\n");
-                        printf("function node: ");
-                        print_node(prev_node);
-                        printf("\n");
+                /* destroy old node in func_node */
+                replace_node(node, new_node, func_node);
 
-                        res = point_mutate_term_node(node, prev_node, config);
-                        break;
-                /* } else { */
-                /*         log_err("Error! Unrecognised node tag!"); */
-                /*         return -1; */
-                }
+        } else {
+                log_err("Error! Unrecognised node tag!");
+                goto error;
         }
-        /* darray_destroy(program); */
-        /* tree->program = parse_gp_tree(tree->root); */
+
+        return 0;
+error:
+        return -1;
+}
+
+static int point_mutate_terminal_node(
+        struct ast *node,
+        struct ast *func_node,
+        struct gp_tree_config *config
+)
+{
+        int branch = 0;
+        struct ast *new_node;
+
+        /* get new term node */
+        new_node = get_new_terminal_node(node, config);
+
+        /* destroy old node in func_node */
+        replace_node(node, new_node, func_node);
+
+        return 0;
+}
+
+
+int point_mutation(
+        struct gp_tree *tree,
+        int index,
+        struct gp_tree_config *config
+)
+{
+        int res = 0;
+        struct ast *func_node;
+        struct ast *node;
+
+        /* get node to mutate */
+        node = darray_get(tree->program, index);
+
+        if (node_is_function(node)) {
+                printf("MUTATE FUNCTION NODE!\n");
+                func_node = get_linked_func_node(node, tree->program, index);
+
+                printf("\n");
+                printf("selected: ");
+                print_node(node);
+                printf("\n");
+
+                res = point_mutate_function_node(node, func_node, config);
+
+        } else if (node_is_terminal(node)) {
+                printf("MUTATE TERMINAL NODE!\n");
+                func_node = get_linked_func_node(node, tree->program, index);
+
+                printf("\n");
+                printf("selected: ");
+                print_node(node);
+                printf("\n");
+
+                res = point_mutate_terminal_node(node, func_node, config);
+
+        } else {
+                log_err("Error! Unrecognised node tag!");
+                return -1;
+        }
         check(res == 0, "Failed to perform point mutation!");
 
         return 0;
@@ -217,12 +315,13 @@ int mutate_tree(
         int prob,
         struct gp_tree *tree,
         struct gp_tree_config *config,
-        int (*mutation_func)(struct gp_tree *, struct gp_tree_config *)
+        int (*mutation_func)(struct gp_tree *, int, struct gp_tree_config *)
 )
 {
         int res = 0;
+        int index = 0;
 
-        /* to mutate or not mutate */
+        /* mutate or not mutate */
         if (prob > randnum_f(0.0, 1.0)) {
                 goto mutate;
         } else {
@@ -230,12 +329,14 @@ int mutate_tree(
         }
 
 mutate:
-        res = (*mutation_func)(tree, config);
+        index = randnum_i(0, tree->program->end - 2);
+        res = (*mutation_func)(tree, index, config);
         if (res == -1) {
                 log_err("Error! Failed to mutate tree!");
         }
 
         return res;
+
 no_mutate:
         return -1;
 }
