@@ -35,7 +35,6 @@ static struct ast *get_linked_func_node(
         int index
 )
 {
-        int res = 0;
         int limit = 0;
         struct ast *linked_node;
 
@@ -110,8 +109,6 @@ int one_point_crossover(
         tree_2->program = parse_gp_tree(tree_2->root);
 
         return 0;
-error:
-        return -1;
 }
 
 int crossover_trees(
@@ -127,7 +124,6 @@ int crossover_trees(
 )
 {
         int res = 0;
-        int index = 0;
 
         /* crossover or not */
         if (prob > randnum_f(0.0, 1.0)) {

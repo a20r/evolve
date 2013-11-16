@@ -31,50 +31,45 @@ static void teardown()
 
 int test_point_mutation()
 {
-        int i = 0;
         int res = 0;
-        int tests = 100;
         struct ast *t_1_before;
         struct ast *t_2_before;
         struct ast *t_1_after;
         struct ast *t_2_after;
 
 
-        for (i = 0; i < tests; i++) {
-                setup();
+        setup();
 
-                /* printf("Before Crossover!\n"); */
-                /* printf("------------------------------\n"); */
-                /* print_gp_program(tree_1->program); */
-                /* print_gp_program(tree_2->program); */
+        printf("Before Crossover!\n");
+        printf("------------------------------\n");
+        print_gp_program(tree_1->program);
+        print_gp_program(tree_2->program);
 
-                t_1_before = ast_copy_node(tree_1->root);
-                t_2_before = ast_copy_node(tree_2->root);
 
-                /* crossover */
-                crossover_trees(1, tree_1, tree_2, gp_config, one_point_crossover);
+        /* crossover */
+        t_1_before = ast_copy_node(tree_1->root);
+        t_2_before = ast_copy_node(tree_2->root);
+        crossover_trees(1, tree_1, tree_2, gp_config, one_point_crossover);
+        t_1_after = ast_copy_node(tree_1->root);
+        t_2_after = ast_copy_node(tree_2->root);
 
-                t_1_after = ast_copy_node(tree_1->root);
-                t_2_after = ast_copy_node(tree_2->root);
+        printf("After Crossover!\n");
+        printf("------------------------------\n");
+        print_gp_program(tree_1->program);
+        print_gp_program(tree_2->program);
 
-                /* asserts */
-                res = ast_trees_equal(t_1_before, t_1_after);
-                mu_assert(res == 0, "Failed crossover!");
-                res = ast_trees_equal(t_2_before, t_2_after);
-                mu_assert(res == 0, "Failed crossover!");
+        /* asserts */
+        res = ast_trees_equal(t_1_before, t_1_after);
+        mu_assert(res == 0, "Failed crossover!");
+        res = ast_trees_equal(t_2_before, t_2_after);
+        mu_assert(res == 0, "Failed crossover!");
 
-                /* printf("After Crossover!\n"); */
-                /* printf("------------------------------\n"); */
-                /* print_gp_program(tree_1->program); */
-                /* print_gp_program(tree_2->program); */
+        ast_destroy(t_1_before);
+        ast_destroy(t_2_before);
+        ast_destroy(t_1_after);
+        ast_destroy(t_2_after);
 
-                ast_destroy(t_1_before);
-                ast_destroy(t_2_before);
-                ast_destroy(t_1_after);
-                ast_destroy(t_2_after);
-
-                teardown();
-        }
+        teardown();
 
         return 0;
 }
