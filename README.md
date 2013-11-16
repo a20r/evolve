@@ -19,7 +19,15 @@ evolve is a Gentic Algorithm/Programming implemented in C. Currently features:
     
 
 ### Genetic Programming
-
+- **Encoding**
+    - Tree
+- **Selection**
+    - Roulette selection
+    - Tournament selection
+- **Crossover**
+    - One point crossover
+- **Mutation**
+    - Point mutation
 
 For more information please have a look at the documentation.
 
