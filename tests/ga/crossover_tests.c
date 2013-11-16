@@ -51,8 +51,8 @@ void print_after_pivot()
 
 int std_crossover_asserts()
 {
-        char *c_1 = '\0';
-        char *c_2 = '\0';
+        char *c_1 = NULL;
+        char *c_2 = NULL;
         int c_1_len = 0;
         int c_2_len = 0;
 

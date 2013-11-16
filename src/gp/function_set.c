@@ -2,10 +2,13 @@
 #include <string.h>
 #include <math.h>
 
-#include <dstruct/ast.h>
 #include <dbg/dbg.h>
+#include <al/utils.h>
+#include <dstruct/ast.h>
 
+#include "config/config.h"
 #include "gp/function_set.h"
+#include "gp/tree_validator.h"
 
 
 void *function_add(struct ast *x, struct ast *y)
@@ -189,7 +192,7 @@ void *function_sin(struct ast *x)
 struct ast *execute_binary_function(struct ast *node, struct ast *x, struct ast *y)
 {
         char *op;
-        struct ast *result;
+        struct ast *result = NULL;
 
         op = node->type.unary->op_name;
         if (strcmp(op, "ADD") == 0) {
@@ -214,7 +217,7 @@ error:
 struct ast *execute_unary_function(struct ast *node, struct ast *value)
 {
         char *op;
-        struct ast *result;
+        struct ast *result = NULL;
 
         op = node->type.unary->op_name;
         if (strcmp(op, "COS")) {
@@ -247,3 +250,33 @@ int node_is_function(struct ast *node)
 
         return 0;
 }
+
+struct ast *get_new_function_node(
+        struct ast *node,
+        enum ast_tag tag,
+        struct gp_tree_config *config
+)
+{
+        int i = 0;
+        int index = 0;
+        int limit = 100;
+        int equals = 0;
+        struct ast *new_node = NULL;
+
+        while (i != limit) {
+                /* get new function node */
+                index = randnum_i(0, config->function_set->end);
+                new_node = darray_get(config->function_set, index);
+
+                /* terminate conditions */
+                equals = function_nodes_equal(new_node, node);
+                if (equals == 0 && new_node->tag == tag) {
+                        break;
+                }
+
+                i++;
+        }
+
+        return new_node;
+}
+

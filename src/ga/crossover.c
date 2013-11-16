@@ -11,15 +11,14 @@
 
 int one_pt_crossover(void **chromo_1, void **chromo_2, int index)
 {
+        int equals = 0;
         int len = (int) strlen(*chromo_1) + 1;
         int i = (index == DEFAULT_PIVOT ? round(len / 2) : index);
         char *child_1 = calloc(1, sizeof(char) * (len));
         char *child_2 = calloc(1, sizeof(char) * (len));
 
-        check(
-                strlen(*chromo_1) == strlen(*chromo_2),
-                "Chromosome lengths are different!"
-        );
+        equals = (strlen(*chromo_1) == strlen(*chromo_2)) ? 1 : 0;
+        check(equals == 1, "Chromosome lengths are different!");
 
         /* set child_1 and child_2 */
         strcpy(child_1, *chromo_1);

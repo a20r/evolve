@@ -7,6 +7,7 @@
 
 #include "test_utils.h"
 #include "population.h"
+#include "evolve_monitor.h"
 
 
 int assert_sorted_array(

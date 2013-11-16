@@ -1,10 +1,8 @@
 #include <stdio.h>
 
 #include <dbg/dbg.h>
-#include <dstruct/ast.h>
-#include <dstruct/stack.h>
-#include <dstruct/darray.h>
 
+#include "gp/initialize.h"
 #include "gp/function_set.h"
 #include "gp/terminal_set.h"
 #include "gp/tree_evaluator.h"

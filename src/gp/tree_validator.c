@@ -2,13 +2,12 @@
 #include <string.h>
 
 #include <al/comparator.h>
-#include <dstruct/darray.h>
 #include <dstruct/linked_list.h>
 
-#include "gp/initialize.h"
 #include "gp/terminal_set.h"
 #include "gp/function_set.h"
 #include "gp/tree_validator.h"
+
 
 static struct darray *create_input_check_list(struct darray *input_set)
 {
@@ -27,35 +26,35 @@ static struct darray *create_input_check_list(struct darray *input_set)
         return input_check_list;
 }
 
-static inline int node_integer_equals(struct ast *node_1, struct ast *node_2)
+static int node_integer_equals(struct ast *node_1, struct ast *node_2)
 {
         int res;
         res = int_cmp(&node_1->type.integer, &node_2->type.integer);
         return (res == 0 ? 1 : 0);
 }
 
-static inline int node_real_equals(struct ast *node_1, struct ast *node_2)
+static int node_real_equals(struct ast *node_1, struct ast *node_2)
 {
         int res;
         res = float_cmp(&node_1->type.real, &node_2->type.real);
         return (res == 0 ? 1 : 0);
 }
 
-static inline int node_string_equals(struct ast *node_1, struct ast *node_2)
+static int node_string_equals(struct ast *node_1, struct ast *node_2)
 {
         int res;
         res = strcmp(node_1->type.string, node_2->type.string);
         return (res == 0 ? 1 : 0);
 }
 
-static inline int node_character_equals(struct ast *node_1, struct ast *node_2)
+static int node_character_equals(struct ast *node_1, struct ast *node_2)
 {
         int res;
         res = int_cmp(&node_1->type.character, &node_2->type.character);
         return (res == 0 ? 1 : 0);
 }
 
-static inline int node_boolean_equals(struct ast *node_1, struct ast *node_2)
+static int node_boolean_equals(struct ast *node_1, struct ast *node_2)
 {
         int res;
         res = int_cmp(&node_1->type.boolean, &node_2->type.boolean);
@@ -88,114 +87,12 @@ int terminal_nodes_equal(struct ast *node_1, struct ast *node_2)
         return res;
 }
 
-static int node_unary_op_equals(struct ast *node_1, struct ast *node_2)
-{
-        int res = 0;
-        struct ast *value_1;
-        struct ast *value_2;
-        char *op_name_1;
-        char *op_name_2;
-
-        value_1 = node_1->type.unary->value;
-        value_2 = node_2->type.unary->value;
-
-        /* check left */
-        if (value_1->tag == value_2->tag) {
-                if (node_is_terminal(value_1)) {
-                        res = terminal_nodes_equal(value_1, value_2);
-                        silent_check(res == 1);
-
-                } else if (value_1->tag == UNARY_OP) {
-                        op_name_1 = value_1->type.unary->op_name;
-                        op_name_2 = value_2->type.unary->op_name;
-                        res = strcmp(op_name_1, op_name_2);
-                        silent_check(res == 0);
-
-                } else if (value_1->tag == BINARY_OP) {
-                        op_name_1 = value_1->type.binary->op_name;
-                        op_name_2 = value_2->type.binary->op_name;
-                        res = strcmp(op_name_1, op_name_2);
-                        silent_check(res == 0);
-
-                }
-        }
-
-        return 1;
-error:
-        return 0;
-}
-
-static int node_binary_op_equals(struct ast *node_1, struct ast *node_2)
-{
-        int res = 0;
-        struct ast *left_1;
-        struct ast *left_2;
-        struct ast *right_1;
-        struct ast *right_2;
-        char *op_name_1;
-        char *op_name_2;
-
-        left_1 = node_1->type.binary->left;
-        right_1 = node_1->type.binary->right;
-
-        left_2 = node_2->type.binary->left;
-        right_2 = node_2->type.binary->right;
-
-        /* check left */
-        if (left_1->tag == left_2->tag) {
-                if (node_is_terminal(left_1)) {
-                        res = terminal_nodes_equal(left_1, left_2);
-                        silent_check(res == 1);
-
-                } else if (left_1->tag == UNARY_OP) {
-                        op_name_1 = left_1->type.unary->op_name;
-                        op_name_2 = left_2->type.unary->op_name;
-                        res = strcmp(op_name_1, op_name_2);
-                        silent_check(res == 0);
-
-                } else if (left_1->tag == BINARY_OP) {
-                        op_name_1 = left_1->type.binary->op_name;
-                        op_name_2 = left_2->type.binary->op_name;
-                        res = strcmp(op_name_1, op_name_2);
-                        silent_check(res == 0);
-
-
-                }
-        }
-
-        /* check right */
-        if (right_1->tag == right_2->tag) {
-                if(node_is_terminal(right_1)) {
-                        res = terminal_nodes_equal(right_1, right_2);
-                        silent_check(res == 1);
-
-                } else if (right_1->tag == UNARY_OP) {
-                        op_name_1 = right_1->type.unary->op_name;
-                        op_name_2 = right_2->type.unary->op_name;
-                        res = strcmp(op_name_1, op_name_2);
-                        silent_check(res == 0);
-
-                } else if (right_1->tag == BINARY_OP) {
-                        op_name_1 = right_1->type.binary->op_name;
-                        op_name_2 = right_2->type.binary->op_name;
-                        res = strcmp(op_name_1, op_name_2);
-                        silent_check(res == 0);
-
-                }
-        }
-
-        return 1;
-error:
-        return 0;
-}
-
 int function_nodes_equal(struct ast *node_1, struct ast *node_2)
 {
         int res;
         char *op_name_1;
         char *op_name_2;
 
-        printf("node_1: %p, node_2: %p\n", node_1, node_2);
         if (node_1->tag == node_2->tag) {
                 if (node_1->tag == UNARY_OP) {
                         op_name_1 = node_1->type.unary->op_name;

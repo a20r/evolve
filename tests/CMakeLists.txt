@@ -1,14 +1,12 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 SET(LIBRARY_NAME evolve)
-SET(CMAKE_C_FLAGS_DEBUG "-Wall -g")
-SET(CMAKE_C_FLAGS_RELEASE "-Wall -DNDEBUG")
 
 INCLUDE_DIRECTORIES(../include)
 INCLUDE_DIRECTORIES(/usr/local/include/)
 
-LINK_DIRECTORIES(/usr/local/lib)
 LINK_DIRECTORIES(/usr/lib)
+LINK_DIRECTORIES(/usr/local/lib)
 
 # evolve_tests
 ADD_EXECUTABLE(evolve_tests evolve_tests.c)

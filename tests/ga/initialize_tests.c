@@ -36,8 +36,8 @@ static void teardown()
 int test_initialize_population()
 {
         int i = 0;
-        char *individual = '\0';
-        char *last_individual = '\0';
+        char *individual = NULL;
+        char *last_individual = NULL;
 
         setup(max_pop, 1);
         initialize_population(p, randstr);

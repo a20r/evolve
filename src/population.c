@@ -144,7 +144,7 @@ void print_individuals(struct population *p)
 {
         int i = 0;
         float score = 0.0;
-        char *chromo = '\0';
+        char *chromo = NULL;
         float total_score = (double) p->total_score;
 
         for (i = 0; i < p->population; i++) {
