@@ -91,7 +91,7 @@ static void print_setup(int max_pop, int max_gen)
                 max_pop,  /* max_pop */
                 max_gen /* max_gen */
         );
-        initialize_population(p, randstr);
+        population_initialize(p, randstr);
         evaluate_individuals(fitness_function, &p);
 }
 
@@ -178,7 +178,7 @@ int test_evaluate_individuals()
 
         /* setup */
         setup(max_pop, 1);
-        initialize_population(p, randstr);
+        population_initialize(p, randstr);
 
         /* replace last individual to match the solution */
         solution = malloc(p->individuals->element_size);
@@ -226,7 +226,7 @@ int test_normalize_fitness_values()
 
         /* setup */
         setup(10, 1);
-        initialize_population(p, randstr);
+        population_initialize(p, randstr);
         evaluate_individuals(fitness_function, &p);
 
         printf("Before Normalization\n");
@@ -340,7 +340,7 @@ int test_partition_population()
 
         /* setup */
         setup(max_pop, max_gen);
-        initialize_population(p, randstr);
+        population_initialize(p, randstr);
         evaluate_individuals(fitness_function, &p);
 
         printf("Before Population Sort\n");
@@ -438,7 +438,7 @@ int test_populate()
 {
         /* setup */
         setup(max_pop, 1);
-        initialize_population(p, randstr);
+        population_initialize(p, randstr);
         evaluate_individuals(fitness_function, &p);
         roulette_wheel_selection(&p, NULL);
 

@@ -36,7 +36,7 @@ static void setup()
                 10,  /* max_pop */
                 1 /* max_gen */
         );
-        initialize_population(p, randstr);
+        population_initialize(p, randstr);
         evaluate_individuals(fitness_function, &p);
 }
 
