@@ -71,7 +71,6 @@ int one_point_crossover(
         struct ast *c_2;
         struct ast *linked_1;
         struct ast *linked_2;
-        struct ast *tmp;
 
         /* choose random index and get the crossover root nodes */
         index = crossover_random_index(tree_1, tree_2, config);
@@ -85,7 +84,6 @@ int one_point_crossover(
         branch_2 = ast_node_is_value_of(linked_2, c_2);
 
         /* crossover */
-        tmp = c_1;
         if (branch_1 == LEFT_BRANCH) {
                 linked_1->type.binary->left = c_2;
         }  else if (branch_1 == RIGHT_BRANCH) {

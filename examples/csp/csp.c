@@ -203,7 +203,7 @@ static void teardown_strings()
         }
 }
 
-float fitness_function(char *individual)
+float fitness_function(void *individual)
 {
         int i;
         float scores[k];
@@ -284,7 +284,7 @@ int main(int argc, char *argv[])
 
         /* print results */
         print_evolve_results(p, fitness_function);
-        /* print_top_individuals(m, 5); */
+        print_top_individuals(m, 5);
 
         /* clean up */
         destroy_evolve_monitor(&m);

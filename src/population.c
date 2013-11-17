@@ -70,7 +70,7 @@ void extend_max_generation(struct population *p, int extension_size)
         p->max_generation += extension_size;
 }
 
-int evaluate_individuals(float (eval_func)(char *), struct population **p)
+int evaluate_individuals(float (*eval_func)(void *), struct population **p)
 {
         int i = 0;
         float *goal = &(*p)->goal;

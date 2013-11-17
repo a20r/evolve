@@ -30,14 +30,14 @@ int output;
 int save_stdout;
 
 
-static float fitness_function(char *individual)
+static float fitness_function(void *individual)
 {
         char *target = "hello world!";
         float total = 0;
         int i = 0;
 
         for (i = 0; i <= (int) strlen(individual); i++) {
-                total += fabsf(roundf(target[i] - individual[i]));
+                total += fabsf(roundf(target[i] - ((char *) individual)[i]));
         }
 
         return total;

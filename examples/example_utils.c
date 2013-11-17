@@ -6,7 +6,7 @@
 #include "example_utils.h"
 
 
-void print_evolve_results(struct population *p, float (*fitness_func)(char *))
+void print_evolve_results(struct population *p, float (*fitness_func)(void *))
 {
         if (p->solution != NULL) {
                 printf("SUCCESS! FOUND SOLUTION!\n");

@@ -4,8 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "evolve.h"
-
+#include "population.h"
 
 /* DEFINES */
 #ifndef QSORT_MIN_SIZE

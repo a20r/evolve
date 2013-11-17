@@ -27,14 +27,14 @@ float *crossover_prob;
 float *mutate_prob;
 volatile sig_atomic_t stop_signal = 0;
 
-static float fitness_function(char *individual)
+static float fitness_function(void *individual)
 {
         char *target = TEST_SOLUTION;
         float total = 0;
         int i = 0;
 
         for (i = 0; i <= (int) strlen(individual); i++) {
-                total += fabsf(roundf(target[i] - individual[i]));
+                total += fabsf(roundf(target[i] - ((char *) individual)[i]));
         }
 
         return total;

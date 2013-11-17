@@ -21,7 +21,7 @@
 #define TARGET_SOLUTION "hello world!"
 
 
-static float fitness_function(char *individual)
+static float fitness_function(void *individual)
 {
         char *target = TARGET_SOLUTION;
         float max_score = 122 * strlen(individual);
@@ -29,7 +29,7 @@ static float fitness_function(char *individual)
         int i = 0;
 
         for (i = 0; i <= (int) strlen(individual); i++) {
-                total += fabsf(roundf(target[i] - individual[i]));
+                total += fabsf(roundf(target[i] - ((char * ) individual)[i]));
         }
 
         return max_score - total;
