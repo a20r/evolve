@@ -5,7 +5,7 @@
 #include "gp/crossover.h"
 #include "gp/tree_parser.h"
 
-#define TEST_CONFIG_FILE "tests/test_files/mutation_test.json"
+#define TEST_CONFIG_FILE "tests/test_files/gp_crossover_test.json"
 
 /* GLOBAL VAR */
 struct evolve_config *config;

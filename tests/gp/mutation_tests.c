@@ -3,7 +3,7 @@
 #include "gp/initialize.h"
 #include "gp/mutation.h"
 
-#define TEST_CONFIG_FILE "tests/test_files/mutation_test.json"
+#define TEST_CONFIG_FILE "tests/test_files/gp_mutation_test.json"
 
 /* GLOBAL VAR */
 struct evolve_config *config;
