@@ -8,6 +8,7 @@
 #include "gp/function_set.h"
 #include "gp/terminal_set.h"
 #include "gp/tree_parser.h"
+#include "gp/tree_validator.h"
 
 
 static struct gp_tree *gp_tree_create(struct gp_tree_config *config)
@@ -60,16 +61,19 @@ static struct ast *full_method_gen_node(
                 /* next node is max depth, make a terminal node */
                 i = randnum_i(0, nodes->terminal_set->end);
                 node = darray_get(nodes->terminal_set, i);
+                node = ast_copy_node(node);
+
                 darray_push(tree->terminal_nodes, node);
                 tree->size++;
         } else {
                 /* else make function node */
                 i = randnum_i(0, nodes->function_set->end);
                 node = darray_get(nodes->function_set, i);
+                node = ast_copy_node(node);
                 tree->size++;
         }
 
-        return ast_copy_node(node);
+        return node;
 }
 
 static int full_method(
@@ -121,8 +125,9 @@ error:
 struct gp_tree *init_tree_full(struct gp_tree_config *config)
 {
         struct gp_tree *gp;
-        int max_depth;
         struct node_set *nodes;
+        int max_depth;
+        /* int valid_tree = 0; */
 
         /* setup */
         max_depth = *config->max_depth;
@@ -135,6 +140,9 @@ struct gp_tree *init_tree_full(struct gp_tree_config *config)
         gp = gp_tree_create(config);
         full_method(gp, gp->root, gp->depth, max_depth, nodes);
         gp->depth = max_depth;
+
+        /* add input nodes */
+        tree_add_input_nodes(gp, config);
 
         /* initialize gp program */
         gp->program = parse_gp_tree(gp->root);

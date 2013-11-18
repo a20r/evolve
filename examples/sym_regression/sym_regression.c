@@ -17,18 +17,11 @@
 #include "gp/mutation.h"
 
 
-static float fitness_function(char *individual)
+static float fitness_function(void *tree)
 {
-        char *target = "";
-        float max_score = 122 * strlen(individual);
-        float total = 0;
-        int i = 0;
 
-        for (i = 0; i <= (int) strlen(individual); i++) {
-                total += fabsf(roundf(target[i] - individual[i]));
-        }
 
-        return max_score - total;
+        return 0;
 }
 
 int main(int argc, char *argv[])
@@ -53,7 +46,7 @@ int main(int argc, char *argv[])
 
         /* run evolution */
         printf("RUNNING GP!\n");
-        p = population_initialize(init_tree_full, gp_config);
+        p = gp_population_initialize(init_tree_full, gp_config);
         /* run_evolution( */
         /*         &p, */
         /*         fitness_function, */

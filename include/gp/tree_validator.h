@@ -9,5 +9,6 @@
 
 /* FUNCTIONS */
 int validate_tree(struct gp_tree *gp, struct darray *input_set);
+int tree_add_input_nodes(struct gp_tree *gp, struct gp_tree_config *config);
 
 #endif

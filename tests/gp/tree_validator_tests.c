@@ -58,8 +58,8 @@ static void print_program()
 
         /* print program */
         printf("PROGRAM STACK [REVERSE POLISH NOTATION]\n");
-        for (i = 0; i < program->end; i++) {
-                node = darray_get(program, i);
+        for (i = 0; i < gp->program->end; i++) {
+                node = darray_get(gp->program, i);
                 test_print_node(node);
         }
 }
@@ -68,8 +68,8 @@ static void setup()
 {
         config = load_config(TEST_CONFIG_FILE);
         gp_config = config->general.gp_tree;
+
         gp = init_tree_full(config->general.gp_tree);
-        program = parse_gp_tree(gp->root);
         print_program();
 }
 
@@ -84,7 +84,7 @@ int test_validate_tree()
 {
         int i;
         int len;
-        int res;
+        int res = 0;
 
         printf("--- TERMINAL NODES ---\n");
         len = gp->terminal_nodes->end;
@@ -92,14 +92,20 @@ int test_validate_tree()
                 test_print_node(darray_get(gp->terminal_nodes, i));
         }
 
-        printf("--- INPUT SET ---\n");
-        len = gp_config->input_set->end + 1;
+        printf("--- INPUT NODES ---\n");
+        len = gp->input_nodes->end;
         for (i = 0; i < len; i++) {
-                test_print_node(darray_get(gp_config->input_set, i));
+                test_print_node(darray_get(gp->input_nodes, i));
         }
 
-        res = validate_tree(gp, gp_config->input_set);
-        printf("res: %d\n", res);
+        /* res = validate_tree(gp, gp_config->input_set); */
+        mu_assert(res == 0, "Failed to validate tree!");
+
+        return 0;
+}
+
+int test_tree_add_input_nodes()
+{
 
         return 0;
 }
