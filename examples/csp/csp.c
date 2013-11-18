@@ -258,7 +258,7 @@ int main(int argc, char *argv[])
         printf("RUNNING GA!\n");
         printf("Crossover Probability [%.2f]!\n", *p_c);
         printf("Mutation Probability [%.2f]!\n", *p_m);
-        population_initialize(p, randnumstr);
+        ga_population_initialize(p, randnumstr);
 
         run_evolution(
                 &p,

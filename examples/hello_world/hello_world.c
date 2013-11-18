@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
         printf("RUNNING GA!\n");
         printf("Crossover Probability [%.4f]!\n", *p_c);
         printf("Mutation Probability [%.4f]!\n", *p_m);
-        population_initialize(p, randstr);
+        ga_population_initialize(p, randstr);
         run_evolution(
                 &p,
                 fitness_function,

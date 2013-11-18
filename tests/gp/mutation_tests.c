@@ -7,15 +7,13 @@
 
 /* GLOBAL VAR */
 struct evolve_config *config;
-struct gp_tree_config *gp_config;
 struct gp_tree *gp;
 
 
 static void setup()
 {
         config = load_config(TEST_CONFIG_FILE);
-        gp_config = config->general.gp_tree;
-        gp = init_tree_full(gp_config);
+        gp = init_tree_full(config->general.gp_tree);
 }
 
 static void teardown()
@@ -27,7 +25,7 @@ static void teardown()
 int test_point_mutation()
 {
         int i = 0;
-        int tests = 100;
+        int tests = 1;
         /* struct ast *root_before; */
         /* struct ast *root_after; */
         /* struct darray *prog_before; */
@@ -40,7 +38,7 @@ int test_point_mutation()
                 /* root_before = gp->root; */
                 /* prog_before = gp->program; */
 
-                mutate_tree(1, gp, gp_config, point_mutation);
+                mutate_tree(gp, gp_point_mutation, config);
 
                 /* root_after = gp->root; */
                 /* prog_after = gp->program; */

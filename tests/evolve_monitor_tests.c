@@ -51,7 +51,7 @@ static void sort_test_setup(int max_gen, int max_pop)
                 max_gen /* max_gen */
         );
         m = init_evolve_monitor(chromo_sz, 5, NULL);
-        population_initialize(p, randstr);
+        ga_population_initialize(p, randstr);
 
         crossover_prob = calloc(1, sizeof(float));
         *crossover_prob = 0.8;
@@ -141,7 +141,7 @@ int test_record_generation_stats()
                 5 /* max_gen */
         );
         m = init_evolve_monitor(chromo_sz, 5, NULL);
-        population_initialize(p, randstr);
+        ga_population_initialize(p, randstr);
         evaluate_individuals(fitness_function, &p);
 
         /* record generation stats */

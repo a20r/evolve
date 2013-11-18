@@ -15,7 +15,7 @@
 
 static int point_mutate_function_node(
         struct ast *node,
-        struct gp_tree_config *config
+        struct evolve_config *config
 )
 {
         /* int res = 0; */
@@ -24,10 +24,13 @@ static int point_mutate_function_node(
         struct ast *new_node;
         char *new_op;
         /* struct ast *value; */
+        struct gp_tree_config *gp;
 
+
+        gp = config->general.gp_tree;
         if (node->tag == UNARY_OP) {
                 /* new function node */
-                new_node = get_new_function_node(node, UNARY_OP, config);
+                new_node = get_new_function_node(node, UNARY_OP, gp);
                 new_op = new_node->type.unary->op_name;
                 len = strlen(new_op) + 1;  /* + 1 for null terminator */
 
@@ -39,7 +42,7 @@ static int point_mutate_function_node(
 
         } else if (node->tag == BINARY_OP) {
                 /* new function node */
-                new_node = get_new_function_node(node, BINARY_OP, config);
+                new_node = get_new_function_node(node, BINARY_OP, gp);
                 new_op = new_node->type.binary->op_name;
                 len = strlen(new_op) + 1;  /* + 1 for null terminator */
 
@@ -60,13 +63,15 @@ error:
 
 static int point_mutate_terminal_node(
         struct ast *node,
-        struct gp_tree_config *config
+        struct evolve_config *config
 )
 {
         struct ast *new_node;
+        struct gp_tree_config *gp;
 
         /* get new term node */
-        new_node = get_new_terminal_node(node, node->tag, config);
+        gp = config->general.gp_tree;
+        new_node = get_new_terminal_node(node, node->tag, gp);
 
         if (node->tag == INTEGER) {
                 node->type.integer = new_node->type.integer;
@@ -84,18 +89,18 @@ static int point_mutate_terminal_node(
         return 0;
 }
 
-
-int point_mutation(
-        struct gp_tree *tree,
-        int index,
-        struct gp_tree_config *config
+int gp_point_mutation(
+        void *tree,
+        struct evolve_config *config
 )
 {
         int res = 0;
+        int index = 0;
         struct ast *node;
 
         /* get node to mutate */
-        node = darray_get(tree->program, index);
+        index = randnum_i(0, ((struct gp_tree *) tree)->program->end - 2);
+        node = darray_get(((struct gp_tree *) tree)->program, index);
 
         if (node_is_function(node)) {
                 res = point_mutate_function_node(node, config);
@@ -113,25 +118,22 @@ error:
 }
 
 int mutate_tree(
-        int prob,
-        struct gp_tree *tree,
-        struct gp_tree_config *config,
-        int (*mutation_func)(struct gp_tree *, int, struct gp_tree_config *)
+        void *tree,
+        int (*mutation_func)(void *, struct evolve_config *),
+        struct evolve_config *config
 )
 {
         int res = 0;
-        int index = 0;
 
         /* mutate or not mutate */
-        if (prob > randnum_f(0.0, 1.0)) {
+        if (*(config->mutation->probability) > randnum_f(0.0, 1.0)) {
                 goto mutate;
         } else {
                 goto no_mutate;
         }
 
 mutate:
-        index = randnum_i(0, tree->program->end - 2);
-        res = (*mutation_func)(tree, index, config);
+        res = (*mutation_func)(tree, config);
         if (res == -1) {
                 log_err("Error! Failed to mutate tree!");
         }

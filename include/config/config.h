@@ -22,6 +22,8 @@ struct gp_tree_config
     struct darray *function_set;
     struct darray *terminal_set;
     struct darray *input_set;
+
+    FILE *input_data;
 };
 
 union general_config

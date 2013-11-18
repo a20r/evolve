@@ -33,14 +33,14 @@ static void teardown()
         population_destroy(&p, free);
 }
 
-int test_population_initialize()
+int test_ga_population_initialize()
 {
         int i = 0;
         char *individual = NULL;
         char *last_individual = NULL;
 
         setup(max_pop, 1);
-        population_initialize(p, randstr);
+        ga_population_initialize(p, randstr);
 
         /* assert tests */
         for (i = 0; i < p->max_population; i++) {
@@ -59,7 +59,7 @@ int test_population_initialize()
 
 void test_suite()
 {
-        mu_run_test(test_population_initialize);
+        mu_run_test(test_ga_population_initialize);
 }
 
 mu_run_test_suite(test_suite);

@@ -62,7 +62,7 @@ int test_run_evolution()
         *crossover_prob = 0.5;
         *mutate_prob = 0.2;
 
-        population_initialize(p, randstr);
+        ga_population_initialize(p, randstr);
         run_evolution(
                 &p,
                 fitness_function,

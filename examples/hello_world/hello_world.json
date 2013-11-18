@@ -1,0 +1,22 @@
+{
+    "mode" :  "GA",
+
+    "ga" :  {
+        "max_pop" : 10,
+        "max_gen" : 10,
+    },
+
+    "selection" : {
+        "select" : "default"
+    },
+
+    "crossover" : {
+        "probability" : 0.8,
+        "pivot_index" : "default"
+    },
+
+    "mutation" : {
+        "probability" : 0.1,
+        "mutation_point" : "default"
+    }
+}
