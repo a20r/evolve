@@ -80,115 +80,6 @@ static void teardown()
         config_destroy(config);
 }
 
-int test_terminal_nodes_equal()
-{
-        int res = 0;
-        int integer_1 = 1;
-        int integer_2 = 1;
-        float real_1 = 1.0;
-        float real_2 = 1.0;
-        char *str_1 = "Hello World!";
-        char *str_2 = "Hello World!";
-        char c_1 = 'a';
-        char c_2 = 'a';
-        int b_1 = 0;
-        int b_2 = 0;
-        struct ast *node_1;
-        struct ast *node_2;
-
-        /* compare integer nodes */
-        /* equal test */
-        node_1 = ast_make_exp(INTEGER, &integer_1);
-        node_2 = ast_make_exp(INTEGER, &integer_2);
-        res = terminal_nodes_equal(node_1, node_2);
-        mu_assert(res == 1, "Failed to compare INTEGER terminal nodes!");
-        free(node_1);
-        free(node_2);
-
-        /* fail test */
-        integer_2 = 2;
-        node_1 = ast_make_exp(INTEGER, &integer_1);
-        node_2 = ast_make_exp(INTEGER, &integer_2);
-        res = terminal_nodes_equal(node_1, node_2);
-        mu_assert(res == 0, "Failed to compare INTEGER terminal nodes!");
-        free(node_1);
-        free(node_2);
-
-        /* compare real nodes */
-        /* equal test */
-        node_1 = ast_make_exp(REAL, &real_1);
-        node_2 = ast_make_exp(REAL, &real_2);
-        res = terminal_nodes_equal(node_1, node_2);
-        mu_assert(res == 1, "Failed to compare real terminal nodes!");
-        free(node_1);
-        free(node_2);
-
-        /* fail test */
-        real_2 = 2.0;
-        node_1 = ast_make_exp(REAL, &real_1);
-        node_2 = ast_make_exp(REAL, &real_2);
-        res = terminal_nodes_equal(node_1, node_2);
-        mu_assert(res == 0, "Failed to compare real terminal nodes!");
-        free(node_1);
-        free(node_2);
-
-        /* compare string nodes */
-        /* equal test */
-        node_1 = ast_make_exp(STRING, &str_1);
-        node_2 = ast_make_exp(STRING, &str_2);
-        res = terminal_nodes_equal(node_1, node_2);
-        mu_assert(res == 1, "Failed to compare STRING terminal nodes!");
-        free(node_1);
-        free(node_2);
-
-        /* fail test */
-        str_2 = "Hello C!";
-        node_1 = ast_make_exp(STRING, &str_1);
-        node_2 = ast_make_exp(STRING, &str_2);
-        res = terminal_nodes_equal(node_1, node_2);
-        mu_assert(res == 0, "Failed to compare STRING terminal nodes!");
-        free(node_1);
-        free(node_2);
-
-        /* compare character nodes */
-        /* equal test */
-        node_1 = ast_make_exp(CHARACTER, &c_1);
-        node_2 = ast_make_exp(CHARACTER, &c_2);
-        res = terminal_nodes_equal(node_1, node_2);
-        mu_assert(res == 1, "Failed to compare CHARACTER terminal nodes!");
-        free(node_1);
-        free(node_2);
-
-        /* fail test */
-        c_2 = 'b';
-        node_1 = ast_make_exp(CHARACTER, &c_1);
-        node_2 = ast_make_exp(CHARACTER, &c_2);
-        res = terminal_nodes_equal(node_1, node_2);
-        mu_assert(res == 0, "Failed to compare CHARACTER terminal nodes!");
-        free(node_1);
-        free(node_2);
-
-        /* compare boolean nodes */
-        /* equal test */
-        node_1 = ast_make_exp(BOOL, &b_1);
-        node_2 = ast_make_exp(BOOL, &b_2);
-        res = terminal_nodes_equal(node_1, node_2);
-        mu_assert(res == 1, "Failed to compare BOOL terminal nodes!");
-        free(node_1);
-        free(node_2);
-
-        /* fail test */
-        b_2 = 'b';
-        node_1 = ast_make_exp(BOOL, &b_1);
-        node_2 = ast_make_exp(BOOL, &b_2);
-        res = terminal_nodes_equal(node_1, node_2);
-        mu_assert(res == 0, "Failed to compare BOOL terminal nodes!");
-        free(node_1);
-        free(node_2);
-
-        return 0;
-}
-
 int test_validate_tree()
 {
         int i;
@@ -219,7 +110,6 @@ void test_suite()
         srand(time(NULL));
 
         setup();
-        mu_run_test(test_terminal_nodes_equal);
         mu_run_test(test_validate_tree);
         teardown();
 }

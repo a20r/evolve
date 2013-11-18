@@ -62,7 +62,7 @@ int test_population_initialize()
         int i = 0;
         struct gp_tree *tree;
 
-        p = population_initialize(init_tree_full, gp_config);
+        p = gp_population_initialize(init_tree_full, gp_config);
 
         for (i = 0; i < p->max_population; i++) {
                 tree = darray_get(p->individuals, i);

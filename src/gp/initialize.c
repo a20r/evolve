@@ -145,7 +145,7 @@ struct gp_tree *init_tree_full(struct gp_tree_config *config)
         return gp;
 }
 
-struct population *population_initialize(
+struct population *gp_population_initialize(
         struct gp_tree *(*tree_initializer)(struct gp_tree_config *),
         struct gp_tree_config *config
 )

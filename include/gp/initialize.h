@@ -32,7 +32,7 @@ struct node_set
 struct gp_tree *init_tree_full(struct gp_tree_config *config);
 void gp_tree_destroy(void *gp);
 struct gp_tree *init_tree_full(struct gp_tree_config *config);
-struct population *population_initialize(
+struct population *gp_population_initialize(
         struct gp_tree *(*tree_initializer)(struct gp_tree_config *),
         struct gp_tree_config *config
 );

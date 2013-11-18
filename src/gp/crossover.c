@@ -113,6 +113,8 @@ int one_point_crossover(
         t_1->program = parse_gp_tree(t_1->root);
         t_2->program = parse_gp_tree(t_2->root);
 
+        /* TODO: update terminal and input node list */
+
         return 0;
 }
 
