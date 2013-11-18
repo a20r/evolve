@@ -10,7 +10,10 @@
 
 #include "config/parse.h"
 
-#define TEST_CONFIG_FILE "tests/test_files/parse_test.json"
+#define TEST_PARSE_CONFIG "tests/test_files/parse_test.json"
+#define TEST_GA_CONFIG "tests/test_files/parse_ga_test.json"
+#define TEST_GP_CONFIG "tests/test_files/parse_gp_test.json"
+
 #define TEST_GET_STR "Hello World!"
 #define TEST_GET_INT 123
 #define TEST_GET_REAL 9.999
@@ -25,9 +28,9 @@ json_t *root;
 json_error_t error;
 
 
-static void setup()
+static void setup(char *mode)
 {
-        root = json_load_file(TEST_CONFIG_FILE, 0, &error);
+        root = json_load_file(mode, 0, &error);
         check(root != NULL, "Failed to read config file!");
 
         return;
@@ -345,38 +348,135 @@ int test_set_ast_array()
 
 int test_parse_ga_config()
 {
+        struct ga_config *ga;
+        json_t *config;
+
+        /* setup and parse */
+        setup(TEST_GA_CONFIG);
+
+        ga = init_ga_config();
+        config = json_object_get(root, "ga");
+        parse_ga_config(config, ga);
+
+        /* asserts */
+        mu_assert(*(ga->max_pop) == 10, "Invalid max_pop value!");
+        mu_assert(*(ga->max_gen) == 1000, "Invalid max_pop value!");
+
+        /* clean up */
+        destroy_ga_config(ga);
+        teardown();
+
         return 0;
 }
 
 int test_parse_gp_tree_config()
 {
-        return 0;
-}
+        struct gp_tree_config *gp;
+        json_t *config;
 
-int test_parse_general_config()
-{
+        /* setup and parse */
+        setup(TEST_GP_CONFIG);
+
+        gp = init_gp_tree_config();
+        config = json_object_get(root, "gp_tree");
+        parse_gp_tree_config(config, gp);
+
+        /* asserts */
+        mu_assert(*(gp->max_pop) == 1000, "Invalid max_pop value!");
+        mu_assert(*(gp->max_gen) == 1000, "Invalid max_gen value!");
+        mu_assert(*(gp->max_depth) == 20, "Invalid max_depth value!");
+        mu_assert(*(gp->max_size) == 100, "Invalid max_size value!");
+
+        /* clean up */
+        destroy_gp_tree_config(gp);
+        teardown();
+
         return 0;
 }
 
 int test_parse_selection_config()
 {
+        struct selection_config *selection;
+        json_t *config;
+        int equals = 0;
+
+        /* setup and parse */
+        setup(TEST_GP_CONFIG);
+        selection = selection_config_create();
+        config = json_object_get(root, "selection");
+        parse_selection_config(selection, config);
+
+        /* asserts */
+        mu_assert(selection->select != NULL , "Invalid select value!");
+        equals = strcmp(selection->select, "default");
+        mu_assert(equals == 0, "Invalid select!");
+
+        /* clean up */
+        selection_config_destroy(selection);
+        teardown();
+
         return 0;
 }
 
 int test_parse_crossover_config()
 {
+        struct crossover_config *crossover;
+        json_t *config;
+        int res = 0;
+        float crossover_prob = 0.8;
+
+        /* setup and parse */
+        setup(TEST_GP_CONFIG);
+        crossover = crossover_config_create();
+        config = json_object_get(root, "crossover");
+        parse_crossover_config(crossover, config);
+
+        /* asserts */
+        mu_assert(crossover->probability != NULL , "Invalid crossover prob!");
+        res = float_cmp(crossover->probability, &crossover_prob);
+        mu_assert(res == 0, "Invalid crossover prob!");
+
+        res = strcmp(crossover->pivot_index, "default");
+        mu_assert(res == 0, "Invalid pivot value!");
+
+        /* clean up */
+        crossover_config_destroy(crossover);
+        teardown();
+
         return 0;
 }
 
 int test_parse_mutation_config()
 {
+        struct mutation_config *mutation;
+        json_t *config;
+        int res = 0;
+        float mutation_prob = 0.1;
+
+        /* setup and parse */
+        setup(TEST_GP_CONFIG);
+        mutation = mutation_config_create();
+        config = json_object_get(root, "mutation");
+        parse_mutation_config(mutation, config);
+
+        /* asserts */
+        mu_assert(mutation->probability != NULL , "Invalid mutation prob!");
+        res = float_cmp(mutation->probability, &mutation_prob);
+        mu_assert(res == 0, "Invalid mutation prob!");
+
+        res = strcmp(mutation->mutation_point, "default");
+        mu_assert(res == 0, "Invalid pivot value!");
+
+        /* clean up */
+        mutation_config_destroy(mutation);
+        teardown();
+
         return 0;
 }
 
 void test_suite()
 {
-        setup();
-
+        setup(TEST_PARSE_CONFIG);
         mu_run_test(test_get_str);
         mu_run_test(test_get_int);
         mu_run_test(test_get_real);
@@ -386,15 +486,15 @@ void test_suite()
         mu_run_test(test_set_real);
         mu_run_test(test_set_string_array);
         mu_run_test(test_set_ast_array);
+        teardown();
+
 
         mu_run_test(test_parse_ga_config);
         mu_run_test(test_parse_gp_tree_config);
-        mu_run_test(test_parse_general_config);
         mu_run_test(test_parse_selection_config);
         mu_run_test(test_parse_crossover_config);
         mu_run_test(test_parse_mutation_config);
 
-        teardown();
 }
 
 mu_run_test_suite(test_suite);

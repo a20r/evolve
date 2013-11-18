@@ -9,24 +9,33 @@
 #include "config/parse.h"
 
 
-static struct evolve_config *config_create()
+struct evolve_config *config_create()
 {
         struct evolve_config *config;
 
         config = calloc(1, sizeof(struct evolve_config));
 
-        /* selection */
-        config->selection = calloc(1, sizeof(struct selection_config));
-
-        /* crossover */
-        config->crossover = calloc(1, sizeof(struct crossover_config));
-        config->crossover->probability = calloc(1, sizeof(float));
-
-        /* mutation */
-        config->mutation = calloc(1, sizeof(struct mutation_config));
-        config->mutation->probability = calloc(1, sizeof(float));
+        config->selection = selection_config_create();
+        config->crossover = crossover_config_create();
+        config->mutation = mutation_config_create();
 
         return config;
+}
+
+void config_destroy(struct evolve_config *config)
+{
+        /* general */
+        if (config->mode == GA) {
+                destroy_ga_config(config->general.ga);
+        } else if (config->mode == GP_TREE) {
+                destroy_gp_tree_config(config->general.gp_tree);
+        }
+
+        selection_config_destroy(config->selection);
+        crossover_config_destroy(config->crossover);
+        mutation_config_destroy(config->mutation);
+
+        free(config);
 }
 
 struct ga_config *init_ga_config()
@@ -38,6 +47,13 @@ struct ga_config *init_ga_config()
         ga->max_gen = calloc(1, sizeof(int));
 
         return ga;
+}
+
+void destroy_ga_config(struct ga_config *config)
+{
+        free(config->max_pop);
+        free(config->max_gen);
+        free(config);
 }
 
 struct gp_tree_config *init_gp_tree_config()
@@ -62,12 +78,6 @@ struct gp_tree_config *init_gp_tree_config()
         return gp_tree;
 }
 
-void destroy_ga_config(struct ga_config *config)
-{
-        free(config->max_pop);
-        free(config->max_gen);
-        free(config);
-}
 
 void destroy_gp_tree_config(struct gp_tree_config *config)
 {
@@ -103,31 +113,55 @@ void destroy_gp_tree_config(struct gp_tree_config *config)
         free(config);
 }
 
-void config_destroy(struct evolve_config *config)
+struct selection_config *selection_config_create()
 {
-        /* general */
-        if (config->mode == GA) {
-                destroy_ga_config(config->general.ga);
-        } else if (config->mode == GP_TREE) {
-                destroy_gp_tree_config(config->general.gp_tree);
-        }
+        struct selection_config *selection;
 
-        /* selection */
-        free(config->selection->select);
-        free(config->selection);
+        selection = calloc(1, sizeof(struct selection_config));
 
-        /* crossover */
-        free(config->crossover->probability);
-        free(config->crossover->pivot_index);
-        free(config->crossover);
+        return selection;
+}
 
-        /* mutation */
-        free(config->mutation->probability);
-        free(config->mutation->mutation_point);
-        free(config->mutation);
-
+void selection_config_destroy(struct selection_config *config)
+{
+        free(config->select);
         free(config);
 }
+
+struct crossover_config *crossover_config_create()
+{
+        struct crossover_config *crossover;
+
+        crossover = calloc(1, sizeof(struct crossover_config));
+        crossover->probability = calloc(1, sizeof(float));
+
+        return crossover;
+}
+
+void crossover_config_destroy(struct crossover_config *config)
+{
+        free(config->probability);
+        free(config->pivot_index);
+        free(config);
+}
+
+struct mutation_config *mutation_config_create()
+{
+        struct mutation_config *mutation;
+
+        mutation = calloc(1, sizeof(struct mutation_config));
+        mutation->probability = calloc(1, sizeof(float));
+
+        return mutation;
+}
+
+void mutation_config_destroy(struct mutation_config *config)
+{
+        free(config->probability);
+        free(config->mutation_point);
+        free(config);
+}
+
 
 struct evolve_config *load_config(char *fp)
 {

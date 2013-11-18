@@ -64,10 +64,23 @@ struct evolve_config
 
 
 /* FUNCTIONS */
+struct evolve_config *config_create();
+void config_destroy(struct evolve_config *config);
+
 struct ga_config *init_ga_config();
-struct gp_tree_config *init_gp_tree_config();
 void destroy_ga_config(struct ga_config *config);
+
+struct gp_tree_config *init_gp_tree_config();
 void destroy_gp_tree_config(struct gp_tree_config *config);
+
+struct selection_config *selection_config_create();
+void selection_config_destroy(struct selection_config *config);
+
+struct crossover_config *crossover_config_create();
+void crossover_config_destroy(struct crossover_config *config);
+
+struct mutation_config *mutation_config_create();
+void mutation_config_destroy(struct mutation_config *config);
 
 struct evolve_config *load_config(char *fp);
 void config_destroy(struct evolve_config *c);

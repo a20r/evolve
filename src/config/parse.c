@@ -263,7 +263,7 @@ int parse_ga_config(json_t *obj, struct ga_config *config)
         check(res == 0, "Failed to parse max_pop!");
 
         /* max_gen */
-        res = set_int(obj, "max_gen", config->max_pop);
+        res = set_int(obj, "max_gen", config->max_gen);
         check(res == 0, "Failed to parse max_gen!");
 
         return 0;
@@ -329,8 +329,8 @@ int parse_general_config(struct evolve_config *config, json_t *root)
                 config->general.ga = init_ga_config();
 
                 /* set evolve_onfig */
-                res = parse_gp_tree_config(j_config, config->general.gp_tree);
-                check(res == 0, "Failed to parse gp config!");
+                res = parse_ga_config(j_config, config->general.ga);
+                check(res == 0, "Failed to parse ga config!");
 
         } else if (strcmp(mode, "GP_TREE") == 0) {
                 /* get genetic_programming json object */
