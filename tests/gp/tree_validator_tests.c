@@ -98,8 +98,8 @@ int test_validate_tree()
                 test_print_node(darray_get(gp->input_nodes, i));
         }
 
-        /* res = validate_tree(gp, gp_config->input_set); */
-        mu_assert(res == 0, "Failed to validate tree!");
+        res = tree_validate(gp, gp_config->input_set);
+        mu_assert(res == 1, "Failed to validate tree!");
 
         return 0;
 }
