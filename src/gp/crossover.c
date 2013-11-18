@@ -59,27 +59,34 @@ static struct ast *get_linked_func_node(
 }
 
 int one_point_crossover(
-        struct gp_tree *tree_1,
-        struct gp_tree *tree_2,
-        struct gp_tree_config *config
+        void *tree_1,
+        void *tree_2,
+        struct evolve_config *config
 )
 {
         int index = 0;
         int branch_1 = 0;
         int branch_2 = 0;
+        struct gp_tree *t_1;
+        struct gp_tree *t_2;
         struct ast *c_1;
         struct ast *c_2;
         struct ast *linked_1;
         struct ast *linked_2;
+        struct gp_tree_config *gp;
+
+        gp = config->general.gp_tree;
+        t_1 = (struct gp_tree *) tree_1;
+        t_2 = (struct gp_tree *) tree_2;
 
         /* choose random index and get the crossover root nodes */
-        index = crossover_random_index(tree_1, tree_2, config);
-        c_1 = darray_get(tree_1->program, index);
-        c_2 = darray_get(tree_2->program, index);
+        index = crossover_random_index(tree_1, tree_2, gp);
+        c_1 = darray_get(t_1->program, index);
+        c_2 = darray_get(t_2->program, index);
 
         /* obtain function nodes attached to crossover root nodes */
-        linked_1 = get_linked_func_node(c_1, tree_1->program, index);
-        linked_2 = get_linked_func_node(c_2, tree_2->program, index);
+        linked_1 = get_linked_func_node(c_1, t_1->program, index);
+        linked_2 = get_linked_func_node(c_2, t_2->program, index);
         branch_1 = ast_node_is_value_of(linked_1, c_1);
         branch_2 = ast_node_is_value_of(linked_2, c_2);
 
@@ -101,30 +108,25 @@ int one_point_crossover(
         }
 
         /* reparse program */
-        darray_destroy(tree_1->program);
-        darray_destroy(tree_2->program);
-        tree_1->program = parse_gp_tree(tree_1->root);
-        tree_2->program = parse_gp_tree(tree_2->root);
+        darray_destroy(t_1->program);
+        darray_destroy(t_2->program);
+        t_1->program = parse_gp_tree(t_1->root);
+        t_2->program = parse_gp_tree(t_2->root);
 
         return 0;
 }
 
 int crossover_trees(
-        int prob,
-        struct gp_tree *tree_1,
-        struct gp_tree *tree_2,
-        struct gp_tree_config *config,
-        int (*crossover_func)(
-                struct gp_tree *,
-                struct gp_tree *,
-                struct gp_tree_config *
-        )
+        void *tree_1,
+        void *tree_2,
+        int (*crossover_func)(void *, void *, struct evolve_config *),
+        struct evolve_config *config
 )
 {
         int res = 0;
 
         /* crossover or not */
-        if (prob > randnum_f(0.0, 1.0)) {
+        if (*(config->crossover->probability) > randnum_f(0.0, 1.0)) {
                 goto crossover;
         } else {
                 goto no_crossover;

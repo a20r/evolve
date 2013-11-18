@@ -6,20 +6,15 @@
 
 /* FUNCTIONS */
 int one_point_crossover(
-        struct gp_tree *tree_1,
-        struct gp_tree *tree_2,
-        struct gp_tree_config *config
+        void *tree_1,
+        void *tree_2,
+        struct evolve_config *config
 );
 int crossover_trees(
-        int prob,
-        struct gp_tree *tree_1,
-        struct gp_tree *tree_2,
-        struct gp_tree_config *config,
-        int (*crossover_func)(
-                struct gp_tree *,
-                struct gp_tree *,
-                struct gp_tree_config *
-        )
+        void *tree_1,
+        void *tree_2,
+        int (*crossover_func)(void *, void *, struct evolve_config *),
+        struct evolve_config *config
 );
 
 #endif

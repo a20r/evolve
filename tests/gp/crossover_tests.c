@@ -45,11 +45,10 @@ int test_point_mutation()
         print_gp_program(tree_1->program);
         print_gp_program(tree_2->program);
 
-
         /* crossover */
         t_1_before = ast_copy_node(tree_1->root);
         t_2_before = ast_copy_node(tree_2->root);
-        crossover_trees(1, tree_1, tree_2, gp_config, one_point_crossover);
+        crossover_trees(tree_1, tree_2, one_point_crossover, config);
         t_1_after = ast_copy_node(tree_1->root);
         t_2_after = ast_copy_node(tree_2->root);
 
