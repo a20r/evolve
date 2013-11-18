@@ -23,7 +23,8 @@ struct gp_tree_config
     struct darray *terminal_set;
     struct darray *input_set;
 
-    FILE *input_data;
+    char *input_fp;
+    char *input_format;
 };
 
 union general_config

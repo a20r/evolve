@@ -107,7 +107,7 @@ int one_point_crossover(
                 linked_2->type.unary->value = c_1;
         }
 
-        /* reparse program */
+        /* update gp->program */
         darray_destroy(t_1->program);
         darray_destroy(t_2->program);
         t_1->program = parse_gp_tree(t_1->root);

@@ -306,6 +306,14 @@ int parse_gp_tree_config(json_t *obj, struct gp_tree_config *config)
         res = set_ast_array(obj, "input_set", input_set, INPUT_SET);
         check(res == 0, "Failed to parse input_set!");
 
+        /* input file path */
+        res = set_str(obj, "input_fp", &config->input_fp);
+        check(res == 0, "Failed to parse input_fp!");
+
+        /* input file format */
+        res = set_str(obj, "input_format", &config->input_format);
+        check(res == 0, "Failed to parse input_format!");
+
         return 0;
 error:
         return -1;

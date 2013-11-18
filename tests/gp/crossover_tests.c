@@ -29,6 +29,16 @@ static void teardown()
         config_destroy(config);
 }
 
+static void print_term_nodes()
+{
+        int i = 0;
+
+        for (i = 0; i < tree_1->terminal_nodes->end; i++) {
+                print_node(darray_get(tree_1->terminal_nodes, i));
+                printf("\n");
+        }
+}
+
 int test_point_mutation()
 {
         int res = 0;
@@ -42,8 +52,14 @@ int test_point_mutation()
 
         printf("Before Crossover!\n");
         printf("------------------------------\n");
+
+        printf("TREE 1\n");
         print_gp_program(tree_1->program);
+        print_term_nodes();
+
+        printf("\nTREE 2\n");
         print_gp_program(tree_2->program);
+        print_term_nodes();
 
         /* crossover */
         t_1_before = ast_copy_node(tree_1->root);
@@ -54,8 +70,13 @@ int test_point_mutation()
 
         printf("After Crossover!\n");
         printf("------------------------------\n");
+        printf("TREE 1\n");
         print_gp_program(tree_1->program);
+        print_term_nodes();
+
+        printf("\nTREE 2\n");
         print_gp_program(tree_2->program);
+        print_term_nodes();
 
         /* asserts */
         res = ast_trees_equal(t_1_before, t_1_after);

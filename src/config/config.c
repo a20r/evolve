@@ -110,6 +110,9 @@ void destroy_gp_tree_config(struct gp_tree_config *config)
         darray_destroy(config->terminal_set);
         darray_destroy(config->input_set);
 
+        release_mem(config->input_fp, free);
+        release_mem(config->input_format, free);
+
         free(config);
 }
 

@@ -2,6 +2,7 @@
 
 #include <dbg/dbg.h>
 #include <dstruct/ast.h>
+#include <dstruct/ast_cmp.h>
 #include <al/utils.h>
 
 #include "config/config.h"

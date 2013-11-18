@@ -12,6 +12,8 @@
 #include "config/config.h"
 #include "population.h"
 #include "gp/initialize.h"
+#include "gp/function_set.h"
+#include "gp/terminal_set.h"
 #include "gp/tree_parser.h"
 #include "gp/tree_evaluator.h"
 #include "gp/tree_validator.h"

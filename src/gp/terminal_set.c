@@ -3,6 +3,7 @@
 
 #include <dbg/dbg.h>
 #include <al/utils.h>
+#include <dstruct/ast_cmp.h>
 
 #include "gp/initialize.h"
 #include "gp/terminal_set.h"
@@ -27,6 +28,35 @@ int node_is_terminal(struct ast *node)
         }
 
         return 0;
+}
+
+int terminal_nodes_equal(struct ast *node_1, struct ast *node_2)
+{
+        int res;
+
+        if (node_1 == node_2) {
+                return 1;
+        } else if (node_1->tag == node_2->tag) {
+                if (node_1->tag == INTEGER) {
+                        printf("INTEGER!\n");
+                        res = ast_node_integer_equals(node_1, node_2);
+                } else if (node_1->tag == REAL) {
+                        res = ast_node_real_equals(node_1, node_2);
+                } else if (node_1->tag == STRING) {
+                        res = ast_node_string_equals(node_1, node_2);
+                } else if (node_1->tag == CHARACTER) {
+                        res = ast_node_character_equals(node_1, node_2);
+                } else if (node_1->tag == BOOL) {
+                        res = ast_node_boolean_equals(node_1, node_2);
+                } else {
+                        log_err("Unrecognised node tag!");
+                        res = -1;
+                }
+        } else {
+                res = 0;
+        }
+
+        return res;
 }
 
 struct ast *get_new_terminal_node(

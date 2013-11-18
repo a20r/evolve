@@ -5,6 +5,7 @@
 #include <dbg/dbg.h>
 #include <al/utils.h>
 #include <dstruct/ast.h>
+#include <dstruct/ast_cmp.h>
 
 #include "config/config.h"
 #include "gp/function_set.h"
@@ -251,6 +252,39 @@ int node_is_function(struct ast *node)
         return 0;
 }
 
+int function_nodes_equal(struct ast *node_1, struct ast *node_2)
+{
+        int res;
+        char *op_name_1;
+        char *op_name_2;
+
+        if (node_1 == node_2) {
+                return 1;
+        } else if (node_1->tag == node_2->tag) {
+                if (node_1->tag == UNARY_OP) {
+                        op_name_1 = node_1->type.unary->op_name;
+                        op_name_2 = node_2->type.unary->op_name;
+                        res = strcmp(op_name_1, op_name_2);
+                        silent_check(res == 0);
+                } else if (node_1->tag == BINARY_OP) {
+                        op_name_1 = node_1->type.binary->op_name;
+                        op_name_2 = node_2->type.binary->op_name;
+                        res = strcmp(op_name_1, op_name_2);
+                        silent_check(res == 0);
+                } else {
+                        log_err("Unrecognised node tag!");
+                        return -1;
+                }
+        } else {
+                log_err("Unrecognised node tag!");
+                return -1;
+        }
+
+        return 1;
+error:
+        return 0;
+}
+
 struct ast *get_new_function_node(
         struct ast *node,
         enum ast_tag tag,
@@ -279,4 +313,3 @@ struct ast *get_new_function_node(
 
         return new_node;
 }
-
