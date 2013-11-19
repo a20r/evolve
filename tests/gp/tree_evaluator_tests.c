@@ -15,7 +15,7 @@
 #include "gp/tree_parser.h"
 #include "gp/tree_evaluator.h"
 
-#define TEST_CONFIG_FILE "tests/test_files/test_eval.json"
+#define TEST_CONFIG_FILE "tests/test_files/gp_evaluator_test.json"
 
 /* GLOBAL VAR */
 struct evolve_config *config;

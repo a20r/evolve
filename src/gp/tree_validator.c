@@ -46,6 +46,7 @@ int tree_validate(struct gp_tree *gp, struct darray *input_set)
         int i;
         int j;
         int res;
+        int equals = 0;
         int check_list_len;
         int term_nodes_len;
         struct darray *input_check_list;
@@ -66,7 +67,8 @@ int tree_validate(struct gp_tree *gp, struct darray *input_set)
                         node_2 = darray_get(input_check_list, i);
 
                         /* compare nodes */
-                        if (node_2 != NULL && terminal_nodes_equal(node_1, node_2)){
+                        equals = terminal_nodes_equal(node_1, node_2);
+                        if (node_2 != NULL && equals == 1){
                                 darray_remove(input_check_list, i);
                                 input_check_list->end--;
                                 ast_destroy(node_2);
@@ -91,7 +93,10 @@ int tree_validate(struct gp_tree *gp, struct darray *input_set)
         return res;
 }
 
-static void term_node_to_input_node(struct ast *term_node, struct ast *input_node)
+static void term_node_to_input_node(
+        struct ast *term_node,
+        struct ast *input_node
+)
 {
         int len = 0;
 

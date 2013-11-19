@@ -104,12 +104,6 @@ int test_validate_tree()
         return 0;
 }
 
-int test_tree_add_input_nodes()
-{
-
-        return 0;
-}
-
 void test_suite()
 {
         /* seed random - VERY IMPORTANT! */

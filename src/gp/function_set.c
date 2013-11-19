@@ -190,7 +190,11 @@ void *function_sin(struct ast *x)
         return result;
 }
 
-struct ast *execute_binary_function(struct ast *node, struct ast *x, struct ast *y)
+struct ast *execute_binary_function(
+        struct ast *node,
+        struct ast *x,
+        struct ast *y
+)
 {
         char *op;
         struct ast *result = NULL;
@@ -198,16 +202,16 @@ struct ast *execute_binary_function(struct ast *node, struct ast *x, struct ast 
         op = node->type.unary->op_name;
         if (strcmp(op, "ADD") == 0) {
                 result = function_add(x, y);
-                check(result != NULL, "Failed to execute COS function!");
+                check(result != NULL, "Failed to execute ADD function!");
         } else if (strcmp(op, "SUB") == 0) {
                 result = function_sub(x, y);
-                check(result != NULL, "Failed to execute SIN function!");
+                check(result != NULL, "Failed to execute SUB function!");
         } else if (strcmp(op, "MUL") == 0) {
                 result = function_mul(x, y);
-                check(result != NULL, "Failed to execute SIN function!");
+                check(result != NULL, "Failed to execute MUL function!");
         } else if (strcmp(op, "DIV") == 0) {
                 result = function_div(x, y);
-                check(result != NULL, "Failed to execute SIN function!");
+                check(result != NULL, "Failed to execute DIV function!");
         }
 
         return result;

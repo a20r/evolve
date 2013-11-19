@@ -15,12 +15,10 @@ int evaluate_node(struct ast *node, struct stack *s)
         struct ast *y;
         struct ast *result = NULL;
 
-        if (node->tag == INTEGER
-                || node->tag == REAL
-                || node->tag == STRING
-                || node->tag == CHARACTER
-                || node->tag == BOOL
-        ) {
+        if (node->tag == INTEGER || node->tag == REAL) {
+                stack_push(s, node);
+
+        } else if (node->tag == STRING) {
                 stack_push(s, node);
 
         } else if (node->tag == UNARY_OP) {
