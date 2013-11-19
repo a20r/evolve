@@ -23,7 +23,7 @@ static struct darray *create_input_check_list(struct darray *input_set)
         input_check_list = darray_create(sizeof(struct ast), len);
         for (i = 0; i < len; i++) {
                 node = darray_get(input_set, i);
-                darray_push(input_check_list, ast_copy_node(node));
+                darray_set(input_check_list, i, ast_copy_node(node));
         }
 
         return input_check_list;
@@ -67,7 +67,10 @@ int tree_validate(struct gp_tree *gp, struct darray *input_set)
                         node_2 = darray_get(input_check_list, i);
 
                         /* compare nodes */
-                        equals = terminal_nodes_equal(node_1, node_2);
+                        if (node_2 != NULL) {
+                                equals = terminal_nodes_equal(node_1, node_2);
+                        }
+
                         if (node_2 != NULL && equals == 1){
                                 darray_remove(input_check_list, i);
                                 input_check_list->end--;
