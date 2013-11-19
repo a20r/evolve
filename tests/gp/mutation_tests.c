@@ -2,6 +2,7 @@
 
 #include "gp/initialize.h"
 #include "gp/mutation.h"
+#include "gp/tree_parser.h"
 
 #define TEST_CONFIG_FILE "tests/test_files/gp_mutation_test.json"
 
@@ -26,37 +27,39 @@ int test_point_mutation()
 {
         int i = 0;
         int tests = 1;
-        /* struct ast *root_before; */
-        /* struct ast *root_after; */
-        /* struct darray *prog_before; */
-        /* struct darray *prog_after; */
+        struct ast *root_before;
+        struct ast *root_after;
+        struct darray *prog_before;
+        struct darray *prog_after;
 
         /* mutate tree n amount of times */
         for (i = 0; i < tests; i++) {
                 setup();
 
-                /* root_before = gp->root; */
-                /* prog_before = gp->program; */
+                printf("Before Mutation!\n");
+                printf("------------------------------\n");
+                print_gp_tree(gp->root);
+                printf("\n");
+                print_gp_program(gp->program);
+
+                root_before = gp->root;
+                prog_before = gp->program;
 
                 mutate_tree(gp, gp_point_mutation, config);
 
-                /* root_after = gp->root; */
-                /* prog_after = gp->program; */
+                root_after = gp->root;
+                prog_after = gp->program;
+
+                printf("\nAfter Mutation!\n");
+                printf("------------------------------\n");
+                print_gp_tree(gp->root);
+                printf("\n");
+                print_gp_program(gp->program);
 
                 teardown();
         }
 
-        /* printf("Before Mutation!\n"); */
-        /* printf("------------------------------\n"); */
-        /* print_gp_tree(gp->root); */
-        /* printf("\n"); */
-        /* print_gp_program(gp->program); */
 
-        /* printf("\nAfter Mutation!\n"); */
-        /* printf("------------------------------\n"); */
-        /* print_gp_tree(gp->root); */
-        /* printf("\n"); */
-        /* print_gp_program(gp->program); */
 
         return 0;
 }

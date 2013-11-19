@@ -9,8 +9,14 @@
 
 /* FUNCTIONS */
 int node_is_terminal(struct ast *node);
+int node_is_input(struct ast *node, struct evolve_config *config);
 int terminal_nodes_equal(struct ast *node_1, struct ast *node_2);
 struct ast *get_new_terminal_node(
+        struct ast *node,
+        enum ast_tag tag,
+        struct gp_tree_config *config
+);
+struct ast *get_new_input_node(
         struct ast *node,
         enum ast_tag tag,
         struct gp_tree_config *config

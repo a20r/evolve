@@ -69,17 +69,23 @@ static int point_mutate_terminal_node(
 {
         struct ast *new_node;
         struct gp_tree_config *gp;
+        int len = 0;
 
         /* get new term node */
         gp = config->general.gp_tree;
         new_node = get_new_terminal_node(node, node->tag, gp);
+        print_node(new_node);
 
         if (node->tag == INTEGER) {
                 node->type.integer = new_node->type.integer;
         } else if (node->tag == REAL) {
                 node->type.real = new_node->type.real;
         } else if (node->tag == STRING) {
+                len = strlen(node->type.string) + 1;
                 free(node->type.string);
+                node->type.string = malloc(sizeof(char) * len);
+                /* printf("str: %s\n", new_node->type.string); */
+                /* printf("len: %d\n", (int) strlen(new_node->type.string)); */
                 strcpy(node->type.string, new_node->type.string);
         } else if (node->tag == CHARACTER) {
                 node->type.character = new_node->type.character;
@@ -88,6 +94,31 @@ static int point_mutate_terminal_node(
         }
 
         return 0;
+}
+
+static int point_mutate_input_node(
+        struct ast *node,
+        struct evolve_config *config
+)
+{
+        struct ast *new_node;
+        struct gp_tree_config *gp;
+        int len = 0;
+
+        /* get new term node */
+        gp = config->general.gp_tree;
+        new_node = get_new_input_node(node, node->tag, gp);
+
+        if (node->tag == STRING) {
+                len = strlen(node->type.string) + 1;
+                free(node->type.string);
+                node->type.string = malloc(sizeof(char) * len);
+                strcpy(node->type.string, new_node->type.string);
+
+                return 0;
+        } else {
+                return -1;
+        }
 }
 
 int gp_point_mutation(
@@ -105,6 +136,8 @@ int gp_point_mutation(
 
         if (node_is_function(node)) {
                 res = point_mutate_function_node(node, config);
+        } else if (node_is_input(node, config)) {
+                res = point_mutate_input_node(node, config);
         } else if (node_is_terminal(node)) {
                 res = point_mutate_terminal_node(node, config);
         } else {

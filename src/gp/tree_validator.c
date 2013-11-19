@@ -84,7 +84,7 @@ int tree_validate(struct gp_tree *gp, struct darray *input_set)
 
         /* check if input check list still has items */
         node_1 = darray_get(input_check_list, 0);
-        if (input_check_list->end == 0 && node_1 == NULL) {
+        if (input_check_list->end == -1 && node_1 == NULL) {
                 res = 1;
         } else {
                 res = 0;
