@@ -28,10 +28,6 @@
         "terminal_set" : [
             {
                 "tag": "REAL",
-                "value": 0.0
-            },
-            {
-                "tag": "REAL",
                 "value": 1.0
             },
             {
@@ -71,10 +67,16 @@
                 "value": 10.0
             }
         ],
+        "input_file" : "tests/test_files/sine_input.dat",
+        "input_format" : "csv",
         "input_set" : [
             {
                 "var_name": "x"
-            },
+            }
+        ],
+        "response_file" : "tests/test_files/sine_response.dat",
+        "response_format" : "csv",
+        "response_set" : [
             {
                 "var_name": "y"
             }

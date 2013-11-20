@@ -12,6 +12,7 @@
 #define FUNCTION_SET 1
 #define TERMINAL_SET 2
 #define INPUT_SET 3
+#define RESPONSE_SET 3
 
 
 /* FUNCTIONS */

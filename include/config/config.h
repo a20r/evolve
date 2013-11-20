@@ -22,13 +22,21 @@ struct gp_tree_config
     struct darray *function_set;
     struct darray *terminal_set;
     struct darray *input_set;
+    struct darray *response_set;
 
-    char *input_fp;
+    char *input_file;
     char *input_format;
-    int cols;
-    int rows;
-    char **header;
-    float **data;
+    int input_cols;
+    int input_rows;
+    char **input_header;
+    float **input_data;
+
+    char *response_file;
+    char *response_format;
+    int response_cols;
+    int response_rows;
+    char **response_header;
+    float **response_data;
 };
 
 union general_config

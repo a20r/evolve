@@ -1,3 +1,7 @@
+#include <time.h>
+#include <math.h>
+#include <string.h>
+
 #include <munit/munit.h>
 #include <dstruct/ast_cmp.h>
 
@@ -40,7 +44,7 @@ static void print_term_nodes(struct gp_tree *tree)
         }
 }
 
-int test_point_mutation()
+int test_one_point_crossover()
 {
         int res = 0;
         struct ast *t_1_before;
@@ -56,10 +60,12 @@ int test_point_mutation()
 
         printf("TREE 1\n");
         print_gp_program(tree_1->program);
+        printf("\n");
         print_term_nodes(tree_1);
 
         printf("\nTREE 2\n");
         print_gp_program(tree_2->program);
+        printf("\n");
         print_term_nodes(tree_2);
 
         /* crossover */
@@ -69,14 +75,16 @@ int test_point_mutation()
         t_1_after = ast_copy_node(tree_1->root);
         t_2_after = ast_copy_node(tree_2->root);
 
-        printf("After Crossover!\n");
+        printf("\nAfter Crossover!\n");
         printf("------------------------------\n");
         printf("TREE 1\n");
         print_gp_program(tree_1->program);
+        printf("\n");
         print_term_nodes(tree_1);
 
         printf("\nTREE 2\n");
         print_gp_program(tree_2->program);
+        printf("\n");
         print_term_nodes(tree_2);
 
         /* asserts */
@@ -97,7 +105,10 @@ int test_point_mutation()
 
 void test_suite()
 {
-        mu_run_test(test_point_mutation);
+        /* seed random - VERY IMPORTANT! */
+        srand(time(NULL));
+
+        mu_run_test(test_one_point_crossover);
 }
 
 mu_run_test_suite(test_suite);

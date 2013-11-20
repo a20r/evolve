@@ -74,18 +74,26 @@ struct gp_tree_config *init_gp_tree_config()
         gp_tree->function_set = darray_create(sizeof(struct ast), 100);
         gp_tree->terminal_set  = darray_create(sizeof(struct ast), 100);
         gp_tree->input_set = darray_create(sizeof(struct ast), 100);
+        gp_tree->response_set = darray_create(sizeof(struct ast), 100);
 
         /* input data */
-        gp_tree->input_fp = NULL;
+        gp_tree->input_file = NULL;
         gp_tree->input_format = NULL;
-        gp_tree->cols = 0;
-        gp_tree->rows = 0;
-        gp_tree->header = NULL;
-        gp_tree->data = NULL;
+        gp_tree->input_cols = 0;
+        gp_tree->input_rows = 0;
+        gp_tree->input_header = NULL;
+        gp_tree->input_data = NULL;
+
+        /* response data */
+        gp_tree->response_file = NULL;
+        gp_tree->response_format = NULL;
+        gp_tree->response_cols = 0;
+        gp_tree->response_rows = 0;
+        gp_tree->response_header = NULL;
+        gp_tree->response_data = NULL;
 
         return gp_tree;
 }
-
 
 void destroy_gp_tree_config(struct gp_tree_config *config)
 {
@@ -115,23 +123,41 @@ void destroy_gp_tree_config(struct gp_tree_config *config)
                 node = darray_get(config->input_set, i);
                 release_mem(node, ast_destroy);
         }
+
+        for (i = 0; i <= config->response_set->end; i++) {
+                node = darray_get(config->response_set, i);
+                release_mem(node, ast_destroy);
+        }
         darray_destroy(config->function_set);
         darray_destroy(config->terminal_set);
         darray_destroy(config->input_set);
+        darray_destroy(config->response_set);
 
         /* input data */
-        release_mem(config->input_fp, free);
+        release_mem(config->input_file, free);
         release_mem(config->input_format, free);
-
-        for (i = 0; i < config->cols; i++) {
-                free(config->header[i]);
+        for (i = 0; i < config->input_cols; i++) {
+                free(config->input_header[i]);
         }
-        release_mem(config->header, free);
+        release_mem(config->input_header, free);
 
-        for (i = 0; i < config->rows; i++) {
-                free(config->data[i]);
+        for (i = 0; i < config->input_rows; i++) {
+                free(config->input_data[i]);
         }
-        release_mem(config->data, free);
+        release_mem(config->input_data, free);
+
+        /* response data */
+        release_mem(config->response_file, free);
+        release_mem(config->response_format, free);
+        for (i = 0; i < config->response_cols; i++) {
+                free(config->response_header[i]);
+        }
+        release_mem(config->response_header, free);
+
+        for (i = 0; i < config->response_rows; i++) {
+                free(config->response_data[i]);
+        }
+        release_mem(config->response_data, free);
 
         free(config);
 }

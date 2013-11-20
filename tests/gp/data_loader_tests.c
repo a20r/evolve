@@ -7,14 +7,14 @@
 #include "config/config.h"
 #include "gp/data_loader.h"
 
-#define TEST_FILE "tests/test_files/sine.dat"
+#define TEST_INPUT_FILE "tests/test_files/sine_input.dat"
+#define TEST_RESPONSE_FILE "tests/test_files/sine_response.dat"
 #define TEST_CONFIG "tests/test_files/gp_data_loader.json"
 
 
 int test_despace()
 {
         char *line = NULL;
-        int res = 0;
         int len = 0;
         int i = 0;
 
@@ -38,7 +38,7 @@ int test_lines_in_file()
 {
         int lines = 0;
 
-        lines = lines_in_file(TEST_FILE);
+        lines = lines_in_file(TEST_INPUT_FILE);
         mu_assert(lines == 38, "Wrong line number count!");
 
         return 0;
@@ -47,7 +47,6 @@ int test_lines_in_file()
 int test_trim_newline()
 {
         char *line = NULL;
-        int res = 0;
         int len = 0;
 
         /* setup */
@@ -192,24 +191,42 @@ int test_load_data()
 {
         int res = 0;
         struct evolve_config *config;
-        float **data;
-        char **header;
+        float **input_data;
+        float **response_data;
+        char **input_header;
+        char **response_header;
         int i = 0;
         int j = 0;
 
+        /* INPUT DATA */
         config = load_config(TEST_CONFIG);
-        res = load_data(TEST_FILE, config);
-        header = config->general.gp_tree->header;
-        data = config->general.gp_tree->data;
+        res = load_data(TEST_INPUT_FILE, config, INPUT_DATA);
+        res = load_data(TEST_RESPONSE_FILE, config, RESPONSE_DATA);
+        input_header = config->general.gp_tree->input_header;
+        input_data = config->general.gp_tree->input_data;
+        response_header = config->general.gp_tree->response_header;
+        response_data = config->general.gp_tree->response_data;
 
+        printf("--- INPUT DATA ---\n");
         printf("--- HEADER ---\n");
-        for (i = 0; i < config->general.gp_tree->cols; i++) {
-                printf("header[%d]: %s\n", i, header[i]);
+        for (i = 0; i < config->general.gp_tree->input_cols; i++) {
+                printf("header[%d]: %s\n", i, input_header[i]);
         }
 
         printf("--- DATA ---\n");
-        for (j = 0; j < config->general.gp_tree->rows; j++) {
-                printf("%f, %f\n", data[j][0], data[j][1]);
+        for (j = 0; j < config->general.gp_tree->input_rows; j++) {
+                printf("%f\n", *(input_data[j]));
+        }
+
+        printf("\n\n--- RESPONSE DATA ---\n");
+        printf("--- HEADER ---\n");
+        for (i = 0; i < config->general.gp_tree->response_cols; i++) {
+                printf("header[%d]: %s\n", i, response_header[i]);
+        }
+
+        printf("--- DATA ---\n");
+        for (j = 0; j < config->general.gp_tree->response_rows; j++) {
+                printf("%f\n", *(response_data[j]));
         }
 
         config_destroy(config);

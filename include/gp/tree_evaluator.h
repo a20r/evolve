@@ -5,9 +5,14 @@
 #include <dstruct/stack.h>
 #include <dstruct/darray.h>
 
+#include "config/config.h"
+
+#define INPUT_HEADER 1
+#define RESPONSE_HEADER 2
+
 
 /* FUNCTIONS */
 int evaluate_node(struct ast *node, struct stack *s);
-struct ast *evaluate_program(struct darray *program);
+float evaluate_program(struct gp_tree *node, struct evolve_config *config);
 
 #endif

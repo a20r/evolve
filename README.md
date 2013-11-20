@@ -1,37 +1,5 @@
 # evolve [![Build Status](https://travis-ci.org/chutsu/evolve.png)][1]
-evolve is a Gentic Algorithm/Programming implemented in C. Currently features:
-
-### Genetic Algorithm
-
-- **Encoding**
-    - One dimensional fixed length bit-string
-- **Selection**
-    - Roulette selection
-    - Tournament selection
-- **Crossover**
-    - One point crossover
-    - Two point crossover
-- **Mutation**
-    - String mutation
-    - Alphanumeric mutation
-    - Numeric mutation
-    - DNA mutation
-    
-
-### Genetic Programming
-- **Encoding**
-    - Tree
-- **Selection**
-    - Roulette selection
-    - Tournament selection
-- **Crossover**
-    - One point crossover
-- **Mutation**
-    - Point mutation
-
-For more information please have a look at the documentation.
-
-
+evolve is a Gentic Algorithm/Programming implemented in C.
 
 ## Requirements
 
@@ -76,8 +44,7 @@ PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with
 this program.  If not, see <http://www.gnu.org/licenses/>.
 
+[![Bitdeli](https://d2weczhvl823v0.cloudfront.net/chutsu/evolve/trend.png)][2]
+
 [1]: https://travis-ci.org/chutsu/evolve
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/chutsu/evolve/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
+[2]: https://bitdeli.com/free

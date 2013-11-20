@@ -74,7 +74,9 @@
         "input_set" : [
             {
                 "var_name": "x"
-            },
+            }
+        ],
+        "response_set" : [
             {
                 "var_name": "y"
             }

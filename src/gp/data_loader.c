@@ -40,7 +40,6 @@ int lines_in_file(char *fp)
         FILE *f = NULL;
         int ch = 0;
         int lines = 0;
-        int res = 0;
 
         f = fopen(fp, "r");
         if (f == NULL) {
@@ -84,7 +83,6 @@ int parse_header_line(char *line, int fields, char *delimiters, char **header)
         char *token = NULL;
         char field[BUFFER_SIZE];
         int i = 0;
-        int len = 0;
 
         /* printf("parse_header[%d]: %s\n", i, header[i]); */
         token = strtok(line, delimiters);
@@ -109,7 +107,6 @@ int parse_data_line(char *line, int fields, char *delimiters, float *data)
 {
         char *token = NULL;
         float data_point = 0;
-        float *f = NULL;
         int i = 0;
 
         token = strtok(line, delimiters);
@@ -129,7 +126,7 @@ int parse_data_line(char *line, int fields, char *delimiters, float *data)
         return 0;
 }
 
-int load_data(char *fp, struct evolve_config *config)
+int load_data(char *fp, struct evolve_config *config, int data_type)
 {
         FILE *data_file;
         char *line = NULL;
@@ -162,7 +159,7 @@ int load_data(char *fp, struct evolve_config *config)
                 header = calloc(cols, sizeof(char *));
                 trim_newline(line);
                 despace(line);
-                parse_header_line(line, 2, delimiters, header);
+                parse_header_line(line, cols, delimiters, header);
 
                 /* data */
                 data = calloc(rows, sizeof(float *));
@@ -177,13 +174,23 @@ int load_data(char *fp, struct evolve_config *config)
         }
 
         /* record into config */
-        config->general.gp_tree->cols = cols;
-        config->general.gp_tree->rows = rows;
-        config->general.gp_tree->header= header;
-        config->general.gp_tree->data = data;
-
+        if (data_type == INPUT_DATA) {
+                config->general.gp_tree->input_cols = cols;
+                config->general.gp_tree->input_rows = rows;
+                config->general.gp_tree->input_header= header;
+                config->general.gp_tree->input_data = data;
+        } else if (data_type == RESPONSE_DATA) {
+                config->general.gp_tree->response_cols = cols;
+                config->general.gp_tree->response_rows = rows;
+                config->general.gp_tree->response_header= header;
+                config->general.gp_tree->response_data = data;
+        } else {
+                goto error;
+        }
 
         fclose(data_file);
 
         return 0;
+error:
+        return -1;
 }

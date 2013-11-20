@@ -14,8 +14,11 @@
 #include "gp/initialize.h"
 #include "gp/tree_parser.h"
 #include "gp/tree_evaluator.h"
+#include "gp/data_loader.h"
 
 #define TEST_CONFIG_FILE "tests/test_files/gp_evaluator_test.json"
+#define TEST_INPUT_DATA "tests/test_files/sine_input.dat"
+#define TEST_RESPONSE_DATA "tests/test_files/sine_response.dat"
 
 /* GLOBAL VAR */
 struct evolve_config *config;
@@ -130,28 +133,26 @@ int test_evaluate_node()
 
 int test_evaluate_program()
 {
-        struct ast *res;
+        float res = 0;
 
+        /* setup */
+        load_data(TEST_INPUT_DATA, config, INPUT_DATA);
+        load_data(TEST_RESPONSE_DATA, config, RESPONSE_DATA);
         print_gp_tree(gp->root);
-        res = evaluate_program(program);
-        mu_assert(res != NULL, "Failed to evaluate program!");
 
-        if (res->tag == REAL) {
-                printf("FINAL RESULT: %f\n", res->type.real);
-        } else if (res->tag == INTEGER) {
-                printf("FINAL RESULT: %d\n", res->type.integer);
-        }
+        res = evaluate_program(gp, config);
 
-        /* clean up */
-        ast_destroy(res);
+        /* assert */
+        mu_assert(res != -1, "Failed to evaluate program!");
+        printf("FINAL RESULT: %f\n", res);
 
         return 0;
 }
 
 void test_suite()
 {
-        /* seed random - VERY IMPORTANT! */
-        srand(time(NULL));
+        /* #<{(| seed random - VERY IMPORTANT! |)}># */
+        /* srand(time(NULL)); */
 
         setup();
         mu_run_test(test_evaluate_node);

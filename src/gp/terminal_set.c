@@ -38,7 +38,7 @@ int node_is_input(struct ast *node, struct evolve_config *config)
         struct ast *input_node;
 
         input_set = config->general.gp_tree->input_set;
-        for (i = 0; i < input_set->end; i++) {
+        for (i = 0; i <= input_set->end; i++) {
                 input_node = darray_get(input_set, i);
                 if (ast_nodes_equal(input_node, node)) {
                         return 1;

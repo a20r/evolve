@@ -194,7 +194,11 @@ int set_ast_array(json_t *obj, char *path, struct darray *target, int mode)
 
         /* loop through array */
         array_size = json_array_size(array);
-        check(array_size, "Error! array is empty!");
+        if (array_size == 0) {
+                target = NULL;
+                return 0;
+        }
+
         for (i = 0; i < array_size; i++) {
                 /* get array element */
                 element = json_array_get(array, i);
@@ -277,42 +281,41 @@ int parse_gp_tree_config(json_t *obj, struct gp_tree_config *config)
         struct darray *function_set = config->function_set;
         struct darray *terminal_set = config->terminal_set;
         struct darray *input_set = config->input_set;
+        struct darray *response_set = config->response_set;
 
-        /* max_pop */
+        /* general */
         res = set_int(obj, "max_pop", config->max_pop);
         check(res == 0, "Failed to parse max_pop!");
-
-        /* max_gen */
         res = set_int(obj, "max_gen", config->max_gen);
         check(res == 0, "Failed to parse max_gen!");
 
-        /* max_depth */
+        /* tree */
         res = set_int(obj, "max_depth", config->max_depth);
         check(res == 0, "Failed to parse max_depth!");
-
-        /* max_size */
         res = set_int(obj, "max_size", config->max_size);
         check(res == 0, "Failed to parse max_size!");
 
-        /* function set */
+        /* primitives */
         res = set_ast_array(obj, "function_set", function_set, FUNCTION_SET);
         check(res == 0, "Failed to parse function_set!");
-
-        /* terminal set */
         res = set_ast_array(obj, "terminal_set", terminal_set, TERMINAL_SET);
         check(res == 0, "Failed to parse terminal_set!");
-
-        /* input set */
         res = set_ast_array(obj, "input_set", input_set, INPUT_SET);
         check(res == 0, "Failed to parse input_set!");
+        res = set_ast_array(obj, "response_set", response_set, RESPONSE_SET);
+        check(res == 0, "Failed to parse response_set!");
 
-        /* input file path */
-        res = set_str(obj, "input_fp", &config->input_fp);
-        check(res == 0, "Failed to parse input_fp!");
-
-        /* input file format */
+        /* input */
+        res = set_str(obj, "input_file", &config->input_file);
+        check(res == 0, "Failed to parse input_file!");
         res = set_str(obj, "input_format", &config->input_format);
         check(res == 0, "Failed to parse input_format!");
+
+        /* response */
+        res = set_str(obj, "response_file", &config->response_file);
+        check(res == 0, "Failed to parse response_file!");
+        res = set_str(obj, "response_format", &config->response_format);
+        check(res == 0, "Failed to parse response_format!");
 
         return 0;
 error:
