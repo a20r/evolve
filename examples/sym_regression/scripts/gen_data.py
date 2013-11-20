@@ -5,6 +5,10 @@ import math
 def gen_sine_data(fp):
     data_file = open(fp, "wb")
 
+    # header
+    data_file.write("x, y\n")
+
+    # data
     for angle_deg in range(0, 370, 10):
         x = angle_deg
         y = math.sin(math.radians(angle_deg))

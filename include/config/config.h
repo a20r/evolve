@@ -25,6 +25,10 @@ struct gp_tree_config
 
     char *input_fp;
     char *input_format;
+    int cols;
+    int rows;
+    char **header;
+    float **data;
 };
 
 union general_config

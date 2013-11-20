@@ -23,3 +23,7 @@ TARGET_LINK_LIBRARIES(gp_mutation_tests ${LIBRARY_NAME})
 # gp_crossover_tests
 ADD_EXECUTABLE(gp_crossover_tests crossover_tests.c)
 TARGET_LINK_LIBRARIES(gp_crossover_tests ${LIBRARY_NAME})
+
+# gp_data_loader_tests
+ADD_EXECUTABLE(gp_data_loader_tests data_loader_tests.c)
+TARGET_LINK_LIBRARIES(gp_data_loader_tests ${LIBRARY_NAME})

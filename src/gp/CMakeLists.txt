@@ -14,6 +14,7 @@ ADD_LIBRARY(
    tree_parser.c
    tree_evaluator.c
    tree_validator.c
+   data_loader.c
 )
 TARGET_LINK_LIBRARIES(${LIBRARY_NAME} m)
 TARGET_LINK_LIBRARIES(${LIBRARY_NAME} al)
