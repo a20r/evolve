@@ -21,7 +21,7 @@ struct population {
         int generation;
         int max_population;
         int max_generation;
-        char *solution;
+        void *solution;
 };
 
 /* FUNCTIONS */
@@ -31,7 +31,7 @@ struct population *population_create(
         int max_pop,
         int max_gen
 );
-void population_destroy(struct population **p, void (*free_func)(void *));
+void population_destroy(struct population **p, void (*free)(void *));
 void extend_max_generation(struct population *p, int extension_size);
 int evaluate_individuals(float (*eval_func)(void *), struct population **p);
 void normalize_fitness_values(struct population **p);

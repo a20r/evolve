@@ -149,6 +149,30 @@ int test_evaluate_program()
         return 0;
 }
 
+int test_evaluate_programs()
+{
+        int i = 0;
+        float score = 0;
+        struct population *pop;
+
+        config = load_config(TEST_CONFIG_FILE);
+        load_data(TEST_INPUT_DATA, config, INPUT_DATA);
+        load_data(TEST_RESPONSE_DATA, config, RESPONSE_DATA);
+
+        pop = gp_population_initialize(init_tree_full, config->general.gp_tree);
+        evaluate_programs(pop, config);
+
+        /* for (i = 0; i < *config->general.gp_tree->max_pop; i++) { */
+        /*         score = *(float *) darray_get(p->scores, i); */
+        /*         printf("score[%d]: %f\n", i, score); */
+        /* } */
+
+        population_destroy(&pop, gp_tree_destroy);
+        config_destroy(config);
+
+        return 0;
+}
+
 void test_suite()
 {
         /* #<{(| seed random - VERY IMPORTANT! |)}># */
@@ -158,6 +182,8 @@ void test_suite()
         mu_run_test(test_evaluate_node);
         mu_run_test(test_evaluate_program);
         teardown();
+
+        mu_run_test(test_evaluate_programs);
 }
 
 mu_run_test_suite(test_suite);

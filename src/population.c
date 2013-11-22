@@ -47,12 +47,17 @@ error:
 void population_destroy(struct population **p, void (*free_func)(void *))
 {
         int i = 0;
+        void *individual = NULL;
 
         if ((*p)) {
                 /* individuals */
                 if ((*p)->individuals) {
                         for (i = 0; i < (*p)->population; i++) {
-                                free_func(darray_get((*p)->individuals, i));
+                                individual = darray_get((*p)->individuals, i);
+                                if (individual) {
+                                        free_func(individual);
+                                        individual = NULL;
+                                }
                         }
                 }
                 darray_destroy((*p)->individuals);

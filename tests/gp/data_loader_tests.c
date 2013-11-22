@@ -39,7 +39,7 @@ int test_lines_in_file()
         int lines = 0;
 
         lines = lines_in_file(TEST_INPUT_FILE);
-        mu_assert(lines == 38, "Wrong line number count!");
+        mu_assert(lines == 37, "Wrong line number count!");
 
         return 0;
 }

@@ -536,7 +536,7 @@ setup_strings	examples/csp/csp.c	/^static void setup_strings(int k, int len)$/;"
 shutil	scripts/unittest_runner.py	/^import shutil$/;"	i
 signal_handler	examples/csp/csp.c	/^static void signal_handler(int signnum)$/;"	f	file:
 size	include/gp/initialize.h	/^        int size;$/;"	m	struct:gp_tree
-solution	include/population.h	/^        char *solution;$/;"	m	struct:population
+solution	include/population.h	/^        void *solution;$/;"	m	struct:population
 sort_generation_stats	src/evolve_monitor.c	/^void sort_generation_stats($/;"	f
 sort_population	src/population.c	/^void sort_population($/;"	f
 sort_test_setup	tests/evolve_monitor_tests.c	/^static void sort_test_setup(int max_gen, int max_pop)$/;"	f	file:
@@ -576,6 +576,7 @@ test_destroy_evolve_monitor	tests/evolve_monitor_tests.c	/^int test_destroy_evol
 test_evaluate_individuals	tests/population_tests.c	/^int test_evaluate_individuals()$/;"	f
 test_evaluate_node	tests/gp/tree_evaluator_tests.c	/^int test_evaluate_node()$/;"	f
 test_evaluate_program	tests/gp/tree_evaluator_tests.c	/^int test_evaluate_program()$/;"	f
+test_evaluate_programs	tests/gp/tree_evaluator_tests.c	/^int test_evaluate_programs()$/;"	f
 test_extend_max_generation	tests/population_tests.c	/^int test_extend_max_generation()$/;"	f
 test_ga_population_initialize	tests/ga/initialize_tests.c	/^int test_ga_population_initialize()$/;"	f
 test_get_int	tests/config/parse_tests.c	/^int test_get_int()$/;"	f

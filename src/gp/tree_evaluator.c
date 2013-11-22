@@ -2,6 +2,7 @@
 #include <math.h>
 
 #include <dbg/dbg.h>
+#include <al/comparator.h>
 
 #include "gp/initialize.h"
 #include "gp/function_set.h"
@@ -171,11 +172,29 @@ int evaluate_programs(struct population *p, struct evolve_config *config)
 {
         int i = 0;
         int res = 0;
+        int goal_reached = 0;
+        float *score = NULL;
+        float epsilon = 0.001;
         struct gp_tree *tree = NULL;
 
         for (i = 0; i < p->max_population; i++) {
+                /* obtain and evaluate individual from population */
                 tree = darray_get(p->individuals, i);
-                evaluate_program(tree, config);
+                score = malloc(sizeof(float));
+                *score = evaluate_program(tree, config);
+                darray_set(p->scores, i, score);
+                printf("score[%d]: %f\n", i, *score);
+
+                /* check goal is reached with the current individual */
+                if (float_epsilon_cmp(score, &p->goal, epsilon) == 0) {
+                        p->solution = tree;
+                        goal_reached = 1;
+                }
+
+
+                /* update score and total_score */
+                darray_set(p->scores, i, score);
+                p->total_score += *score;
         }
 
         return res;

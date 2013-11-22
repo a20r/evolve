@@ -3,7 +3,7 @@ PROJECT(evolve)
 
 SET(CMAKE_C_COMPILER gcc)
 SET(CMAKE_BUILD_TYPE DEBUG)
-SET(CMAKE_C_FLAGS_DEBUG "-Wall -g")
+SET(CMAKE_C_FLAGS_DEBUG "-Wall -O2 -g")
 # SET(CMAKE_C_FLAGS_RELEASE "-Wall -DNDEBUG")
 # SET(CLANG_ASAN "-fsanitize=address -fno-omit-frame-pointer")
 # SET(CLANG_MSAN "-fsanitize=memory -fsanitize-memory-track-origins")
