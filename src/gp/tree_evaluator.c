@@ -183,7 +183,6 @@ int evaluate_programs(struct population *p, struct evolve_config *config)
                 score = malloc(sizeof(float));
                 *score = evaluate_program(tree, config);
                 darray_set(p->scores, i, score);
-                printf("score[%d]: %f\n", i, *score);
 
                 /* check goal is reached with the current individual */
                 if (float_epsilon_cmp(score, &p->goal, epsilon) == 0) {
@@ -191,8 +190,8 @@ int evaluate_programs(struct population *p, struct evolve_config *config)
                         goal_reached = 1;
                 }
 
-
                 /* update score and total_score */
+                release_mem(darray_remove(p->scores, i), free);
                 darray_set(p->scores, i, score);
                 p->total_score += *score;
         }

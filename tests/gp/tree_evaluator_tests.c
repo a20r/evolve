@@ -162,10 +162,17 @@ int test_evaluate_programs()
         pop = gp_population_initialize(init_tree_full, config->general.gp_tree);
         evaluate_programs(pop, config);
 
-        /* for (i = 0; i < *config->general.gp_tree->max_pop; i++) { */
-        /*         score = *(float *) darray_get(p->scores, i); */
-        /*         printf("score[%d]: %f\n", i, score); */
-        /* } */
+        for (i = 0; i < *config->general.gp_tree->max_pop; i++) {
+                score = *(float *) darray_get(pop->scores, i);
+
+                /* ignore nan values and replace with value of 1 */
+                if (isnan(score)) {
+                        score = 1;
+                }
+
+                printf("score[%d]: %f\n", i, score);
+                mu_assert(score > 0, "Score should not be > 0!");
+        }
 
         population_destroy(&pop, gp_tree_destroy);
         config_destroy(config);
@@ -175,8 +182,8 @@ int test_evaluate_programs()
 
 void test_suite()
 {
-        /* #<{(| seed random - VERY IMPORTANT! |)}># */
-        /* srand(time(NULL)); */
+        /* seed random - VERY IMPORTANT! */
+        srand(time(NULL));
 
         setup();
         mu_run_test(test_evaluate_node);
