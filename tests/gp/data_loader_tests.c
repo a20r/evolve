@@ -201,7 +201,9 @@ int test_load_data()
         /* INPUT DATA */
         config = load_config(TEST_CONFIG);
         res = load_data(TEST_INPUT_FILE, config, INPUT_DATA);
+        mu_assert(res == 0, "Failed to load input data!");
         res = load_data(TEST_RESPONSE_FILE, config, RESPONSE_DATA);
+        mu_assert(res == 0, "Failed to load response data!");
         input_header = config->general.gp_tree->input_header;
         input_data = config->general.gp_tree->input_data;
         response_header = config->general.gp_tree->response_header;

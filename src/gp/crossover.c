@@ -69,6 +69,45 @@ static struct ast *get_linked_func_node(
         return linked_node;
 }
 
+static void replace_func_node_value(
+        int branch,
+        struct ast *func_node,
+        struct ast *val_node
+)
+{
+        if (branch == LEFT_BRANCH) {
+                func_node->type.binary->left = val_node;
+        }  else if (branch == RIGHT_BRANCH) {
+                func_node->type.binary->right = val_node;
+        } else if (branch == VALUE_BRANCH) {
+                func_node->type.unary->value = val_node;
+        }
+}
+
+static void switch_nodes(
+        struct ast *node_1,
+        struct ast *node_2,
+        struct gp_tree *tree_1,
+        struct gp_tree *tree_2
+)
+{
+        struct ast *linked_1 = NULL;
+        struct ast *linked_2 = NULL;
+        int branch_1 = 0;
+        int branch_2 = 0;
+        int index = 0;
+
+        /* obtain function nodes attached to crossover root nodes */
+        linked_1 = get_linked_func_node(node_1, tree_1->program, index);
+        linked_2 = get_linked_func_node(node_2, tree_2->program, index);
+        branch_1 = ast_node_is_value_of(linked_1, node_1);
+        branch_2 = ast_node_is_value_of(linked_2, node_2);
+
+        /* crossover */
+        replace_func_node_value(branch_1, linked_1, node_1);
+        replace_func_node_value(branch_2, linked_2, node_2);
+}
+
 int one_point_crossover(
         void *tree_1,
         void *tree_2,
@@ -76,47 +115,23 @@ int one_point_crossover(
 )
 {
         int index = 0;
-        int branch_1 = 0;
-        int branch_2 = 0;
         struct gp_tree *t_1;
         struct gp_tree *t_2;
-        struct ast *c_1;
-        struct ast *c_2;
-        struct ast *linked_1;
-        struct ast *linked_2;
         struct gp_tree_config *gp;
 
+        /* setup */
         gp = config->general.gp_tree;
         t_1 = (struct gp_tree *) tree_1;
         t_2 = (struct gp_tree *) tree_2;
 
-        /* choose random index and get the crossover root nodes */
+        /* choose random index and switch nodes */
         index = crossover_random_index(tree_1, tree_2, gp);
-        c_1 = darray_get(t_1->program, index);
-        c_2 = darray_get(t_2->program, index);
-
-        /* obtain function nodes attached to crossover root nodes */
-        linked_1 = get_linked_func_node(c_1, t_1->program, index);
-        linked_2 = get_linked_func_node(c_2, t_2->program, index);
-        branch_1 = ast_node_is_value_of(linked_1, c_1);
-        branch_2 = ast_node_is_value_of(linked_2, c_2);
-
-        /* crossover */
-        if (branch_1 == LEFT_BRANCH) {
-                linked_1->type.binary->left = c_2;
-        }  else if (branch_1 == RIGHT_BRANCH) {
-                linked_1->type.binary->right = c_2;
-        } else if (branch_1 == VALUE_BRANCH) {
-                linked_1->type.unary->value = c_2;
-        }
-
-        if (branch_2 == LEFT_BRANCH) {
-                linked_2->type.binary->left = c_1;
-        } else if (branch_2 == RIGHT_BRANCH) {
-                linked_2->type.binary->right = c_1;
-        } else if (branch_2 == VALUE_BRANCH) {
-                linked_2->type.unary->value = c_1;
-        }
+        switch_nodes(
+                darray_get(t_1->program, index),
+                darray_get(t_2->program, index),
+                t_1,
+                t_2
+        );
 
         /* update program */
         update_program(t_1);

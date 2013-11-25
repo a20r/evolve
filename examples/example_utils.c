@@ -10,7 +10,7 @@ void print_evolve_results(struct population *p, float (*fitness_func)(void *))
 {
         if (p->solution != NULL) {
                 printf("SUCCESS! FOUND SOLUTION!\n");
-                printf("Solution: %s\n", p->solution);
+                printf("Solution: %s\n", (char *) p->solution);
                 printf("Score: %.2f\n", fitness_func(p->solution));
                 printf("Goal: %.2f\n", p->goal);
                 printf("Took %d Generations\n", p->generation);

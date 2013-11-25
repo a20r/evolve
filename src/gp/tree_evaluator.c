@@ -196,6 +196,10 @@ int evaluate_programs(struct population *p, struct evolve_config *config)
                 p->total_score += *score;
         }
 
+        if (goal_reached == 1) {
+                res = 1;
+        }
+
         return res;
 }
 

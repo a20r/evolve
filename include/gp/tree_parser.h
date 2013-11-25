@@ -2,6 +2,8 @@
 #define _GP_TREE_PARSER_H_
 
 #include <dstruct/queue.h>
+#include "gp/initialize.h"
+
 
 /* FUNCTIONS */
 int print_node(struct ast *node);

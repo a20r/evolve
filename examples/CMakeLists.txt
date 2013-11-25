@@ -14,3 +14,4 @@ LINK_DIRECTORIES(/usr/lib)
 # examples
 SUBDIRS(csp)
 SUBDIRS(hello_world)
+SUBDIRS(sym_regression)

@@ -74,11 +74,17 @@
         "input_set" : [
             {
                 "var_name": "x"
-            },
+            }
+        ],
+        "response_set" : [
             {
                 "var_name": "y"
             }
-        ]
+        ],
+        "input_file" : "na",
+        "input_format" : "csv",
+        "response_file" : "na",
+        "response_format" : "csv"
     },
 
     "selection" : {

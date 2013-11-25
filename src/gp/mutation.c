@@ -74,7 +74,6 @@ static int point_mutate_terminal_node(
         /* get new term node */
         gp = config->general.gp_tree;
         new_node = get_new_terminal_node(node, node->tag, gp);
-        print_node(new_node);
 
         if (node->tag == INTEGER) {
                 node->type.integer = new_node->type.integer;
@@ -84,8 +83,6 @@ static int point_mutate_terminal_node(
                 len = strlen(node->type.string) + 1;
                 free(node->type.string);
                 node->type.string = malloc(sizeof(char) * len);
-                /* printf("str: %s\n", new_node->type.string); */
-                /* printf("len: %d\n", (int) strlen(new_node->type.string)); */
                 strcpy(node->type.string, new_node->type.string);
         } else if (node->tag == CHARACTER) {
                 node->type.character = new_node->type.character;
@@ -128,16 +125,23 @@ int gp_point_mutation(
 {
         int res = 0;
         int index = 0;
-        struct ast *node;
+        struct ast *node = NULL;
+        int input_set_len = 0;
 
+beginning:
         /* get node to mutate */
         index = randnum_i(0, ((struct gp_tree *) tree)->program->end - 2);
         node = darray_get(((struct gp_tree *) tree)->program, index);
+        input_set_len = config->general.gp_tree->input_set->end;
 
         if (node_is_function(node)) {
                 res = point_mutate_function_node(node, config);
         } else if (node_is_input(node, config)) {
-                res = point_mutate_input_node(node, config);
+                if (input_set_len > 0) {
+                        res = point_mutate_input_node(node, config);
+                } else {
+                        goto beginning;
+                }
         } else if (node_is_terminal(node)) {
                 res = point_mutate_terminal_node(node, config);
         } else {

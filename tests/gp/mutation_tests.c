@@ -1,4 +1,6 @@
 #include <munit/munit.h>
+#include <dstruct/ast.h>
+#include <dstruct/ast_cmp.h>
 
 #include "gp/initialize.h"
 #include "gp/mutation.h"
@@ -23,10 +25,44 @@ static void teardown()
         config_destroy(config);
 }
 
+static void print_before_mutation(struct ast *root, struct darray *program)
+{
+        printf("Before Mutation!\n");
+        printf("------------------------------\n");
+        print_gp_tree(root);
+        printf("\n");
+        print_gp_program(program);
+}
+
+static void print_after_mutation(struct ast *root, struct darray *program)
+{
+        printf("\nAfter Mutation!\n");
+        printf("------------------------------\n");
+        print_gp_tree(root);
+        printf("\n");
+        print_gp_program(program);
+}
+
+static struct darray *darray_copy(struct darray *arr)
+{
+        int i = 0;
+        void *el;
+        struct darray *copy;
+
+        copy = darray_create(arr->element_size, arr->end);
+        for (i = 0; i < arr->end; i++) {
+                el = darray_get(arr, i);
+                darray_set(copy, i, el);
+        }
+
+        return copy;
+}
+
 int test_point_mutation()
 {
         int i = 0;
-        int tests = 1;
+        int res = 0;
+        int tests = 100;
         struct ast *root_before;
         struct ast *root_after;
         struct darray *prog_before;
@@ -36,30 +72,26 @@ int test_point_mutation()
         for (i = 0; i < tests; i++) {
                 setup();
 
-                printf("Before Mutation!\n");
-                printf("------------------------------\n");
-                print_gp_tree(gp->root);
-                printf("\n");
-                print_gp_program(gp->program);
-
-                root_before = gp->root;
-                prog_before = gp->program;
+                root_before = ast_copy_node(gp->root);
+                prog_before = darray_copy(gp->program);
 
                 mutate_tree(gp, gp_point_mutation, config);
 
-                root_after = gp->root;
-                prog_after = gp->program;
+                root_after = ast_copy_node(gp->root);
+                prog_after = darray_copy(gp->program);
 
-                printf("\nAfter Mutation!\n");
-                printf("------------------------------\n");
-                print_gp_tree(gp->root);
-                printf("\n");
-                print_gp_program(gp->program);
+                res = ast_trees_equal(root_before, root_after);
+                if (res != 0) {
+                        print_before_mutation(root_before, prog_before);
+                        print_after_mutation(root_after, prog_after);
+                }
+                mu_assert(res == 0, "Failed to mutate tree!");
+
+                ast_destroy(root_before);
+                ast_destroy(root_after);
 
                 teardown();
         }
-
-
 
         return 0;
 }

@@ -248,4 +248,3 @@ void update_input_nodes(struct gp_tree *tree, struct evolve_config *config)
                 }
         }
 }
-
