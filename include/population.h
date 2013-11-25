@@ -3,6 +3,9 @@
 
 #include <dstruct/darray.h>
 
+#include "config/config.h"
+
+
 /* DEFINES */
 #define QSORT_MIN_SIZE 20
 
@@ -68,6 +71,12 @@ void populate(
         int pivot_index,
         void (*mutation)(char **),
         float *mutate_prob
+);
+void reproduce(
+        struct population **p,
+        int (*crossover_func)(void *, void *, struct evolve_config *),
+        int (*mutation_func)(void *, struct evolve_config *),
+        struct evolve_config *config
 );
 
 #endif

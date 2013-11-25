@@ -42,6 +42,19 @@ static void print_term_nodes(struct gp_tree *tree)
                 print_node(darray_get(tree->terminal_nodes, i));
                 printf("\n");
         }
+        printf("\n");
+}
+
+static void print_input_nodes(struct gp_tree *tree)
+{
+        int i = 0;
+
+        printf("input nodes[%d]\n", tree->input_nodes->end);
+        for (i = 0; i < tree->input_nodes->end; i++) {
+                print_node(darray_get(tree->input_nodes, i));
+                printf("\n");
+        }
+        printf("\n");
 }
 
 int test_one_point_crossover()
@@ -62,11 +75,13 @@ int test_one_point_crossover()
         print_gp_program(tree_1->program);
         printf("\n");
         print_term_nodes(tree_1);
+        print_input_nodes(tree_1);
 
         printf("\nTREE 2\n");
         print_gp_program(tree_2->program);
         printf("\n");
         print_term_nodes(tree_2);
+        print_input_nodes(tree_2);
 
         /* crossover */
         t_1_before = ast_copy_node(tree_1->root);
@@ -81,11 +96,13 @@ int test_one_point_crossover()
         print_gp_program(tree_1->program);
         printf("\n");
         print_term_nodes(tree_1);
+        print_input_nodes(tree_1);
 
         printf("\nTREE 2\n");
         print_gp_program(tree_2->program);
         printf("\n");
         print_term_nodes(tree_2);
+        print_input_nodes(tree_2);
 
         /* asserts */
         res = ast_trees_equal(t_1_before, t_1_after);

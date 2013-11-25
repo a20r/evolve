@@ -270,8 +270,9 @@ error	scripts/unittest_runner.py	/^    error = False$/;"	v
 error	tests/config/parse_tests.c	/^json_error_t error;$/;"	v
 evaluate_individuals	src/population.c	/^int evaluate_individuals(float (*eval_func)(void *), struct population **p)$/;"	f
 evaluate_node	src/gp/tree_evaluator.c	/^int evaluate_node(struct ast *node, struct stack *s)$/;"	f
-evaluate_program	src/gp/tree_evaluator.c	/^float evaluate_program(struct gp_tree *tree, struct evolve_config *config)$/;"	f
+evaluate_program	src/gp/tree_evaluator.c	/^float evaluate_program(void *tree, struct evolve_config *config)$/;"	f
 evaluate_programs	src/gp/tree_evaluator.c	/^int evaluate_programs(struct population *p, struct evolve_config *config)$/;"	f
+evolve	src/evolve.c	/^int evolve($/;"	f
 evolve_config	include/config/config.h	/^struct evolve_config$/;"	s
 evolve_mode	include/config/config.h	/^enum evolve_mode$/;"	g
 evolve_monitor	include/evolve_monitor.h	/^struct evolve_monitor$/;"	s
@@ -284,7 +285,6 @@ find_best_individual	src/evolve_monitor.c	/^static int find_best_individual($/;"
 find_header_index	src/gp/tree_evaluator.c	/^static int find_header_index($/;"	f	file:
 fitness_function	examples/csp/csp.c	/^float fitness_function(void *individual)$/;"	f
 fitness_function	examples/hello_world/hello_world.c	/^static float fitness_function(void *individual)$/;"	f	file:
-fitness_function	examples/sym_regression/sym_regression.c	/^static float fitness_function(void *tree)$/;"	f	file:
 fitness_function	tests/evolve_monitor_tests.c	/^static float fitness_function(void *individual)$/;"	f	file:
 fitness_function	tests/evolve_tests.c	/^static float fitness_function(void *individual)$/;"	f	file:
 fitness_function	tests/population_tests.c	/^static float fitness_function(void *individual)$/;"	f	file:
@@ -491,6 +491,7 @@ re	scripts/unittest_runner.py	/^import re$/;"	i
 read_file	tests/population_tests.c	/^static int read_file(char* fp)$/;"	f	file:
 record_generation_stats	src/evolve_monitor.c	/^void record_generation_stats($/;"	f
 redirect_stdout	tests/population_tests.c	/^static void redirect_stdout()$/;"	f	file:
+reproduce	src/population.c	/^void reproduce($/;"	f
 response_cols	include/config/config.h	/^    int response_cols;$/;"	m	struct:gp_tree_config
 response_data	include/config/config.h	/^    float **response_data;$/;"	m	struct:gp_tree_config
 response_file	include/config/config.h	/^    char *response_file;$/;"	m	struct:gp_tree_config
@@ -622,6 +623,7 @@ test_print_node	tests/gp/tree_validator_tests.c	/^static int test_print_node(str
 test_print_population	tests/population_tests.c	/^int test_print_population()$/;"	f
 test_quick_sort_population	tests/population_tests.c	/^int test_quick_sort_population()$/;"	f
 test_record_generation_stats	tests/evolve_monitor_tests.c	/^int test_record_generation_stats()$/;"	f
+test_reproduce	tests/population_tests.c	/^int test_reproduce()$/;"	f
 test_roulette_wheel_selection	tests/selection_tests.c	/^int test_roulette_wheel_selection()$/;"	f
 test_run_evolution	tests/evolve_tests.c	/^int test_run_evolution()$/;"	f
 test_set_ast_array	tests/config/parse_tests.c	/^int test_set_ast_array()$/;"	f

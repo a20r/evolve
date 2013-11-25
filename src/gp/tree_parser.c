@@ -4,6 +4,10 @@
 #include <dstruct/ast.h>
 #include <dstruct/darray.h>
 
+#include "gp/initialize.h"
+#include "gp/function_set.h"
+#include "gp/terminal_set.h"
+
 
 int print_node(struct ast *node)
 {
@@ -202,3 +206,46 @@ struct darray *parse_gp_tree(struct ast *node)
 error:
         return NULL;
 }
+
+void update_program(struct gp_tree *tree)
+{
+        darray_destroy(tree->program);
+        tree->program = parse_gp_tree(tree->root);
+}
+
+void update_terminal_nodes(struct gp_tree *tree)
+{
+        int i = 0;
+        struct ast *node;
+
+        /* destroy and create new empty array */
+        darray_destroy(tree->terminal_nodes);
+        tree->terminal_nodes = darray_create(sizeof(struct ast), 100);
+
+        /* loop and insert terminal nodes into array */
+        for (i = 0; i < tree->program->end; i++) {
+                node = darray_get(tree->program, i);
+                if (node_is_terminal(node)) {
+                        darray_push(tree->terminal_nodes, node);
+                }
+        }
+}
+
+void update_input_nodes(struct gp_tree *tree, struct evolve_config *config)
+{
+        int i = 0;
+        struct ast *node;
+
+        /* destroy and create new empty array */
+        darray_destroy(tree->input_nodes);
+        tree->input_nodes = darray_create(sizeof(struct ast), 100);
+
+        /* loop and insert terminal nodes into array */
+        for (i = 0; i < tree->terminal_nodes->end; i++) {
+                node = darray_get(tree->terminal_nodes, i);
+                if (node_is_input(node, config)) {
+                        darray_push(tree->input_nodes, node);
+                }
+        }
+}
+

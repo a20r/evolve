@@ -113,7 +113,7 @@ struct ast *mod_input_with_value(
         return input_copy;
 }
 
-float evaluate_program(struct gp_tree *tree, struct evolve_config *config)
+float evaluate_program(void *tree, struct evolve_config *config)
 {
         int i;
         int j;
@@ -127,7 +127,7 @@ float evaluate_program(struct gp_tree *tree, struct evolve_config *config)
         struct gp_tree_config *gp;
 
         /* setup */
-        program = tree->program;
+        program = ((struct gp_tree *) tree)->program;
         gp = config->general.gp_tree;
 
         /* loop through each row of data */

@@ -15,5 +15,8 @@ int print_tree_structure(struct ast *node, struct darray *node_list);
 void print_gp_program(struct darray *program);
 int print_gp_tree(struct ast *node);
 struct darray *parse_gp_tree(struct ast *node);
+void update_program(struct gp_tree *tree);
+void update_terminal_nodes(struct gp_tree *tree);
+void update_input_nodes(struct gp_tree *tree, struct evolve_config *config);
 
 #endif

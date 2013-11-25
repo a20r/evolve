@@ -13,26 +13,36 @@
 #include "population.h"
 #include "selection.h"
 #include "gp/initialize.h"
+#include "gp/data_loader.h"
 #include "gp/crossover.h"
 #include "gp/mutation.h"
+#include "gp/tree_evaluator.h"
+#include "gp/tree_parser.h"
+
+#define TEST_INPUT_DATA "examples/sym_regression/sine_input.dat"
+#define TEST_RESPONSE_DATA "examples/sym_regression/sine_response.dat"
 
 
-static float fitness_function(void *tree)
+static void print_program(struct gp_tree *tree)
 {
+        int i;
+        struct ast *node;
 
-
-        return 0;
+        /* print program */
+        printf("PROGRAM STACK [REVERSE POLISH NOTATION]\n");
+        for (i = 0; i < tree->program->end; i++) {
+                node = darray_get(tree->program, i);
+                print_node(node);
+                printf("\n");
+        }
 }
 
 int main(int argc, char *argv[])
 {
         struct evolve_config *config;
-        struct gp_tree_config *gp_config;
+        struct evolve_monitor *m;
         struct population *p;
-        struct gp_tree *gp;
         char *config_fp;
-        float *p_c = calloc(1, sizeof(float));
-        float *p_m = calloc(1, sizeof(float));
 
         /* parse arguments */
         if (argc == 1) {
@@ -41,35 +51,37 @@ int main(int argc, char *argv[])
                 printf("missing config file!\n");
         }
 
+        /* seed random - VERY IMPORTANT! */
+        srand(time(NULL));
+
         /* setup */
         config = load_config(config_fp);
+        load_data(TEST_INPUT_DATA, config, INPUT_DATA);
+        load_data(TEST_RESPONSE_DATA, config, RESPONSE_DATA);
+        p = gp_population_initialize(init_tree_full, config->general.gp_tree);
+        m = init_evolve_monitor(p->individuals->element_size, 5, NULL);
 
         /* run evolution */
         printf("RUNNING GP!\n");
-        p = gp_population_initialize(init_tree_full, gp_config);
-        /* run_evolution( */
-        /*         &p, */
-        /*         fitness_function, */
+        evolve(
+                p,
+                evaluate_program,
+                evaluate_programs,
+                tournament_selection,
+                one_point_crossover,
+                gp_point_mutation,
+                config,
+                m,
+                0,
+                NULL
+        );
 
-        /*         #<{(| selection |)}># */
-        /*         tournament_selection, */
-        /*         DEFAULT_SELECT, */
+        if (p->solution != NULL) {
+                printf("SOLUTION!!!");
+                print_program(p->solution);
+        }
 
-        /*         #<{(| crossover |)}># */
-        /*         one_point_crossover, */
-        /*         p_c, #<{(| crossover probability |)}># */
-        /*         DEFAULT_PIVOT, */
-
-        /*         #<{(| mutation |)}># */
-        /*         point_mutation, */
-        /*         p_m , #<{(| mutation probability |)}># */
-
-        /*         m, */
-        /*         0, */
-        /*         &stop_signal */
-
-        /* ); */
-
+        /* clean up */
         population_destroy(&p, gp_tree_destroy);
 
         return 0;

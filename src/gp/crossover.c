@@ -7,6 +7,7 @@
 #include "config/config.h"
 #include "gp/initialize.h"
 #include "gp/crossover.h"
+#include "gp/function_set.h"
 #include "gp/tree_parser.h"
 
 
@@ -17,11 +18,21 @@ static int crossover_random_index(
 )
 {
         int index = 0;
+        int within_limits = 0;
+        int func = 0;
+        struct ast *n1;
+        struct ast *n2;
 
         /* randomly select crossover point */
         while (1) {
                 index = randnum_i(0, tree_1->program->end - 2);
-                if (tree_2->program->end -1 > index) {
+
+                n1 = darray_get(tree_1->program, index);
+                n2 = darray_get(tree_2->program, index);
+
+                within_limits = (tree_2->program->end - 1 > index) ? 1 : 0;
+                func = (node_is_function(n1) && node_is_function(n2)) ? 1 : 0;
+                if (within_limits && func) {
                         break;
                 }
         }
@@ -36,7 +47,7 @@ static struct ast *get_linked_func_node(
 )
 {
         int limit = 0;
-        struct ast *linked_node;
+        struct ast *linked_node = NULL;
 
         limit = program->end;
         while (index != limit) {
@@ -107,13 +118,17 @@ int one_point_crossover(
                 linked_2->type.unary->value = c_1;
         }
 
-        /* update gp->program */
-        darray_destroy(t_1->program);
-        darray_destroy(t_2->program);
-        t_1->program = parse_gp_tree(t_1->root);
-        t_2->program = parse_gp_tree(t_2->root);
+        /* update program */
+        update_program(t_1);
+        update_program(t_2);
 
-        /* TODO: update terminal and input node list */
+        /* update terminal nodes */
+        update_terminal_nodes(t_1);
+        update_terminal_nodes(t_2);
+
+        /* update input nodes */
+        update_input_nodes(t_1, config);
+        update_input_nodes(t_2, config);
 
         return 0;
 }
