@@ -72,6 +72,7 @@ int test_point_mutation()
         for (i = 0; i < tests; i++) {
                 setup();
 
+                /* mutate */
                 root_before = ast_copy_node(gp->root);
                 prog_before = darray_copy(gp->program);
 
@@ -80,6 +81,7 @@ int test_point_mutation()
                 root_after = ast_copy_node(gp->root);
                 prog_after = darray_copy(gp->program);
 
+                /* asserts */
                 res = ast_trees_equal(root_before, root_after);
                 if (res != 0) {
                         print_before_mutation(root_before, prog_before);
@@ -87,9 +89,9 @@ int test_point_mutation()
                 }
                 mu_assert(res == 0, "Failed to mutate tree!");
 
+                /* clean up */
                 ast_destroy(root_before);
                 ast_destroy(root_after);
-
                 teardown();
         }
 

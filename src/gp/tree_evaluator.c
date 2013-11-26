@@ -178,6 +178,7 @@ int evaluate_programs(struct population *p, struct evolve_config *config)
         struct gp_tree *tree = NULL;
 
         for (i = 0; i < p->max_population; i++) {
+                printf("evaluation program %d!\n", i);
                 /* obtain and evaluate individual from population */
                 tree = darray_get(p->individuals, i);
                 score = malloc(sizeof(float));

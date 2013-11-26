@@ -312,9 +312,9 @@ void record_generation_stats(
         m->convergence_rate = *conv_rate;
         m->goal_distance = *goal_dist;
 
-        /* printf("\nGEN: %d\n", *gen); */
+        printf("\nGEN: %d\n", *gen);
         /* printf("BEST CHROMO: %s\n", best_individual); */
-        /* printf("BEST SCORE: %f\n", *(float *) best_score); */
+        printf("BEST SCORE: %f\n", *(float *) best_score);
 
         int leaderboard_updated = update_leaderboard(
                 m,

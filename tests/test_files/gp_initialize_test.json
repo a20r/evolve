@@ -23,6 +23,14 @@
             {
                 "tag": "BINARY_OP",
                 "type": "DIV"
+            },
+            {
+                "tag": "UNARY_OP",
+                "type": "SINE"
+            },
+            {
+                "tag": "UNARY_OP",
+                "type": "COSINE"
             }
         ],
         "terminal_set" : [

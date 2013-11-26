@@ -86,13 +86,23 @@ int print_tree_structure(struct ast *node, struct darray *node_list)
 {
         int res = 0;
 
-        if (node->tag == BINARY_OP || node->tag == START) {
+        if (node->tag == UNARY_OP) {
+                /* value */
+                res = print_relation(node, node->type.unary->value, node_list);
+                silent_check(res == 0);
+
+                res = print_tree_structure(node->type.unary->value, node_list);
+                check(res == 0, "Failed to parse the value unary op!");
+
+        } else if (node->tag == BINARY_OP || node->tag == START) {
+                /* left */
                 res = print_relation(node, node->type.binary->left, node_list);
                 silent_check(res == 0);
 
                 res = print_tree_structure(node->type.binary->left, node_list);
                 check(res == 0, "Failed to parse the left binary op!");
 
+                /* right */
                 res = print_relation(node, node->type.binary->right, node_list);
                 silent_check(res == 0);
 

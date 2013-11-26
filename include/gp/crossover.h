@@ -5,7 +5,7 @@
 
 
 /* FUNCTIONS */
-int one_point_crossover(
+int gp_one_point_crossover(
         void *tree_1,
         void *tree_2,
         struct evolve_config *config

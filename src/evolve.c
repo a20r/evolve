@@ -90,6 +90,7 @@ int evolve(
 
         /* loop til max_gen reached, goal achieved, or receive stop signal */
         while (p->generation < max_gen && *stop_signal == 0) {
+                printf("gen: %d\n", p->generation);
                 /* evaluate and record */
                 goal_reached = eval_pop_func(p, config);
                 if (m != NULL) {

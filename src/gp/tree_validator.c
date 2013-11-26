@@ -117,9 +117,11 @@ static void term_node_to_input_node(
 
 static int nodes_equal(void *node_1, void *node_2)
 {
-        int res = 0;
-        res = ast_nodes_equal((struct ast *) node_1, (struct ast *) node_2);
-        return res;
+        if (node_1 == node_2) {
+                return 1;
+        } else {
+                return 0;
+        }
 }
 
 int tree_add_input_nodes(struct gp_tree *gp, struct gp_tree_config *config)
@@ -136,7 +138,13 @@ int tree_add_input_nodes(struct gp_tree *gp, struct gp_tree_config *config)
 
         /* determine how many input nodes to add randomly */
         start = config->input_set->end + 1;
-        end = gp->terminal_nodes->end / 2;
+        end = gp->terminal_nodes->end;
+        if ((gp->terminal_nodes->end / 4) > start) {
+                end = gp->terminal_nodes->end / 4;
+        }
+        if (start > end) {
+                end = start;
+        }
         inputs = randnum_i(start, end);
 
         /* mutate terminal nodes */

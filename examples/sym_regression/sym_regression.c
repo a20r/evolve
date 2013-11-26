@@ -19,8 +19,9 @@
 #include "gp/tree_evaluator.h"
 #include "gp/tree_parser.h"
 
-#define TEST_INPUT_DATA "examples/sym_regression/sine_input.dat"
-#define TEST_RESPONSE_DATA "examples/sym_regression/sine_response.dat"
+#define CONFIG_FILE "examples/sym_regression/config.json"
+#define EXAMPLE_INPUT_DATA "examples/sym_regression/data/sine_input.dat"
+#define EXAMPLE_RESPONSE_DATA "examples/sym_regression/data/sine_response.dat"
 
 
 static void print_program(struct gp_tree *tree)
@@ -39,50 +40,55 @@ static void print_program(struct gp_tree *tree)
 
 int main(int argc, char *argv[])
 {
-        struct evolve_config *config;
-        struct evolve_monitor *m;
-        struct population *p;
-        char *config_fp;
-
-        /* parse arguments */
-        if (argc == 1) {
-                config_fp = argv[1];
-        } else {
-                printf("missing config file!\n");
-        }
+        int i = 0;
+        struct evolve_config *config = NULL;
+        struct evolve_monitor *m = NULL;
+        struct population *p = NULL;
+        struct gp_tree *tree = NULL;
 
         /* seed random - VERY IMPORTANT! */
         srand(time(NULL));
 
         /* setup */
-        config = load_config(config_fp);
-        load_data(TEST_INPUT_DATA, config, INPUT_DATA);
-        load_data(TEST_RESPONSE_DATA, config, RESPONSE_DATA);
+        config = load_config(CONFIG_FILE);
+        load_data(EXAMPLE_INPUT_DATA, config, INPUT_DATA);
+        load_data(EXAMPLE_RESPONSE_DATA, config, RESPONSE_DATA);
         p = gp_population_initialize(init_tree_full, config->general.gp_tree);
-        m = init_evolve_monitor(p->individuals->element_size, 5, NULL);
+        /* m = init_evolve_monitor(p->individuals->element_size, 5, NULL); */
 
-        /* run evolution */
-        printf("RUNNING GP!\n");
-        evolve(
-                p,
-                evaluate_program,
-                evaluate_programs,
-                tournament_selection,
-                one_point_crossover,
-                gp_point_mutation,
-                config,
-                m,
-                0,
-                NULL
-        );
 
-        if (p->solution != NULL) {
-                printf("SOLUTION!!!");
-                print_program(p->solution);
-        }
+        /* #<{(| run evolution |)}># */
+        /* printf("RUNNING GP!\n"); */
+        /* evolve( */
+        /*         p, */
+        /*         evaluate_program, */
+        /*         evaluate_programs, */
+        /*         tournament_selection, */
+        /*         one_point_crossover, */
+        /*         gp_point_mutation, */
+        /*         config, */
+        /*         m, */
+        /*         0, */
+        /*         NULL */
+        /* ); */
+
+        /* if (p->solution != NULL) { */
+        /*         printf("SOLUTION!!!"); */
+        /*         print_program(p->solution); */
+        /* } */
 
         /* clean up */
+        for (i = 0; i < p->max_population; i++) {
+                tree = darray_get(p->individuals, i);
+                printf("- TREE[%d]", i);
+                printf(" [size: %d]", tree->size);
+                printf("[depth: %d]\n", tree->depth);
+                print_gp_tree(tree->root);
+                printf("\n\n");
+        }
         population_destroy(&p, gp_tree_destroy);
+        /* destroy_evolve_monitor(&m); */
+        config_destroy(config);
 
         return 0;
 }

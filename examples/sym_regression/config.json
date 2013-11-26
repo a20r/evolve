@@ -3,9 +3,9 @@
 
     "gp_tree" :  {
         "max_pop" : 10,
-        "max_gen" : 10,
-        "max_depth" : 4,
-        "max_size" : 8,
+        "max_gen" : 100,
+        "max_depth" : 3,
+        "max_size" : 100,
 
         "function_set" : [
             {
@@ -23,8 +23,17 @@
             {
                 "tag": "BINARY_OP",
                 "type": "DIV"
+            },
+            {
+                "tag": "UNARY_OP",
+                "type": "SINE"
+            },
+            {
+                "tag": "UNARY_OP",
+                "type": "COSINE"
             }
         ],
+
         "terminal_set" : [
             {
                 "tag": "REAL",
@@ -73,16 +82,18 @@
                 "var_name": "x"
             }
         ],
-        "input_file": "",
-        "input_format": "",
 
         "response_set" : [
             {
                 "var_name": "y"
             }
         ],
-        "response_file": "",
-        "response_format": ""
+
+        "input_file" : "examples/sym_regression/data/sine_input.dat",
+        "input_format" : "csv",
+
+        "response_file" : "examples/sym_regression/data/sine_response.dat",
+        "response_format" : "csv"
     },
 
     "selection" : {
@@ -90,7 +101,7 @@
     },
 
     "crossover" : {
-        "probability" : 1.0,
+        "probability" : 0.8,
         "pivot_index" : "default"
     },
 

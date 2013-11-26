@@ -127,7 +127,7 @@ struct gp_tree *init_tree_full(struct gp_tree_config *config)
         struct gp_tree *gp;
         struct node_set *nodes;
         int max_depth;
-        /* int valid_tree = 0; */
+        int valid_tree = 0;
 
         /* setup */
         max_depth = *config->max_depth;
@@ -137,9 +137,15 @@ struct gp_tree *init_tree_full(struct gp_tree_config *config)
         nodes->input_set = config->input_set;
 
         /* initialize gp tree */
-        gp = gp_tree_create(config);
-        full_method(gp, gp->root, gp->depth, max_depth, nodes);
-        gp->depth = max_depth;
+        while (valid_tree == 0) {
+                gp = gp_tree_create(config);
+                full_method(gp, gp->root, gp->depth, max_depth, nodes);
+                gp->depth = max_depth;
+
+                if (gp->terminal_nodes->end > gp->input_nodes->end + 1) {
+                        valid_tree = 1;
+                }
+        }
 
         /* add input nodes */
         tree_add_input_nodes(gp, config);
