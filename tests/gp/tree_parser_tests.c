@@ -33,21 +33,30 @@ static void teardown()
 
 static int test_print_node(struct ast *node)
 {
-        if (node->tag == INTEGER) {
+        switch (node->tag) {
+        case INTEGER:
                 printf("NODE[INTEGER]: %d\n", node->type.integer);
-        } else if (node->tag == REAL) {
+                break;
+        case REAL:
                 printf("NODE[REAL]: %f\n", node->type.real);
-        } else if (node->tag == STRING) {
+                break;
+        case STRING:
                 printf("NODE[STRING]: %s\n", node->type.string);
-        } else if (node->tag == CHARACTER) {
+                break;
+        case CHARACTER:
                 printf("NODE[CHARACTER]: %c\n", node->type.character);
-        } else if (node->tag == BOOL) {
+                break;
+        case BOOL:
                 printf("NODE[BOOL]: %i\n", node->type.boolean);
-        } else if (node->tag == UNARY_OP) {
+                break;
+        case UNARY_OP:
                 printf("NODE[UNARY_OP]: %s\n", node->type.unary->op_name);
-        } else if (node->tag == BINARY_OP || node->tag == START) {
+                break;
+        case BINARY_OP:
+        case START:
                 printf("NODE[BINARY_OP]: %s\n", node->type.binary->op_name);
-        } else {
+                break;
+        default:
                 log_err("OPPS! Unknown node type to print!");
                 return -1;
         }
@@ -92,6 +101,73 @@ int test_parse_gp_tree()
         return 0;
 }
 
+int test_update_program()
+{
+        int i = 101;
+        struct ast *node = NULL;
+
+        setup();
+
+        /* update program */
+        ast_destroy(gp->root);
+        gp->root = ast_make_exp(INTEGER, &i);
+        update_program(gp);
+
+        /* assert */
+        node = darray_get(gp->program, 0);
+        mu_assert(node->tag == INTEGER, "Failed to update program!");
+        mu_assert(node->type.integer == i, "Failed to update program!");
+
+        teardown();
+        return 0;
+}
+
+int test_update_terminal_nodes()
+{
+        int i = 101;
+        struct ast *node = NULL;
+
+        setup();
+
+        /* update program */
+        ast_destroy(gp->root);
+        gp->root = ast_make_exp(INTEGER, &i);
+        update_program(gp);
+        update_terminal_nodes(gp);
+
+        /* assert */
+        node = darray_get(gp->terminal_nodes, 0);
+        mu_assert(node->tag == INTEGER, "Failed to update terminal nodes!");
+        mu_assert(node->type.integer == i, "Failed to update terminal nodes!");
+
+        teardown();
+
+        return 0;
+}
+
+int test_update_input_nodes()
+{
+        int i = 101;
+        struct ast *node = NULL;
+
+        setup();
+
+        /* update program */
+        ast_destroy(gp->root);
+        gp->root = ast_make_exp(INTEGER, &i);
+        update_program(gp);
+        update_terminal_nodes(gp);
+        update_input_nodes(gp, config);
+
+        /* assert */
+        node = darray_get(gp->input_nodes, 0);
+        mu_assert(node == NULL, "Failed to update program!");
+
+        teardown();
+
+        return 0;
+}
+
 void test_suite()
 {
         /* seed random - VERY IMPORTANT! */
@@ -101,6 +177,10 @@ void test_suite()
         mu_run_test(test_print_gp_tree);
         mu_run_test(test_parse_gp_tree);
         teardown();
+
+        mu_run_test(test_update_program);
+        mu_run_test(test_update_terminal_nodes);
+        mu_run_test(test_update_input_nodes);
 }
 
 mu_run_test_suite(test_suite);
