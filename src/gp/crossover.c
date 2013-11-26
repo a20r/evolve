@@ -11,7 +11,7 @@
 #include "gp/tree_parser.h"
 
 
-static int crossover_random_index(
+int crossover_random_index(
         struct gp_tree *tree_1,
         struct gp_tree *tree_2,
         struct gp_tree_config *config
@@ -47,6 +47,8 @@ static struct ast *get_linked_func_node(
 )
 {
         int limit = 0;
+        int value_of = 0;
+        int func_node = 0;
         struct ast *linked_node = NULL;
 
         limit = program->end;
@@ -54,13 +56,20 @@ static struct ast *get_linked_func_node(
                 linked_node = darray_get(program, index);
 
                 if (ast_node_is_terminal(node)) {
-                        if (ast_node_is_function(linked_node)) {
+                        func_node = ast_node_is_function(linked_node);
+                        value_of = ast_node_is_value_of(linked_node, node);
+
+                        if (func_node && value_of) {
                                 break;
                         }
+
                 } else if (ast_node_is_function(node)){
-                        if (ast_node_is_value_of(linked_node, node)) {
+                        value_of = ast_node_is_value_of(linked_node, node);
+
+                        if (value_of) {
                                 break;
                         }
+
                 }
 
                 index++;
@@ -69,28 +78,28 @@ static struct ast *get_linked_func_node(
         return linked_node;
 }
 
-static void replace_func_node_value(
+void gp_crossover_replace_func_node_value(
         int branch,
         struct ast *func_node,
         struct ast *val_node
 )
 {
         switch (branch) {
+        case VALUE_BRANCH:
+                func_node->type.unary->value = val_node;
+                break;
         case LEFT_BRANCH:
                 func_node->type.binary->left = val_node;
                 break;
         case RIGHT_BRANCH:
                 func_node->type.binary->right = val_node;
                 break;
-        case VALUE_BRANCH:
-                func_node->type.unary->value = val_node;
-                break;
         default:
                 log_err("Unrecognised branch value [%d]!", branch);
         }
 }
 
-static void switch_nodes(
+void gp_crossover_switch_nodes(
         struct ast *node_1,
         struct ast *node_2,
         struct gp_tree *tree_1,
@@ -104,20 +113,14 @@ static void switch_nodes(
         int branch_2 = 0;
 
         /* obtain function nodes attached to crossover root nodes */
-        func_node_1 = get_linked_func_node(node_1, tree_1->program, index);
-        func_node_2 = get_linked_func_node(node_2, tree_2->program, index);
+        func_node_1 = get_linked_func_node(node_1, tree_1->program, index + 1);
+        func_node_2 = get_linked_func_node(node_2, tree_2->program, index + 1);
         branch_1 = ast_node_is_value_of(func_node_1, node_1);
         branch_2 = ast_node_is_value_of(func_node_2, node_2);
 
-        printf("node 1: ");
-        print_node(node_1);
-        printf(" node 2: ");
-        print_node(node_2);
-        printf("\n");
-
         /* switch */
-        replace_func_node_value(branch_1, func_node_1, node_2);
-        replace_func_node_value(branch_2, func_node_2, node_1);
+        gp_crossover_replace_func_node_value(branch_1, func_node_1, node_2);
+        gp_crossover_replace_func_node_value(branch_2, func_node_2, node_1);
 }
 
 int gp_one_point_crossover(
@@ -127,71 +130,32 @@ int gp_one_point_crossover(
 )
 {
         int index = 0;
-        struct gp_tree *t_1 = NULL;
-        struct gp_tree *t_2 = NULL;
-        struct ast *c_1;
-        struct ast *c_2;
-        struct ast *linked_1;
-        struct ast *linked_2;
         struct gp_tree_config *gp = NULL;
-        int branch_1 = 0;
-        int branch_2 = 0;
 
         /* setup */
         gp = config->general.gp_tree;
-        t_1 = (struct gp_tree *) tree_1;
-        t_2 = (struct gp_tree *) tree_2;
-
-        /* #<{(| choose random index and get the crossover root nodes |)}># */
-        /* index = crossover_random_index(tree_1, tree_2, gp); */
-        /* c_1 = darray_get(t_1->program, index); */
-        /* c_2 = darray_get(t_2->program, index); */
-
-        /* #<{(| obtain function nodes attached to crossover root nodes |)}># */
-        /* linked_1 = get_linked_func_node(c_1, t_1->program, index); */
-        /* linked_2 = get_linked_func_node(c_2, t_2->program, index); */
-        /* branch_1 = ast_node_is_value_of(linked_1, c_1); */
-        /* branch_2 = ast_node_is_value_of(linked_2, c_2); */
-
-        /* #<{(| crossover |)}># */
-        /* if (branch_1 == LEFT_BRANCH) { */
-        /*         linked_1->type.binary->left = c_2; */
-        /* }  else if (branch_1 == RIGHT_BRANCH) { */
-        /*         linked_1->type.binary->right = c_2; */
-        /* } else if (branch_1 == VALUE_BRANCH) { */
-        /*         linked_1->type.unary->value = c_2; */
-        /* } */
-
-        /* if (branch_2 == LEFT_BRANCH) { */
-        /*         linked_2->type.binary->left = c_1; */
-        /* } else if (branch_2 == RIGHT_BRANCH) { */
-        /*         linked_2->type.binary->right = c_1; */
-        /* } else if (branch_2 == VALUE_BRANCH) { */
-        /*         linked_2->type.unary->value = c_1; */
-        /* } */
 
         /* choose random index and crossover */
-        /* index = crossover_random_index(tree_1, tree_2, gp); */
-        /* printf("index: %d\n", index); */
-        /* switch_nodes( */
-        /*         darray_get(t_1->program, index), */
-        /*         darray_get(t_2->program, index), */
-        /*         t_1, */
-        /*         t_2, */
-        /*         index */
-        /* ); */
+        index = crossover_random_index(tree_1, tree_2, gp);
+        gp_crossover_switch_nodes(
+                darray_get(((struct gp_tree *) tree_1)->program, index),
+                darray_get(((struct gp_tree *) tree_2)->program, index),
+                tree_1,
+                tree_2,
+                index
+        );
 
         /* update program */
-        update_program(t_1);
-        update_program(t_2);
+        update_program(tree_1);
+        update_program(tree_2);
 
         /* update terminal nodes */
-        update_terminal_nodes(t_1);
-        update_terminal_nodes(t_2);
+        update_terminal_nodes(tree_1);
+        update_terminal_nodes(tree_2);
 
         /* update input nodes */
-        update_input_nodes(t_1, config);
-        update_input_nodes(t_2, config);
+        update_input_nodes(tree_1, config);
+        update_input_nodes(tree_2, config);
 
         return 0;
 }

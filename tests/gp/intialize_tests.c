@@ -87,8 +87,8 @@ int test_population_initialize()
                         print_gp_tree(tree->root);
                         printf("\n\n");
                 }
-                /* print_gp_tree(tree->root); */
-                /* printf("\n\n"); */
+                print_gp_tree(tree->root);
+                printf("\n\n");
                 mu_assert(res == 1, "Invalid GP TREE!");
         }
         population_destroy(&p, gp_tree_destroy);

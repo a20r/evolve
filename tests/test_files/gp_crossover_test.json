@@ -4,8 +4,8 @@
     "gp_tree" :  {
         "max_pop" : 10,
         "max_gen" : 10,
-        "max_depth" : 4,
-        "max_size" : 8,
+        "max_depth" : 2,
+        "max_size" : 100,
 
         "function_set" : [
             {

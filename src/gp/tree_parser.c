@@ -70,11 +70,10 @@ int print_node_label(struct ast*node)
                 printf("[label=\"%s\"];\n", node->type.unary->op_name);
                 break;
         case BINARY_OP:
-        case START:
                 printf("[label=\"%s\"];\n", node->type.binary->op_name);
                 break;
         default:
-                log_err("OPPS! Unknown node type to q!");
+                log_err("OPPS! Unknown node type to label!");
                 return -1;
         }
 
@@ -194,7 +193,7 @@ static int post_order_traverse(struct ast *node, struct darray *program)
                 /* root */
                 darray_push(program, node);
 
-        } else if (node->tag == BINARY_OP || node->tag == START) {
+        } else if (node->tag == BINARY_OP) {
                 /* left */
                 status = post_order_traverse(node->type.binary->left, program);
                 check(status == 0, "Failed to traverse binary->left node!");

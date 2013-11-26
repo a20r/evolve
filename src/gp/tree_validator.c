@@ -142,10 +142,11 @@ int tree_add_input_nodes(struct gp_tree *gp, struct gp_tree_config *config)
         if ((gp->terminal_nodes->end / 4) > start) {
                 end = gp->terminal_nodes->end / 4;
         }
-        if (start > end) {
-                end = start;
+        if (start >= end) {
+                inputs = start;
+        } else {
+                inputs = randnum_i(start, end);
         }
-        inputs = randnum_i(start, end);
 
         /* mutate terminal nodes */
         visited = darray_create(sizeof(struct ast), inputs);
@@ -155,7 +156,7 @@ int tree_add_input_nodes(struct gp_tree *gp, struct gp_tree_config *config)
                 term_index = randnum_i(0, gp->terminal_nodes->end - 1);
                 node = darray_get(gp->terminal_nodes, term_index);
 
-                /* swtich terminal node if not visited */
+                /* switch terminal node if not visited */
                 if (darray_contains(visited, node, nodes_equal) == 0) {
                         darray_push(visited, node);
 

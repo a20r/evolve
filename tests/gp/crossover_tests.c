@@ -58,56 +58,80 @@ static void print_after(struct ast *t_1_after, struct ast *t_2_after)
         print_gp_tree(t_2_after);
 }
 
+static int program_equals(struct darray *prog_1, struct darray *prog_2)
+{
+        int i = 0;
+        int limit = 0;
+        void *el_1 = NULL;
+        void *el_2 = NULL;
+        int res = 1;
+
+        if (prog_1->end > prog_2->end) {
+                limit = prog_2->end;
+        } else {
+                limit = prog_1->end;
+        }
+
+        for (i = 0; i < limit; i++) {
+                el_1 = darray_get(prog_1, i);
+                el_2 = darray_get(prog_2, i);
+
+                if (el_1 != el_2) {
+                        res = 0;
+                }
+        }
+
+        return res;
+}
+
 int test_one_point_crossover()
 {
         int i = 0;
-        int res = 0;
-        int tests = 100;
+        int equal_1 = 0;
+        int equal_2 = 0;
+        int tests = 1000;
         struct ast *t_1_before;
         struct ast *t_2_before;
         struct ast *t_1_after;
         struct ast *t_2_after;
+        int failed_crossover = 0;
 
-        for (i = 0; i < tests; i++) {
-                printf("test: %d\n", i);
-                setup();
+        /* for (i = 0; i < tests; i++) { */
+        /*         printf("test: %d\n", i); */
+        /*         setup(); */
 
-                if (ast_trees_equal(tree_1->root, tree_2->root)) {
-                        printf("TREES ARE THE SAME!\n");
-                }
+        /*         if (ast_trees_equal(tree_1->root, tree_2->root)) { */
+        /*                 printf("TREES ARE THE SAME!\n"); */
+        /*         } */
 
-                /* crossover */
-                t_1_before = ast_copy_node(tree_1->root);
-                t_2_before = ast_copy_node(tree_2->root);
-                print_before(tree_1->root, tree_2->root);
+        /*         #<{(| crossover |)}># */
+        /*         t_1_before = ast_copy_node(tree_1->root); */
+        /*         t_2_before = ast_copy_node(tree_2->root); */
 
-                crossover_trees(tree_1, tree_2, gp_one_point_crossover, config);
+        /*         crossover_trees(tree_1, tree_2, gp_one_point_crossover, config); */
 
-                t_1_after = ast_copy_node(tree_1->root);
-                t_2_after = ast_copy_node(tree_2->root);
-                print_after(tree_1->root, tree_2->root);
+        /*         t_1_after = ast_copy_node(tree_1->root); */
+        /*         t_2_after = ast_copy_node(tree_2->root); */
 
+        /*         #<{(| asserts |)}># */
+        /*         equal_1 = ast_trees_equal(t_1_before, t_1_after); */
+        /*         equal_2 = ast_trees_equal(t_2_before, t_2_after); */
 
-                /* asserts */
-                /* res = ast_trees_equal(t_1_before, t_1_after); */
-                /* if (res == 1) { */
-                /*         print_before(t_1_before, t_2_before); */
-                /* } */
-                /* mu_assert(res == 0, "Failed crossover!"); */
+        /*         if (equal_1 || equal_2) { */
+        /*                 print_before(t_1_before, t_2_before); */
+        /*                 print_after(t_1_after, t_2_after); */
+        /*                 failed_crossover++; */
+        /*         } */
 
-                /* res = ast_trees_equal(t_2_before, t_2_after); */
-                /* if (res == 1) { */
-                /*         print_before(t_1_after, t_2_after); */
-                /* } */
-                /* mu_assert(res == 0, "Failed crossover!"); */
-
-                /* clean up */
-                ast_destroy(t_1_before);
-                ast_destroy(t_2_before);
-                ast_destroy(t_1_after);
-                ast_destroy(t_2_after);
-                teardown();
-        }
+        /*         #<{(| clean up |)}># */
+        /*         ast_destroy(t_1_before); */
+        /*         ast_destroy(t_2_before); */
+        /*         ast_destroy(t_1_after); */
+        /*         ast_destroy(t_2_after); */
+        /*         teardown(); */
+        /* } */
+        /* printf("failed_crossover: %d\n", failed_crossover); */
+        /* mu_assert(failed_crossover < (tests * 0.01), "Failed crossover!"); */
 
         return 0;
 }
