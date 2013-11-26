@@ -11,28 +11,36 @@
 
 int print_node(struct ast *node)
 {
-        if (node->tag == INTEGER) {
+        switch (node->tag) {
+        case INTEGER:
                 printf("\"%d", node->type.integer);
                 printf("%p\"", &node->type.integer);
-        } else if (node->tag == REAL) {
+                break;
+        case REAL:
                 printf("\"%f", node->type.real);
                 printf("%p\"", &node->type.real);
-        } else if (node->tag == STRING) {
+                break;
+        case STRING:
                 printf("\"%s", node->type.string);
                 printf("%p\"", &node->type.string);
-        } else if (node->tag == CHARACTER) {
+                break;
+        case CHARACTER:
                 printf("\"%c", node->type.character);
                 printf("%p\"", &node->type.character);
-        } else if (node->tag == BOOL) {
+                break;
+        case BOOL:
                 printf("\"%i", node->type.boolean);
                 printf("%p\"", &node->type.boolean);
-        } else if (node->tag == UNARY_OP) {
+                break;
+        case UNARY_OP:
                 printf("\"%s", node->type.unary->op_name);
                 printf("%p\"", &node->type.unary->op_name);
-        } else if (node->tag == BINARY_OP || node->tag == START) {
+                break;
+        case BINARY_OP :
                 printf("\"%s", node->type.binary->op_name);
                 printf("%p\"", &node->type.binary->op_name);
-        } else {
+                break;
+        default:
                 log_err("OPPS! Unknown node type to print!");
                 return -1;
         }
@@ -42,21 +50,30 @@ int print_node(struct ast *node)
 
 int print_node_label(struct ast*node)
 {
-        if (node->tag == INTEGER) {
+        switch (node->tag) {
+        case INTEGER:
                 printf("[label=\"%d\"];\n", node->type.integer);
-        } else if (node->tag == REAL) {
+                break;
+        case REAL:
                 printf("[label=\"%f\"];\n", node->type.real);
-        } else if (node->tag == STRING) {
+                break;
+        case STRING:
                 printf("[label=\"%s\"];\n", node->type.string);
-        } else if (node->tag == CHARACTER) {
+                break;
+        case CHARACTER:
                 printf("[label=\"%c\"];\n", node->type.character);
-        } else if (node->tag == BOOL) {
+                break;
+        case BOOL:
                 printf("[label=\"%i\"];\n", node->type.boolean);
-        } else if (node->tag == UNARY_OP) {
+                break;
+        case UNARY_OP:
                 printf("[label=\"%s\"];\n", node->type.unary->op_name);
-        } else if (node->tag == BINARY_OP || node->tag == START) {
+                break;
+        case BINARY_OP:
+        case START:
                 printf("[label=\"%s\"];\n", node->type.binary->op_name);
-        } else {
+                break;
+        default:
                 log_err("OPPS! Unknown node type to q!");
                 return -1;
         }
