@@ -5,27 +5,33 @@
 #include <dstruct/ast_cmp.h>
 
 #include "config/config.h"
-#include "gp/initialize.h"
 #include "gp/crossover.h"
 #include "gp/function_set.h"
 #include "gp/tree_parser.h"
 
 
-int crossover_random_index(
+int gp_crossover_random_index(
         struct gp_tree *tree_1,
         struct gp_tree *tree_2,
         struct gp_tree_config *config
 )
 {
         int index = 0;
+        int tree_limit = 0;
         int within_limits = 0;
         int func = 0;
         struct ast *n1;
         struct ast *n2;
 
+        if (tree_1->program->end > tree_2->program->end) {
+                tree_limit = tree_2->program->end;
+        } else {
+                tree_limit = tree_1->program->end;
+        }
+
         /* randomly select crossover point */
         while (1) {
-                index = randnum_i(0, tree_1->program->end - 2);
+                index = randnum_i(0, tree_limit - 2);
 
                 n1 = darray_get(tree_1->program, index);
                 n2 = darray_get(tree_2->program, index);
@@ -40,7 +46,7 @@ int crossover_random_index(
         return index;
 }
 
-static struct ast *get_linked_func_node(
+struct ast *gp_get_linked_node(
         struct ast *node,
         struct darray *program,
         int index
@@ -51,6 +57,7 @@ static struct ast *get_linked_func_node(
         int func_node = 0;
         struct ast *linked_node = NULL;
 
+        index = index + 1;
         limit = program->end;
         while (index != limit) {
                 linked_node = darray_get(program, index);
@@ -58,14 +65,12 @@ static struct ast *get_linked_func_node(
                 if (ast_node_is_terminal(node)) {
                         func_node = ast_node_is_function(linked_node);
                         value_of = ast_node_is_value_of(linked_node, node);
-
                         if (func_node && value_of) {
                                 break;
                         }
 
                 } else if (ast_node_is_function(node)){
                         value_of = ast_node_is_value_of(linked_node, node);
-
                         if (value_of) {
                                 break;
                         }
@@ -113,8 +118,8 @@ void gp_crossover_switch_nodes(
         int branch_2 = 0;
 
         /* obtain function nodes attached to crossover root nodes */
-        func_node_1 = get_linked_func_node(node_1, tree_1->program, index + 1);
-        func_node_2 = get_linked_func_node(node_2, tree_2->program, index + 1);
+        func_node_1 = gp_get_linked_node(node_1, tree_1->program, index);
+        func_node_2 = gp_get_linked_node(node_2, tree_2->program, index);
         branch_1 = ast_node_is_value_of(func_node_1, node_1);
         branch_2 = ast_node_is_value_of(func_node_2, node_2);
 
@@ -136,7 +141,7 @@ int gp_one_point_crossover(
         gp = config->general.gp_tree;
 
         /* choose random index and crossover */
-        index = crossover_random_index(tree_1, tree_2, gp);
+        index = gp_crossover_random_index(tree_1, tree_2, gp);
         gp_crossover_switch_nodes(
                 darray_get(((struct gp_tree *) tree_1)->program, index),
                 darray_get(((struct gp_tree *) tree_2)->program, index),

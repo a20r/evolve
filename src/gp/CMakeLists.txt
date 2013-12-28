@@ -7,6 +7,7 @@ ADD_LIBRARY(
    ${LIBRARY_NAME}
 
    initialize.c
+   selection.c
    mutation.c
    crossover.c
    function_set.c

@@ -47,6 +47,30 @@ void gp_tree_destroy(void *gp)
         free(gp);
 }
 
+struct gp_tree *gp_tree_copy(struct gp_tree *src)
+{
+        struct gp_tree *copy = NULL;
+
+        if (src != NULL) {
+                copy = calloc(1, sizeof(struct gp_tree));
+
+                copy->root = ast_copy_node(src->root);
+                copy->program = darray_copy(src->program);
+
+                copy->depth = src->depth;
+                copy->size = src->size;
+
+                copy->terminal_nodes = darray_copy(src->terminal_nodes);
+                copy->input_nodes = darray_copy(src->input_nodes);
+
+                return copy;
+
+        } else {
+                return NULL;
+
+        }
+}
+
 static struct ast *full_method_gen_node(
         struct gp_tree *tree,
         int depth,

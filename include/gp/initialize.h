@@ -31,6 +31,7 @@ struct node_set
 /* FUNCTIONS */
 struct gp_tree *init_tree_full(struct gp_tree_config *config);
 void gp_tree_destroy(void *gp);
+struct gp_tree *gp_tree_copy(struct gp_tree *src);
 struct gp_tree *init_tree_full(struct gp_tree_config *config);
 struct population *gp_population_initialize(
         struct gp_tree *(*tree_initializer)(struct gp_tree_config *),

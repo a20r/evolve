@@ -51,6 +51,34 @@ void destroy_evolve_monitor(struct evolve_monitor **m)
         *m = NULL;
 }
 
+void destroy_evolve_monitor_tree(
+        struct evolve_monitor *m,
+        void (*free_func)(void *)
+)
+{
+        int i = 0;
+        void *individual = NULL;
+
+        for (i = 0; i < m->best_individuals->end; i++) {
+                individual = darray_get(m->best_individuals, i);
+
+                if (individual) {
+                        free_func(individual);
+                }
+        }
+
+        darray_clear_destroy(m->best_individuals);
+        darray_clear_destroy(m->best_scores);
+        darray_clear_destroy(m->generations);
+        darray_clear_destroy(m->convergence_rates);
+        darray_clear_destroy(m->goal_distances);
+
+        if (m->log_fp != NULL) {
+                fclose(m->log_fp);
+        }
+        free(m);
+}
+
 static void log_generation_stats(
         FILE *log_fp,
         int generation,

@@ -43,21 +43,6 @@ static void print_after_mutation(struct ast *root, struct darray *program)
         print_gp_program(program);
 }
 
-static struct darray *darray_copy(struct darray *arr)
-{
-        int i = 0;
-        void *el;
-        struct darray *copy;
-
-        copy = darray_create(arr->element_size, arr->end);
-        for (i = 0; i < arr->end; i++) {
-                el = darray_get(arr, i);
-                darray_set(copy, i, el);
-        }
-
-        return copy;
-}
-
 int test_point_mutation()
 {
         int i = 0;

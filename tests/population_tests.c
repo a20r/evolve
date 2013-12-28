@@ -15,11 +15,23 @@
 
 #include "population.h"
 #include "selection.h"
+
 #include "ga/initialize.h"
 #include "ga/crossover.h"
 #include "ga/mutation.h"
 
+#include "gp/initialize.h"
+#include "gp/data_loader.h"
+#include "gp/selection.h"
+#include "gp/crossover.h"
+#include "gp/mutation.h"
+#include "gp/tree_parser.h"
+#include "gp/tree_evaluator.h"
+
 #define TEST_OUTPUT "evolve_utils_tests.out"
+#define CONFIG_FILE "examples/sym_regression/config.json"
+#define TEST_INPUT_DATA "examples/sym_regression/data/sine_input.dat"
+#define TEST_RESPONSE_DATA "examples/sym_regression/data/sine_response.dat"
 
 /* GLOBAL VAR */
 struct population *p;
@@ -447,7 +459,8 @@ int test_populate()
         *crossover_prob = 0.9;
         *mutate_prob = 0.2;
 
-        populate(&p,
+        populate(
+                &p,
                 one_pt_crossover,
                 crossover_prob,
                 DEFAULT_PIVOT,
@@ -469,7 +482,54 @@ int test_populate()
 
 int test_reproduce()
 {
+        int i = 0;
+        int individuals = 0;
+        struct evolve_config *config = NULL;
+        struct evolve_monitor *m = NULL;
+        struct population *p = NULL;
+        struct gp_tree *tree = NULL;
 
+        config = load_config(CONFIG_FILE);
+        load_data(TEST_INPUT_DATA, config, INPUT_DATA);
+        load_data(TEST_RESPONSE_DATA, config, RESPONSE_DATA);
+        p = gp_population_initialize(init_tree_full, config->general.gp_tree);
+        individuals = p->individuals->end;
+
+        evaluate_programs(p, config);
+        printf("evaulate p->population: %d\n", p->population);
+        gp_tournament_selection(p, NULL);
+        /* printf("select p->population: %d\n", p->population); */
+        /* struct gp_tree *tree; */
+        for (i = 0; i < p->population; i++) {
+                tree = darray_get(p->individuals, i);
+                printf("- TREE[%d]", i);
+                printf(" [size: %d]", tree->size);
+                printf("[depth: %d]\n", tree->depth);
+                print_gp_tree(tree->root);
+                printf("\n\n");
+        }
+
+        /* reproduce( */
+        /*         p, */
+        /*         gp_one_point_crossover, */
+        /*         gp_point_mutation, */
+        /*         config */
+        /* ); */
+        /* mu_assert(p->individuals->end == individuals, "Failed to reproduce!"); */
+
+        /* struct gp_tree *tree; */
+        /* for (i = 0; i < p->population; i++) { */
+        /*         tree = darray_get(p->individuals, i); */
+        /*         printf("- TREE[%d]", i); */
+        /*         printf(" [size: %d]", tree->size); */
+        /*         printf("[depth: %d]\n", tree->depth); */
+        /*         print_gp_tree(tree->root); */
+        /*         printf("\n\n"); */
+        /* } */
+
+        population_destroy(&p, gp_tree_destroy);
+        /* destroy_evolve_monitor_tree(m, gp_tree_destroy); */
+        config_destroy(config);
 
         return 0;
 }
@@ -507,6 +567,7 @@ void test_suite()
 
         /* tests populate */
         mu_run_test(test_populate);
+        mu_run_test(test_reproduce);
 
         testsuite_cleanup();
 }

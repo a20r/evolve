@@ -12,6 +12,9 @@
 #include "gp/crossover.h"
 #include "gp/mutation.h"
 
+#include "gp/initialize.h"
+#include "gp/tree_parser.h"
+
 
 struct population *population_create(
         size_t individual_size,
@@ -385,7 +388,7 @@ void populate(
 }
 
 void reproduce(
-        struct population **p,
+        struct population *p,
         int (*crossover_func)(void *, void *, struct evolve_config *),
         int (*mutation_func)(void *, struct evolve_config *),
         struct evolve_config *config
@@ -393,64 +396,61 @@ void reproduce(
 {
         int i = 0;
         int j = 0;
-        int child_pair = 0;
+        int c_pair = 0;
 
-        void *p_1;  /* parents 1 */
-        void *p_2;  /* parents 2 */
-        void *c_1;  /* child 1 */
-        void *c_2;  /* child 2 */
+        void *p_1 = NULL;;  /* parents 1 */
+        void *p_2 = NULL;;  /* parents 2 */
+        void *c_1 = NULL;;  /* child 1 */
+        void *c_2 = NULL;;  /* child 2 */
 
-        struct darray *old_chromos = (*p)->individuals;
-        int population = (*p)->population;
+        struct population *new_p = NULL;
+        struct darray *new_individuals = NULL;
 
         /* initialize new population */
-        struct population *new_p = population_create(
-                (*p)->individuals->element_size,
-                (*p)->goal,
-                (*p)->max_population,
-                (*p)->max_generation
+        new_p = population_create(
+                p->individuals->element_size,
+                p->goal,
+                p->max_population,
+                p->max_generation
         );
-        new_p->generation = (*p)->generation;
-        new_p->solution = (*p)->solution;
-        struct darray *new_chromos = new_p->individuals;
+        new_p->generation = p->generation;
+        new_p->solution = p->solution;
+        new_individuals = new_p->individuals;
 
         /* crossover and mutate */
-        for (i = 0; i < population; i += 2) {
+        for (i = 0; i < p->population; i += 2) {
                 /* obtain parents for reproduction */
-                p_1 = darray_get(old_chromos, i);
-                p_2 = darray_get(old_chromos, i + 1);
+                p_1 = darray_get(p->individuals, i);
+                p_2 = darray_get(p->individuals, i + 1);
 
                 for (j = 0; j < 2; j++) {
                         /* make sure number of offspring < max_population */
-                        if (i + j + child_pair == (*p)->max_population) {
+                        if (i + j + c_pair == p->max_population) {
                                 break;
                         }
 
                         /* prepare children c_1 and c_2 */
-                        c_1 = calloc(1, old_chromos->element_size + 1);
-                        c_2 = calloc(1, old_chromos->element_size + 1);
-                        memcpy(c_1, p_1, old_chromos->element_size);
-                        memcpy(c_2, p_2, old_chromos->element_size);
+                        c_1 = gp_tree_copy(p_1);
+                        c_2 = gp_tree_copy(p_2);
 
                         /* crossover and mutate */
-                        crossover_trees(
-                                &c_1,
-                                &c_2,
-                                crossover_func,
-                                config
-                        );
-                        mutate_tree(&c_1, mutation_func, config);
-                        mutate_tree(&c_2, mutation_func, config);
+                        /* crossover_trees(c_1, c_2, crossover_func, config); */
+                        /* mutate_tree(c_1, mutation_func, config); */
+                        /* mutate_tree(c_2, mutation_func, config); */
 
                         /* put children into new population */
-                        darray_set(new_chromos, i + j + child_pair, c_1);
-                        darray_set(new_chromos, i + j + child_pair + 1, c_2);
+                        darray_set(new_individuals, i + j + c_pair, c_1);
+                        darray_set(new_individuals, i + j + c_pair + 1, c_2);
                         new_p->population += 2;
-                        child_pair++;
+                        c_pair++;
                 }
         }
 
         /* clean up */
-        population_destroy(&(*p), free);
-        *p = new_p;
+        printf("population: %d\n", p->population);
+        printf("max population: %d\n", p->max_population);
+        /* printf("new population: %d\n", new_p->population); */
+        /* printf("new max population: %d\n", new_p->max_population); */
+        population_destroy(&p, gp_tree_destroy);
+        *p = *new_p;
 }

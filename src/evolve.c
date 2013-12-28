@@ -89,8 +89,9 @@ int evolve(
         int last_gen = 0;
 
         /* loop til max_gen reached, goal achieved, or receive stop signal */
-        while (p->generation < max_gen && *stop_signal == 0) {
+        while (p->generation < max_gen) {
                 printf("gen: %d\n", p->generation);
+
                 /* evaluate and record */
                 goal_reached = eval_pop_func(p, config);
                 if (m != NULL) {
@@ -103,18 +104,18 @@ int evolve(
                 }
 
                 /* extend max generations if in signal mode */
-                last_gen = (p->generation + 1 == max_gen);
-                if (wait_signal == 1 && last_gen == 1) {
-                        extend_max_generation(p, DEFAULT_EXPAND_RATE);
-                        max_gen = p->max_generation;
-                        last_gen = 0;
-                }
+                /* last_gen = (p->generation + 1 == max_gen); */
+                /* if (wait_signal == 1 && last_gen == 1) { */
+                /*         extend_max_generation(p, DEFAULT_EXPAND_RATE); */
+                /*         max_gen = p->max_generation; */
+                /*         last_gen = 0; */
+                /* } */
 
                 /* select */
                 selection_func(&p, NULL);
 
                 /* reproduce population for next generation run */
-                reproduce(&p, crossover_func, mutation_func, config);
+                reproduce(p, crossover_func, mutation_func, config);
 
                 p->generation++;
         }

@@ -9,7 +9,7 @@ def gen_sine_data(fp):
     data_file.write("x, y\n")
 
     # data
-    for angle_deg in range(0, 370, 10):
+    for angle_deg in range(0, 361, 1):
         x = angle_deg
         y = math.sin(100 * math.radians(x))
         data_file.write("{0}, {1}\n".format(x, round(y, 4)))

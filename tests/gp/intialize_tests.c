@@ -2,9 +2,10 @@
 #include <math.h>
 #include <string.h>
 
-#include <dstruct/darray.h>
 #include <munit/munit.h>
 #include <al/utils.h>
+#include <dstruct/darray.h>
+#include <dstruct/ast_cmp.h>
 
 #include "config/config.h"
 #include "evolve.h"
@@ -44,6 +45,22 @@ static void teardown()
 {
         gp_tree_destroy(gp);
         config_destroy(config);
+}
+
+int test_gp_tree_copy()
+{
+        int res = 0;
+        struct gp_tree *copy = NULL;
+
+        gp = init_tree_full(gp_config);
+        copy = gp_tree_copy(gp);
+        res = ast_nodes_equal(copy->root, gp->root);
+        mu_assert(res == 1, "Failed to copy gp_tree!");
+
+        gp_tree_destroy(copy);
+        gp_tree_destroy(gp);
+
+        return 0;
 }
 
 int test_init_tree_full()
@@ -103,6 +120,7 @@ void test_suite()
         /* seed random - VERY IMPORTANT! */
         srand(time(NULL));
 
+        mu_run_test(test_gp_tree_copy);
         mu_run_test(test_init_tree_full);
         /* mu_run_test(test_init_tree_grow); */
         /* mu_run_test(test_init_tree_ramped_half_and_half); */

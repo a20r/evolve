@@ -73,7 +73,7 @@ void populate(
         float *mutate_prob
 );
 void reproduce(
-        struct population **p,
+        struct population *p,
         int (*crossover_func)(void *, void *, struct evolve_config *),
         int (*mutation_func)(void *, struct evolve_config *),
         struct evolve_config *config

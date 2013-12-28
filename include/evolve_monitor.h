@@ -42,6 +42,10 @@ struct evolve_monitor *init_evolve_monitor(
         char *log_fp
 );
 void destroy_evolve_monitor(struct evolve_monitor **m);
+void destroy_evolve_monitor_tree(
+        struct evolve_monitor *m,
+        void (*free_func)(void *)
+);
 void record_generation_stats(
         struct population *p,
         struct evolve_monitor *m,

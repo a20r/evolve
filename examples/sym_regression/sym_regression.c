@@ -12,12 +12,13 @@
 #include "evolve_monitor.h"
 #include "population.h"
 #include "selection.h"
+
 #include "gp/initialize.h"
 #include "gp/data_loader.h"
 #include "gp/crossover.h"
 #include "gp/mutation.h"
-#include "gp/tree_evaluator.h"
 #include "gp/tree_parser.h"
+#include "gp/tree_evaluator.h"
 
 #define CONFIG_FILE "examples/sym_regression/config.json"
 #define EXAMPLE_INPUT_DATA "examples/sym_regression/data/sine_input.dat"
@@ -54,28 +55,27 @@ int main(int argc, char *argv[])
         load_data(EXAMPLE_INPUT_DATA, config, INPUT_DATA);
         load_data(EXAMPLE_RESPONSE_DATA, config, RESPONSE_DATA);
         p = gp_population_initialize(init_tree_full, config->general.gp_tree);
-        /* m = init_evolve_monitor(p->individuals->element_size, 5, NULL); */
+        m = init_evolve_monitor(p->individuals->element_size, 5, NULL);
 
+        /* run evolution */
+        printf("RUNNING GP!\n");
+        evolve(
+                p,
+                evaluate_program,
+                evaluate_programs,
+                tournament_selection,
+                gp_one_point_crossover,
+                gp_point_mutation,
+                config,
+                m,
+                0,
+                NULL
+        );
 
-        /* #<{(| run evolution |)}># */
-        /* printf("RUNNING GP!\n"); */
-        /* evolve( */
-        /*         p, */
-        /*         evaluate_program, */
-        /*         evaluate_programs, */
-        /*         tournament_selection, */
-        /*         one_point_crossover, */
-        /*         gp_point_mutation, */
-        /*         config, */
-        /*         m, */
-        /*         0, */
-        /*         NULL */
-        /* ); */
-
-        /* if (p->solution != NULL) { */
-        /*         printf("SOLUTION!!!"); */
-        /*         print_program(p->solution); */
-        /* } */
+        if (p->solution != NULL) {
+                printf("SOLUTION!!!");
+                print_program(p->solution);
+        }
 
         /* clean up */
         for (i = 0; i < p->max_population; i++) {
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
                 printf("\n\n");
         }
         population_destroy(&p, gp_tree_destroy);
-        /* destroy_evolve_monitor(&m); */
+        destroy_evolve_monitor(&m);
         config_destroy(config);
 
         return 0;
