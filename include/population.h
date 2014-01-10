@@ -10,7 +10,6 @@
 struct population {
         /* individuals */
         struct darray *individuals;
-        struct darray *scores;
         float total_score;
 
         /* fitness details */
@@ -21,7 +20,6 @@ struct population {
         int generation;
         int max_population;
         int max_generation;
-        char *solution;
 };
 
 /* FUNCTIONS */
@@ -32,12 +30,10 @@ struct population *population_create(
         int max_gen
 );
 void population_destroy(struct population **p, void (*free_func)(void *));
-void extend_max_generation(struct population *p, int extension_size);
+
 int evaluate_individuals(float (*eval_func)(void *), struct population **p);
 void normalize_fitness_values(struct population **p);
-void print_individual(struct population *p, int index);
-void print_individuals(struct population *p);
-void print_population(struct population *p);
+
 void insertion_sort_population(
         struct population *p,
         int left,

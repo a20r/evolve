@@ -31,4 +31,4 @@ ADD_CUSTOM_TARGET(
 
 SUBDIRS(src)
 SUBDIRS(tests)
-SUBDIRS(examples)
+# SUBDIRS(examples)

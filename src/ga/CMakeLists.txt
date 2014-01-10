@@ -6,9 +6,10 @@ SET(LIBRARY_NAME evolve_ga)
 ADD_LIBRARY(
     ${LIBRARY_NAME}
 
-    initialize.c
-    crossover.c
-    mutation.c
+    individual.c
+    # initialize.c
+    # crossover.c
+    # mutation.c
 )
 TARGET_LINK_LIBRARIES(${LIBRARY_NAME} m)
 TARGET_LINK_LIBRARIES(${LIBRARY_NAME} al)

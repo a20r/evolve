@@ -12,15 +12,12 @@ LINK_DIRECTORIES(/usr/local/lib)
 ADD_LIBRARY(
     ${LIBRARY_NAME}
 
-    evolve.c
-    evolve_monitor.c
+    # evolve.c
     population.c
-    selection.c
+    # selection.c
 )
 TARGET_LINK_LIBRARIES(${LIBRARY_NAME} config)
 TARGET_LINK_LIBRARIES(${LIBRARY_NAME} evolve_ga)
-TARGET_LINK_LIBRARIES(${LIBRARY_NAME} evolve_gp)
 
 SUBDIRS(config)
 SUBDIRS(ga)
-SUBDIRS(gp)

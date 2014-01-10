@@ -7,7 +7,6 @@
 
 #include "test_utils.h"
 #include "population.h"
-#include "evolve_monitor.h"
 
 
 int assert_sorted_array(
@@ -57,25 +56,25 @@ int assert_sorted_population(
         return 0;
 }
 
-int assert_sorted_gstats(
-        struct evolve_monitor *m,
-	int(*cmp)(const void *,const void *)
-)
-{
-        int i = 0;
-        int end = m->best_scores->end;
-        int res = 0;
-
-        for (i = 1; i <= end; i++) {
-                res = cmp(
-                        darray_get(m->best_scores, i - 1),
-                        darray_get(m->best_scores, i)
-                );
-
-                if (res > 0) {
-                        return -1;
-                }
-        }
-
-        return 0;
-}
+/* int assert_sorted_gstats( */
+/*         struct evolve_monitor *m, */
+/* 	int(*cmp)(const void *,const void *) */
+/* ) */
+/* { */
+/*         int i = 0; */
+/*         int end = m->best_scores->end; */
+/*         int res = 0; */
+/*  */
+/*         for (i = 1; i <= end; i++) { */
+/*                 res = cmp( */
+/*                         darray_get(m->best_scores, i - 1), */
+/*                         darray_get(m->best_scores, i) */
+/*                 ); */
+/*  */
+/*                 if (res > 0) { */
+/*                         return -1; */
+/*                 } */
+/*         } */
+/*  */
+/*         return 0; */
+/* } */

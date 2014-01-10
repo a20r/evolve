@@ -9,8 +9,8 @@
 
 #include "config/config.h"
 #include "config/parse.h"
-#include "gp/function_set.h"
-#include "gp/terminal_set.h"
+/* #include "gp/function_set.h" */
+/* #include "gp/terminal_set.h" */
 
 
 char *get_str(json_t *obj, char *path)
