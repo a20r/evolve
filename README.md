@@ -2,16 +2,6 @@
 evolve is a Gentic Algorithm/Programming implemented in C.
 
 
-## Requirements
-
-- [munit](http://github.com/chutsu/munit): Unit testing macros for C
-- [dbg](http://github.com/chutsu/dbg): Debugging macros for C
-- [al](http://github.com/chutsu/al): Algorithm library in C
-- [dstruct](http://github.com/chutsu/dstruct): Data structure library in C
-- cmake (version 2.6 and higher)
-
-
-
 ## Installation
 
     # obtain evolve
