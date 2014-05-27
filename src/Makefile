@@ -4,10 +4,10 @@ FOLDER_NAME = src
 SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
 
-default: dstruct
+default: evolve
 
 %.o: %.c
 	$(COMPILE_OBJ)
 
-dstruct: $(OBJS)
+evolve: $(OBJS)
 	$(MAKE_STATIC_LIB)

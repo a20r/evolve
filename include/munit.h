@@ -17,7 +17,7 @@ int failed;
 #define KCYN  "\x1B[36m"
 #define KWHT  "\x1B[37m"
 
-/* MUNIT MACROS */
+/* MUNIT */
 #define mu_assert(test, message) \
     do { \
         if (!(test)) { \
@@ -50,7 +50,7 @@ int failed;
         }\
     } while (0)
 
-#define mu_run_test(test) \
+#define mu_add_test(test) \
     do { \
         tests++; \
         printf( \
@@ -86,11 +86,13 @@ int failed;
         if (failed != 0) return -1; \
         else return 0; \
     } while (0)
-#define mu_run_test_suite(TEST_SUITE) \
+
+#define mu_run_tests(TEST_SUITE) \
     int main() \
     { \
-            TEST_SUITE(); \
-            mu_report(); \
+        TEST_SUITE(); \
+        mu_report(); \
+        return 0; \
     }
 
 #endif
