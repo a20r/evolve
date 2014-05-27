@@ -10,11 +10,9 @@ LIBS = -L/usr/lib -L/usr/local/lib -L$(LIB_DIR) -ldstruct -lal
 # C COMPILER
 CC = clang
 STANDARD = -std=gnu99
-CFLAGS = $(INCLUDES)
-
-# COMPILER FLAGS
 DEBUG_FLAGS = -g
 WARN_FLAGS = -Weverything -Wno-padded
+CFLAGS = $(INCLUDES) $(DEBUG_FLAGS) $(WARN_FLAGS)
 
 COMPILE_OBJ = \
 	echo "COMPILING [$<]"; \

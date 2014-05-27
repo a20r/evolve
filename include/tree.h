@@ -23,7 +23,7 @@
 /* STRUCTURES */
 struct function
 {
-    int function_index;
+    int function;
     int arity;
 };
 
