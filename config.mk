@@ -11,7 +11,7 @@ LIBS = -L/usr/lib -L/usr/local/lib -L$(LIB_DIR) -ldstruct -lal
 CC = clang
 STANDARD = -std=gnu99
 DEBUG_FLAGS = -g
-WARN_FLAGS = -Weverything -Wno-padded
+WARN_FLAGS = -Weverything -Wno-padded -Wno-gnu-zero-variadic-macro-arguments
 CFLAGS = $(INCLUDES) $(DEBUG_FLAGS) $(WARN_FLAGS)
 
 COMPILE_OBJ = \

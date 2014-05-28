@@ -35,7 +35,8 @@ struct function_set
 
 struct terminal
 {
-    int terminal_index;
+    int value_type;
+    void *value;
 };
 
 struct terminal_set
@@ -50,9 +51,9 @@ struct node {
     int value_type;
     void *value;
 
-    int function_index;
+    int function;
     int arity;
-    void *children;
+    struct node **children;
 };
 
 struct tree {
@@ -65,24 +66,36 @@ struct tree {
 /* FUNCTIONS */
 /* function set */
 struct function_set *function_set_new(int *functions, int *arities, int num);
-void function_set_destroy(struct function_set *fs);
+int function_set_destroy(struct function_set *fs);
 struct function *function_new(int function_index, int arity);
-void function_destroy(struct function *f);
+int function_destroy(struct function *f);
 
 /* terminal set */
-struct terminal_set *terminal_set_new(int num_terminals);
-void terminal_set_destroy(struct terminal_set *fs);
-struct terminal *terminal_new(int terminal_index);
-void terminal_destroy(struct terminal *f);
-
-/* tree */
-struct tree *tree_new();
-void tree_destroy(struct tree *t);
-void tree_generate(int method, void *func_set, void *term_set, int max_depth);
+struct terminal_set *terminal_set_new(int *value_types, void **values, int n);
+int terminal_set_destroy(struct terminal_set *fs);
+struct terminal *terminal_new(int value_type, void *value);
+int terminal_destroy(struct terminal *f);
 
 /* node */
-struct node *node_new();
-void node_destroy(struct node *n);
+struct node *node_new(int type);
+int node_destroy(struct node *n);
+int node_clear_destroy(struct node *n);
 struct node *node_random_func(struct function_set *fs);
+struct node *node_random_term(struct terminal_set *ts);
+int node_print(struct node *n);
+
+/* tree */
+struct tree *tree_new(void);
+int tree_destroy(struct tree *t);
+int tree_clear_destroy(struct tree *t);
+void tree_traverse(struct node *n, int (*callback)(struct node *));
+struct node *tree_full_method(
+    struct tree *t,
+    struct node *n,
+    struct function_set *fs,
+    struct terminal_set *ts,
+    int max_depth
+);
+void tree_generate(int method, void *func_set, void *term_set, int max_depth);
 
 #endif

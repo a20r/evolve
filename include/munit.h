@@ -3,9 +3,9 @@
 #include <stdio.h>
 
 /* GLOBAL VARS */
-int tests;
-int passed;
-int failed;
+static int tests = 0;
+static int passed = 0;
+static int failed = 0;
 
 /* MACROS */
 #define KNRM  "\x1B[0m"
