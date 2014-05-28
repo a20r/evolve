@@ -25,7 +25,7 @@ error:
 float randf(float min, float max)
 {
     float divisor = (float) RAND_MAX / (float) (max + 1.0);
-    float retval = 0;
+    float retval = rand() / divisor;
 
     check(max > min, "Lower bound is bigger than upper bound!");
     while (retval < min || retval > max) {

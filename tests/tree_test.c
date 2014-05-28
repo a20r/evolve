@@ -27,7 +27,7 @@ int test_node_random_func(void);
 int test_node_random_term(void);
 
 int test_tree_new_and_destroy(void);
-int test_tree_full_method(void);
+int test_tree_build(void);
 
 void test_suite(void);
 
@@ -192,16 +192,21 @@ int test_node_random_term(void)
 /* TREE TESTS */
 int test_tree_new_and_destroy(void)
 {
-    tree = tree_new();
+    int functions[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    int arities[10] = {2, 2, 2, 2, 2, 1, 1, 1, 1, 1};
+
+    fs = function_set_new(functions, arities, 10);
+    tree = tree_new(fs);
 
     mu_check(tree->depth == 0);
-    mu_check(tree->size == 0);
+    mu_check(tree->size == 1);
 
+    function_set_destroy(fs);
     tree_destroy(tree);
     return 0;
 }
 
-int test_tree_full_method(void)
+int test_tree_build(void)
 {
     int functions[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     int arities[10] = {2, 2, 2, 2, 2, 1, 1, 1, 1, 1};
@@ -216,16 +221,19 @@ int test_tree_full_method(void)
     fs = function_set_new(functions, arities, 10);
 
     /* tree */
-    tree = tree_new();
-    tree->root = node_random_func(fs);
+    tree = tree_new(fs);
+    /* node_print(tree->root); */
 
     /* generate tree using full method */
-    tree_full_method(tree, tree->root, fs, ts, 2);
+    tree_build(FULL, tree, tree->root, fs, ts, 2);
     tree_traverse(tree->root, node_print);
     printf("\n");
+    printf("tree->depth: %d\n", tree->depth);
+    printf("tree->size: %d\n", tree->size);
+    mu_check(tree->depth == 2);
 
     /* clean up */
-    tree_clear_destroy(tree);
+    tree_destroy(tree);
     function_set_destroy(fs);
     terminal_set_destroy(ts);
     return 0;
@@ -250,7 +258,7 @@ void test_suite(void)
 
     /* tree */
     mu_add_test(test_tree_new_and_destroy);
-    mu_add_test(test_tree_full_method);
+    mu_add_test(test_tree_build);
 }
 
 mu_run_tests(test_suite)

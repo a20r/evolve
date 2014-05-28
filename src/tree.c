@@ -14,7 +14,7 @@ struct function_set *function_set_new(int *functions, int *arities, int n)
     struct function_set *fs;
 
     fs = malloc(sizeof(struct function_set));
-    fs->num_functions = n;
+    fs->length = n;
     fs->functions = malloc(sizeof(struct function *) * (unsigned long) n);
 
     for (i = 0; i < n; i++) {
@@ -28,7 +28,7 @@ int function_set_destroy(struct function_set *fs)
 {
     int i;
 
-    for (i = 0; i < fs->num_functions; i++) {
+    for (i = 0; i < fs->length; i++) {
         function_destroy(fs->functions[i]);
     }
 
@@ -63,7 +63,7 @@ struct terminal_set *terminal_set_new(int *value_types, void **values, int n)
     struct terminal_set *ts;
 
     ts = malloc(sizeof(struct terminal_set));
-    ts->num_terminals = n;
+    ts->length = n;
     ts->terminals = malloc(sizeof(struct terminal *) * (unsigned long) n);
 
     for (i = 0; i < n; i++) {
@@ -77,7 +77,7 @@ int terminal_set_destroy(struct terminal_set *ts)
 {
     int i;
 
-    for (i = 0; i < ts->num_terminals; i++) {
+    for (i = 0; i < ts->length; i++) {
         terminal_destroy(ts->terminals[i]);
     }
 
@@ -123,7 +123,9 @@ struct node *node_new(int type)
 
 int node_destroy(struct node *n)
 {
-    if (n->type == TERM_NODE) {
+    if (n == NULL) {
+        return -1;
+    } if (n->type == TERM_NODE) {
         if (n->value_type != -1 && n->value_type == STRING) {
             free(n->value);
         }
@@ -138,28 +140,37 @@ int node_destroy(struct node *n)
 int node_clear_destroy(struct node *n)
 {
     int i;
+    int res = 0;
 
-    if (n->type == TERM_NODE) {
-        silent_check(n->value_type != -1 && n->value_type == STRING);
-        free(n->value);
+    if (n == NULL) {
+        return -1;
+
+    } else if (n->type == TERM_NODE) {
+        if (n->value_type != -1 && n->value_type == STRING) {
+            free(n->value);
+        }
 
     } else if (n->type == FUNC_NODE) {
         for (i = 0; i < n->arity; i++) {
-            node_destroy(n->children[i]);
+            res = node_clear_destroy(n->children[i]);
+
+            if (res == -1) {
+                free(n->children);
+                free(n);
+                return -1;
+            }
         }
         free(n->children);
+
     }
 
-    free(n);
-    return 0;
-error:
     free(n);
     return 0;
 }
 
 struct node *node_random_func(struct function_set *fs)
 {
-    int i = randi(0, fs->num_functions - 1);
+    int i = randi(0, fs->length - 1);
     struct function *f = fs->functions[i];
     struct node *n = node_new(FUNC_NODE);
 
@@ -167,12 +178,17 @@ struct node *node_random_func(struct function_set *fs)
     n->arity = f->arity;
     n->children = malloc(sizeof(struct node) * (unsigned long) n->arity);
 
+    /* initialize children to be NULL */
+    for (i = 0; i < n->arity; i++) {
+        n->children[i] = NULL;
+    }
+
     return n;
 }
 
 struct node *node_random_term(struct terminal_set *ts)
 {
-    int i = randi(0, ts->num_terminals - 1);
+    int i = randi(0, ts->length - 1);
     struct terminal *t = ts->terminals[i];
     struct node *n = node_new(TERM_NODE);
 
@@ -206,50 +222,62 @@ int node_print(struct node *n)
 
 
 /* TREE */
-struct tree *tree_new(void)
+struct tree *tree_new(struct function_set *fs)
 {
     struct tree *t = malloc(sizeof(struct tree));
-    t->size = 0;
+
+    t->root = node_random_func(fs);
+    t->size = 1;
     t->depth = 0;
+
     return t;
 }
 
 int tree_destroy(struct tree *t)
 {
+    /* pre-check */
+    if (t == NULL) {
+        return -1;
+    }
+
+    node_clear_destroy(t->root);
     free(t);
     return 0;
 }
 
-int tree_clear_destroy(struct tree *t)
+int tree_traverse(struct node *n, int (*callback)(struct node *))
 {
-    tree_traverse(t->root, node_destroy);
-    free(t);
-    return 0;
-}
+    int i;
+    int res;
 
-void tree_traverse(struct node *n, int (*callback)(struct node *))
-{
-    int i = 0;
+    /* pre-check */
+    if (n == NULL) {
+        return -1;
+    }
 
+    /* traverse */
     switch (n->type) {
     case TERM_NODE:
-        silent_check(callback(n));
+        callback(n);
         break;
 
     case FUNC_NODE:
     case CFUNC_NODE:
         for (i = 0; i < n->arity; i++) {
-            tree_traverse((struct node *) n->children[i], callback);
+            res = tree_traverse((struct node *) n->children[i], callback);
+            if (res == -1) {
+                return -1;
+            }
         }
-        silent_check(callback(n));
+        callback(n);
         break;
     }
 
-error:
-    return;
+    return 0;
 }
 
-struct node *tree_full_method(
+void tree_build(
+    int method,
     struct tree *t,
     struct node *n,
     struct function_set *fs,
@@ -259,9 +287,18 @@ struct node *tree_full_method(
 {
     int i;
     struct node *child;
+    float end = ts->length / (float) (ts->length + fs->length);
 
+    t->depth++;
     for (i = 0; i < n->arity; i++) {
-        if (max_depth ==  0) {
+        if (t->depth == max_depth) {
+            /* create terminal node */
+            /* n->children[i] = node_random_term(ts); */
+            child = node_random_term(ts);
+            n->children[i] = child;
+            /* node_print(child); */
+
+        } else if (method == GROW && randf(0, 1.0) < end) {
             /* create terminal node */
             n->children[i] = node_random_term(ts);
 
@@ -269,35 +306,39 @@ struct node *tree_full_method(
             /* create function node */
             child = node_random_func(fs);
             n->children[i] = child;
-            tree_full_method(t, child, fs, ts, max_depth - 1);
+            /* node_print(child); */
+
+            tree_build(method, t, child, fs, ts, max_depth);
         }
 
         t->size++;
     }
-
-    return n;
 }
 
-/* void tree_generate(int method, void *func_set, void *term_set, int max_depth) */
-/* { */
-/*     struct tree *t = tree_new(); */
-/*     struct node *root = node_random_func(func_set); */
-/*     t->root = ; */
-/*     t->depth = max_depth; */
-/*  */
-/*     switch (method) { */
-/*     case FULL: */
-/*         tree_full_method(max_depth); */
-/*         break; */
-/*     #<{(| case GROW: |)}># */
-/*     #<{(|     tree_grow_method(max_depth); |)}># */
-/*     #<{(|     break; |)}># */
-/*     #<{(| case RAMPED_HALF_AND_HALF: |)}># */
-/*     #<{(|     tree_ramped_half_and_half_method(max_depth); |)}># */
-/*     #<{(|     break; |)}># */
-/*     default: */
-/*         printf(ERROR_GEN_METHOD); */
-/*     } */
-/* } */
-/*  */
-/*  */
+struct tree *tree_generate(
+    int method,
+    struct function_set *fs,
+    struct terminal_set *ts,
+    int max_depth
+)
+{
+    struct tree *t = tree_new(fs);
+
+    switch (method) {
+    case FULL:
+    case GROW:
+        tree_build(method, t, t->root, fs, ts, max_depth);
+        break;
+    case RAMPED_HALF_AND_HALF:
+        if (randf(0.0, 1.0) > 0.5) {
+            tree_build(FULL, t, t->root, fs, ts, max_depth);
+        } else {
+            tree_build(GROW, t, t->root, fs, ts, max_depth);
+        }
+        break;
+    default:
+        printf(ERROR_GEN_METHOD);
+    }
+
+    return t;
+}

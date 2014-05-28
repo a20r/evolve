@@ -29,7 +29,7 @@ struct function
 
 struct function_set
 {
-    int num_functions;
+    int length;
     struct function **functions;
 };
 
@@ -41,7 +41,7 @@ struct terminal
 
 struct terminal_set
 {
-    int num_terminals;
+    int length;
     struct terminal **terminals;
 };
 
@@ -57,10 +57,12 @@ struct node {
 };
 
 struct tree {
+    struct node *root;
+
     int size;
     int depth;
 
-    struct node *root;
+    float score;
 };
 
 /* FUNCTIONS */
@@ -85,17 +87,22 @@ struct node *node_random_term(struct terminal_set *ts);
 int node_print(struct node *n);
 
 /* tree */
-struct tree *tree_new(void);
+struct tree *tree_new(struct function_set *fs);
 int tree_destroy(struct tree *t);
-int tree_clear_destroy(struct tree *t);
-void tree_traverse(struct node *n, int (*callback)(struct node *));
-struct node *tree_full_method(
+int tree_traverse(struct node *n, int (*callback)(struct node *));
+void tree_build(
+    int method,
     struct tree *t,
     struct node *n,
     struct function_set *fs,
     struct terminal_set *ts,
     int max_depth
 );
-void tree_generate(int method, void *func_set, void *term_set, int max_depth);
+struct tree *tree_generate(
+    int method,
+    struct function_set *fs,
+    struct terminal_set *ts,
+    int max_depth
+);
 
 #endif
