@@ -2,21 +2,10 @@
 
 lib
 bin
+obj
 
 *.pyc
 
-<<<<<<< HEAD
-CMakeCache.txt
-CMakeFiles
-Makefile
-cmake_install.cmake
-cmake_uninstall.cmake
-install_manifest.txt
-cmakefiles
-
-=======
-*.dat
->>>>>>> simplify
 *.log
 run.sh
 nohup.out
