@@ -1,19 +1,27 @@
 #ifndef __POPULATION__
 #define __POPULATION__
 
+#include <stdio.h>
+
+
 /* STRUCTURES */
 struct population
 {
     int generation;
-    int num_individuals;
+    int size;
 
-    void *individuals;
+    void **individuals;
+    size_t individual_size;
 };
 
-/* FUNCTIONS */
-struct population *population_new();
-void population_sort(struct population *p, float (get_score)(void *));
 
+/* FUNCTIONS */
+struct population *population_new(int size, size_t individual_size);
+int population_destroy(struct population *p, int (*callback)(void *));
+void *population_best(
+    struct population *p,
+    int (*cmp)(const void *, const void *)
+);
 
 
 #endif

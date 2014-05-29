@@ -12,3 +12,6 @@ default: $(EXES)
 
 tree_test: tree_test.o
 	$(MAKE_EXE)
+
+population_test: population_test.o
+	$(MAKE_EXE)

@@ -5,6 +5,7 @@
 #include "dbg.h"
 #include "tree.h"
 #include "random.h"
+#include "population.h"
 
 
 /* FUNCTION SET */
@@ -229,18 +230,20 @@ struct tree *tree_new(struct function_set *fs)
     t->root = node_random_func(fs);
     t->size = 1;
     t->depth = 0;
+    t->score = NULL;
 
     return t;
 }
 
-int tree_destroy(struct tree *t)
+int tree_destroy(void *t)
 {
     /* pre-check */
     if (t == NULL) {
         return -1;
     }
 
-    node_clear_destroy(t->root);
+    node_clear_destroy(((struct tree *) t)->root);
+    free(((struct tree *) t)->score);
     free(t);
     return 0;
 }
@@ -341,4 +344,80 @@ struct tree *tree_generate(
     }
 
     return t;
+}
+
+struct population *tree_population(
+    int size,
+    int method,
+    struct function_set *fs,
+    struct terminal_set *ts,
+    int max_depth
+)
+{
+    int i;
+    struct population *p = population_new(size, sizeof(struct tree));
+
+    for (i = 0; i < size; i++) {
+        p->individuals[i] = tree_generate(method, fs, ts, max_depth);
+    }
+
+    return p;
+}
+
+float tree_score(void *t)
+{
+    return *(float *) ((struct tree *) t)->score;
+}
+
+int tree_asc_cmp(const void *tree1, const void *tree2)
+{
+
+    float *t1 = (float *) ((struct tree *) tree1)->score;
+    float *t2 = (float *) ((struct tree *) tree2)->score;
+
+    /* pre-check */
+    if (t1 == NULL || t2 == NULL) {
+        if (t1 == NULL && t2 == NULL) {
+            return 0;
+        } else if (t1 == NULL) {
+            return -1;
+        } else if (t2 == NULL) {
+            return 1;
+        }
+    }
+
+    /* compare floats */
+    if (*t1 > *t2) {
+        return  1;
+    } else if (*t1 < *t2) {
+        return -1;
+    } else {
+        return 0;
+    }
+}
+
+int tree_desc_cmp(const void *tree1, const void *tree2)
+{
+    float *t1 = (float *) ((struct tree *) tree1)->score;
+    float *t2 = (float *) ((struct tree *) tree2)->score;
+
+    /* pre-check */
+    if (t1 == NULL || t2 == NULL) {
+        if (t1 == NULL && t2 == NULL) {
+            return 0;
+        } else if (t1 == NULL) {
+            return 1;
+        } else if (t2 == NULL) {
+            return -1;
+        }
+    }
+
+    /* compare floats */
+    if (*t1 < *t2) {
+        return  1;
+    } else if (*t1 > *t2) {
+        return -1;
+    } else {
+        return 0;
+    }
 }

@@ -62,7 +62,7 @@ struct tree {
     int size;
     int depth;
 
-    float score;
+    float *score;
 };
 
 /* FUNCTIONS */
@@ -88,7 +88,7 @@ int node_print(struct node *n);
 
 /* tree */
 struct tree *tree_new(struct function_set *fs);
-int tree_destroy(struct tree *t);
+int tree_destroy(void *t);
 int tree_traverse(struct node *n, int (*callback)(struct node *));
 void tree_build(
     int method,
@@ -104,5 +104,15 @@ struct tree *tree_generate(
     struct terminal_set *ts,
     int max_depth
 );
+struct population *tree_population(
+    int size,
+    int method,
+    struct function_set *fs,
+    struct terminal_set *ts,
+    int max_depth
+);
+float tree_score(void *t);
+int tree_asc_cmp(const void *t1, const void *t2);
+int tree_desc_cmp(const void *t1, const void *t2);
 
 #endif
