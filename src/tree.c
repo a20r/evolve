@@ -169,10 +169,9 @@ void *terminal_resolve_random(int value_type, struct value_range *range)
             if (range->precision == 0) {
                 f = (int) f;
             } else {
-                /* round to the nearest */
-                f = (float) (f * (10.0 * range->precision) + 0.5);
-                f = floorf(f);
-                f = (float) (f / (10.0 * range->precision));
+                f = (float) (f * pow(10, range->precision));
+                f = (int) f;
+                f = (float) (f / pow(10, range->precision));
             }
         }
 
@@ -185,14 +184,13 @@ void *terminal_resolve_random(int value_type, struct value_range *range)
             if (range->precision == 0) {
                 d = (int) d;
             } else {
-                /* round to the nearest */
-                d = (double) (d * (10.0 * range->precision) + 0.5);
-                d = floor(d);
-                d = (double) (d / (10.0 * range->precision));
+                d = d * pow(10, range->precision);
+                d = (int) d;
+                d = d / pow(10, range->precision);
             }
         }
 
-        retval = malloc(sizeof(d));
+        retval = malloc(sizeof(double));
         *(double *) retval = d;
         break;
     default:

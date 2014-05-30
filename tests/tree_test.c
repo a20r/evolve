@@ -12,7 +12,9 @@ static struct function_set *fs = NULL;
 static struct function *f = NULL;
 static struct terminal_set *ts = NULL;
 static struct terminal *t = NULL;
-static struct value_range *range = NULL;
+static struct value_range *int_range = NULL;
+static struct value_range *float_range = NULL;
+static struct value_range *double_range = NULL;
 static struct tree *tree = NULL;
 static struct node *node = NULL;
 
@@ -96,17 +98,17 @@ void setup_terminal_set(void)
     float two = 2.0;
     const char *three = "three";
     const char *input = "x";
-    range = value_range_float_new(0.0, 10.0, 2);
+    float_range = value_range_float_new(0.0, 10.0, 2);
 
     void *values[5] = {&one, &two, (void *) three, (void *) input, NULL};
-    void *value_ranges[5] = {NULL, NULL, NULL, NULL, range};
+    void *value_ranges[5] = {NULL, NULL, NULL, NULL, float_range};
     ts = terminal_set_new(types, value_types, values, value_ranges, 3);
 }
 
 void teardown_terminal_set(void)
 {
     terminal_set_destroy(ts);
-    value_range_destroy(range);
+    value_range_destroy(float_range);
 }
 
 int test_terminal_set_new_and_destroy(void)
@@ -172,16 +174,39 @@ int test_terminal_new_and_destroy(void)
 
 int test_terminal_resolve_random(void)
 {
-    range = value_range_float_new(0.0, 10.0, 2);
+    int i;
+    int *int_ptr = NULL;
+    float *float_ptr = NULL;
+    double *double_ptr = NULL;
 
-    float *res = (float *) terminal_resolve_random(FLOAT, range);
+    /* resolve random int */
+    int_range = value_range_int_new(0, 10);
+    for (i = 0; i < 1000; i++) {
+        int_ptr = (int *) terminal_resolve_random(INTEGER, int_range);
+        mu_check(*int_ptr >= 0.0 && *int_ptr <= 10.0);
+        free(int_ptr);
+    }
 
-    printf("FLOAT: %f\n", *res);
+    /* resolve random float */
+    float_range = value_range_float_new(0.0, 10.0, 2);
+    for (i = 0; i < 1000; i++) {
+        float_ptr = (float *) terminal_resolve_random(FLOAT, float_range);
+        mu_check(*float_ptr >= 0.0 && *float_ptr <= 10.0);
+        free(float_ptr);
+    }
 
+    /* resolve random double */
+    double_range = value_range_float_new(0.0, 10.0, 2);
+    for (i = 0; i < 1000; i++) {
+        double_ptr = (double *) terminal_resolve_random(DOUBLE, double_range);
+        mu_check(*double_ptr >= 0.0 && *double_ptr <= 10.0);
+        free(double_ptr);
+    }
 
     /* clean up */
-    value_range_destroy(range);
-    free(res);
+    value_range_destroy(int_range);
+    value_range_destroy(float_range);
+    value_range_destroy(double_range);
     return 0;
 }
 
