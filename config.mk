@@ -5,7 +5,7 @@ LIB_DIR = $(PWD)/lib
 
 # INCLUDE AND LIBRARY PATHS
 INCLUDES = -I/usr/include -I/usr/local/include -I$(PWD)/include
-LIBS = -L/usr/lib -L/usr/local/lib -L$(LIB_DIR) -ldstruct -lal
+LIBS = -L/usr/lib -L/usr/local/lib -L$(LIB_DIR) -ldstruct -lal -lm
 
 # C COMPILER
 CC = clang

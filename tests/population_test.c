@@ -38,19 +38,22 @@ void setup_population()
     p = population_new(size, sizeof(struct tree *));
 
     /* function set */
+    int f_types[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     int functions[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     int arities[10] = {2, 2, 2, 2, 2, 1, 1, 1, 1, 1};
-    int value_types[3] = {INT, FLOAT, STRING};
+    int value_types[3] = {INTEGER, FLOAT, STRING};
+    void *value_ranges[3] = {NULL, NULL, NULL};
 
-    fs = function_set_new(functions, arities, 10);
+    fs = function_set_new(f_types, functions, arities, 10);
 
     /* terminal set */
+    int t_types[3] = {CONSTANT, CONSTANT, CONSTANT};
     int one = 1;
     float two = 2.0;
     char three[5] = "three";
     void *values[3] = {&one, &two, three};
 
-    ts = terminal_set_new(value_types, values, 3);
+    ts = terminal_set_new(t_types, value_types, values, value_ranges, 3);
 
     /* create trees */
     struct tree *t = NULL;

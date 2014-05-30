@@ -12,6 +12,7 @@ static struct function_set *fs = NULL;
 static struct function *f = NULL;
 static struct terminal_set *ts = NULL;
 static struct terminal *t = NULL;
+static struct value_range *range = NULL;
 static struct tree *tree = NULL;
 static struct node *node = NULL;
 
@@ -26,8 +27,11 @@ void setup_terminal_set(void);
 void teardown_terminal_set(void);
 int test_terminal_set_new_and_destroy(void);
 int test_terminal_new_and_destroy(void);
+int test_terminal_resolve_random(void);
 
 int test_node_new_and_destroy(void);
+int test_node_copy(void);
+int test_node_deepcopy(void);
 int test_node_random_func(void);
 int test_node_random_term(void);
 
@@ -42,9 +46,10 @@ void test_suite(void);
 /* FUNCTION SET TESTS */
 void setup_function_set(void)
 {
-    int functions[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    int ftypes[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    int funcs[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     int arities[10] = {2, 2, 2, 2, 2, 1, 1, 1, 1, 1};
-    fs = function_set_new(functions, arities, 10);
+    fs = function_set_new(ftypes, funcs, arities, 10);
 }
 
 void teardown_function_set(void)
@@ -70,8 +75,9 @@ int test_function_set_new_and_destroy(void)
 
 int test_function_new_and_destroy(void)
 {
-    f = function_new(0, 2);
+    f = function_new(DEFAULT, 0, 2);
 
+    mu_check(f->type == DEFAULT);
     mu_check(f->function == 0);
     mu_check(f->arity == 2);
 
@@ -83,17 +89,24 @@ int test_function_new_and_destroy(void)
 /* TERMINAL SET TESTS */
 void setup_terminal_set(void)
 {
-    int value_types[3] = {INT, FLOAT, STRING};
+    int types[5] = {CONSTANT, CONSTANT, CONSTANT, INPUT, RANDOM_CONSTANT};
+    int value_types[5] = {INTEGER, FLOAT, STRING, STRING, FLOAT};
+
     int one = 1;
     float two = 2.0;
-    char three[5] = "three";
-    void *values[3] = {&one, &two, three};
-    ts = terminal_set_new(value_types, values, 3);
+    const char *three = "three";
+    const char *input = "x";
+    range = value_range_float_new(0.0, 10.0, 2);
+
+    void *values[5] = {&one, &two, (void *) three, (void *) input, NULL};
+    void *value_ranges[5] = {NULL, NULL, NULL, NULL, range};
+    ts = terminal_set_new(types, value_types, values, value_ranges, 3);
 }
 
 void teardown_terminal_set(void)
 {
     terminal_set_destroy(ts);
+    value_range_destroy(range);
 }
 
 int test_terminal_set_new_and_destroy(void)
@@ -107,7 +120,7 @@ int test_terminal_set_new_and_destroy(void)
     for (i = 0; i < 3; i++) {
         term = ts->terminals[i];
 
-        /* if (term->value_type == INT) { */
+        /* if (term->value_type == INTEGER) { */
         /*     printf("terminal: %d\n", *(int *) term->value); */
         /* } else if (term->value_type == FLOAT) { */
         /*     printf("terminal: %f\n", *(float *) term->value); */
@@ -122,27 +135,53 @@ int test_terminal_set_new_and_destroy(void)
 
 int test_terminal_new_and_destroy(void)
 {
-    /* INTEGER */
+    /* INTEGEREGER */
     int one = 1;
-    t = terminal_new(INT, &one);
-    mu_check(t->value_type == INT);
+    t = terminal_new(CONSTANT, INTEGER, &one);
+    mu_check(t->type == CONSTANT);
+    mu_check(t->value_type == INTEGER);
     mu_check(*(int *) t->value == 1);
     terminal_destroy(t);
 
     /* FLOAT */
     float two = 2.0;
-    t = terminal_new(FLOAT, &two);
+    t = terminal_new(CONSTANT, FLOAT, &two);
+    mu_check(t->type == CONSTANT);
     mu_check(t->value_type == FLOAT);
     mu_check(*(float *) t->value == 2.0);
     terminal_destroy(t);
 
-    /* STRING */
-    char three[5] = "three";
-    t = terminal_new(STRING, three);
-    mu_check(t->value_type == STRING);
-    mu_check(strcmp(three, t->value) == 0);
+    /* DOUBLE */
+    double three = 3.0;
+    t = terminal_new(CONSTANT, DOUBLE, &three);
+    mu_check(t->type == CONSTANT);
+    mu_check(t->value_type == DOUBLE);
+    mu_check(*(double *) t->value == 3.0);
     terminal_destroy(t);
 
+    /* STRING */
+    char four[4] = "four";
+    t = terminal_new(CONSTANT, STRING, four);
+    mu_check(t->type == CONSTANT);
+    mu_check(t->value_type == STRING);
+    mu_check(strcmp(four, t->value) == 0);
+    terminal_destroy(t);
+
+    return 0;
+}
+
+int test_terminal_resolve_random(void)
+{
+    range = value_range_float_new(0.0, 10.0, 2);
+
+    float *res = (float *) terminal_resolve_random(FLOAT, range);
+
+    printf("FLOAT: %f\n", *res);
+
+
+    /* clean up */
+    value_range_destroy(range);
+    free(res);
     return 0;
 }
 
@@ -151,8 +190,76 @@ int test_terminal_new_and_destroy(void)
 int test_node_new_and_destroy(void)
 {
     node = node_new(TERM_NODE);
+
     mu_check(node->type == 0);
+
+    mu_check(node->terminal_type == -1);
+    mu_check(node->value_type == -1);
+
+    mu_check(node->function_type == -1);
+    mu_check(node->function == -1);
+    mu_check(node->arity == -1);
+    mu_check(node->children == NULL);
+
     node_destroy(node);
+    return 0;
+}
+
+int test_node_copy(void)
+{
+    int i;
+    struct node *copy;
+
+    /* copy term node */
+    setup_terminal_set();
+    for (i = 0; i < 100; i++) {
+        node = node_random_term(ts);
+        copy = (struct node *) node_copy((void *) node);
+
+        mu_check(copy->type == node->type);
+        mu_check(copy->value_type == node->value_type);
+        /* mu_check(&(*copy->value) != &(*node->value)); */
+
+        node_destroy(node);
+        node_destroy(copy);
+    }
+    teardown_terminal_set();
+
+    /* copy func node */
+    setup_function_set();
+    for (i = 0; i < 100; i++) {
+        node = node_random_func(fs);
+        copy = (struct node *) node_copy((void *) node);
+
+        mu_check(copy->type == node->type);
+        mu_check(copy->function == node->function);
+        mu_check(copy->arity == node->arity);
+
+        node_destroy(node);
+        node_destroy(copy);
+    }
+    teardown_function_set();
+
+    return 0;
+}
+
+int test_node_deepcopy(void)
+{
+    /* int i; */
+
+    /* function and terminal set */
+    setup_function_set();
+    setup_terminal_set();
+
+    /* tree */
+    tree = tree_new(fs);
+    tree_build(FULL, tree, tree->root, fs, ts, 2);
+
+    node_deepcopy(tree->root);
+
+    /* clean up */
+    teardown_function_set();
+    teardown_terminal_set();
     return 0;
 }
 
@@ -188,21 +295,11 @@ int test_node_random_term(void)
     for (i = 0; i < 100; i++) {
         node = node_random_term(ts);
 
-        /* printf("node->type: %d\n", node->type); */
-        /* printf("node->value_type: %d\n", node->value_type); */
-        /* if (node->value_type == INT) { */
-        /*     printf("node->value: %d\n", *(int *) node->value); */
-        /* } else if (node->value_type == FLOAT) { */
-        /*     printf("node->value: %f\n", *(float *) node->value); */
-        /* } else if (node->value_type == STRING) { */
-        /*     printf("node->value: %s\n", (char *) node->value); */
-        /* } */
-        /* printf("\n"); */
-
-
+        mu_check(node->terminal_type  == CONSTANT);
         mu_check(node->type == TERM_NODE);
-        mu_check(node->value_type >= 0 && node->value_type < 3);
+        mu_check(node->value_type >= 0 && node->value_type < 4);
         mu_check(node->value != NULL);
+
         node_destroy(node);
     }
 
@@ -372,6 +469,7 @@ int test_tree_desc_cmp(void)
 void test_suite(void)
 {
     srand((unsigned int) time(NULL));
+
     /* function set */
     mu_add_test(test_function_set_new_and_destroy);
     mu_add_test(test_function_new_and_destroy);
@@ -379,9 +477,11 @@ void test_suite(void)
     /* terminal set */
     mu_add_test(test_terminal_set_new_and_destroy);
     mu_add_test(test_terminal_new_and_destroy);
+    mu_add_test(test_terminal_resolve_random);
 
     /* node */
     mu_add_test(test_node_new_and_destroy);
+    mu_add_test(test_node_copy);
     mu_add_test(test_node_random_func);
     mu_add_test(test_node_random_term);
 

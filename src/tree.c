@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include "dbg.h"
 #include "tree.h"
@@ -9,7 +10,12 @@
 
 
 /* FUNCTION SET */
-struct function_set *function_set_new(int *functions, int *arities, int n)
+struct function_set *function_set_new(
+    int *types,
+    int *funcs,
+    int *arities,
+    int n
+)
 {
     int i;
     struct function_set *fs;
@@ -19,7 +25,7 @@ struct function_set *function_set_new(int *functions, int *arities, int n)
     fs->functions = malloc(sizeof(struct function *) * (unsigned long) n);
 
     for (i = 0; i < n; i++) {
-        fs->functions[i] = function_new(functions[i], arities[i]);
+        fs->functions[i] = function_new(types[i], funcs[i], arities[i]);
     }
 
     return fs;
@@ -38,11 +44,13 @@ int function_set_destroy(struct function_set *fs)
     return 0;
 }
 
-struct function *function_new(int function, int arity)
+struct function *function_new(int type, int function, int arity)
 {
     struct function *f;
 
-    f = malloc(sizeof(struct function *));
+    f = malloc(sizeof(struct function));
+
+    f->type = type;
     f->function = function;
     f->arity = arity;
 
@@ -58,17 +66,32 @@ int function_destroy(struct function *f)
 
 
 /* TERMINAL SET */
-struct terminal_set *terminal_set_new(int *value_types, void **values, int n)
+struct terminal_set *terminal_set_new(
+    int *types,
+    int *value_types,
+    void **values,
+    void **value_ranges,
+    int n
+)
 {
     int i;
     struct terminal_set *ts;
+    struct value_range *range;
 
     ts = malloc(sizeof(struct terminal_set));
     ts->length = n;
     ts->terminals = malloc(sizeof(struct terminal *) * (unsigned long) n);
 
     for (i = 0; i < n; i++) {
-        ts->terminals[i] = terminal_new(value_types[i], values[i]);
+        if (types[i] == RANDOM_CONSTANT){
+            range = value_ranges[i];
+        } else {
+            ts->terminals[i] = terminal_new(
+                types[i],
+                value_types[i],
+                values[i]
+            );
+        }
     }
 
     return ts;
@@ -87,17 +110,31 @@ int terminal_set_destroy(struct terminal_set *ts)
     return 0;
 }
 
-struct terminal *terminal_new(int value_type, void *value)
+struct terminal *terminal_new(int type, int value_type, void *value)
 {
     struct terminal *t;
 
     t = malloc(sizeof(struct terminal));
+    t->type = type;
     t->value_type = value_type;
-    if (value_type == STRING) {
+
+    switch (value_type) {
+    case INTEGER:
+        t->value = malloc(sizeof(int));
+        *(int *) t->value = *(int *) value;
+        break;
+    case FLOAT:
+        t->value = malloc(sizeof(float));
+        *(float *) t->value = *(float *) value;
+        break;
+    case DOUBLE:
+        t->value = malloc(sizeof(double));
+        *(double *) t->value = *(double *) value;
+        break;
+    case STRING:
         t->value = malloc(sizeof(char) * strlen(value) + 1);
         strcpy(t->value, value);
-    } else {
-        t->value = value;
+        break;
     }
 
     return t;
@@ -105,7 +142,7 @@ struct terminal *terminal_new(int value_type, void *value)
 
 int terminal_destroy(struct terminal *t)
 {
-    if (t->value_type == STRING) {
+    if (t->value != NULL) {
         free(t->value);
     }
 
@@ -113,12 +150,124 @@ int terminal_destroy(struct terminal *t)
     return 0;
 }
 
+void *terminal_resolve_random(int value_type, struct value_range *range)
+{
+    int i;
+    float f;
+    double d;
+    void *retval;
+
+    switch (value_type) {
+    case INTEGER:
+        i = randi(*(int *) range->min, *(int *) range->max);
+        retval = malloc(sizeof(int));
+        *(int *) retval = i;
+        break;
+    case FLOAT:
+        f = randf(*(float *) range->min, *(float *) range->max);
+        if (range->precision != -1) {
+            if (range->precision == 0) {
+                f = (int) f;
+            } else {
+                /* round to the nearest */
+                f = (float) (f * (10.0 * range->precision) + 0.5);
+                f = floorf(f);
+                f = (float) (f / (10.0 * range->precision));
+            }
+        }
+
+        retval = malloc(sizeof(f));
+        *(float *) retval = f;
+        break;
+    case DOUBLE:
+        d = randf(*(float *) range->min, *(float *) range->max);
+        if (range->precision != -1) {
+            if (range->precision == 0) {
+                d = (int) d;
+            } else {
+                /* round to the nearest */
+                d = (double) (d * (10.0 * range->precision) + 0.5);
+                d = floor(d);
+                d = (double) (d / (10.0 * range->precision));
+            }
+        }
+
+        retval = malloc(sizeof(d));
+        *(double *) retval = d;
+        break;
+    default:
+        retval = NULL;
+        break;
+    }
+
+    return retval;
+}
+
+struct value_range *value_range_int_new(int min, int max)
+{
+    struct value_range *range = malloc(sizeof(struct value_range));
+
+    range->min = malloc(sizeof(int));
+    range->max = malloc(sizeof(int));
+
+    *(int *) range->min = min;
+    *(int *) range->max = max;
+    range->precision = -1;
+
+    return range;
+}
+
+struct value_range *value_range_float_new(float min, float max, int p)
+{
+    struct value_range *range = malloc(sizeof(struct value_range));
+
+    range->min = malloc(sizeof(float));
+    range->max = malloc(sizeof(float));
+
+    *(float *) range->min = min;
+    *(float *) range->max = max;
+    range->precision = p;
+
+    return range;
+}
+
+struct value_range *value_range_double_new(double min, double max, int p)
+{
+    struct value_range *range = malloc(sizeof(struct value_range));
+
+    range->min = malloc(sizeof(double));
+    range->max = malloc(sizeof(double));
+
+    *(double *) range->min = min;
+    *(double *) range->max = max;
+    range->precision = p;
+
+    return range;
+}
+
+int value_range_destroy(struct value_range *range)
+{
+    free(range->min);
+    free(range->max);
+    free(range);
+    return 0;
+}
+
 /* NODE */
 struct node *node_new(int type)
 {
     struct node *n = malloc(sizeof(struct node));
+
     n->type = type;
+
+    n->terminal_type = -1;
     n->value_type = -1;
+
+    n->function_type = -1;
+    n->function = -1;
+    n->arity = -1;
+    n->children = NULL;
+
     return n;
 }
 
@@ -126,10 +275,6 @@ int node_destroy(struct node *n)
 {
     if (n == NULL) {
         return -1;
-    } if (n->type == TERM_NODE) {
-        if (n->value_type != -1 && n->value_type == STRING) {
-            free(n->value);
-        }
     } else if (n->type == FUNC_NODE) {
         free(n->children);
     }
@@ -147,9 +292,7 @@ int node_clear_destroy(struct node *n)
         return -1;
 
     } else if (n->type == TERM_NODE) {
-        if (n->value_type != -1 && n->value_type == STRING) {
-            free(n->value);
-        }
+        /* DO NOTHING! because n->value references terminals */
 
     } else if (n->type == FUNC_NODE) {
         for (i = 0; i < n->arity; i++) {
@@ -169,12 +312,74 @@ int node_clear_destroy(struct node *n)
     return 0;
 }
 
+void *node_copy(void *s)
+{
+    struct node *src = (struct node *) s;
+    struct node *cpy = NULL;
+
+    /* pre-check */
+    if (s == NULL) {
+        return cpy;
+    } else {
+        cpy = malloc(sizeof(struct node));
+        cpy->type = src->type;
+        cpy->children = NULL;
+    }
+
+    /* create copy */
+    if (src->type == TERM_NODE) {
+        cpy->terminal_type = src->terminal_type;
+        cpy->value_type = src->value_type;
+        cpy->value = src->value;
+
+    } else if (src->type == FUNC_NODE) {
+        cpy->function_type = src->function_type;
+        cpy->function = src->function;
+        cpy->arity = src->arity;
+
+        /* this function does not copy the children, if you want that
+         * use node_deepcopy() instead */
+
+    } else {
+        return NULL;
+    }
+
+    return (void *) cpy;
+}
+
+void *node_deepcopy(void *s)
+{
+    int i;
+    size_t children_size;
+    struct node *src = (struct node *) s;
+    struct node *cpy = node_copy(s);
+    struct node *child = NULL;
+
+    if (src->type == FUNC_NODE) {
+        children_size = sizeof(struct node) * (unsigned long) src->arity;
+        cpy->children = malloc(children_size);
+
+        for (i = 0; i < src->arity; i++) {
+            child = node_deepcopy(src->children[i]);
+
+            if (child == NULL) {
+                return NULL;
+            }
+
+            cpy->children[i] = child;
+        }
+    }
+
+    return (void *) cpy;
+}
+
 struct node *node_random_func(struct function_set *fs)
 {
     int i = randi(0, fs->length - 1);
     struct function *f = fs->functions[i];
     struct node *n = node_new(FUNC_NODE);
 
+    n->function_type = f->type;
     n->function = f->function;
     n->arity = f->arity;
     n->children = malloc(sizeof(struct node) * (unsigned long) n->arity);
@@ -193,26 +398,26 @@ struct node *node_random_term(struct terminal_set *ts)
     struct terminal *t = ts->terminals[i];
     struct node *n = node_new(TERM_NODE);
 
+    n->terminal_type = t->type;
     n->value_type = t->value_type;
-    if (n->value_type == STRING) {
-        n->value = malloc((sizeof(char) * strlen(t->value)) + 1);
-        strcpy(n->value, t->value);
-    } else {
-        n->value = t->value;
-    }
+    n->value = t->value;
 
     return n;
 }
 
 int node_print(struct node *n)
 {
-    if (n->type == TERM_NODE) {
-        if (n->value_type == INT) {
-            printf("T[%d] ", *(int *) n->value);
-        } else if (n->value_type == FLOAT) {
-            printf("T[%f] ", *(float *) n->value);
-        } else if (n->value_type == STRING) {
-            printf("T[%s] ", (char *) n->value);
+    if (n == NULL) {
+        return -1;
+    } else if (n->type == TERM_NODE) {
+        if (n->value != NULL) {
+            if (n->value_type == INTEGER) {
+                printf("T[%d] ", *(int *) n->value);
+            } else if (n->value_type == FLOAT) {
+                printf("T[%f] ", *(float *) n->value);
+            } else if (n->value_type == STRING) {
+                printf("T[%s] ", (char *) n->value);
+            }
         }
     } else if (n->type == FUNC_NODE) {
         printf("F[%d] ", n->function);
@@ -265,7 +470,6 @@ int tree_traverse(struct node *n, int (*callback)(struct node *))
         break;
 
     case FUNC_NODE:
-    case CFUNC_NODE:
         for (i = 0; i < n->arity; i++) {
             res = tree_traverse((struct node *) n->children[i], callback);
             if (res == -1) {
@@ -364,6 +568,22 @@ struct population *tree_population(
     return p;
 }
 
+void *tree_copy(void *src)
+{
+    struct tree *copy = malloc(sizeof(struct tree));
+
+    copy->root = ((struct tree *) src)->root;
+    copy->size = ((struct tree *) src)->size;
+    copy->depth = ((struct tree *) src)->depth;
+
+    if (((struct tree *) src)->score) {
+        copy->score = malloc(sizeof(float));
+        *(copy->score) = *(((struct tree *) src)->score);
+    }
+
+    return (void *) copy;
+}
+
 float tree_score(void *t)
 {
     return *(float *) ((struct tree *) t)->score;
@@ -371,11 +591,10 @@ float tree_score(void *t)
 
 int tree_asc_cmp(const void *tree1, const void *tree2)
 {
-
     float *t1 = (float *) ((struct tree *) tree1)->score;
     float *t2 = (float *) ((struct tree *) tree2)->score;
 
-    /* pre-check */
+    /* null-check */
     if (t1 == NULL || t2 == NULL) {
         if (t1 == NULL && t2 == NULL) {
             return 0;
@@ -401,7 +620,7 @@ int tree_desc_cmp(const void *tree1, const void *tree2)
     float *t1 = (float *) ((struct tree *) tree1)->score;
     float *t2 = (float *) ((struct tree *) tree2)->score;
 
-    /* pre-check */
+    /* null-check */
     if (t1 == NULL || t2 == NULL) {
         if (t1 == NULL && t2 == NULL) {
             return 0;
