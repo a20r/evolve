@@ -112,11 +112,18 @@ int terminal_set_destroy(struct terminal_set *ts)
 
 struct terminal *terminal_new(int type, int value_type, void *value)
 {
-    struct terminal *t;
-
-    t = malloc(sizeof(struct terminal));
+    struct terminal *t = malloc(sizeof(struct terminal));
     t->type = type;
     t->value_type = value_type;
+    t->value = NULL;
+
+    t->min = NULL;
+    t->max = NULL;
+    t->precision = -1;
+
+    if (value == NULL) {
+        return t;
+    }
 
     switch (value_type) {
     case INTEGER:
@@ -140,10 +147,61 @@ struct terminal *terminal_new(int type, int value_type, void *value)
     return t;
 }
 
+struct terminal *terminal_new_input(char *input_name)
+{
+    struct terminal *t = terminal_new(INPUT, STRING, input_name);
+    return t;
+}
+
+struct terminal *terminal_new_constant(int type, void *value)
+{
+    struct terminal *t = terminal_new(CONSTANT, type, value);
+    return t;
+}
+
+struct terminal *terminal_new_random_constant(
+    int type,
+    void *min,
+    void *max,
+    int precision
+)
+{
+    struct terminal *t = terminal_new(RANDOM_CONSTANT, type, NULL);
+
+    switch(type) {
+    case INTEGER:
+        t->min = malloc(sizeof(int));
+        t->max = malloc(sizeof(int));
+        *(int *) t->min = *(int *) min;
+        *(int *) t->max = *(int *) max;
+        break;
+    case FLOAT:
+        t->min = malloc(sizeof(float));
+        t->max = malloc(sizeof(float));
+        *(float *) t->min = *(float *) min;
+        *(float *) t->max = *(float *) max;
+        break;
+    case DOUBLE:
+        t->min = malloc(sizeof(double));
+        t->max = malloc(sizeof(double));
+        *(double *) t->min = *(double *) min;
+        *(double *) t->max = *(double *) max;
+        break;
+    }
+    t->precision = precision;
+
+    return t;
+}
+
 int terminal_destroy(struct terminal *t)
 {
     if (t->value != NULL) {
         free(t->value);
+    }
+
+    if (t->type == RANDOM_CONSTANT) {
+        free(t->min);
+        free(t->max);
     }
 
     free(t);

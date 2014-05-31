@@ -6,6 +6,7 @@
 #include "munit.h"
 #include "tree.h"
 #include "random.h"
+#include "cmp.h"
 
 /* GLOBAL VARS */
 static struct function_set *fs = NULL;
@@ -137,7 +138,7 @@ int test_terminal_set_new_and_destroy(void)
 
 int test_terminal_new_and_destroy(void)
 {
-    /* INTEGEREGER */
+    /* INTEGER */
     int one = 1;
     t = terminal_new(CONSTANT, INTEGER, &one);
     mu_check(t->type == CONSTANT);
@@ -167,6 +168,34 @@ int test_terminal_new_and_destroy(void)
     mu_check(t->type == CONSTANT);
     mu_check(t->value_type == STRING);
     mu_check(strcmp(four, t->value) == 0);
+    terminal_destroy(t);
+
+    /* INPUT */
+    char *input = (char *) "x";
+    t = terminal_new_input(input);
+    mu_check(t->type == INPUT);
+    mu_check(t->value_type == STRING);
+    mu_check(strcmp(t->value, input) == 0);
+    terminal_destroy(t);
+
+    /* CONSTANT */
+    t = terminal_new_constant(INTEGER, &one);
+    mu_check(t->type == CONSTANT);
+    mu_check(t->value_type == INTEGER);
+    mu_check(*(int *) t->value == 1);
+    terminal_destroy(t);
+
+    /* RANDOM CONSTANT */
+    float min = 0.0;
+    float max = 100.0;
+    int precision = 2;
+    t = terminal_new_random_constant(FLOAT, &min, &max, precision);
+    mu_check(t->type == RANDOM_CONSTANT);
+    mu_check(t->value_type == FLOAT);
+    mu_check(t->value == NULL);
+    mu_check(float_cmp(t->min, &min) == 0);
+    mu_check(float_cmp(t->max, &max) == 0);
+    mu_check(t->precision == precision);
     terminal_destroy(t);
 
     return 0;

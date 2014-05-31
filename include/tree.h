@@ -55,6 +55,10 @@ struct terminal
     int type;
     int value_type;
     void *value;
+
+    void *min;
+    void *max;
+    int precision;
 };
 
 struct value_range
@@ -109,6 +113,14 @@ struct terminal_set *terminal_set_new(
 );
 int terminal_set_destroy(struct terminal_set *fs);
 struct terminal *terminal_new(int type, int value_type, void *value);
+struct terminal *terminal_new_input(char *input_name);
+struct terminal *terminal_new_constant(int type, void *value);
+struct terminal *terminal_new_random_constant(
+    int type,
+    void *min,
+    void *max,
+    int precision
+);
 int terminal_destroy(struct terminal *f);
 void *terminal_resolve_random(int value_type, struct value_range *range);
 struct value_range *value_range_int_new(int min, int max);
