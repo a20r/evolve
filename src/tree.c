@@ -4,28 +4,28 @@
 #include <math.h>
 
 #include "dbg.h"
+#include "cmp.h"
 #include "tree.h"
 #include "random.h"
 #include "population.h"
 
 
 /* FUNCTION SET */
-struct function_set *function_set_new(
-    int *types,
-    int *funcs,
-    int *arities,
-    int n
-)
+struct function_set *function_set_new(struct function **functions, int n)
 {
     int i;
-    struct function_set *fs;
+    struct function_set *fs = NULL;
 
     fs = malloc(sizeof(struct function_set));
     fs->length = n;
     fs->functions = malloc(sizeof(struct function *) * (unsigned long) n);
 
     for (i = 0; i < n; i++) {
-        fs->functions[i] = function_new(types[i], funcs[i], arities[i]);
+        if (functions[i]) {
+            fs->functions[i] = functions[i];
+        } else {
+            fs->functions[i] = NULL;
+        }
     }
 
     return fs;
@@ -36,7 +36,9 @@ int function_set_destroy(struct function_set *fs)
     int i;
 
     for (i = 0; i < fs->length; i++) {
-        function_destroy(fs->functions[i]);
+        if (fs->functions[i]) {
+            function_destroy(fs->functions[i]);
+        }
     }
 
     free(fs->functions);
@@ -54,6 +56,18 @@ struct function *function_new(int type, int function, int arity)
     f->function = function;
     f->arity = arity;
 
+    return f;
+}
+
+struct function *function_new_func(int function, int arity)
+{
+    struct function *f = function_new(DEFAULT, function, arity);
+    return f;
+}
+
+struct function *function_new_cfunc(int function, int arity)
+{
+    struct function *f = function_new(CLASSIFICATION, function, arity);
     return f;
 }
 
@@ -153,7 +167,7 @@ struct terminal *terminal_new_random_constant(
 {
     struct terminal *t = terminal_new(RANDOM_CONSTANT, type, NULL);
 
-    switch(type) {
+    switch (type) {
     case INTEGER:
         t->min = malloc(sizeof(int));
         t->max = malloc(sizeof(int));
@@ -193,28 +207,28 @@ int terminal_destroy(struct terminal *t)
     return 0;
 }
 
-void *terminal_resolve_random(int value_type, struct value_range *range)
+void *terminal_resolve_random(struct terminal *t)
 {
     int i;
     float f;
     double d;
     void *retval;
 
-    switch (value_type) {
+    switch (t->value_type) {
     case INTEGER:
-        i = randi(*(int *) range->min, *(int *) range->max);
+        i = randi(*(int *) t->min, *(int *) t->max);
         retval = malloc(sizeof(int));
         *(int *) retval = i;
         break;
     case FLOAT:
-        f = randf(*(float *) range->min, *(float *) range->max);
-        if (range->precision != -1) {
-            if (range->precision == 0) {
+        f = randf(*(float *) t->min, *(float *) t->max);
+        if (t->precision != -1) {
+            if (t->precision == 0) {
                 f = (int) f;
             } else {
-                f = (float) (f * pow(10, range->precision));
+                f = (float) (f * pow(10, t->precision));
                 f = (int) f;
-                f = (float) (f / pow(10, range->precision));
+                f = (float) (f / pow(10, t->precision));
             }
         }
 
@@ -222,14 +236,14 @@ void *terminal_resolve_random(int value_type, struct value_range *range)
         *(float *) retval = f;
         break;
     case DOUBLE:
-        d = randf(*(float *) range->min, *(float *) range->max);
-        if (range->precision != -1) {
-            if (range->precision == 0) {
+        d = randf((float) *(double *) t->min, (float) *(double *) t->max);
+        if (t->precision != -1) {
+            if (t->precision == 0) {
                 d = (int) d;
             } else {
-                d = d * pow(10, range->precision);
+                d = d * pow(10, t->precision);
                 d = (int) d;
-                d = d / pow(10, range->precision);
+                d = d / pow(10, t->precision);
             }
         }
 
@@ -244,55 +258,6 @@ void *terminal_resolve_random(int value_type, struct value_range *range)
     return retval;
 }
 
-struct value_range *value_range_int_new(int min, int max)
-{
-    struct value_range *range = malloc(sizeof(struct value_range));
-
-    range->min = malloc(sizeof(int));
-    range->max = malloc(sizeof(int));
-
-    *(int *) range->min = min;
-    *(int *) range->max = max;
-    range->precision = -1;
-
-    return range;
-}
-
-struct value_range *value_range_float_new(float min, float max, int p)
-{
-    struct value_range *range = malloc(sizeof(struct value_range));
-
-    range->min = malloc(sizeof(float));
-    range->max = malloc(sizeof(float));
-
-    *(float *) range->min = min;
-    *(float *) range->max = max;
-    range->precision = p;
-
-    return range;
-}
-
-struct value_range *value_range_double_new(double min, double max, int p)
-{
-    struct value_range *range = malloc(sizeof(struct value_range));
-
-    range->min = malloc(sizeof(double));
-    range->max = malloc(sizeof(double));
-
-    *(double *) range->min = min;
-    *(double *) range->max = max;
-    range->precision = p;
-
-    return range;
-}
-
-int value_range_destroy(struct value_range *range)
-{
-    free(range->min);
-    free(range->max);
-    free(range);
-    return 0;
-}
 
 /* NODE */
 struct node *node_new(int type)
@@ -301,9 +266,11 @@ struct node *node_new(int type)
 
     n->type = type;
 
+    /* terminal node specific */
     n->terminal_type = -1;
     n->value_type = -1;
 
+    /* function node specific */
     n->function_type = -1;
     n->function = -1;
     n->arity = -1;
@@ -412,6 +379,43 @@ void *node_deepcopy(void *s)
     }
 
     return (void *) cpy;
+}
+
+int node_equals(struct node *n1, struct node *n2)
+{
+    if (n1->type == TERM_NODE && n2->type == TERM_NODE) {
+        /* terminal specific */
+        silent_check(n1->terminal_type == n2->terminal_type);
+        silent_check(n1->value_type == n2->value_type);
+
+        switch (n1->value_type) {
+        case INTEGER:
+            silent_check(int_cmp(n1->value, n2->value) == 0);
+            return 1;
+        case FLOAT:
+            silent_check(float_cmp(n1->value, n2->value) == 0);
+            return 1;
+        case DOUBLE:
+            silent_check(float_cmp(n1->value, n2->value) == 0);
+            return 1;
+        case STRING:
+            silent_check(strcmp(n1->value, n2->value) == 0);
+            return 1;
+        default:
+            return 0;
+        }
+
+    } else if (n1->type == FUNC_NODE && n2->type == FUNC_NODE) {
+        /* function specific */
+        silent_check(n1->function_type == n2->function_type);
+        silent_check(n1->function == n2->function);
+        silent_check(n1->arity == n2->arity);
+        return 1;
+    }
+
+    return 0;
+error:
+    return 0;
 }
 
 struct node *node_random_func(struct function_set *fs)
@@ -629,6 +633,12 @@ float tree_score(void *t)
 {
     return *(float *) ((struct tree *) t)->score;
 }
+
+/* int tree_equals(struct tree *t1, struct tree *t2) */
+/* { */
+/*  */
+/*     return 0; */
+/* } */
 
 int tree_asc_cmp(const void *tree1, const void *tree2)
 {

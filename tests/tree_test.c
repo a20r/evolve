@@ -4,18 +4,16 @@
 #include <time.h>
 
 #include "munit.h"
+#include "cmp.h"
 #include "tree.h"
 #include "random.h"
-#include "cmp.h"
+#include "regression.h"
 
 /* GLOBAL VARS */
 static struct function_set *fs = NULL;
 static struct function *f = NULL;
 static struct terminal_set *ts = NULL;
 static struct terminal *t = NULL;
-static struct value_range *int_range = NULL;
-static struct value_range *float_range = NULL;
-static struct value_range *double_range = NULL;
 static struct tree *tree = NULL;
 static struct node *node = NULL;
 
@@ -49,10 +47,21 @@ void test_suite(void);
 /* FUNCTION SET TESTS */
 void setup_function_set(void)
 {
-    int ftypes[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    int funcs[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-    int arities[10] = {2, 2, 2, 2, 2, 1, 1, 1, 1, 1};
-    fs = function_set_new(ftypes, funcs, arities, 10);
+    struct function *functions[9] = {
+        function_new_func(ADD, 2),
+        function_new_func(SUB, 2),
+        function_new_func(MUL, 2),
+        function_new_func(DIV, 2),
+        function_new_func(POW, 2),
+
+        function_new_func(LOG, 1),
+        function_new_func(EXP, 1),
+        function_new_func(SIN, 1),
+        function_new_func(COS, 1)
+    };
+    int n = sizeof(functions) / sizeof(struct function *);
+
+    fs = function_set_new(functions, n);
 }
 
 void teardown_function_set(void)
@@ -79,12 +88,25 @@ int test_function_set_new_and_destroy(void)
 int test_function_new_and_destroy(void)
 {
     f = function_new(DEFAULT, 0, 2);
-
     mu_check(f->type == DEFAULT);
     mu_check(f->function == 0);
     mu_check(f->arity == 2);
-
     function_destroy(f);
+
+    /* default function */
+    f = function_new_func(0, 2);
+    mu_check(f->type == DEFAULT);
+    mu_check(f->function == 0);
+    mu_check(f->arity == 2);
+    function_destroy(f);
+
+    /* classification function */
+    f = function_new_cfunc(0, 2);
+    mu_check(f->type == CLASSIFICATION);
+    mu_check(f->function == 0);
+    mu_check(f->arity == 2);
+    function_destroy(f);
+
     return 0;
 }
 
@@ -99,7 +121,7 @@ void setup_terminal_set(void)
     struct terminal *terminals[3] = {
         terminal_new_constant(INTEGER, &one),
         terminal_new_constant(FLOAT, &two),
-        terminal_new_constant(STRING, &three)
+        terminal_new_constant(STRING, (void *) three)
     };
 
     ts = terminal_set_new(terminals, 3);
@@ -108,7 +130,6 @@ void setup_terminal_set(void)
 void teardown_terminal_set(void)
 {
     terminal_set_destroy(ts);
-    /* value_range_destroy(float_range); */
 }
 
 int test_terminal_set_new_and_destroy(void)
@@ -203,38 +224,50 @@ int test_terminal_new_and_destroy(void)
 int test_terminal_resolve_random(void)
 {
     int i;
-    int *int_ptr = NULL;
-    float *float_ptr = NULL;
-    double *double_ptr = NULL;
+    int n_tests = 1;
+    int imin = 0;
+    int imax = 100;
+    float fmin = 0.0;
+    float fmax = 100.0;
+    double dmin = 0.0;
+    double dmax = 100.0;
+
+    struct terminal *terminals[3] = {
+        terminal_new_random_constant(INTEGER, &imin, &imax, 2),
+        terminal_new_random_constant(FLOAT, &fmin, &fmax, 2),
+        terminal_new_random_constant(DOUBLE, &dmin, &dmax, 2)
+    };
+    ts = terminal_set_new(terminals, 3);
 
     /* resolve random int */
-    int_range = value_range_int_new(0, 10);
-    for (i = 0; i < 1000; i++) {
-        int_ptr = (int *) terminal_resolve_random(INTEGER, int_range);
-        mu_check(*int_ptr >= 0.0 && *int_ptr <= 10.0);
+    int *int_ptr;
+    for (i = 0; i < n_tests; i++) {
+        int_ptr = (int *) terminal_resolve_random(terminals[0]);
+        /* printf("int: %d\n", *(int *) int_ptr); */
+        mu_check(*int_ptr >= 0 && *int_ptr <= 100);
         free(int_ptr);
     }
 
     /* resolve random float */
-    float_range = value_range_float_new(0.0, 10.0, 2);
-    for (i = 0; i < 1000; i++) {
-        float_ptr = (float *) terminal_resolve_random(FLOAT, float_range);
-        mu_check(*float_ptr >= 0.0 && *float_ptr <= 10.0);
+    float *float_ptr;
+    for (i = 0; i < n_tests; i++) {
+        float_ptr = (float *) terminal_resolve_random(terminals[1]);
+        /* printf("float: %f\n", *(float *) float_ptr); */
+        mu_check(*float_ptr >= 0.0 && *float_ptr <= 100.0);
         free(float_ptr);
     }
 
     /* resolve random double */
-    double_range = value_range_float_new(0.0, 10.0, 2);
-    for (i = 0; i < 1000; i++) {
-        double_ptr = (double *) terminal_resolve_random(DOUBLE, double_range);
-        mu_check(*double_ptr >= 0.0 && *double_ptr <= 10.0);
+    double *double_ptr;
+    for (i = 0; i < n_tests; i++) {
+        double_ptr = (double *) terminal_resolve_random(terminals[2]);
+        /* printf("double: %f\n", *(double *) double_ptr); */
+        mu_check(*double_ptr >= 0.0 && *double_ptr <= 100.0);
         free(double_ptr);
     }
 
     /* clean up */
-    value_range_destroy(int_range);
-    value_range_destroy(float_range);
-    value_range_destroy(double_range);
+    terminal_set_destroy(ts);
     return 0;
 }
 
@@ -313,6 +346,41 @@ int test_node_deepcopy(void)
     /* clean up */
     teardown_function_set();
     teardown_terminal_set();
+    return 0;
+}
+
+int test_node_equals(void)
+{
+    int res;
+    int integer = 1;
+    int integer2 = 2;
+
+    struct node *n1 = node_new(INTEGER);
+    struct node *n2 = node_new(INTEGER);
+    struct node *n3 = node_new(INTEGER);
+
+    n1->terminal_type = CONSTANT;
+    n2->terminal_type = CONSTANT;
+    n3->terminal_type = CONSTANT;
+
+    n1->value_type = INTEGER;
+    n2->value_type = INTEGER;
+    n3->value_type = INTEGER;
+
+    n1->value = &integer;
+    n2->value = &integer;
+    n3->value = &integer2;
+
+    res = node_equals(n1, n2);
+    mu_check(res == 1);
+
+    res = node_equals(n1, n3);
+    mu_check(res == 0);
+
+    /* clean up */
+    node_destroy(n1);
+    node_destroy(n2);
+    node_destroy(n3);
     return 0;
 }
 
@@ -535,6 +603,7 @@ void test_suite(void)
     /* node */
     mu_add_test(test_node_new_and_destroy);
     mu_add_test(test_node_copy);
+    mu_add_test(test_node_equals);
     mu_add_test(test_node_random_func);
     mu_add_test(test_node_random_term);
 

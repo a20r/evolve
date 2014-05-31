@@ -7,6 +7,7 @@
 #include "tree.h"
 #include "random.h"
 #include "population.h"
+#include "regression.h"
 
 /* GLOBAL VARS */
 static struct population *p = NULL;
@@ -38,11 +39,19 @@ void setup_population()
     p = population_new(size, sizeof(struct tree *));
 
     /* function set */
-    int f_types[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    int functions[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-    int arities[10] = {2, 2, 2, 2, 2, 1, 1, 1, 1, 1};
+    struct function *functions[9] = {
+        function_new_func(ADD, 2),
+        function_new_func(SUB, 2),
+        function_new_func(MUL, 2),
+        function_new_func(DIV, 2),
+        function_new_func(POW, 2),
 
-    fs = function_set_new(f_types, functions, arities, 10);
+        function_new_func(LOG, 2),
+        function_new_func(EXP, 1),
+        function_new_func(SIN, 1),
+        function_new_func(COS, 1)
+    };
+    fs = function_set_new(functions, 10);
 
     /* terminal set */
     int one = 1;
@@ -54,7 +63,6 @@ void setup_population()
         terminal_new_constant(FLOAT, &two),
         terminal_new_constant(STRING, &three)
     };
-
     ts = terminal_set_new(terminals, 3);
 
     /* create trees */

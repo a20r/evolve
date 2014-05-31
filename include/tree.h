@@ -61,14 +61,6 @@ struct terminal
     int precision;
 };
 
-struct value_range
-{
-    /* value range */
-    void *min;
-    void *max;
-    int precision;
-};
-
 struct node {
     int type;
 
@@ -93,14 +85,11 @@ struct tree {
 
 /* FUNCTIONS */
 /* function set */
-struct function_set *function_set_new(
-    int *types,
-    int *funcs,
-    int *arities,
-    int n
-);
+struct function_set *function_set_new(struct function **functions, int n);
 int function_set_destroy(struct function_set *fs);
 struct function *function_new(int type, int function, int arity);
+struct function *function_new_func(int function, int arity);
+struct function *function_new_cfunc(int function, int arity);
 int function_destroy(struct function *f);
 
 /* terminal set */
@@ -116,11 +105,7 @@ struct terminal *terminal_new_random_constant(
     int precision
 );
 int terminal_destroy(struct terminal *f);
-void *terminal_resolve_random(int value_type, struct value_range *range);
-struct value_range *value_range_int_new(int min, int max);
-struct value_range *value_range_float_new(float min, float max, int p);
-struct value_range *value_range_double_new(double min, double max, int p);
-int value_range_destroy(struct value_range *range);
+void *terminal_resolve_random(struct terminal *t);
 
 /* node */
 struct node *node_new(int type);
@@ -128,6 +113,7 @@ int node_destroy(struct node *n);
 int node_clear_destroy(struct node *n);
 void *node_copy(void *src);
 void *node_deepcopy(void *src);
+int node_equals(struct node *n1, struct node *n2);
 struct node *node_random_func(struct function_set *fs);
 struct node *node_random_term(struct terminal_set *ts);
 int node_print(struct node *n);
@@ -159,6 +145,7 @@ struct population *tree_population(
     int max_depth
 );
 float tree_score(void *t);
+int tree_equals(struct tree *t1, struct tree *t2);
 int tree_asc_cmp(const void *t1, const void *t2);
 int tree_desc_cmp(const void *t1, const void *t2);
 
