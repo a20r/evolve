@@ -66,32 +66,17 @@ int function_destroy(struct function *f)
 
 
 /* TERMINAL SET */
-struct terminal_set *terminal_set_new(
-    int *types,
-    int *value_types,
-    void **values,
-    void **value_ranges,
-    int n
-)
+struct terminal_set *terminal_set_new(struct terminal **terminals, int n)
 {
     int i;
     struct terminal_set *ts;
-    struct value_range *range;
 
     ts = malloc(sizeof(struct terminal_set));
     ts->length = n;
     ts->terminals = malloc(sizeof(struct terminal *) * (unsigned long) n);
 
     for (i = 0; i < n; i++) {
-        if (types[i] == RANDOM_CONSTANT){
-            range = value_ranges[i];
-        } else {
-            ts->terminals[i] = terminal_new(
-                types[i],
-                value_types[i],
-                values[i]
-            );
-        }
+        ts->terminals[i] = terminals[i];
     }
 
     return ts;

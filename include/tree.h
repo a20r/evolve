@@ -104,13 +104,7 @@ struct function *function_new(int type, int function, int arity);
 int function_destroy(struct function *f);
 
 /* terminal set */
-struct terminal_set *terminal_set_new(
-    int *types,
-    int *value_types,
-    void **values,
-    void **value_ranges,
-    int n
-);
+struct terminal_set *terminal_set_new(struct terminal **terminals, int n);
 int terminal_set_destroy(struct terminal_set *fs);
 struct terminal *terminal_new(int type, int value_type, void *value);
 struct terminal *terminal_new_input(char *input_name);

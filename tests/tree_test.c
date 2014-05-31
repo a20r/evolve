@@ -92,24 +92,23 @@ int test_function_new_and_destroy(void)
 /* TERMINAL SET TESTS */
 void setup_terminal_set(void)
 {
-    int types[5] = {CONSTANT, CONSTANT, CONSTANT, INPUT, RANDOM_CONSTANT};
-    int value_types[5] = {INTEGER, FLOAT, STRING, STRING, FLOAT};
-
     int one = 1;
     float two = 2.0;
     const char *three = "three";
-    const char *input = "x";
-    float_range = value_range_float_new(0.0, 10.0, 2);
 
-    void *values[5] = {&one, &two, (void *) three, (void *) input, NULL};
-    void *value_ranges[5] = {NULL, NULL, NULL, NULL, float_range};
-    ts = terminal_set_new(types, value_types, values, value_ranges, 3);
+    struct terminal *terminals[3] = {
+        terminal_new_constant(INTEGER, &one),
+        terminal_new_constant(FLOAT, &two),
+        terminal_new_constant(STRING, &three)
+    };
+
+    ts = terminal_set_new(terminals, 3);
 }
 
 void teardown_terminal_set(void)
 {
     terminal_set_destroy(ts);
-    value_range_destroy(float_range);
+    /* value_range_destroy(float_range); */
 }
 
 int test_terminal_set_new_and_destroy(void)
