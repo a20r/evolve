@@ -109,6 +109,10 @@ void *terminal_resolve_random(struct terminal *t);
 
 /* node */
 struct node *node_new(int type);
+struct node *node_new_func(int function, int arity);
+struct node *node_new_cfunc(int function, int arity);
+struct node *node_new_input(char *input_name);
+struct node *node_new_constant(int value_type, void *value);
 int node_destroy(struct node *n);
 int node_clear_destroy(struct node *n);
 void *node_copy(void *src);

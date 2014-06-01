@@ -279,6 +279,52 @@ struct node *node_new(int type)
     return n;
 }
 
+struct node *node_new_func(int function, int arity)
+{
+    struct node *n = node_new(FUNC_NODE);
+
+    n->function_type = DEFAULT;
+    n->function = function;
+    n->arity = arity;
+    n->children = NULL;
+
+    return n;
+}
+
+struct node *node_new_cfunc(int function, int arity)
+{
+    struct node *n = node_new(FUNC_NODE);
+
+    n->function_type = CLASSIFICATION;
+    n->function = function;
+    n->arity = arity;
+    n->children = NULL;
+
+    return n;
+}
+
+struct node *node_new_input(char *input_name)
+{
+    struct node *n = node_new(TERM_NODE);
+
+    n->terminal_type = INPUT;
+    n->value_type = STRING;
+    n->value = input_name;
+
+    return n;
+}
+
+struct node *node_new_constant(int value_type, void *value)
+{
+    struct node *n = node_new(TERM_NODE);
+
+    n->terminal_type = CONSTANT;
+    n->value_type = value_type;
+    n->value = value;
+
+    return n;
+}
+
 int node_destroy(struct node *n)
 {
     if (n == NULL) {
@@ -411,9 +457,31 @@ int node_equals(struct node *n1, struct node *n2)
         silent_check(n1->function == n2->function);
         silent_check(n1->arity == n2->arity);
         return 1;
+
+    } else {
+        return 0;
     }
 
+error:
     return 0;
+}
+
+int node_deep_equals(struct node *n1, struct node *n2)
+{
+    int i;
+    int res;
+
+    if (n1->type == TERM_NODE && n2->type == TERM_NODE) {
+        return node_equals(n1, n2);
+
+    } else if (n1->type == FUNC_NODE && n2->type == FUNC_NODE) {
+        silent_check(node_equals(n1, n2) == 0);
+        for (i = 0; i < n1->arity; i++) {
+            res = node_deep_equals(n1->children[i], n2->children[i]);
+            silent_check(res == 1);
+        }
+    }
+
 error:
     return 0;
 }
