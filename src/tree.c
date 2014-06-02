@@ -194,6 +194,7 @@ void *terminal_resolve_random(struct terminal *t)
     int i;
     float f;
     double d;
+    float precision = (float) pow(10 , t->precision);
     void *retval;
 
     switch (t->value_type) {
@@ -208,9 +209,7 @@ void *terminal_resolve_random(struct terminal *t)
             if (t->precision == 0) {
                 f = (int) f;
             } else {
-                f = (float) (f * pow(10, t->precision));
-                f = (int) f;
-                f = (float) (f / pow(10, t->precision));
+                f = roundf(f * precision) / precision;
             }
         }
 
@@ -223,9 +222,7 @@ void *terminal_resolve_random(struct terminal *t)
             if (t->precision == 0) {
                 d = (int) d;
             } else {
-                d = d * pow(10, t->precision);
-                d = (int) d;
-                d = d / pow(10, t->precision);
+                d = round(d * precision) / precision;
             }
         }
 
