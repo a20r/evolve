@@ -34,6 +34,7 @@ int test_node_new_and_destroy(void);
 int test_node_copy(void);
 int test_node_deepcopy(void);
 int test_node_equals(void);
+int test_node_deep_equals(void);
 int test_node_random_func(void);
 int test_node_random_term(void);
 
@@ -408,25 +409,15 @@ int test_node_equals(void)
     int integer = 1;
     int integer2 = 2;
 
-    struct node *n1 = node_new(INTEGER);
-    struct node *n2 = node_new(INTEGER);
-    struct node *n3 = node_new(INTEGER);
+    struct node *n1 = node_new_constant(INTEGER, &integer);
+    struct node *n2 = node_new_constant(INTEGER, &integer);
+    struct node *n3 = node_new_constant(INTEGER, &integer2);
 
-    n1->terminal_type = CONSTANT;
-    n2->terminal_type = CONSTANT;
-    n3->terminal_type = CONSTANT;
-
-    n1->value_type = INTEGER;
-    n2->value_type = INTEGER;
-    n3->value_type = INTEGER;
-
-    n1->value = &integer;
-    n2->value = &integer;
-    n3->value = &integer2;
-
+    /* pass test */
     res = node_equals(n1, n2);
     mu_check(res == 1);
 
+    /* fail test */
     res = node_equals(n1, n3);
     mu_check(res == 0);
 
@@ -434,6 +425,29 @@ int test_node_equals(void)
     node_destroy(n1);
     node_destroy(n2);
     node_destroy(n3);
+    return 0;
+}
+
+int test_node_deep_equals(void)
+{
+    /* function and terminal set */
+    setup_function_set();
+    setup_terminal_set();
+
+    tree = tree_new(fs);
+    tree_build(FULL, tree, tree->root, fs, ts, 2);
+
+    int integer = 1.0;
+    struct node *n = node_new_constant(INTEGER, &integer);
+
+    mu_check(node_deep_equals(tree->root, tree->root) == 1);
+    mu_check(node_deep_equals(tree->root, n) == 0);
+
+    /* clean up */
+    teardown_function_set();
+    teardown_terminal_set();
+    tree_destroy(tree);
+    node_destroy(n);
     return 0;
 }
 
@@ -690,6 +704,7 @@ void test_suite(void)
     mu_add_test(test_node_new_and_destroy);
     mu_add_test(test_node_copy);
     mu_add_test(test_node_equals);
+    mu_add_test(test_node_deep_equals);
     mu_add_test(test_node_random_func);
     mu_add_test(test_node_random_term);
 

@@ -469,13 +469,17 @@ int node_deep_equals(struct node *n1, struct node *n2)
         return node_equals(n1, n2);
 
     } else if (n1->type == FUNC_NODE && n2->type == FUNC_NODE) {
-        silent_check(node_equals(n1, n2) == 0);
+        silent_check(node_equals(n1, n2) == 1);
+
         for (i = 0; i < n1->arity; i++) {
             res = node_deep_equals(n1->children[i], n2->children[i]);
             silent_check(res == 1);
         }
+
+        return 1;
     }
 
+    return 0;
 error:
     return 0;
 }
