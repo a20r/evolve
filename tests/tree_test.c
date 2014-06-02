@@ -33,6 +33,7 @@ int test_terminal_resolve_random(void);
 int test_node_new_and_destroy(void);
 int test_node_copy(void);
 int test_node_deepcopy(void);
+int test_node_equals(void);
 int test_node_random_func(void);
 int test_node_random_term(void);
 
@@ -40,6 +41,8 @@ int test_tree_new_and_destroy(void);
 int test_tree_build(void);
 int test_tree_asc_cmp(void);
 int test_tree_desc_cmp(void);
+
+int test_copy_value(void);
 
 void test_suite(void);
 
@@ -118,13 +121,17 @@ void setup_terminal_set(void)
     float two = 2.0;
     const char *three = "three";
 
-    struct terminal *terminals[3] = {
+    float min = 0.0;
+    float max = 100.0;
+
+    struct terminal *terminals[4] = {
         terminal_new_constant(INTEGER, &one),
         terminal_new_constant(FLOAT, &two),
-        terminal_new_constant(STRING, (void *) three)
+        terminal_new_constant(STRING, (void *) three),
+        terminal_new_random_constant(FLOAT, &min, &max, 2)
     };
 
-    ts = terminal_set_new(terminals, 3);
+    ts = terminal_set_new(terminals, 4);
 }
 
 void teardown_terminal_set(void)
@@ -275,36 +282,82 @@ int test_terminal_resolve_random(void)
 /* NODE TESTS */
 int test_node_new_and_destroy(void)
 {
+    /* blank terminal node */
     node = node_new(TERM_NODE);
-
-    mu_check(node->type == 0);
-
+    mu_check(node->type == TERM_NODE);
     mu_check(node->terminal_type == -1);
     mu_check(node->value_type == -1);
-
     mu_check(node->function_type == -1);
     mu_check(node->function == -1);
     mu_check(node->arity == -1);
     mu_check(node->children == NULL);
-
     node_destroy(node);
+
+    /* blank function node */
+    node = node_new(FUNC_NODE);
+    mu_check(node->type == FUNC_NODE);
+    mu_check(node->terminal_type == -1);
+    mu_check(node->value_type == -1);
+    mu_check(node->function_type == -1);
+    mu_check(node->function == -1);
+    mu_check(node->arity == -1);
+    mu_check(node->children == NULL);
+    node_destroy(node);
+
+    /* function node */
+    node = node_new_func(1, 2);
+    mu_check(node->function_type == DEFAULT);
+    mu_check(node->function == 1);
+    mu_check(node->arity == 2);
+    node_destroy(node);
+
+    /* classification node */
+    node = node_new_cfunc(1, 2);
+    mu_check(node->function_type == CLASSIFICATION);
+    mu_check(node->function == 1);
+    mu_check(node->arity == 2);
+    node_destroy(node);
+
+    /* input node */
+    const char *input_name = "x";
+    node = node_new_input((char *) input_name);
+    mu_check(node->terminal_type == INPUT);
+    mu_check(node->value_type == STRING);
+    mu_check(strcmp(node->value, input_name) == 0);
+    node_destroy(node);
+
+    /* constant node */
+    int integer = 10;
+    node = node_new_constant(INTEGER, &integer);
+    mu_check(node->terminal_type == CONSTANT);
+    mu_check(node->value_type == INTEGER);
+    mu_check(int_cmp(node->value, &integer) == 0);
+    node_destroy(node);
+
     return 0;
 }
 
 int test_node_copy(void)
 {
     int i;
+    int n_tests = 10;
     struct node *copy;
 
     /* copy term node */
     setup_terminal_set();
-    for (i = 0; i < 100; i++) {
+    for (i = 0; i < n_tests; i++) {
         node = node_random_term(ts);
         copy = (struct node *) node_copy((void *) node);
 
         mu_check(copy->type == node->type);
+        mu_check(copy->terminal_type == node->terminal_type);
         mu_check(copy->value_type == node->value_type);
-        /* mu_check(&(*copy->value) != &(*node->value)); */
+
+        if (node->terminal_type == RANDOM_CONSTANT) {
+            mu_check(&(*copy->value) != &(*node->value));
+        } else {
+            mu_check(&(*copy->value) == &(*node->value));
+        }
 
         node_destroy(node);
         node_destroy(copy);
@@ -313,7 +366,7 @@ int test_node_copy(void)
 
     /* copy func node */
     setup_function_set();
-    for (i = 0; i < 100; i++) {
+    for (i = 0; i < n_tests; i++) {
         node = node_random_func(fs);
         copy = (struct node *) node_copy((void *) node);
 
@@ -410,13 +463,15 @@ int test_node_random_func(void)
 int test_node_random_term(void)
 {
     int i;
+    int n_type;
 
     setup_terminal_set();
 
     for (i = 0; i < 100; i++) {
         node = node_random_term(ts);
+        n_type = node->terminal_type;
 
-        mu_check(node->terminal_type  == CONSTANT);
+        mu_check(n_type == CONSTANT || n_type == RANDOM_CONSTANT);
         mu_check(node->type == TERM_NODE);
         mu_check(node->value_type >= 0 && node->value_type < 4);
         mu_check(node->value != NULL);
@@ -586,6 +641,37 @@ int test_tree_desc_cmp(void)
     return 0;
 }
 
+int test_copy_value(void)
+{
+    int *int_ptr;
+    float *float_ptr;
+    double *double_ptr;
+    char *str_ptr;
+
+    int int_value = 0;
+    float float_value = 10.0;
+    double doule_value = 100.0;
+    const char *str_value = "test";
+
+    int_ptr = copy_value(INTEGER, &int_value);
+    mu_check(int_cmp(int_ptr, &int_value) == 0);
+
+    float_ptr = copy_value(FLOAT, &float_value);
+    mu_check(float_cmp(float_ptr, &float_value) == 0);
+
+    double_ptr = copy_value(DOUBLE, &doule_value);
+    mu_check(float_cmp(double_ptr, &doule_value) == 0);
+
+    str_ptr = copy_value(STRING, (void *) str_value);
+    mu_check(strcmp(str_ptr, str_value) == 0);
+
+    free(int_ptr);
+    free(float_ptr);
+    free(double_ptr);
+    free(str_ptr);
+    return 0;
+}
+
 
 void test_suite(void)
 {
@@ -612,6 +698,9 @@ void test_suite(void)
     mu_add_test(test_tree_build);
     mu_add_test(test_tree_asc_cmp);
     mu_add_test(test_tree_desc_cmp);
+
+    /* utils */
+    mu_add_test(test_copy_value);
 }
 
 mu_run_tests(test_suite)

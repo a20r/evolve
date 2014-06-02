@@ -118,6 +118,7 @@ int node_clear_destroy(struct node *n);
 void *node_copy(void *src);
 void *node_deepcopy(void *src);
 int node_equals(struct node *n1, struct node *n2);
+int node_deep_equals(struct node *n1, struct node *n2);
 struct node *node_random_func(struct function_set *fs);
 struct node *node_random_term(struct terminal_set *ts);
 int node_print(struct node *n);
@@ -152,5 +153,8 @@ float tree_score(void *t);
 int tree_equals(struct tree *t1, struct tree *t2);
 int tree_asc_cmp(const void *t1, const void *t2);
 int tree_desc_cmp(const void *t1, const void *t2);
+
+/* utils */
+void *copy_value(int value_type, void *value);
 
 #endif

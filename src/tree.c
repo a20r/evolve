@@ -167,26 +167,8 @@ struct terminal *terminal_new_random_constant(
 {
     struct terminal *t = terminal_new(RANDOM_CONSTANT, type, NULL);
 
-    switch (type) {
-    case INTEGER:
-        t->min = malloc(sizeof(int));
-        t->max = malloc(sizeof(int));
-        *(int *) t->min = *(int *) min;
-        *(int *) t->max = *(int *) max;
-        break;
-    case FLOAT:
-        t->min = malloc(sizeof(float));
-        t->max = malloc(sizeof(float));
-        *(float *) t->min = *(float *) min;
-        *(float *) t->max = *(float *) max;
-        break;
-    case DOUBLE:
-        t->min = malloc(sizeof(double));
-        t->max = malloc(sizeof(double));
-        *(double *) t->min = *(double *) min;
-        *(double *) t->max = *(double *) max;
-        break;
-    }
+    t->min = copy_value(type, min);
+    t->max = copy_value(type, max);
     t->precision = precision;
 
     return t;
@@ -329,8 +311,15 @@ int node_destroy(struct node *n)
 {
     if (n == NULL) {
         return -1;
+
+    } else if (n->type == TERM_NODE) {
+        if (n->terminal_type == RANDOM_CONSTANT) {
+            free(n->value);
+        }
+
     } else if (n->type == FUNC_NODE) {
         free(n->children);
+
     }
 
     free(n);
@@ -346,7 +335,9 @@ int node_clear_destroy(struct node *n)
         return -1;
 
     } else if (n->type == TERM_NODE) {
-        /* DO NOTHING! because n->value references terminals */
+        if (n->terminal_type == RANDOM_CONSTANT) {
+            free(n->value);
+        }
 
     } else if (n->type == FUNC_NODE) {
         for (i = 0; i < n->arity; i++) {
@@ -382,9 +373,15 @@ void *node_copy(void *s)
 
     /* create copy */
     if (src->type == TERM_NODE) {
-        cpy->terminal_type = src->terminal_type;
-        cpy->value_type = src->value_type;
-        cpy->value = src->value;
+        if (src->terminal_type == RANDOM_CONSTANT) {
+            cpy->terminal_type = src->terminal_type;
+            cpy->value_type = src->value_type;
+            cpy->value = copy_value(src->value_type, src->value);
+        } else {
+            cpy->terminal_type = src->terminal_type;
+            cpy->value_type = src->value_type;
+            cpy->value = src->value;
+        }
 
     } else if (src->type == FUNC_NODE) {
         cpy->function_type = src->function_type;
@@ -512,8 +509,13 @@ struct node *node_random_term(struct terminal_set *ts)
     struct node *n = node_new(TERM_NODE);
 
     n->terminal_type = t->type;
-    n->value_type = t->value_type;
-    n->value = t->value;
+    if (t->type == RANDOM_CONSTANT) {
+        n->value_type = t->value_type;
+        n->value = terminal_resolve_random(t);
+    } else {
+        n->value_type = t->value_type;
+        n->value = t->value;
+    }
 
     return n;
 }
@@ -613,10 +615,7 @@ void tree_build(
     for (i = 0; i < n->arity; i++) {
         if (t->depth == max_depth) {
             /* create terminal node */
-            /* n->children[i] = node_random_term(ts); */
-            child = node_random_term(ts);
-            n->children[i] = child;
-            /* node_print(child); */
+            n->children[i] = node_random_term(ts);
 
         } else if (method == GROW && randf(0, 1.0) < end) {
             /* create terminal node */
@@ -626,7 +625,6 @@ void tree_build(
             /* create function node */
             child = node_random_func(fs);
             n->children[i] = child;
-            /* node_print(child); */
 
             tree_build(method, t, child, fs, ts, max_depth);
         }
@@ -758,4 +756,31 @@ int tree_desc_cmp(const void *tree1, const void *tree2)
     } else {
         return 0;
     }
+}
+
+/* utils */
+void *copy_value(int value_type, void *value)
+{
+    void *copy = NULL;
+
+    switch (value_type) {
+    case INTEGER:
+        copy = malloc(sizeof(int));
+        *(int *) copy = *(int *) value;
+        break;
+    case FLOAT:
+        copy = malloc(sizeof(float));
+        *(float *) copy = *(float *) value;
+        break;
+    case DOUBLE:
+        copy = malloc(sizeof(double));
+        *(double *) copy = *(double *) value;
+        break;
+    case STRING:
+        copy = malloc(sizeof(char) * strlen(value) + 1);
+        strcpy(copy, value);
+        break;
+    }
+
+    return copy;
 }
