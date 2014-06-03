@@ -81,6 +81,7 @@ struct tree {
     int depth;
 
     float *score;
+    struct node **chromosome;
 };
 
 /* FUNCTIONS */
@@ -151,6 +152,9 @@ struct population *tree_population(
 );
 float tree_score(void *t);
 int tree_equals(struct tree *t1, struct tree *t2);
+int tree_size(struct node *n);
+void tree_update_traverse(struct tree *t, struct node *n);
+void tree_update(struct tree *t);
 int tree_asc_cmp(const void *t1, const void *t2);
 int tree_desc_cmp(const void *t1, const void *t2);
 

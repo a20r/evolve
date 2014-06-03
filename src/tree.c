@@ -571,6 +571,7 @@ struct tree *tree_new(struct function_set *fs)
     t->size = 1;
     t->depth = 0;
     t->score = NULL;
+    t->chromosome = NULL;
 
     return t;
 }
@@ -582,8 +583,11 @@ int tree_destroy(void *t)
         return -1;
     }
 
-    node_clear_destroy(((struct tree *) t)->root);
-    free(((struct tree *) t)->score);
+    struct tree *target = (struct tree *) t;
+
+    node_clear_destroy(target->root);
+    free(target->score);
+    free(target->chromosome);
     free(t);
     return 0;
 }
@@ -651,6 +655,7 @@ void tree_build(
 
         t->size++;
     }
+
 }
 
 struct tree *tree_generate(
@@ -677,6 +682,7 @@ struct tree *tree_generate(
     default:
         printf(ERROR_GEN_METHOD);
     }
+    tree_update(t);
 
     return t;
 }
@@ -734,6 +740,50 @@ int tree_equals(struct tree *t1, struct tree *t2)
     return node_deep_equals(t1->root, t2->root);
 error:
     return 0;
+}
+
+int tree_size(struct node *n)
+{
+    int i;
+    int size = 1;
+
+    if (n->type == TERM_NODE) {
+        return 1;
+    } else if (n->type == FUNC_NODE) {
+        for (i = 0; i < n->arity; i++) {
+            size += tree_size(n->children[i]);
+        }
+    }
+
+    return size;
+}
+
+void tree_update_traverse(struct tree *t, struct node *n)
+{
+    int i;
+
+    if (n->type == FUNC_NODE) {
+        for (i = 0; i < n->arity; i++) {
+            tree_update_traverse(t, n->children[i]);
+        }
+    }
+
+    t->chromosome[t->size] = n;
+    t->depth++;
+    t->size++;
+}
+
+void tree_update(struct tree *t)
+{
+    int size = tree_size(t->root);
+
+    t->chromosome = malloc(sizeof(struct node *) * (unsigned long) size);
+
+    /* reset size and depth */
+    t->depth = 0;
+    t->size = 0;
+
+    tree_update_traverse(t, t->root);
 }
 
 int tree_asc_cmp(const void *tree1, const void *tree2)

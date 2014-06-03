@@ -1,6 +1,8 @@
 #ifndef __CROSSOVER__
 #define __CROSSOVER__
 
-int point_crossover(void);
+#include "tree.h"
+
+int point_crossover(struct tree *t1, struct tree *t2);
 
 #endif

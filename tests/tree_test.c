@@ -41,6 +41,8 @@ int test_node_random_term(void);
 int test_tree_new_and_destroy(void);
 int test_tree_build(void);
 int test_tree_equals(void);
+int test_tree_size(void);
+int test_tree_update(void);
 int test_tree_asc_cmp(void);
 int test_tree_desc_cmp(void);
 
@@ -531,11 +533,11 @@ int test_tree_build(void)
 
     /* generate tree using full method */
     tree_build(FULL, tree, tree->root, fs, ts, 2);
-    tree_traverse(tree->root, node_print);
-    printf("\n");
 
-    printf("tree->depth: %d\n", tree->depth);
-    printf("tree->size: %d\n", tree->size);
+    /* tree_traverse(tree->root, node_print); */
+    /* printf("\n"); */
+    /* printf("tree->depth: %d\n", tree->depth); */
+    /* printf("tree->size: %d\n", tree->size); */
 
     /* clean up */
     tree_destroy(tree);
@@ -564,6 +566,64 @@ int test_tree_equals(void)
     teardown_terminal_set();
     tree_destroy(t1);
     tree_destroy(t2);
+    return 0;
+}
+
+int test_tree_size(void)
+{
+    /* function and terminal set */
+    setup_function_set();
+    setup_terminal_set();
+
+    /* tree */
+    struct tree *t1 = tree_new(fs);
+    struct tree *t2 = tree_new(fs);
+
+    tree_build(FULL, t1, t1->root, fs, ts, 2);
+    tree_build(FULL, t2, t2->root, fs, ts, 10);
+
+    mu_check(tree_size(t1->root) == t1->size);
+    mu_check(tree_size(t1->root) != t2->size);
+
+    /* clean up */
+    teardown_function_set();
+    teardown_terminal_set();
+    tree_destroy(t1);
+    tree_destroy(t2);
+    return 0;
+}
+
+int test_tree_update(void)
+{
+    /* function and terminal set */
+    setup_function_set();
+    setup_terminal_set();
+
+    /* tree */
+    tree = tree_new(fs);
+    tree_build(FULL, tree, tree->root, fs, ts, 5);
+
+    mu_check(tree->size > 0);
+    mu_check(tree->depth > 0);
+    mu_check(tree->chromosome == NULL);
+
+    /* tree update */
+    tree_update(tree);
+    mu_check(tree->size > 0);
+    mu_check(tree->depth > 0);
+    mu_check(tree->chromosome != NULL);
+
+    int i;
+    for (i = 0; i < tree->size; i++) {
+        mu_check(tree->chromosome[i] != NULL);
+        /* node_print(tree->chromosome[i]); */
+    }
+    /* printf("\n"); */
+
+    /* clean up */
+    teardown_function_set();
+    teardown_terminal_set();
+    tree_destroy(tree);
     return 0;
 }
 
@@ -744,6 +804,8 @@ void test_suite(void)
     mu_add_test(test_tree_new_and_destroy);
     mu_add_test(test_tree_build);
     mu_add_test(test_tree_equals);
+    mu_add_test(test_tree_size);
+    mu_add_test(test_tree_update);
     mu_add_test(test_tree_asc_cmp);
     mu_add_test(test_tree_desc_cmp);
 
