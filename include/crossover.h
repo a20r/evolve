@@ -3,6 +3,7 @@
 
 #include "tree.h"
 
+int **random_crossover_index(struct tree *t1, struct tree *t2);
 int point_crossover(struct tree *t1, struct tree *t2);
 
 #endif

@@ -64,6 +64,9 @@ struct terminal
 struct node {
     int type;
 
+    struct node *parent;
+    int nth_child;
+
     int terminal_type;
     int value_type;
     void *value;
@@ -153,8 +156,10 @@ struct population *tree_population(
 float tree_score(void *t);
 int tree_equals(struct tree *t1, struct tree *t2);
 int tree_size(struct node *n);
+void tree_print(struct tree *t);
 void tree_update_traverse(struct tree *t, struct node *n);
 void tree_update(struct tree *t);
+struct node *tree_replace_node(struct node *old_node, struct node *new_node);
 int tree_asc_cmp(const void *t1, const void *t2);
 int tree_desc_cmp(const void *t1, const void *t2);
 

@@ -38,11 +38,14 @@ int test_node_deep_equals(void);
 int test_node_random_func(void);
 int test_node_random_term(void);
 
+void setup_tree_test(void);
+void teardown_tree_test(void);
 int test_tree_new_and_destroy(void);
 int test_tree_build(void);
 int test_tree_equals(void);
 int test_tree_size(void);
 int test_tree_update(void);
+int test_tree_replace_node(void);
 int test_tree_asc_cmp(void);
 int test_tree_desc_cmp(void);
 
@@ -508,6 +511,19 @@ int test_node_random_term(void)
 
 
 /* TREE TESTS */
+void setup_tree_test(void)
+{
+    /* function and terminal set */
+    setup_function_set();
+    setup_terminal_set();
+}
+
+void teardown_tree_test(void)
+{
+    teardown_function_set();
+    teardown_terminal_set();
+}
+
 int test_tree_new_and_destroy(void)
 {
     setup_function_set();
@@ -524,9 +540,7 @@ int test_tree_new_and_destroy(void)
 
 int test_tree_build(void)
 {
-    /* function and terminal set */
-    setup_function_set();
-    setup_terminal_set();
+    setup_tree_test();
 
     /* tree */
     tree = tree_new(fs);
@@ -541,16 +555,13 @@ int test_tree_build(void)
 
     /* clean up */
     tree_destroy(tree);
-    teardown_function_set();
-    teardown_terminal_set();
+    teardown_tree_test();
     return 0;
 }
 
 int test_tree_equals(void)
 {
-    /* function and terminal set */
-    setup_function_set();
-    setup_terminal_set();
+    setup_tree_test();
 
     /* tree */
     struct tree *t1 = tree_new(fs);
@@ -562,8 +573,7 @@ int test_tree_equals(void)
     mu_check(tree_equals(t1, t2) == 0);
 
     /* clean up */
-    teardown_function_set();
-    teardown_terminal_set();
+    teardown_tree_test();
     tree_destroy(t1);
     tree_destroy(t2);
     return 0;
@@ -571,9 +581,7 @@ int test_tree_equals(void)
 
 int test_tree_size(void)
 {
-    /* function and terminal set */
-    setup_function_set();
-    setup_terminal_set();
+    setup_tree_test();
 
     /* tree */
     struct tree *t1 = tree_new(fs);
@@ -586,8 +594,7 @@ int test_tree_size(void)
     mu_check(tree_size(t1->root) != t2->size);
 
     /* clean up */
-    teardown_function_set();
-    teardown_terminal_set();
+    teardown_tree_test();
     tree_destroy(t1);
     tree_destroy(t2);
     return 0;
@@ -595,9 +602,7 @@ int test_tree_size(void)
 
 int test_tree_update(void)
 {
-    /* function and terminal set */
-    setup_function_set();
-    setup_terminal_set();
+    setup_tree_test();
 
     /* tree */
     tree = tree_new(fs);
@@ -621,9 +626,35 @@ int test_tree_update(void)
     /* printf("\n"); */
 
     /* clean up */
-    teardown_function_set();
-    teardown_terminal_set();
+    teardown_tree_test();
     tree_destroy(tree);
+    return 0;
+}
+
+int test_tree_replace_node(void)
+{
+    setup_tree_test();
+
+    /* tree */
+    struct tree *t1 = tree_generate(FULL, fs, ts, 5);
+    struct tree *t2 = tree_generate(FULL, fs, ts, 5);
+
+    /* tree update */
+    /* tree_print(t1); */
+    /* tree_print(t2); */
+
+    struct node *old = tree_replace_node(t1->chromosome[3], t2->root);
+    tree_update(t1);
+    t2->root = NULL;
+
+    /* tree_print(t1); */
+    /* tree_print(t2); */
+
+    /* clean up */
+    teardown_tree_test();
+    node_clear_destroy(old);
+    tree_destroy(t1);
+    tree_destroy(t2);
     return 0;
 }
 
@@ -631,9 +662,7 @@ int test_tree_asc_cmp(void)
 {
     int i;
 
-    /* function and terminal set */
-    setup_function_set();
-    setup_terminal_set();
+    setup_tree_test();
 
     /* tree */
     struct tree *t1 = tree_new(fs);
@@ -681,8 +710,7 @@ int test_tree_asc_cmp(void)
     /* clean up */
     tree_destroy(t1);
     tree_destroy(t2);
-    teardown_function_set();
-    teardown_terminal_set();
+    teardown_tree_test();
     return 0;
 }
 
@@ -690,9 +718,7 @@ int test_tree_desc_cmp(void)
 {
     int i;
 
-    /* function and terminal set */
-    setup_function_set();
-    setup_terminal_set();
+    setup_tree_test();
 
     /* tree */
     struct tree *t1 = tree_new(fs);
@@ -740,8 +766,7 @@ int test_tree_desc_cmp(void)
     /* clean up */
     tree_destroy(t1);
     tree_destroy(t2);
-    teardown_function_set();
-    teardown_terminal_set();
+    teardown_tree_test();
     return 0;
 }
 
@@ -806,6 +831,7 @@ void test_suite(void)
     mu_add_test(test_tree_equals);
     mu_add_test(test_tree_size);
     mu_add_test(test_tree_update);
+    mu_add_test(test_tree_replace_node);
     mu_add_test(test_tree_asc_cmp);
     mu_add_test(test_tree_desc_cmp);
 
