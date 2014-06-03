@@ -370,13 +370,12 @@ void *node_copy(void *s)
 
     /* create copy */
     if (src->type == TERM_NODE) {
+        cpy->terminal_type = src->terminal_type;
+        cpy->value_type = src->value_type;
+
         if (src->terminal_type == RANDOM_CONSTANT) {
-            cpy->terminal_type = src->terminal_type;
-            cpy->value_type = src->value_type;
             cpy->value = copy_value(src->value_type, src->value);
         } else {
-            cpy->terminal_type = src->terminal_type;
-            cpy->value_type = src->value_type;
             cpy->value = src->value;
         }
 
@@ -400,22 +399,42 @@ void *node_deepcopy(void *s)
     int i;
     size_t children_size;
     struct node *src = (struct node *) s;
-    struct node *cpy = node_copy(s);
-    struct node *child = NULL;
+    struct node *cpy = NULL;
 
-    if (src->type == FUNC_NODE) {
-        children_size = sizeof(struct node) * (unsigned long) src->arity;
+    /* pre-check */
+    if (s == NULL) {
+        return cpy;
+    } else {
+        cpy = malloc(sizeof(struct node));
+        cpy->type = src->type;
+        cpy->children = NULL;
+    }
+
+    /* create copy */
+    if (src->type == TERM_NODE) {
+        cpy->terminal_type = src->terminal_type;
+        cpy->value_type = src->value_type;
+
+        if (src->terminal_type == RANDOM_CONSTANT) {
+            cpy->value = copy_value(src->value_type, src->value);
+        } else {
+            cpy->value = src->value;
+        }
+
+    } else if (src->type == FUNC_NODE) {
+        cpy->function_type = src->function_type;
+        cpy->function = src->function;
+        cpy->arity = src->arity;
+
+        children_size = sizeof(struct node *) * (unsigned long) src->arity;
         cpy->children = malloc(children_size);
 
         for (i = 0; i < src->arity; i++) {
-            child = node_deepcopy(src->children[i]);
-
-            if (child == NULL) {
-                return NULL;
-            }
-
-            cpy->children[i] = child;
+            cpy->children[i] = node_deepcopy(src->children[i]);
         }
+
+    } else {
+        return NULL;
     }
 
     return (void *) cpy;
@@ -430,13 +449,13 @@ int node_equals(struct node *n1, struct node *n2)
 
         switch (n1->value_type) {
         case INTEGER:
-            silent_check(int_cmp(n1->value, n2->value) == 0);
+            silent_check(intcmp(n1->value, n2->value) == 0);
             return 1;
         case FLOAT:
-            silent_check(float_cmp(n1->value, n2->value) == 0);
+            silent_check(floatcmp(n1->value, n2->value) == 0);
             return 1;
         case DOUBLE:
-            silent_check(float_cmp(n1->value, n2->value) == 0);
+            silent_check(floatcmp(n1->value, n2->value) == 0);
             return 1;
         case STRING:
             silent_check(strcmp(n1->value, n2->value) == 0);
@@ -701,11 +720,21 @@ float tree_score(void *t)
     return *(float *) ((struct tree *) t)->score;
 }
 
-/* int tree_equals(struct tree *t1, struct tree *t2) */
-/* { */
-/*  */
-/*     return 0; */
-/* } */
+int tree_equals(struct tree *t1, struct tree *t2)
+{
+    silent_check(intcmp(&t1->size, &t2->size) == 0);
+    silent_check(intcmp(&t1->depth, &t2->depth) == 0);
+
+    if (t1->score == NULL || t2->score == NULL) {
+        silent_check(t1->score == t2->score);
+    } else {
+        silent_check(floatcmp(t1->score, t2->score) == 0);
+    }
+
+    return node_deep_equals(t1->root, t2->root);
+error:
+    return 0;
+}
 
 int tree_asc_cmp(const void *tree1, const void *tree2)
 {

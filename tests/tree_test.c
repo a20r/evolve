@@ -40,6 +40,7 @@ int test_node_random_term(void);
 
 int test_tree_new_and_destroy(void);
 int test_tree_build(void);
+int test_tree_equals(void);
 int test_tree_asc_cmp(void);
 int test_tree_desc_cmp(void);
 
@@ -221,8 +222,8 @@ int test_terminal_new_and_destroy(void)
     mu_check(t->type == RANDOM_CONSTANT);
     mu_check(t->value_type == FLOAT);
     mu_check(t->value == NULL);
-    mu_check(float_cmp(t->min, &min) == 0);
-    mu_check(float_cmp(t->max, &max) == 0);
+    mu_check(floatcmp(t->min, &min) == 0);
+    mu_check(floatcmp(t->max, &max) == 0);
     mu_check(t->precision == precision);
     terminal_destroy(t);
 
@@ -332,7 +333,7 @@ int test_node_new_and_destroy(void)
     node = node_new_constant(INTEGER, &integer);
     mu_check(node->terminal_type == CONSTANT);
     mu_check(node->value_type == INTEGER);
-    mu_check(int_cmp(node->value, &integer) == 0);
+    mu_check(intcmp(node->value, &integer) == 0);
     node_destroy(node);
 
     return 0;
@@ -385,8 +386,6 @@ int test_node_copy(void)
 
 int test_node_deepcopy(void)
 {
-    /* int i; */
-
     /* function and terminal set */
     setup_function_set();
     setup_terminal_set();
@@ -395,11 +394,19 @@ int test_node_deepcopy(void)
     tree = tree_new(fs);
     tree_build(FULL, tree, tree->root, fs, ts, 2);
 
-    node_deepcopy(tree->root);
+    int integer = 1;
+    struct node *good_copy = node_deepcopy(tree->root);
+    struct node *bad_copy = node_new_constant(INTEGER, &integer);
+
+    mu_check(node_deep_equals(good_copy, tree->root) == 1);
+    mu_check(node_deep_equals(bad_copy, tree->root) == 0);
 
     /* clean up */
     teardown_function_set();
     teardown_terminal_set();
+    tree_destroy(tree);
+    node_clear_destroy(good_copy);
+    node_clear_destroy(bad_copy);
     return 0;
 }
 
@@ -537,6 +544,29 @@ int test_tree_build(void)
     return 0;
 }
 
+int test_tree_equals(void)
+{
+    /* function and terminal set */
+    setup_function_set();
+    setup_terminal_set();
+
+    /* tree */
+    struct tree *t1 = tree_new(fs);
+    struct tree *t2 = tree_new(fs);
+    tree_build(FULL, t1, t1->root, fs, ts, 2);
+    tree_build(FULL, t2, t2->root, fs, ts, 2);
+
+    mu_check(tree_equals(t1, t1) == 1);
+    mu_check(tree_equals(t1, t2) == 0);
+
+    /* clean up */
+    teardown_function_set();
+    teardown_terminal_set();
+    tree_destroy(t1);
+    tree_destroy(t2);
+    return 0;
+}
+
 int test_tree_asc_cmp(void)
 {
     int i;
@@ -668,17 +698,18 @@ int test_copy_value(void)
     const char *str_value = "test";
 
     int_ptr = copy_value(INTEGER, &int_value);
-    mu_check(int_cmp(int_ptr, &int_value) == 0);
+    mu_check(intcmp(int_ptr, &int_value) == 0);
 
     float_ptr = copy_value(FLOAT, &float_value);
-    mu_check(float_cmp(float_ptr, &float_value) == 0);
+    mu_check(floatcmp(float_ptr, &float_value) == 0);
 
     double_ptr = copy_value(DOUBLE, &doule_value);
-    mu_check(float_cmp(double_ptr, &doule_value) == 0);
+    mu_check(floatcmp(double_ptr, &doule_value) == 0);
 
     str_ptr = copy_value(STRING, (void *) str_value);
     mu_check(strcmp(str_ptr, str_value) == 0);
 
+    /* clean up */
     free(int_ptr);
     free(float_ptr);
     free(double_ptr);
@@ -703,6 +734,7 @@ void test_suite(void)
     /* node */
     mu_add_test(test_node_new_and_destroy);
     mu_add_test(test_node_copy);
+    mu_add_test(test_node_deepcopy);
     mu_add_test(test_node_equals);
     mu_add_test(test_node_deep_equals);
     mu_add_test(test_node_random_func);
@@ -711,6 +743,7 @@ void test_suite(void)
     /* tree */
     mu_add_test(test_tree_new_and_destroy);
     mu_add_test(test_tree_build);
+    mu_add_test(test_tree_equals);
     mu_add_test(test_tree_asc_cmp);
     mu_add_test(test_tree_desc_cmp);
 

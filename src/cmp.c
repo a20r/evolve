@@ -5,7 +5,7 @@
 
 
 /* INTEGER COMPARATOR */
-int int_cmp(const void *v1, const void *v2)
+int intcmp(const void *v1, const void *v2)
 {
     /* null-check */
     if (v1 == NULL || v2 == NULL) {
@@ -27,19 +27,19 @@ int int_cmp(const void *v1, const void *v2)
     }
 }
 
-int int_cmp_asc(const void *v1, const void *v2)
+int intcmp_asc(const void *v1, const void *v2)
 {
-    return int_cmp(v1, v2);
+    return intcmp(v1, v2);
 }
 
-int int_cmp_desc(const void *v1, const void *v2)
+int intcmp_desc(const void *v1, const void *v2)
 {
-    return int_cmp(v1, v2) * -1;
+    return intcmp(v1, v2) * -1;
 }
 
 
 /* FLOAT COMPARATOR */
-int float_cmp(const void *v1, const void *v2)
+int floatcmp(const void *v1, const void *v2)
 {
     /* null-check */
     if (v1 == NULL || v2 == NULL) {
@@ -65,12 +65,12 @@ int float_cmp(const void *v1, const void *v2)
     }
 }
 
-int float_cmp_asc(const void *v1, const void *v2)
+int floatcmp_asc(const void *v1, const void *v2)
 {
-    return float_cmp(v1, v2);
+    return floatcmp(v1, v2);
 }
 
-int float_cmp_desc(const void *v1, const void *v2)
+int floatcmp_desc(const void *v1, const void *v2)
 {
-    return float_cmp(v1, v2) * -1;
+    return floatcmp(v1, v2) * -1;
 }
