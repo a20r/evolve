@@ -3,6 +3,10 @@
 #include <string.h>
 #include <time.h>
 
+#ifndef MU_PRINT
+#define MU_PRINT 1
+#endif
+
 #include "munit.h"
 #include "cmp.h"
 #include "tree.h"
@@ -36,6 +40,7 @@ int test_node_deepcopy(void);
 int test_node_equals(void);
 int test_node_deep_equals(void);
 int test_node_random_func(void);
+int test_node_random_func_arity(void);
 int test_node_random_term(void);
 
 void setup_tree_test(void);
@@ -44,6 +49,7 @@ int test_tree_new_and_destroy(void);
 int test_tree_build(void);
 int test_tree_equals(void);
 int test_tree_size(void);
+int test_tree_string(void);
 int test_tree_update(void);
 int test_tree_replace_node(void);
 int test_tree_asc_cmp(void);
@@ -86,9 +92,9 @@ int test_function_set_new_and_destroy(void)
     setup_function_set();
     mu_check(fs != NULL);
 
-    for (i = 0; i < 10; i++) {
-        /* printf("function number: %d\t", fs->functions[i]->function); */
-        /* printf("arity: %d\n", fs->functions[i]->arity); */
+    for (i = 0; i < 9; i++) {
+        mu_print("function number: %d\t", fs->functions[i]->function);
+        mu_print("arity: %d\n", fs->functions[i]->arity);
     }
 
     teardown_function_set();
@@ -157,13 +163,13 @@ int test_terminal_set_new_and_destroy(void)
     for (i = 0; i < 3; i++) {
         term = ts->terminals[i];
 
-        /* if (term->value_type == INTEGER) { */
-        /*     printf("terminal: %d\n", *(int *) term->value); */
-        /* } else if (term->value_type == FLOAT) { */
-        /*     printf("terminal: %f\n", *(float *) term->value); */
-        /* } else if (term->value_type == STRING) { */
-        /*     printf("terminal: %s\n", (char *) term->value); */
-        /* } */
+        if (term->value_type == INTEGER) {
+            mu_print("terminal: %d\n", *(int *) term->value);
+        } else if (term->value_type == FLOAT) {
+            mu_print("terminal: %f\n", *(float *) term->value);
+        } else if (term->value_type == STRING) {
+            mu_print("terminal: %s\n", (char *) term->value);
+        }
     }
 
     teardown_terminal_set();
@@ -257,7 +263,7 @@ int test_terminal_resolve_random(void)
     int *int_ptr;
     for (i = 0; i < n_tests; i++) {
         int_ptr = (int *) terminal_resolve_random(terminals[0]);
-        /* printf("int: %d\n", *(int *) int_ptr); */
+        mu_print("int: %d\n", *(int *) int_ptr);
         mu_check(*int_ptr >= 0 && *int_ptr <= 100);
         free(int_ptr);
     }
@@ -266,7 +272,7 @@ int test_terminal_resolve_random(void)
     float *float_ptr;
     for (i = 0; i < n_tests; i++) {
         float_ptr = (float *) terminal_resolve_random(terminals[1]);
-        /* printf("float: %f\n", *(float *) float_ptr); */
+        mu_print("float: %f\n", *(float *) float_ptr);
         mu_check(*float_ptr >= 0.0 && *float_ptr <= 100.0);
         free(float_ptr);
     }
@@ -275,7 +281,7 @@ int test_terminal_resolve_random(void)
     double *double_ptr;
     for (i = 0; i < n_tests; i++) {
         double_ptr = (double *) terminal_resolve_random(terminals[2]);
-        /* printf("double: %f\n", *(double *) double_ptr); */
+        mu_print("double: %f\n", *(double *) double_ptr);
         mu_check(*double_ptr >= 0.0 && *double_ptr <= 100.0);
         free(double_ptr);
     }
@@ -397,7 +403,7 @@ int test_node_deepcopy(void)
 
     /* tree */
     tree = tree_new(fs);
-    tree_build(FULL, tree, tree->root, fs, ts, 2);
+    tree_build(FULL, tree, tree->root, fs, ts, 0, 2);
 
     int integer = 1;
     struct node *good_copy = node_deepcopy(tree->root);
@@ -447,7 +453,7 @@ int test_node_deep_equals(void)
     setup_terminal_set();
 
     tree = tree_new(fs);
-    tree_build(FULL, tree, tree->root, fs, ts, 2);
+    tree_build(FULL, tree, tree->root, fs, ts, 0, 2);
 
     int integer = 1.0;
     struct node *n = node_new_constant(INTEGER, &integer);
@@ -472,13 +478,36 @@ int test_node_random_func(void)
     for (i = 0; i < 100; i++) {
         node = node_random_func(fs);
 
-        /* printf("node->type: %d\n", node->type); */
-        /* printf("node->function: %d\n", node->function); */
-        /* printf("node->arity: %d\n", node->arity); */
+        mu_print("node->type: %d\n", node->type);
+        mu_print("node->function: %d\n", node->function);
+        mu_print("node->arity: %d\n", node->arity);
 
         mu_check(node->type == FUNC_NODE);
         mu_check(node->function >= 0 && node->function < 10);
         mu_check(node->arity == 1 || node->arity == 2);
+        node_destroy(node);
+    }
+
+    teardown_function_set();
+    return 0;
+}
+
+int test_node_random_func_arity(void)
+{
+    int i;
+
+    setup_function_set();
+
+    for (i = 0; i < 100; i++) {
+        node = node_random_func_arity(fs, 2);
+
+        mu_print("node->type: %d\n", node->type);
+        mu_print("node->function: %d\n", node->function);
+        mu_print("node->arity: %d\n", node->arity);
+
+        mu_check(node->type == FUNC_NODE);
+        mu_check(node->function >= 0 && node->function < 5);
+        mu_check(node->arity == 2);
         node_destroy(node);
     }
 
@@ -526,54 +555,48 @@ void teardown_tree_test(void)
 
 int test_tree_new_and_destroy(void)
 {
-    setup_function_set();
     tree = tree_new(fs);
 
     mu_check(tree->depth == 0);
     mu_check(tree->size == 1);
     mu_check(tree->score == NULL);
 
-    teardown_function_set();
     tree_destroy(tree);
     return 0;
 }
 
 int test_tree_build(void)
 {
-    setup_tree_test();
+    char *tree_str;
 
     /* tree */
     tree = tree_new(fs);
+    tree_build(FULL, tree, tree->root, fs, ts, 0, 2);
 
-    /* generate tree using full method */
-    tree_build(FULL, tree, tree->root, fs, ts, 2);
-
-    /* tree_traverse(tree->root, node_print); */
-    /* printf("\n"); */
-    /* printf("tree->depth: %d\n", tree->depth); */
-    /* printf("tree->size: %d\n", tree->size); */
+    tree_update(tree);
+    tree_str = tree_string(tree);
+    mu_print("tree: %s\n", tree_str);
+    mu_print("tree->depth: %d\n", tree->depth);
+    mu_print("tree->size: %d\n", tree->size);
 
     /* clean up */
     tree_destroy(tree);
-    teardown_tree_test();
+    free(tree_str);
     return 0;
 }
 
 int test_tree_equals(void)
 {
-    setup_tree_test();
-
     /* tree */
     struct tree *t1 = tree_new(fs);
     struct tree *t2 = tree_new(fs);
-    tree_build(FULL, t1, t1->root, fs, ts, 2);
-    tree_build(FULL, t2, t2->root, fs, ts, 2);
+    tree_build(FULL, t1, t1->root, fs, ts, 0, 2);
+    tree_build(FULL, t2, t2->root, fs, ts, 0, 2);
 
     mu_check(tree_equals(t1, t1) == 1);
     mu_check(tree_equals(t1, t2) == 0);
 
     /* clean up */
-    teardown_tree_test();
     tree_destroy(t1);
     tree_destroy(t2);
     return 0;
@@ -581,32 +604,49 @@ int test_tree_equals(void)
 
 int test_tree_size(void)
 {
-    setup_tree_test();
-
     /* tree */
     struct tree *t1 = tree_new(fs);
     struct tree *t2 = tree_new(fs);
 
-    tree_build(FULL, t1, t1->root, fs, ts, 2);
-    tree_build(FULL, t2, t2->root, fs, ts, 10);
+    tree_build(FULL, t1, t1->root, fs, ts, 0, 2);
+    tree_build(FULL, t2, t2->root, fs, ts, 0, 10);
 
     mu_check(tree_size(t1->root) == t1->size);
     mu_check(tree_size(t1->root) != t2->size);
 
     /* clean up */
-    teardown_tree_test();
     tree_destroy(t1);
     tree_destroy(t2);
     return 0;
 }
 
+int test_tree_string(void)
+{
+    char *tree_str;
+
+    /* tree */
+    struct tree *t1 = tree_new(fs);
+    tree_build(FULL, t1, t1->root, fs, ts, 0, 2);
+    tree_update(t1);
+
+    tree_str = tree_string(t1);
+    mu_check(tree_str != NULL);
+    mu_check(strlen(tree_str) > 0);
+    /* mu_print("tree: %s\n", tree_str); */
+
+    /* clean up */
+    tree_destroy(t1);
+    free(tree_str);
+    return 0;
+}
+
 int test_tree_update(void)
 {
-    setup_tree_test();
+    char *node_str;
 
     /* tree */
     tree = tree_new(fs);
-    tree_build(FULL, tree, tree->root, fs, ts, 5);
+    tree_build(FULL, tree, tree->root, fs, ts, 0, 5);
 
     mu_check(tree->size > 0);
     mu_check(tree->depth > 0);
@@ -621,20 +661,19 @@ int test_tree_update(void)
     int i;
     for (i = 0; i < tree->size; i++) {
         mu_check(tree->chromosome[i] != NULL);
-        /* node_print(tree->chromosome[i]); */
+        node_str = node_string(tree->chromosome[i]);
+        mu_print("%s ", node_str);
+        free(node_str);
     }
-    /* printf("\n"); */
+    mu_print("\n");
 
     /* clean up */
-    teardown_tree_test();
     tree_destroy(tree);
     return 0;
 }
 
 int test_tree_replace_node(void)
 {
-    setup_tree_test();
-
     /* tree */
     struct tree *t1 = tree_generate(FULL, fs, ts, 5);
     struct tree *t2 = tree_generate(FULL, fs, ts, 5);
@@ -651,7 +690,6 @@ int test_tree_replace_node(void)
     /* tree_print(t2); */
 
     /* clean up */
-    teardown_tree_test();
     node_clear_destroy(old);
     tree_destroy(t1);
     tree_destroy(t2);
@@ -662,15 +700,13 @@ int test_tree_asc_cmp(void)
 {
     int i;
 
-    setup_tree_test();
-
     /* tree */
     struct tree *t1 = tree_new(fs);
     struct tree *t2 = tree_new(fs);
 
     /* generate tree using full method */
-    tree_build(FULL, t1, t1->root, fs, ts, 2);
-    tree_build(FULL, t2, t2->root, fs, ts, 2);
+    tree_build(FULL, t1, t1->root, fs, ts, 0, 2);
+    tree_build(FULL, t2, t2->root, fs, ts, 0, 2);
     t1->score = malloc(sizeof(float));
     t2->score = malloc(sizeof(float));
 
@@ -710,7 +746,6 @@ int test_tree_asc_cmp(void)
     /* clean up */
     tree_destroy(t1);
     tree_destroy(t2);
-    teardown_tree_test();
     return 0;
 }
 
@@ -718,15 +753,13 @@ int test_tree_desc_cmp(void)
 {
     int i;
 
-    setup_tree_test();
-
     /* tree */
     struct tree *t1 = tree_new(fs);
     struct tree *t2 = tree_new(fs);
 
     /* generate tree using full method */
-    tree_build(FULL, t1, t1->root, fs, ts, 2);
-    tree_build(FULL, t2, t2->root, fs, ts, 2);
+    tree_build(FULL, t1, t1->root, fs, ts, 0, 2);
+    tree_build(FULL, t2, t2->root, fs, ts, 0, 2);
     t1->score = malloc(sizeof(float));
     t2->score = malloc(sizeof(float));
 
@@ -766,7 +799,6 @@ int test_tree_desc_cmp(void)
     /* clean up */
     tree_destroy(t1);
     tree_destroy(t2);
-    teardown_tree_test();
     return 0;
 }
 
@@ -823,17 +855,21 @@ void test_suite(void)
     mu_add_test(test_node_equals);
     mu_add_test(test_node_deep_equals);
     mu_add_test(test_node_random_func);
+    mu_add_test(test_node_random_func_arity);
     mu_add_test(test_node_random_term);
 
     /* tree */
+    setup_tree_test();
     mu_add_test(test_tree_new_and_destroy);
     mu_add_test(test_tree_build);
     mu_add_test(test_tree_equals);
     mu_add_test(test_tree_size);
+    mu_add_test(test_tree_string);
     mu_add_test(test_tree_update);
     mu_add_test(test_tree_replace_node);
     mu_add_test(test_tree_asc_cmp);
     mu_add_test(test_tree_desc_cmp);
+    teardown_tree_test();
 
     /* utils */
     mu_add_test(test_copy_value);

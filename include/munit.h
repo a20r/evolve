@@ -75,6 +75,17 @@ static int failed = 0;
         } \
     } while (0)
 
+#if defined(MU_PRINT)
+  #if MU_PRINT == 1
+    #define mu_print(message, ...) \
+        printf(message, ##__VA_ARGS__)
+  #elif MU_PRINT == 0
+    #define mu_print(message, ...)
+  #endif
+#else
+    #define mu_print(message, ...)
+#endif
+
 #define mu_report() \
     do { \
         printf(KBLU); \

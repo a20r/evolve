@@ -123,9 +123,11 @@ void *node_copy(void *src);
 void *node_deepcopy(void *src);
 int node_equals(struct node *n1, struct node *n2);
 int node_deep_equals(struct node *n1, struct node *n2);
-struct node *node_random_func(struct function_set *fs);
-struct node *node_random_term(struct terminal_set *ts);
+char *node_string(struct node *n);
 int node_print(struct node *n);
+struct node *node_random_func(struct function_set *fs);
+struct node *node_random_func_arity(struct function_set *fs, int arity);
+struct node *node_random_term(struct terminal_set *ts);
 
 /* tree */
 struct tree *tree_new(struct function_set *fs);
@@ -138,6 +140,7 @@ void tree_build(
     struct node *n,
     struct function_set *fs,
     struct terminal_set *ts,
+    int curr_depth,
     int max_depth
 );
 struct tree *tree_generate(
@@ -156,8 +159,9 @@ struct population *tree_population(
 float tree_score(void *t);
 int tree_equals(struct tree *t1, struct tree *t2);
 int tree_size(struct node *n);
+char *tree_string(struct tree *t);
 void tree_print(struct tree *t);
-void tree_update_traverse(struct tree *t, struct node *n);
+void tree_update_traverse(struct tree *t, struct node *n, int depth);
 void tree_update(struct tree *t);
 struct node *tree_replace_node(struct node *old_node, struct node *new_node);
 int tree_asc_cmp(const void *t1, const void *t2);
@@ -165,5 +169,6 @@ int tree_desc_cmp(const void *t1, const void *t2);
 
 /* utils */
 void *copy_value(int value_type, void *value);
+int cmp_values(int value_type, void *v1, void *v2);
 
 #endif

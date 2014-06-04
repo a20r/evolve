@@ -238,6 +238,7 @@ void *terminal_resolve_random(struct terminal *t)
 }
 
 
+
 /* NODE */
 struct node *node_new(int type)
 {
@@ -251,6 +252,7 @@ struct node *node_new(int type)
     /* terminal node specific */
     n->terminal_type = -1;
     n->value_type = -1;
+    n->value = NULL;
 
     /* function node specific */
     n->function_type = -1;
@@ -506,6 +508,62 @@ error:
     return 0;
 }
 
+char *node_string(struct node *n)
+{
+    char buffer[30];
+    char *node_str;
+
+    /* pre-check */
+    if (n == NULL) {
+        return NULL;
+    }
+
+    /* build node string */
+    if (n->type == TERM_NODE) {
+        if (n->value != NULL) {
+            if (n->value_type == INTEGER) {
+                sprintf(buffer, "T[%d]", *(int *) n->value);
+            } else if (n->value_type == FLOAT) {
+                sprintf(buffer, "T[%f]", *(float *) n->value);
+            } else if (n->value_type == STRING) {
+                sprintf(buffer, "T[%s]", (char *) n->value);
+            }
+        }
+    } else if (n->type == FUNC_NODE) {
+        sprintf(buffer, "F[%d]", n->function);
+    }
+
+    /* copy and return node string */
+    node_str = malloc(sizeof(char) * strlen(buffer) + 1);
+    strcpy(node_str, buffer);
+    return node_str;
+}
+
+int node_print(struct node *n)
+{
+    /* pre-check */
+    if (n == NULL) {
+        return -1;
+    }
+
+    /* print node */
+    if (n->type == TERM_NODE) {
+        if (n->value != NULL) {
+            if (n->value_type == INTEGER) {
+                printf("T[%d] ", *(int *) n->value);
+            } else if (n->value_type == FLOAT) {
+                printf("T[%f] ", *(float *) n->value);
+            } else if (n->value_type == STRING) {
+                printf("T[%s] ", (char *) n->value);
+            }
+        }
+    } else if (n->type == FUNC_NODE) {
+        printf("F[%d] ", n->function);
+    }
+
+    return 0;
+}
+
 struct node *node_random_func(struct function_set *fs)
 {
     int i = randi(0, fs->length - 1);
@@ -523,6 +581,27 @@ struct node *node_random_func(struct function_set *fs)
     }
 
     return n;
+}
+
+struct node *node_random_func_arity(struct function_set *fs, int arity)
+{
+    int retry = 0;
+    int retry_limit = 100;
+    struct node *n = NULL;
+
+    while (retry < retry_limit) {
+        n = node_random_func(fs);
+
+        if (n->arity == arity) {
+            return n;
+        } else {
+            node_destroy(n);
+            retry++;
+        }
+    }
+
+    node_destroy(n);
+    return NULL;
 }
 
 struct node *node_random_term(struct terminal_set *ts)
@@ -543,26 +622,6 @@ struct node *node_random_term(struct terminal_set *ts)
     return n;
 }
 
-int node_print(struct node *n)
-{
-    if (n == NULL) {
-        return -1;
-    } else if (n->type == TERM_NODE) {
-        if (n->value != NULL) {
-            if (n->value_type == INTEGER) {
-                printf("T[%d] ", *(int *) n->value);
-            } else if (n->value_type == FLOAT) {
-                printf("T[%f] ", *(float *) n->value);
-            } else if (n->value_type == STRING) {
-                printf("T[%s] ", (char *) n->value);
-            }
-        }
-    } else if (n->type == FUNC_NODE) {
-        printf("F[%d] ", n->function);
-    }
-
-    return 0;
-}
 
 
 /* TREE */
@@ -632,6 +691,7 @@ void tree_build(
     struct node *n,
     struct function_set *fs,
     struct terminal_set *ts,
+    int curr_depth,
     int max_depth
 )
 {
@@ -639,9 +699,12 @@ void tree_build(
     struct node *child;
     float end = ts->length / (float) (ts->length + fs->length);
 
-    t->depth++;
+    if (curr_depth > t->depth) {
+        t->depth++;
+    }
+
     for (i = 0; i < n->arity; i++) {
-        if (t->depth == max_depth) {
+        if (curr_depth == max_depth) {
             /* create terminal node */
             child = node_random_term(ts);
             child->parent = n;
@@ -662,7 +725,7 @@ void tree_build(
             child->nth_child = i;
             n->children[i] = child;
 
-            tree_build(method, t, child, fs, ts, max_depth);
+            tree_build(method, t, child, fs, ts, curr_depth + 1, max_depth);
         }
 
         t->size++;
@@ -682,13 +745,13 @@ struct tree *tree_generate(
     switch (method) {
     case FULL:
     case GROW:
-        tree_build(method, t, t->root, fs, ts, max_depth);
+        tree_build(method, t, t->root, fs, ts, 0, max_depth);
         break;
     case RAMPED_HALF_AND_HALF:
         if (randf(0.0, 1.0) > 0.5) {
-            tree_build(FULL, t, t->root, fs, ts, max_depth);
+            tree_build(FULL, t, t->root, fs, ts, 0, max_depth);
         } else {
-            tree_build(GROW, t, t->root, fs, ts, max_depth);
+            tree_build(GROW, t, t->root, fs, ts, 0, max_depth);
         }
         break;
     default:
@@ -770,6 +833,27 @@ int tree_size(struct node *n)
     return size;
 }
 
+char *tree_string(struct tree *t)
+{
+    int i;
+    char buffer[4096] = "";
+    char *node_str = NULL;
+    char *tree_str = NULL;
+
+    /* build tree string */
+    for (i = 0; i < t->size; i++) {
+        node_str = node_string(t->chromosome[i]);
+        strcat(buffer, node_str);
+        strcat(buffer, " ");
+        free(node_str);
+    }
+
+    /* copy and return */
+    tree_str = malloc(sizeof(char) * strlen(buffer) + 1);
+    strcpy(tree_str, buffer);
+    return tree_str;
+}
+
 void tree_print(struct tree *t)
 {
     int i;
@@ -779,18 +863,23 @@ void tree_print(struct tree *t)
     printf("\n");
 }
 
-void tree_update_traverse(struct tree *t, struct node *n)
+
+
+void tree_update_traverse(struct tree *t, struct node *n, int depth)
 {
     int i;
 
+    if (depth > t->depth) {
+        t->depth++;
+    }
+
     if (n->type == FUNC_NODE) {
         for (i = 0; i < n->arity; i++) {
-            tree_update_traverse(t, n->children[i]);
+            tree_update_traverse(t, n->children[i], depth + 1);
         }
     }
 
     t->chromosome[t->size] = n;
-    t->depth++;
     t->size++;
 }
 
@@ -807,7 +896,7 @@ void tree_update(struct tree *t)
     t->depth = 0;
     t->size = 0;
 
-    tree_update_traverse(t, t->root);
+    tree_update_traverse(t, t->root, 0);
 }
 
 struct node *tree_replace_node(struct node *old_node, struct node *new_node)
@@ -887,4 +976,20 @@ void *copy_value(int value_type, void *value)
     }
 
     return copy;
+}
+
+int cmp_values(int value_type, void *v1, void *v2)
+{
+    switch (value_type) {
+    case INTEGER:
+        return intcmp(v1, v2);
+    case FLOAT:
+        return floatcmp(v1, v2);
+    case DOUBLE:
+        return floatcmp(v1, v2);
+    case STRING:
+        return strcmp(v1, v2);
+    default:
+        return -2;
+    }
 }
