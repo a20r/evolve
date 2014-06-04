@@ -10,6 +10,9 @@ default: $(EXES)
 %.o: %.c
 	$(COMPILE_OBJ)
 
+data_test: data_test.o
+	$(MAKE_EXE)
+
 tree_test: tree_test.o
 	$(MAKE_EXE)
 

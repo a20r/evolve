@@ -79,6 +79,5 @@ int point_mutation(
 {
     int index = randi(0, t->size - 1);
     struct node *n = t->chromosome[index];
-
     return mutate_new_node(n, fs, ts);
 }
