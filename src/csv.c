@@ -97,7 +97,7 @@ struct data *csv_info(FILE *f, int header, const char *token)
     d = data_new(rows, cols, fields);
 
     /* clean up */
-    release_mem_arr(fields, cols, free);
+    free_mem_arr(fields, cols, free);
 
     return d;
 }

@@ -66,7 +66,7 @@ int test_csv_parse_header(void)
     }
 
     /* clean up */
-    release_mem_arr(fields, cols, free);
+    free_mem_arr(fields, cols, free);
     fclose(f);
 
     return 0;
@@ -102,7 +102,7 @@ int test_csv_parse_data_row(void)
         mu_print("[%d]: %f\n", i, *(float *) result[i]);
     }
 
-    release_mem_arr(result, 4, free);
+    free_mem_arr(result, 4, free);
     free(line);
     return 0;
 }

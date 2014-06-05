@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "data.h"
-#include "dbg.h"
+#include "utils.h"
 
 
 struct data *data_new(int rows, int cols, char **fields)
@@ -39,10 +39,10 @@ struct data *data_new(int rows, int cols, char **fields)
 int data_destroy(struct data *d)
 {
     /* free field names */
-    release_mem_arr(d->fields, d->cols, free);
+    free_mem_arr(d->fields, d->cols, free);
 
     /* free data */
-    release_mem_2darr(d->data, d->rows, d->cols, free);
+    free_mem_2darr(d->data, d->rows, d->cols, free);
     free(d);
     return 0;
 }

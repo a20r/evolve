@@ -1,5 +1,5 @@
-#ifndef _DBG_H_
-#define _DBG_H_
+#ifndef __DBG__
+#define __DBG__
 
 #include <stdio.h>
 #include <errno.h>
@@ -56,33 +56,6 @@
 #define silent_check(A) \
     if (!(A)) { \
         goto error; \
-    }
-
-#define release_mem(TARGET, FREE_FUNCTION) \
-    if (TARGET) { \
-        FREE_FUNCTION(TARGET);\
-    }
-
-#define release_mem_arr(TARGET, NELEM, FREE_FUNCTION) \
-    if (TARGET) { \
-        int z; \
-        for (z = 0; z < NELEM; z++) { \
-            FREE_FUNCTION(TARGET[z]);\
-        } \
-        FREE_FUNCTION(TARGET); \
-    }
-
-#define release_mem_2darr(TARGET, ROWS, COLS, FREE_FUNCTION) \
-    if (TARGET) { \
-        int a; \
-        int b; \
-        for (a = 0; a < d->cols; a++) { \
-            for (b = 0; b < d->rows; b++) { \
-                FREE_FUNCTION(TARGET[a][b]); \
-            } \
-            FREE_FUNCTION(TARGET[a]); \
-        } \
-        FREE_FUNCTION(TARGET); \
     }
 
 #endif

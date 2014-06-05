@@ -8,6 +8,7 @@
 #define CSV_LINE_MAX 4096
 #endif
 
+
 /* FUNCTIONS */
 int csv_num_cols(FILE *f, const char *token);
 int csv_num_rows(FILE *f, int header);
