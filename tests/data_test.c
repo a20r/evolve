@@ -16,6 +16,7 @@
 
 /* TESTS */
 int test_data_new_and_destroy(void);
+int test_data_field_index(void);
 void test_suite(void);
 
 int test_data_new_and_destroy(void)
@@ -25,7 +26,7 @@ int test_data_new_and_destroy(void)
     int cols = 3;
 
     const char *fields[3] = {"x", "y", "z"};
-    struct data *d = data_new(rows, cols, (void *) fields);
+    struct data *d = data_new(rows, cols, fields);
 
     float *data_point = malloc_float(3.0);
     float *data_point_2 = malloc_float(1.0);
@@ -54,9 +55,16 @@ int test_data_new_and_destroy(void)
     return 0;
 }
 
+int test_data_field_index(void)
+{
+
+    return 0;
+}
+
 void test_suite(void)
 {
     mu_add_test(test_data_new_and_destroy);
+    mu_add_test(test_data_field_index);
 }
 
 mu_run_tests(test_suite)

@@ -57,7 +57,7 @@ int test_csv_parse_header(void)
     int i;
     FILE *f = fopen(TEST_DATA, "r");
     int cols = csv_num_cols(f, ",");
-    char **fields = csv_parse_header(f, cols, ",");
+    const char **fields = csv_parse_header(f, cols, ",");
 
     for (i = 0; i < cols; i++) {
         mu_print("field[%d]: %s\n", i, fields[i]);

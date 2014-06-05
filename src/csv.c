@@ -49,10 +49,10 @@ int csv_num_rows(FILE *f, int header)
     return rows - header;
 }
 
-char **csv_parse_header(FILE *f, int cols, const char *token)
+const char **csv_parse_header(FILE *f, int cols, const char *token)
 {
     int i = 0;
-    char **fields = malloc(sizeof(char *) * (unsigned long) cols);
+    const char **fields = malloc(sizeof(char *) * (unsigned long) cols);
     char line[CSV_LINE_MAX];
     char *matched;
 
@@ -85,7 +85,7 @@ struct data *csv_info(FILE *f, int header, const char *token)
 {
     int rows = csv_num_rows(f, header);
     int cols = csv_num_cols(f, token);
-    char **fields = NULL;
+    const char **fields = NULL;
     struct data *d;
 
     /* parse header */

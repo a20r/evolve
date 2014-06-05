@@ -8,16 +8,16 @@
 
 #define free_mem(TARGET, FREE_FUNC) \
     if (TARGET) { \
-        FREE_FUNC(TARGET); \
+        FREE_FUNC((void *) TARGET); \
     }
 
 #define free_mem_arr(TARGET, NELEM, FREE_FUNC) \
     int z; \
     if (TARGET) { \
         for (z = 0; z < NELEM; z++) { \
-            FREE_FUNC(TARGET[z]); \
+            FREE_FUNC((void *) TARGET[z]); \
         } \
-        FREE_FUNC(TARGET); \
+        FREE_FUNC((void *) TARGET); \
     }
 
 #define free_mem_2darr(TARGET, ROWS, COLS, FREE_FUNC) \
@@ -26,11 +26,11 @@
     if (TARGET) { \
         for (a = 0; a < COLS; a++) { \
             for (b = 0; b < ROWS; b++) { \
-                FREE_FUNC(TARGET[a][b]); \
+                FREE_FUNC((void *) TARGET[a][b]); \
             } \
-            FREE_FUNC(TARGET[a]); \
+            FREE_FUNC((void *) TARGET[a]); \
         } \
-        FREE_FUNC(TARGET); \
+        FREE_FUNC((void *) TARGET); \
     }
 
 

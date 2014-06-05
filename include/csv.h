@@ -12,7 +12,7 @@
 /* FUNCTIONS */
 int csv_num_cols(FILE *f, const char *token);
 int csv_num_rows(FILE *f, int header);
-char **csv_parse_header(FILE *f, int cols, const char *token);
+const char **csv_parse_header(FILE *f, int cols, const char *token);
 struct data *csv_info(FILE *f, int header, const char *token);
 float **csv_parse_data_row(char *line, int cols, const char *token);
 struct data *csv_load_data(const char *fp, int header, const char *token);

@@ -6,7 +6,7 @@
 #include "utils.h"
 
 
-struct data *data_new(int rows, int cols, char **fields)
+struct data *data_new(int rows, int cols, const char **fields)
 {
     int i;
     int j;
@@ -45,4 +45,17 @@ int data_destroy(struct data *d)
     free_mem_2darr(d->data, d->rows, d->cols, free);
     free(d);
     return 0;
+}
+
+int data_field_index(struct data *d, const char *field)
+{
+    int i;
+
+    for (i = 0; i < d->cols; i++) {
+        if (strcmp(d->fields[i], field) == 0) {
+            return i;
+        }
+    }
+
+    return -1;
 }
