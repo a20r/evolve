@@ -1,5 +1,7 @@
+#include <stdlib.h>
+
 #include "tree.h"
-#include "random.c"
+#include "random.h"
 #include "crossover.h"
 
 

@@ -9,6 +9,7 @@
 
 #include "munit.h"
 #include "cmp.h"
+#include "utils.h"
 #include "tree.h"
 #include "random.h"
 #include "regression.h"
@@ -233,8 +234,8 @@ int test_terminal_new_and_destroy(void)
     mu_check(t->type == RANDOM_CONSTANT);
     mu_check(t->value_type == FLOAT);
     mu_check(t->value == NULL);
-    mu_check(floatcmp(t->min, &min) == 0);
-    mu_check(floatcmp(t->max, &max) == 0);
+    mu_check(fltcmp(t->min, &min) == 0);
+    mu_check(fltcmp(t->max, &max) == 0);
     mu_check(t->precision == precision);
     terminal_destroy(t);
 
@@ -738,8 +739,7 @@ int test_tree_asc_cmp(void)
     /* t2 is NULL */
     free(t2->score);
     t2->score = NULL;
-    t1->score = malloc(sizeof(float));
-    *(t1->score) = 0.0;
+    t1->score = malloc_float(0.0);
     mu_check(tree_asc_cmp(t1, t2) == 1);
 
 
@@ -791,46 +791,13 @@ int test_tree_desc_cmp(void)
     /* t2 is NULL */
     free(t2->score);
     t2->score = NULL;
-    t1->score = malloc(sizeof(float));
-    *(t1->score) = 0.0;
+    t1->score = malloc_float(0.0);
     mu_check(tree_desc_cmp(t1, t2) == -1);
 
 
     /* clean up */
     tree_destroy(t1);
     tree_destroy(t2);
-    return 0;
-}
-
-int test_copy_value(void)
-{
-    int *int_ptr;
-    float *float_ptr;
-    double *double_ptr;
-    char *str_ptr;
-
-    int int_value = 0;
-    float float_value = 10.0;
-    double doule_value = 100.0;
-    const char *str_value = "test";
-
-    int_ptr = copy_value(INTEGER, &int_value);
-    mu_check(intcmp(int_ptr, &int_value) == 0);
-
-    float_ptr = copy_value(FLOAT, &float_value);
-    mu_check(floatcmp(float_ptr, &float_value) == 0);
-
-    double_ptr = copy_value(DOUBLE, &doule_value);
-    mu_check(floatcmp(double_ptr, &doule_value) == 0);
-
-    str_ptr = copy_value(STRING, (void *) str_value);
-    mu_check(strcmp(str_ptr, str_value) == 0);
-
-    /* clean up */
-    free(int_ptr);
-    free(float_ptr);
-    free(double_ptr);
-    free(str_ptr);
     return 0;
 }
 
@@ -870,9 +837,6 @@ void test_suite(void)
     mu_add_test(test_tree_asc_cmp);
     mu_add_test(test_tree_desc_cmp);
     teardown_tree_test();
-
-    /* utils */
-    mu_add_test(test_copy_value);
 }
 
 mu_run_tests(test_suite)

@@ -5,7 +5,7 @@ LIB_DIR = $(PWD)/lib
 
 # INCLUDE AND LIBRARY PATHS
 INCLUDES = -I/usr/include -I/usr/local/include -I$(PWD)/include
-LIBS = -L/usr/lib -L/usr/local/lib -L$(LIB_DIR) -ldstruct -lal -lm
+LIBS = -L/usr/lib -L/usr/local/lib -L$(LIB_DIR) -lm -levolve
 
 # C COMPILER
 CC = clang
@@ -24,7 +24,7 @@ MAKE_EXE = \
 
 MAKE_STATIC_LIB = \
 	echo "LINK STATIC LIBRARY[$@]"; \
-	$(AR) $(ARFLAGS) $(LIB_DIR)/libdstruct.a $(addprefix $(OBJ_DIR)/, $(OBJS)); \
+	$(AR) $(ARFLAGS) $(LIB_DIR)/libevolve.a $(addprefix $(OBJ_DIR)/, $(OBJS)); \
 
 
 # ARCHIVER

@@ -39,7 +39,7 @@ int intcmp_desc(const void *v1, const void *v2)
 
 
 /* FLOAT COMPARATOR */
-int floatcmp(const void *v1, const void *v2)
+int fltcmp(const void *v1, const void *v2)
 {
     /* null-check */
     if (v1 == NULL || v2 == NULL) {
@@ -65,12 +65,49 @@ int floatcmp(const void *v1, const void *v2)
     }
 }
 
-int floatcmp_asc(const void *v1, const void *v2)
+int fltcmp_asc(const void *v1, const void *v2)
 {
-    return floatcmp(v1, v2);
+    return fltcmp(v1, v2);
 }
 
-int floatcmp_desc(const void *v1, const void *v2)
+int fltcmp_desc(const void *v1, const void *v2)
 {
-    return floatcmp(v1, v2) * -1;
+    return fltcmp(v1, v2) * -1;
+}
+
+/* DOUBLE COMPARATOR */
+int dblcmp(const void *v1, const void *v2)
+{
+    /* null-check */
+    if (v1 == NULL || v2 == NULL) {
+        if (v1 == NULL) {
+            return -1;
+        } else if (v1 == NULL) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    /* compare doubles */
+    if (fabs(*(double *) v1 - *(double *) v2) <= FLOAT_EPSILON) {
+        return 0;
+    } else if (*(double *) v1 > *(double *) v2) {
+        return 1;
+    } else if (*(double *) v1 < *(double *) v2) {
+        return -1;
+    } else {
+        printf("Error! Undefined runtime behaviour!\n");
+        return -1;
+    }
+}
+
+int dblcmp_asc(const void *v1, const void *v2)
+{
+    return dblcmp(v1, v2);
+}
+
+int dblcmp_desc(const void *v1, const void *v2)
+{
+    return dblcmp(v1, v2) * -1;
 }

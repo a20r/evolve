@@ -24,3 +24,9 @@ crossover_test: crossover_test.o
 
 mutation_test: mutation_test.o
 	$(MAKE_EXE)
+
+utils_test: utils_test.o
+	$(MAKE_EXE)
+
+csv_test: csv_test.o
+	$(MAKE_EXE)

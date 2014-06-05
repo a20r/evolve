@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "tree.h"
+#include "utils.h"
 #include "random.h"
 #include "mutation.h"
 

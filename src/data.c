@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "data.h"
+#include "dbg.h"
 
 
 struct data *data_new(int rows, int cols, char **fields)
@@ -11,6 +12,7 @@ struct data *data_new(int rows, int cols, char **fields)
     int j;
     struct data *d = malloc(sizeof(struct data));
 
+    /* rows and columns */
     d->rows = rows;
     d->cols = cols;
 
@@ -36,28 +38,11 @@ struct data *data_new(int rows, int cols, char **fields)
 
 int data_destroy(struct data *d)
 {
-    int i;
-    int j;
-
     /* free field names */
-    if (d->fields) {
-        for (i = 0; i < d->cols; i++) {
-            free(d->fields[i]);
-        }
-        free(d->fields);
-    }
+    release_mem_arr(d->fields, d->cols, free);
 
     /* free data */
-    if (d->data) {
-        for (i = 0; i < d->cols; i++) {  /* free columns */
-            for (j = 0; j < d->rows; j++) {  /* free rows */
-                free(d->data[i][j]);
-            }
-            free(d->data[i]);
-        }
-        free(d->data);
-    }
-
+    release_mem_2darr(d->data, d->rows, d->cols, free);
     free(d);
     return 0;
 }

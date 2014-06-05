@@ -167,8 +167,4 @@ struct node *tree_replace_node(struct node *old_node, struct node *new_node);
 int tree_asc_cmp(const void *t1, const void *t2);
 int tree_desc_cmp(const void *t1, const void *t2);
 
-/* utils */
-void *copy_value(int value_type, void *value);
-int cmp_values(int value_type, void *v1, void *v2);
-
 #endif

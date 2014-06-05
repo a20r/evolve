@@ -5,6 +5,7 @@
 
 #include "dbg.h"
 #include "cmp.h"
+#include "utils.h"
 #include "tree.h"
 #include "random.h"
 #include "population.h"
@@ -457,10 +458,10 @@ int node_equals(struct node *n1, struct node *n2)
             silent_check(intcmp(n1->value, n2->value) == 0);
             return 1;
         case FLOAT:
-            silent_check(floatcmp(n1->value, n2->value) == 0);
+            silent_check(fltcmp(n1->value, n2->value) == 0);
             return 1;
         case DOUBLE:
-            silent_check(floatcmp(n1->value, n2->value) == 0);
+            silent_check(fltcmp(n1->value, n2->value) == 0);
             return 1;
         case STRING:
             silent_check(strcmp(n1->value, n2->value) == 0);
@@ -809,7 +810,7 @@ int tree_equals(struct tree *t1, struct tree *t2)
     if (t1->score == NULL || t2->score == NULL) {
         silent_check(t1->score == t2->score);
     } else {
-        silent_check(floatcmp(t1->score, t2->score) == 0);
+        silent_check(fltcmp(t1->score, t2->score) == 0);
     }
 
     return node_deep_equals(t1->root, t2->root);
@@ -949,47 +950,4 @@ int tree_asc_cmp(const void *tree1, const void *tree2)
 int tree_desc_cmp(const void *tree1, const void *tree2)
 {
     return tree_asc_cmp(tree1, tree2) * -1;
-}
-
-/* utils */
-void *copy_value(int value_type, void *value)
-{
-    void *copy = NULL;
-
-    switch (value_type) {
-    case INTEGER:
-        copy = malloc(sizeof(int));
-        *(int *) copy = *(int *) value;
-        break;
-    case FLOAT:
-        copy = malloc(sizeof(float));
-        *(float *) copy = *(float *) value;
-        break;
-    case DOUBLE:
-        copy = malloc(sizeof(double));
-        *(double *) copy = *(double *) value;
-        break;
-    case STRING:
-        copy = malloc(sizeof(char) * strlen(value) + 1);
-        strcpy(copy, value);
-        break;
-    }
-
-    return copy;
-}
-
-int cmp_values(int value_type, void *v1, void *v2)
-{
-    switch (value_type) {
-    case INTEGER:
-        return intcmp(v1, v2);
-    case FLOAT:
-        return floatcmp(v1, v2);
-    case DOUBLE:
-        return floatcmp(v1, v2);
-    case STRING:
-        return strcmp(v1, v2);
-    default:
-        return -2;
-    }
 }
