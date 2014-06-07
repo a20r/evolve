@@ -254,6 +254,7 @@ struct node *node_new(int type)
     n->terminal_type = -1;
     n->value_type = -1;
     n->value = NULL;
+    n->values = NULL;
 
     /* function node specific */
     n->function_type = -1;
@@ -310,6 +311,17 @@ struct node *node_new_constant(int value_type, void *value)
     return n;
 }
 
+struct node *node_new_eval(int value_type, void **values)
+{
+    struct node *n = node_new(TERM_NODE);
+
+    n->terminal_type = EVAL;
+    n->value_type = value_type;
+    n->values = values;
+
+    return n;
+}
+
 int node_destroy(struct node *n)
 {
     if (n == NULL) {
@@ -318,6 +330,8 @@ int node_destroy(struct node *n)
     } else if (n->type == TERM_NODE) {
         if (n->terminal_type == RANDOM_CONSTANT) {
             free(n->value);
+        } else if (n->terminal_type == EVAL) {
+            free(n->values);
         }
 
     } else if (n->type == FUNC_NODE) {
@@ -340,6 +354,8 @@ int node_clear_destroy(struct node *n)
     } else if (n->type == TERM_NODE) {
         if (n->terminal_type == RANDOM_CONSTANT) {
             free(n->value);
+        } else if (n->terminal_type == EVAL) {
+            free(n->values);
         }
 
     } else if (n->type == FUNC_NODE) {

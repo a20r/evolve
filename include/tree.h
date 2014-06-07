@@ -12,6 +12,7 @@
 #define INPUT 0
 #define CONSTANT 1
 #define RANDOM_CONSTANT 2
+#define EVAL 3
 
 /* TERMINAL VALUE TYPE */
 #define INTEGER 0
@@ -73,6 +74,7 @@ struct node {
     int terminal_type;
     int value_type;
     void *value;
+    void **values;
 
     int function_type;
     int function;
@@ -120,6 +122,7 @@ struct node *node_new_func(int function, int arity);
 struct node *node_new_cfunc(int function, int arity);
 struct node *node_new_input(char *input_name);
 struct node *node_new_constant(int value_type, void *value);
+struct node *node_new_eval(int value_type, void **values);
 int node_destroy(struct node *n);
 int node_clear_destroy(struct node *n);
 void *node_copy(void *src);
