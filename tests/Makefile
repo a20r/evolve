@@ -30,3 +30,6 @@ utils_test: utils_test.o
 
 csv_test: csv_test.o
 	$(MAKE_EXE)
+
+regression_test: regression_test.o
+	$(MAKE_EXE)

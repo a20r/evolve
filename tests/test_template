@@ -21,8 +21,7 @@ int test_something(void)
 
 void test_suite(void)
 {
-
-
+    mu_add_test(test_something);
 }
 
 mu_run_tests(test_suite)

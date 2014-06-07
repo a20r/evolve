@@ -12,23 +12,23 @@
     }
 
 #define free_mem_arr(TARGET, NELEM, FREE_FUNC) \
-    int z; \
+    int _i; \
     if (TARGET) { \
-        for (z = 0; z < NELEM; z++) { \
-            FREE_FUNC((void *) TARGET[z]); \
+        for (_i = 0; _i < NELEM; _i++) { \
+            FREE_FUNC((void *) TARGET[_i]); \
         } \
         FREE_FUNC((void *) TARGET); \
     }
 
 #define free_mem_2darr(TARGET, ROWS, COLS, FREE_FUNC) \
-    int a; \
-    int b; \
+    int _j; \
+    int _k; \
     if (TARGET) { \
-        for (a = 0; a < COLS; a++) { \
-            for (b = 0; b < ROWS; b++) { \
-                FREE_FUNC((void *) TARGET[a][b]); \
+        for (_j = 0; _j < COLS; _j++) { \
+            for (_k = 0; _k < ROWS; _k++) { \
+                FREE_FUNC((void *) TARGET[_j][_k]); \
             } \
-            FREE_FUNC((void *) TARGET[a]); \
+            FREE_FUNC((void *) TARGET[_j]); \
         } \
         FREE_FUNC((void *) TARGET); \
     }

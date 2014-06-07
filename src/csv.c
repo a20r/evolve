@@ -24,7 +24,7 @@ int csv_num_cols(FILE *f, const char *token)
         }
     }
 
-    if (cols > 1) {
+    if (cols > 0) {
         cols++;
     }
     rewind(f);

@@ -4,10 +4,10 @@
 #include <time.h>
 
 #ifndef MU_PRINT
-#define MU_PRINT 1
+#define MU_PRINT 0
 #endif
 
-#define TEST_DATA "./tests/data/iris.csv"
+#define IRIS_DATA "./tests/data/iris.csv"
 
 #include "munit.h"
 #include "csv.h"
@@ -30,7 +30,7 @@ int test_csv_num_cols(void)
     int cols;
     const char *token = ",";
 
-    FILE *f = fopen(TEST_DATA, "r");
+    FILE *f = fopen(IRIS_DATA, "r");
     cols = csv_num_cols(f, token);
     mu_check(cols == 5);
     mu_print("cols: %d\n", cols);
@@ -43,7 +43,7 @@ int test_csv_num_rows(void)
 {
     int rows;
 
-    FILE *f = fopen(TEST_DATA, "r");
+    FILE *f = fopen(IRIS_DATA, "r");
     rows = csv_num_rows(f, 1);
     mu_check(rows == 150);
     mu_print("rows: %d\n", rows);
@@ -55,7 +55,7 @@ int test_csv_num_rows(void)
 int test_csv_parse_header(void)
 {
     int i;
-    FILE *f = fopen(TEST_DATA, "r");
+    FILE *f = fopen(IRIS_DATA, "r");
     int cols = csv_num_cols(f, ",");
     const char **fields = csv_parse_header(f, cols, ",");
 
@@ -75,7 +75,7 @@ int test_csv_parse_header(void)
 int test_csv_info(void)
 {
     int i;
-    FILE *f = fopen(TEST_DATA, "r");
+    FILE *f = fopen(IRIS_DATA, "r");
     const char *token = ",";
     struct data *d = csv_info(f, 1, token);
 
@@ -113,7 +113,7 @@ int test_csv_load_data(void)
     int j;
     struct data *d;
 
-    d = csv_load_data(TEST_DATA, 1, ",");
+    d = csv_load_data(IRIS_DATA, 1, ",");
     for (i = 0; i < d->rows; i++) {
         for (j = 0; j < d->cols; j++) {
             mu_print("%f ", *(float *) d->data[j][i]);

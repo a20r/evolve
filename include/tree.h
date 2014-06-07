@@ -1,6 +1,9 @@
 #ifndef __TREE__
 #define __TREE__
 
+#include "data.h"
+
+
 /* NODE TYPE */
 #define TERM_NODE 0
 #define FUNC_NODE 1
@@ -133,6 +136,7 @@ struct node *node_random_term(struct terminal_set *ts);
 struct tree *tree_new(struct function_set *fs);
 int tree_destroy(void *t);
 void *tree_copy(void *t);
+struct node **tree_copy_chromosome(struct tree *t);
 int tree_traverse(struct node *n, int (*callback)(struct node *));
 void tree_build(
     int method,

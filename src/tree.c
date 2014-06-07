@@ -797,6 +797,18 @@ void *tree_copy(void *src)
     return (void *) copy;
 }
 
+struct node **tree_copy_chromosome(struct tree *t)
+{
+    int i;
+    struct node **copy = malloc(sizeof(struct node) * (unsigned long) t->size);
+
+    for (i = 0; i < t->size; i++) {
+        copy[i] = node_copy(t->chromosome[i]);
+    }
+
+    return copy;
+}
+
 float tree_score(void *t)
 {
     return *(float *) ((struct tree *) t)->score;
@@ -951,3 +963,4 @@ int tree_desc_cmp(const void *tree1, const void *tree2)
 {
     return tree_asc_cmp(tree1, tree2) * -1;
 }
+
