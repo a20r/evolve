@@ -13,6 +13,7 @@
 #include "tree.h"
 #include "random.h"
 #include "regression.h"
+#include "population.h"
 
 /* GLOBAL VARS */
 static struct function_set *fs = NULL;
@@ -48,6 +49,8 @@ void setup_tree_test(void);
 void teardown_tree_test(void);
 int test_tree_new_and_destroy(void);
 int test_tree_build(void);
+int test_tree_generate(void);
+int test_tree_population(void);
 int test_tree_equals(void);
 int test_tree_size(void);
 int test_tree_string(void);
@@ -586,6 +589,36 @@ int test_tree_build(void)
     return 0;
 }
 
+int test_tree_generate(void)
+{
+    char *tree_str;
+
+    tree = tree_generate(FULL, fs, ts, 2);
+    tree_str = tree_string(tree);
+    mu_check(strlen(tree_str) > 0);
+
+    tree_destroy(tree);
+    free(tree_str);
+    return 0;
+}
+
+int test_tree_population(void)
+{
+    int i;
+    char *tree_str;
+    struct population *p = tree_population(100, FULL, fs, ts, 2);
+
+    for (i = 0; i < 100; i++) {
+        tree = p->individuals[i];
+        tree_str = tree_string(tree);
+        mu_check(strlen(tree_str) > 0);
+        free(tree_str);
+    }
+
+    population_destroy(p, tree_destroy);
+    return 0;
+}
+
 int test_tree_equals(void)
 {
     /* tree */
@@ -829,6 +862,8 @@ void test_suite(void)
     setup_tree_test();
     mu_add_test(test_tree_new_and_destroy);
     mu_add_test(test_tree_build);
+    mu_add_test(test_tree_generate);
+    mu_add_test(test_tree_population);
     mu_add_test(test_tree_equals);
     mu_add_test(test_tree_size);
     mu_add_test(test_tree_string);

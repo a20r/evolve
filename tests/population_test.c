@@ -3,8 +3,13 @@
 #include <string.h>
 #include <time.h>
 
+#ifndef MU_PRINT
+#define MU_PRINT 1
+#endif
+
 #include "munit.h"
 #include "tree.h"
+#include "utils.h"
 #include "random.h"
 #include "population.h"
 #include "regression.h"
@@ -34,29 +39,30 @@ int free_wrapper(void *value)
 
 void setup_population()
 {
-    int i = 0;
+    int i;
     int size = 10;
-    p = population_new(size, sizeof(struct tree *));
+    struct tree *t;
 
     /* function set */
-    struct function *functions[9] = {
+    struct function *functions[10] = {
         function_new_func(ADD, 2),
         function_new_func(SUB, 2),
         function_new_func(MUL, 2),
         function_new_func(DIV, 2),
         function_new_func(POW, 2),
 
-        function_new_func(LOG, 2),
+        function_new_func(LOG, 1),
         function_new_func(EXP, 1),
+        function_new_func(RAD, 1),
         function_new_func(SIN, 1),
         function_new_func(COS, 1)
     };
     fs = function_set_new(functions, 10);
 
     /* terminal set */
-    int one = 1;
-    float two = 2.0;
-    const char *three = "three";
+    int *one = malloc_int(1);
+    float *two = malloc_float(2.0);
+    char *three = malloc_string("three");
 
     struct terminal *terminals[3] = {
         terminal_new_constant(INTEGER, &one),
@@ -66,16 +72,15 @@ void setup_population()
     ts = terminal_set_new(terminals, 3);
 
     /* create trees */
-    struct tree *t = NULL;
+    p = tree_population(size, FULL, fs, ts, 5);
     for (i = 0; i < size; i++) {
-        t = tree_generate(FULL, fs, ts, 2);
-        t->score = malloc(sizeof(float));
-        *(t->score) = randf(0.0, 100);
-
-        printf("tree[%d]: %f\n", i, *(float *) t->score);
-
-        p->individuals[i] = t;
+        t = p->individuals[i];
+        t->score = malloc_float(randf(0, 100));
     }
+
+    free(one);
+    free(two);
+    free(three);
 }
 
 void teardown_population()
@@ -105,18 +110,27 @@ int test_population_new_and_destroy(void)
 
 int test_population_best(void)
 {
+    int i;
     struct tree *t = NULL;
 
     setup_population();
 
+    /* list trees in population */
+    for (i = 0; i < p->size; i++) {
+        t = p->individuals[i];
+        mu_print("tree[%d]: %f\n", i, *t->score);
+    }
+    mu_print("----------\n");
 
-    /* find lowest and highest scoring trees */
-    printf("----------\n");
+    /* find lowest scoring trees */
     t = (struct tree *) population_best(p, tree_desc_cmp);
-    printf("lowest score: %f\n", *(float *) t->score);
+    mu_print("lowest score: %f\n", *(float *) t->score);
 
+    mu_print("----------\n");
+
+    /* find highest scoring trees */
     t = (struct tree *) population_best(p, tree_asc_cmp);
-    printf("highest score: %f\n", *(float *) t->score);
+    mu_print("highest score: %f\n", *(float *) t->score);
 
     teardown_population();
 

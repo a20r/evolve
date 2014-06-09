@@ -33,3 +33,6 @@ csv_test: csv_test.o
 
 regression_test: regression_test.o
 	$(MAKE_EXE)
+
+stack_test: stack_test.o
+	$(MAKE_EXE)

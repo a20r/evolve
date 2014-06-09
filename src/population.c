@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "tree.h"
 #include "random.h"
 #include "population.h"
 

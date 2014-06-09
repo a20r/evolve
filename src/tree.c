@@ -312,7 +312,7 @@ struct node *node_new_constant(int value_type, void *value)
     return n;
 }
 
-struct node *node_new_eval(int value_type, void **values, int n_values)
+struct node *node_new_eval(int value_type, void *values, int n_values)
 {
     struct node *n = node_new(TERM_NODE);
 
@@ -357,9 +357,6 @@ int node_clear_destroy(struct node *n)
         if (n->terminal_type == RANDOM_CONSTANT) {
             free(n->value);
         } else if (n->terminal_type == EVAL) {
-            for (i = 0; i < n->n_values; i++) {
-                free(n->values[i]);
-            }
             free(n->values);
         }
 
@@ -583,6 +580,8 @@ int node_print(struct node *n)
             } else if (n->value_type == STRING) {
                 printf("T[%s] ", (char *) n->value);
             }
+        } else {
+                printf("T[EVAL] ");
         }
     } else if (n->type == FUNC_NODE) {
         printf("F[%d] ", n->function);
@@ -660,6 +659,7 @@ struct tree *tree_new(struct function_set *fs)
     t->size = 1;
     t->depth = 0;
     t->score = NULL;
+    t->hits = 0;
     t->chromosome = NULL;
 
     return t;
@@ -676,7 +676,7 @@ int tree_destroy(void *t)
 
     node_clear_destroy(target->root);
     free(target->score);
-    free_mem_arr(target->chromosome, target->size, node_destroy);
+    free(target->chromosome);
     free(t);
 
     return 0;

@@ -18,19 +18,34 @@
 
 #define PI 3.14159265358979323846
 
+struct regression_stack
+{
+    struct node **stack;
+    int end;
+};
+
 
 /* FUNCTIONS */
-float **regression_stack_pop(int index, struct node **stack, struct data *d);
+int regression_stack_pop(
+    struct node *n,
+    struct data *d,
+    float **func_input,
+    int nth_arity
+);
 void regression_stack_destroy(int index, int end, struct node **stack);
-void regression_free_vals(
-    int in1_type,
-    float **in1,
-    int in2_type,
-    float **in2,
+int regression_traverse(
+    int index,
+    int end,
+    struct node **stack,
+    float **func_input,
     struct data *d
 );
-int regression_traverse(int index, int end, struct node **stack, struct data *d);
-int regression_evaluate(struct tree *t, struct data *d, char *resp);
+int regression_evaluate(
+    struct tree *t,
+    float **func_input,
+    struct data *d,
+    char *resp
+);
 int regression_evaluate_population(struct population *p, struct data *d);
 
 #endif

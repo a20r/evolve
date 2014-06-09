@@ -73,7 +73,7 @@ struct node {
     int value_type;
     void *value;
     int n_values;
-    void **values;
+    void *values;
 
     int function_type;
     int function;
@@ -88,6 +88,7 @@ struct tree {
     int depth;
 
     float *score;
+    int hits;
     struct node **chromosome;
 };
 
@@ -121,7 +122,7 @@ struct node *node_new_func(int function, int arity);
 struct node *node_new_cfunc(int function, int arity);
 struct node *node_new_input(char *input_name);
 struct node *node_new_constant(int value_type, void *value);
-struct node *node_new_eval(int value_type, void **values, int n_values);
+struct node *node_new_eval(int value_type, void *values, int n_values);
 int node_destroy(struct node *n);
 int node_clear_destroy(struct node *n);
 void *node_copy(void *src);
