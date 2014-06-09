@@ -9,6 +9,7 @@
 #include "munit.h"
 #include "csv.h"
 #include "cmp.h"
+#include "utils.h"
 #include "regression.h"
 
 #define TEST_DATA "./tests/data/sine.csv"
@@ -17,6 +18,7 @@
 /* TESTS */
 int test_regression_pop_stack(void);
 int test_regression_traverse(void);
+int test_regression_evaluate(void);
 void test_suite(void);
 
 
@@ -25,12 +27,18 @@ int test_regression_pop_stack(void)
     int i;
     float f = 1.0;
     float **values;
-    struct node **stack = malloc(sizeof(struct node *) * 3);
+    struct node **stack = malloc(sizeof(struct node *) * 4);
     struct data *d = csv_load_data(TEST_DATA, 1, ",");
+    float **f_arr = malloc(sizeof(float *) * (unsigned long) d->rows);
+
+    for (i = 0; i < d->rows; i++) {
+        f_arr[i] = malloc_float(i);
+    }
 
     stack[0] = node_new_input((char *) "x");
     stack[1] = node_new_input((char *) "y");
     stack[2] = node_new_constant(FLOAT, &f);
+    stack[3] = node_new_eval(FLOAT, (void **) f_arr);
 
     /* check input node - x */
     values = regression_pop_stack(0, stack, d);
@@ -49,11 +57,20 @@ int test_regression_pop_stack(void)
     for (i = 0; i < d->rows; i++) {
         mu_check(fltcmp(values[i], &f) == 0);
     }
+    free(values);
+
+    /* check constant node */
+    values = regression_pop_stack(3, stack, d);
+    for (i = 0; i < d->rows; i++) {
+        f = (float) i;
+        mu_check(fltcmp(values[i], &f) == 0);
+        free(values[i]);
+    }
+    free(values);
 
     /* clean up */
     data_destroy(d);
     free(stack);
-    free(values);
     return 0;
 }
 
@@ -81,8 +98,6 @@ int test_regression_traverse(void)
         mu_check(fltcmp(&result, &f3) == 0);
         free(stack[2]->values[i]);
     }
-    node_destroy(stack[0]);
-    node_destroy(stack[1]);
     node_destroy(stack[2]);
 
 
@@ -93,14 +108,12 @@ int test_regression_traverse(void)
     regression_traverse(0, 2, stack, d);
 
     for (i = 0; i < d->rows; i++) {
-        f3 = f2 - f1;
+        f3 = f1 - f2;
         result = *(float *) stack[2]->values[i];
 
         mu_check(fltcmp(&result, &f3) == 0);
         free(stack[2]->values[i]);
     }
-    node_destroy(stack[0]);
-    node_destroy(stack[1]);
     node_destroy(stack[2]);
 
 
@@ -111,32 +124,28 @@ int test_regression_traverse(void)
     regression_traverse(0, 2, stack, d);
 
     for (i = 0; i < d->rows; i++) {
-        f3 = f2 * f1;
+        f3 = f1 * f2;
         result = *(float *) stack[2]->values[i];
 
         mu_check(fltcmp(&result, &f3) == 0);
         free(stack[2]->values[i]);
     }
-    node_destroy(stack[0]);
-    node_destroy(stack[1]);
     node_destroy(stack[2]);
 
 
     /* DIV */
     stack[0] = node_new_constant(FLOAT, &f1);
     stack[1] = node_new_constant(FLOAT, &f2);
-    stack[2] = node_new_func(MUL, 2);
+    stack[2] = node_new_func(DIV, 2);
     regression_traverse(0, 2, stack, d);
 
     for (i = 0; i < d->rows; i++) {
-        f3 = f2 / f1;
+        f3 = f1 / f2;
         result = *(float *) stack[2]->values[i];
 
         mu_check(fltcmp(&result, &f3) == 0);
         free(stack[2]->values[i]);
     }
-    node_destroy(stack[0]);
-    node_destroy(stack[1]);
     node_destroy(stack[2]);
 
 
@@ -147,14 +156,12 @@ int test_regression_traverse(void)
     regression_traverse(0, 2, stack, d);
 
     for (i = 0; i < d->rows; i++) {
-        f3 = (float) pow(f2, f1);
+        f3 = (float) pow(f1, f2);
         result = *(float *) stack[2]->values[i];
 
         mu_check(fltcmp(&result, &f3) == 0);
         free(stack[2]->values[i]);
     }
-    node_destroy(stack[0]);
-    node_destroy(stack[1]);
     node_destroy(stack[2]);
 
 
@@ -170,7 +177,6 @@ int test_regression_traverse(void)
         mu_check(fltcmp(&result, &f3) == 0);
         free(stack[1]->values[i]);
     }
-    node_destroy(stack[0]);
     node_destroy(stack[1]);
 
 
@@ -186,7 +192,20 @@ int test_regression_traverse(void)
         mu_check(fltcmp(&result, &f3) == 0);
         free(stack[1]->values[i]);
     }
-    node_destroy(stack[0]);
+    node_destroy(stack[1]);
+
+    /* RAD */
+    stack[0] = node_new_constant(FLOAT, &f1);
+    stack[1] = node_new_func(RAD, 1);
+    regression_traverse(0, 1, stack, d);
+
+    for (i = 0; i < d->rows; i++) {
+        f3 = (float) f1 * (float) (PI / 180.0);
+        result = *(float *) stack[1]->values[i];
+
+        mu_check(fltcmp(&result, &f3) == 0);
+        free(stack[1]->values[i]);
+    }
     node_destroy(stack[1]);
 
 
@@ -202,7 +221,6 @@ int test_regression_traverse(void)
         mu_check(fltcmp(&result, &f3) == 0);
         free(stack[1]->values[i]);
     }
-    node_destroy(stack[0]);
     node_destroy(stack[1]);
 
 
@@ -218,7 +236,6 @@ int test_regression_traverse(void)
         mu_check(fltcmp(&result, &f3) == 0);
         free(stack[1]->values[i]);
     }
-    node_destroy(stack[0]);
     node_destroy(stack[1]);
 
 
@@ -228,10 +245,44 @@ int test_regression_traverse(void)
     return 0;
 }
 
+int test_regression_evaluate(void)
+{
+    int res;
+    float f = 100.0;
+    struct tree *t;
+    struct node **stack = malloc(sizeof(struct node *) * 5);
+    struct data *d = csv_load_data(TEST_DATA, 1, ",");
+
+    /* stack */
+    stack[0] = node_new_constant(FLOAT, &f);
+    stack[1] = node_new_input((char *) "x");
+    stack[2] = node_new_func(MUL, 2);
+    stack[3] = node_new_func(RAD, 1);
+    stack[4] = node_new_func(SIN, 1);
+
+    /* tree */
+    t = malloc(sizeof(struct tree));
+    t->root = NULL;
+    t->size = 5;
+    t->depth = -1;
+    t->score = NULL;
+    t->chromosome = stack;
+
+    /* evaluation */
+    res = regression_evaluate(t, d, (char *) "y");
+    mu_check(res == 0);
+
+    /* clean up */
+    tree_destroy(t);
+    data_destroy(d);
+    return 0;
+}
+
 void test_suite(void)
 {
     mu_add_test(test_regression_pop_stack);
     mu_add_test(test_regression_traverse);
+    mu_add_test(test_regression_evaluate);
 }
 
 mu_run_tests(test_suite)

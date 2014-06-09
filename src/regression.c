@@ -3,6 +3,7 @@
 #include <math.h>
 
 #include "dbg.h"
+#include "cmp.h"
 #include "tree.h"
 #include "utils.h"
 #include "regression.h"
@@ -16,10 +17,17 @@ float **regression_pop_stack(int index, struct node **stack, struct data *d)
 
     if (n->terminal_type == INPUT) {
         values = d->data[data_field_index(d, n->value)];
+
     } else if (n->terminal_type == CONSTANT) {
         values = malloc(sizeof(float *) * (unsigned long) d->rows);
         for (i = 0; i < d->rows; i++) {
             values[i] = n->value;
+        }
+
+    } else if (n->terminal_type == EVAL) {
+        values = malloc(sizeof(float *) * (unsigned long) d->rows);
+        for (i = 0; i < d->rows; i++) {
+            values[i] = n->values[i];
         }
     }
 
@@ -32,6 +40,8 @@ float **regression_pop_stack(int index, struct node **stack, struct data *d)
 int regression_traverse(int index, int end, struct node **stack, struct data *d)
 {
     int i;
+    int val_1_type = -1;
+    int val_2_type = -1;
     float res;
     float **result = NULL;
     float **val_1 = NULL;
@@ -39,18 +49,24 @@ int regression_traverse(int index, int end, struct node **stack, struct data *d)
     struct node *n = stack[index];
 
     if (n->type == FUNC_NODE) {
+        /* result array */
         result = malloc(sizeof(float *) * (unsigned long) d->rows);
 
+        /* pop stack */
         if (n->arity == 2) {
-            val_1 = regression_pop_stack(index - 1, stack, d);
-            val_2 = regression_pop_stack(index - 2, stack, d);
+            val_1_type = stack[index - 2]->terminal_type;
+            val_2_type = stack[index - 1]->terminal_type;
+            val_1 = regression_pop_stack(index - 2, stack, d);
+            val_2 = regression_pop_stack(index - 1, stack, d);
+
         } else if (n->arity == 1) {
+            val_1_type = stack[index - 1]->terminal_type;
             val_1 = regression_pop_stack(index - 1, stack, d);
         }
 
+        /* evaluate function */
         switch (n->function) {
-        /* ADD */
-        case 0:
+        case ADD:
             for (i = 0; i < d->rows; i++) {
                 res = *(float *) val_1[i] + *(float *) val_2[i];
                 result[i] = malloc_float(res);
@@ -58,8 +74,7 @@ int regression_traverse(int index, int end, struct node **stack, struct data *d)
             stack[index] = node_new_eval(FLOAT, (void **) result);
             break;
 
-        /* SUB */
-        case 1:
+        case SUB:
             for (i = 0; i < d->rows; i++) {
                 res = *(float *) val_1[i] - *(float *) val_2[i];
                 result[i] = malloc_float(res);
@@ -67,8 +82,7 @@ int regression_traverse(int index, int end, struct node **stack, struct data *d)
             stack[index] = node_new_eval(FLOAT, (void **) result);
             break;
 
-        /* MUL */
-        case 2:
+        case MUL:
             for (i = 0; i < d->rows; i++) {
                 res = *(float *) val_1[i] * *(float *) val_2[i];
                 result[i] = malloc_float(res);
@@ -76,8 +90,7 @@ int regression_traverse(int index, int end, struct node **stack, struct data *d)
             stack[index] = node_new_eval(FLOAT, (void **) result);
             break;
 
-        /* DIV */
-        case 3:
+        case DIV:
             for (i = 0; i < d->rows; i++) {
                 res = *(float *) val_1[i] / *(float *) val_2[i];
                 result[i] = malloc_float(res);
@@ -85,8 +98,7 @@ int regression_traverse(int index, int end, struct node **stack, struct data *d)
             stack[index] = node_new_eval(FLOAT, (void **) result);
             break;
 
-        /* POW */
-        case 4:
+        case POW:
             for (i = 0; i < d->rows; i++) {
                 res = (float) pow(*(float *) val_1[i], *(float *) val_2[i]);
                 result[i] = malloc_float(res);
@@ -94,32 +106,36 @@ int regression_traverse(int index, int end, struct node **stack, struct data *d)
             stack[index] = node_new_eval(FLOAT, (void **) result);
             break;
 
-        /* LOG */
-        case 5:
+        case LOG:
             for (i = 0; i < d->rows; i++) {
                 result[i] = malloc_float((float) log(*(float *) val_1[i]));
             }
             stack[index] = node_new_eval(FLOAT, (void **) result);
             break;
 
-        /* EXP */
-        case 6:
+        case EXP:
             for (i = 0; i < d->rows; i++) {
                 result[i] = malloc_float((float) exp(*(float *) val_1[i]));
             }
             stack[index] = node_new_eval(FLOAT, (void **) result);
             break;
 
-        /* SIN */
-        case 7:
+        case RAD:
+            for (i = 0; i < d->rows; i++) {
+                res = *(float *) val_1[i] * (float) (PI / 180.0);
+                result[i] = malloc_float(res);
+            }
+            stack[index] = node_new_eval(FLOAT, (void **) result);
+            break;
+
+        case SIN:
             for (i = 0; i < d->rows; i++) {
                 result[i] = malloc_float((float) sin(*(float *) val_1[i]));
             }
             stack[index] = node_new_eval(FLOAT, (void **) result);
             break;
 
-        /* COS */
-        case 8:
+        case COS:
             for (i = 0; i < d->rows; i++) {
                 result[i] = malloc_float((float) cos(*(float *) val_1[i]));
             }
@@ -131,9 +147,20 @@ int regression_traverse(int index, int end, struct node **stack, struct data *d)
             return -1;
         }
 
+        /* clean up */
+        if (val_1_type == EVAL) {
+            free_mem_arr(val_1, d->rows, free);
+        } else if (val_1_type == CONSTANT) {
+            free(val_1);
+        }
+
+        if (val_2_type == EVAL) {
+            free_mem_arr(val_2, d->rows, free);
+        } else if (val_2_type == CONSTANT) {
+            free(val_2);
+        }
+
         node_destroy(n);
-        free_mem(val_1, free);
-        free_mem(val_2, free);
     }
 
     if (index == end) {
@@ -143,16 +170,39 @@ int regression_traverse(int index, int end, struct node **stack, struct data *d)
     }
 }
 
-float *regression_evaluate(struct tree *t, struct data *d)
+int regression_evaluate(struct tree *t, struct data *d, char *resp)
 {
+    int i;
     int res;
-    float *score = NULL;
+    int hits = 0;
+    int col = data_field_index(d, resp);
+    float err = 0.0;
+    float sse = 0.0;
     struct node **stack = tree_copy_chromosome(t);
+    struct node *n;
 
-    res = regression_traverse(0, t->size, stack, d);
+    /* evaluate stack */
+    res = regression_traverse(0, t->size - 1, stack, d);
     silent_check(res != -1);
+    n = stack[t->size - 1];
 
-    return score;
+    /* check results */
+    for (i = 0; i < d->rows; i++) {
+        if (fltcmp(n->values[i], d->data[col][i]) == 0) {
+            hits++;
+        }
+
+        err = (float) fabs(*(float *) n->values[i] - *(float *) d->data[col][i]);
+        err = (float) pow(err, 2);
+        sse += err;
+
+        free(n->values[i]);
+    }
+    node_destroy(n);
+    free(stack);
+    t->score = malloc_float(sse + t->size);
+
+    return 0;
 error:
-    return NULL;
+    return -1;
 }

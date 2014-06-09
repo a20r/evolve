@@ -397,6 +397,8 @@ void *node_copy(void *s)
 
         if (src->terminal_type == RANDOM_CONSTANT) {
             cpy->value = copy_value(src->value_type, src->value);
+        } else if (src->terminal_type == EVAL) {
+            cpy->value = copy_value(src->value_type, src->value);
         } else {
             cpy->value = src->value;
         }
@@ -438,6 +440,8 @@ void *node_deepcopy(void *s)
         cpy->value_type = src->value_type;
 
         if (src->terminal_type == RANDOM_CONSTANT) {
+            cpy->value = copy_value(src->value_type, src->value);
+        } else if (src->terminal_type == EVAL) {
             cpy->value = copy_value(src->value_type, src->value);
         } else {
             cpy->value = src->value;
@@ -666,7 +670,7 @@ int tree_destroy(void *t)
 
     node_clear_destroy(target->root);
     free(target->score);
-    free(target->chromosome);
+    free_mem_arr(target->chromosome, target->size, node_destroy);
     free(t);
 
     return 0;
