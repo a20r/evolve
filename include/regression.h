@@ -20,8 +20,17 @@
 
 
 /* FUNCTIONS */
-float **regression_pop_stack(int index, struct node **stack, struct data *d);
+float **regression_stack_pop(int index, struct node **stack, struct data *d);
+void regression_stack_destroy(int index, int end, struct node **stack);
+void regression_free_vals(
+    int in1_type,
+    float **in1,
+    int in2_type,
+    float **in2,
+    struct data *d
+);
 int regression_traverse(int index, int end, struct node **stack, struct data *d);
 int regression_evaluate(struct tree *t, struct data *d, char *resp);
+int regression_evaluate_population(struct population *p, struct data *d);
 
 #endif

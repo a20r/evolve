@@ -16,13 +16,14 @@
 
 
 /* TESTS */
-int test_regression_pop_stack(void);
+int test_regression_stack_pop(void);
+int test_regression_stack_destroy(void);
 int test_regression_traverse(void);
 int test_regression_evaluate(void);
 void test_suite(void);
 
 
-int test_regression_pop_stack(void)
+int test_regression_stack_pop(void)
 {
     int i;
     float f = 1.0;
@@ -31,36 +32,38 @@ int test_regression_pop_stack(void)
     struct data *d = csv_load_data(TEST_DATA, 1, ",");
     float **f_arr = malloc(sizeof(float *) * (unsigned long) d->rows);
 
+    /* create float array */
     for (i = 0; i < d->rows; i++) {
         f_arr[i] = malloc_float(i);
     }
 
+    /* create stack */
     stack[0] = node_new_input((char *) "x");
     stack[1] = node_new_input((char *) "y");
     stack[2] = node_new_constant(FLOAT, &f);
-    stack[3] = node_new_eval(FLOAT, (void **) f_arr);
+    stack[3] = node_new_eval(FLOAT, (void **) f_arr, d->rows);
 
     /* check input node - x */
-    values = regression_pop_stack(0, stack, d);
+    values = regression_stack_pop(0, stack, d);
     for (i = 0; i < d->rows; i++) {
         mu_check(fltcmp(values[i], d->data[0][i]) == 0);
     }
 
     /* check input node - y */
-    values = regression_pop_stack(1, stack, d);
+    values = regression_stack_pop(1, stack, d);
     for (i = 0; i < d->rows; i++) {
         mu_check(fltcmp(values[i], d->data[1][i]) == 0);
     }
 
     /* check constant node */
-    values = regression_pop_stack(2, stack, d);
+    values = regression_stack_pop(2, stack, d);
     for (i = 0; i < d->rows; i++) {
         mu_check(fltcmp(values[i], &f) == 0);
     }
     free(values);
 
     /* check constant node */
-    values = regression_pop_stack(3, stack, d);
+    values = regression_stack_pop(3, stack, d);
     for (i = 0; i < d->rows; i++) {
         f = (float) i;
         mu_check(fltcmp(values[i], &f) == 0);
@@ -71,6 +74,32 @@ int test_regression_pop_stack(void)
     /* clean up */
     data_destroy(d);
     free(stack);
+    return 0;
+}
+
+int test_regression_stack_destroy(void)
+{
+    int i;
+    float f = 1.0;
+    struct node **stack = malloc(sizeof(struct node *) * 5);
+    struct data *d = csv_load_data(TEST_DATA, 1, ",");
+    float **f_arr = malloc(sizeof(float *) * (unsigned long) d->rows);
+
+    /* create float array */
+    for (i = 0; i < d->rows; i++) {
+        f_arr[i] = malloc_float(i);
+    }
+
+    /* create stack */
+    stack[0] = node_new_input((char *) "x");
+    stack[1] = node_new_input((char *) "y");
+    stack[2] = node_new_constant(FLOAT, &f);
+    stack[3] = node_new_eval(FLOAT, (void **) f_arr, d->rows);
+    stack[4] = node_new_func(ADD, 2);
+
+    regression_stack_destroy(0, 4, stack);
+
+    data_destroy(d);
     return 0;
 }
 
@@ -249,6 +278,7 @@ int test_regression_evaluate(void)
 {
     int res;
     float f = 100.0;
+    float solution_score = 5.0;
     struct tree *t;
     struct node **stack = malloc(sizeof(struct node *) * 5);
     struct data *d = csv_load_data(TEST_DATA, 1, ",");
@@ -271,6 +301,7 @@ int test_regression_evaluate(void)
     /* evaluation */
     res = regression_evaluate(t, d, (char *) "y");
     mu_check(res == 0);
+    mu_check(fltcmp(t->score,  &solution_score) == 0);
 
     /* clean up */
     tree_destroy(t);
@@ -280,7 +311,8 @@ int test_regression_evaluate(void)
 
 void test_suite(void)
 {
-    mu_add_test(test_regression_pop_stack);
+    mu_add_test(test_regression_stack_pop);
+    mu_add_test(test_regression_stack_destroy);
     mu_add_test(test_regression_traverse);
     mu_add_test(test_regression_evaluate);
 }
