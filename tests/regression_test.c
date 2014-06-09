@@ -110,6 +110,7 @@ int test_regression_traverse(void)
     float f1 = 1.0;
     float f2 = 2.0;
     float f3;
+    float zero = 0.0;
     struct node **stack = malloc(sizeof(struct node *) * 3);
     struct data *d = csv_load_data(TEST_DATA, 1, ",");
 
@@ -176,6 +177,14 @@ int test_regression_traverse(void)
         free(stack[2]->values[i]);
     }
     node_destroy(stack[2]);
+
+
+    /* DIV - FAIL TEST - DIVIDE BY ZERO */
+    stack[0] = node_new_constant(FLOAT, &f1);
+    stack[1] = node_new_constant(FLOAT, &zero);
+    stack[2] = node_new_func(DIV, 2);
+    mu_check(regression_traverse(0, 2, stack, d) == -1);
+    stack = malloc(sizeof(struct node *) * 3);
 
 
     /* POW */
@@ -267,10 +276,14 @@ int test_regression_traverse(void)
     }
     node_destroy(stack[1]);
 
+    /* FAIL TEST - UNKNOWN FUNCTION */
+    stack[0] = node_new_constant(FLOAT, &f1);
+    stack[1] = node_new_func(99, 1);
+    mu_check(regression_traverse(0, 1, stack, d) == -2);
+
 
     /* clean up */
     data_destroy(d);
-    free(stack);
     return 0;
 }
 

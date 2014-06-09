@@ -126,8 +126,8 @@ int regression_traverse(int index, int end, struct node **stack, struct data *d)
             break;
 
         case DIV:
-            silent_check(fltcmp(in2, &zero) != 0);  /* check for zero */
             for (i = 0; i < d->rows; i++) {
+                silent_check(fltcmp(in2[i], &zero) != 0);  /* check for zero */
                 res = *in1[i] / *in2[i];
                 result[i] = malloc_float(res);
             }
@@ -197,12 +197,14 @@ int regression_traverse(int index, int end, struct node **stack, struct data *d)
 
 error:
     regression_free_vals(in1_type, in1, in2_type, in2, d);
-    regression_stack_destroy(index + 1, end, stack);
+    regression_stack_destroy(index, end, stack);
+    free(result);
     return -1;
 
 func_error:
     regression_free_vals(in1_type, in1, in2_type, in2, d);
-    regression_stack_destroy(index + 1, end, stack);
+    regression_stack_destroy(index, end, stack);
+    free(result);
     return -2;
 }
 
