@@ -6,11 +6,23 @@
 #include "selection.h"
 
 
+struct selection_config *selection_config_new(int method)
+{
+    struct selection_config *sc = malloc(sizeof(struct selection_config));
+    sc->method = method;
+    return sc;
+}
+
+void selection_config_destroy(void *config)
+{
+    if (config) {
+        free(config);
+    }
+}
+
 struct population *tournament_selection(
     struct population *p,
-    int tournament_size,
-    int (*cmp)(const void *, const void *),
-    void *(*copy_func)(void *)
+    struct selection_config *sc
 )
 {
     int i;
@@ -28,15 +40,15 @@ struct population *tournament_selection(
     for (j = 0; j < select; j++) {
         best = p->individuals[randi(0, p->size - 1)];
 
-        for (i = 0; i < tournament_size; i++) {
+        for (i = 0; i < sc->tournament_size; i++) {
             contender = p->individuals[randi(0, p->size - 1)];
 
-            if (cmp(contender, best) == -1) {
+            if (sc->cmp(contender, best) == -1) {
                 best = contender;
             }
         }
 
-        parents->individuals[j] = copy_func(best);
+        parents->individuals[j] = sc->copy_func(best);
     }
 
     return parents;

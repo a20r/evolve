@@ -22,6 +22,7 @@ static struct terminal_set *ts;
 /* TESTS */
 void setup_population(void);
 void teardown_population(void);
+int test_selection_config_new_and_destroy(void);
 int test_tournament_selection(void);
 void test_suite(void);
 
@@ -71,11 +72,25 @@ void teardown_population()
     function_set_destroy(fs);
 }
 
+int test_selection_config_new_and_destroy(void)
+{
+    struct selection_config *sc = selection_config_new(TOURNAMENT_SELECTION);
+    selection_config_destroy(sc);
+    return 0;
+}
+
 int test_tournament_selection(void)
 {
     int i;
     struct tree *t;
+    struct selection_config *sc;
     setup_population();
+
+    /* selection config */
+    sc = selection_config_new(TOURNAMENT_SELECTION);
+    sc->tournament_size = 5;
+    sc->copy_func = tree_copy;
+    sc->cmp = tree_cmp;
 
     /* print population */
     for (i = 0; i < p->size; i++) {
@@ -86,7 +101,7 @@ int test_tournament_selection(void)
     }
 
     /* select parents */
-    struct population *parents = tournament_selection(p, 5, tree_cmp, tree_copy);
+    struct population *parents = tournament_selection(p, sc);
     mu_print("parents->size: %d\n", parents->size);
     mu_print("--------------------------------\n");
     mu_print("SELECTED: \n");
@@ -100,12 +115,14 @@ int test_tournament_selection(void)
 
     /* clean up */
     population_destroy(parents, tree_destroy);
+    selection_config_destroy(sc);
     teardown_population();
     return 0;
 }
 
 void test_suite(void)
 {
+    mu_add_test(test_selection_config_new_and_destroy);
     mu_add_test(test_tournament_selection);
 }
 
