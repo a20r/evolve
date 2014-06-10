@@ -3,6 +3,7 @@
 
 #include "tree.h"
 #include "data.h"
+#include "stack.h"
 
 #define ADD 0
 #define SUB 1
@@ -26,17 +27,23 @@ struct regression_stack
 
 
 /* FUNCTIONS */
-int regression_stack_pop(
+int regression_func_input(
     struct node *n,
     struct data *d,
     float **func_input,
     int nth_arity
 );
-void regression_stack_destroy(int index, int end, struct node **stack);
+void regression_free_inputs(
+    int in1_type,
+    struct node *in1,
+    int in2_type,
+    struct node *in2
+);
 int regression_traverse(
     int index,
     int end,
-    struct node **stack,
+    struct node **chromosome,
+    struct stack *stack,
     float **func_input,
     struct data *d
 );

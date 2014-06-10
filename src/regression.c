@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 #include <math.h>
 
 #include "dbg.h"
@@ -10,7 +11,8 @@
 #include "regression.h"
 #include "population.h"
 
-int regression_stack_pop(
+
+int regression_func_input(
     struct node *n,
     struct data *d,
     float **func_input,
@@ -19,6 +21,7 @@ int regression_stack_pop(
 {
     int i;
     int col_index;
+    float f;
 
     if (n->terminal_type == INPUT) {
         col_index = data_field_index(d, n->value);
@@ -33,30 +36,38 @@ int regression_stack_pop(
 
     } else if (n->terminal_type == EVAL) {
         for (i = 0; i < d->rows; i++) {
-            func_input[nth_arity][i] = ((float *) n->values)[i];
+            f = ((float *) n->values)[i];
+            func_input[nth_arity][i] = f;
+
+            if (isnan(f) != 0 || isinf(f) == -1 || isinf(f) == 1) {
+                return -1;
+            }
         }
     }
-    node_destroy(n);
 
     return 0;
 }
 
-void regression_stack_destroy(int index, int end, struct node **stack)
+void regression_free_inputs(
+    int in1_type,
+    struct node *in1,
+    int in2_type,
+    struct node *in2
+)
 {
-    int i;
-
-    for (i = index; i <= end; i++) {
-        node_destroy(stack[i]);
-        stack[i] = NULL;
+    if (in1_type == EVAL) {
+        node_destroy(in1);
     }
-
-    free(stack);
+    if (in2_type == EVAL) {
+        node_destroy(in2);
+    }
 }
 
 int regression_traverse(
     int index,
     int end,
-    struct node **stack,
+    struct node **chromosome,
+    struct stack *stack,
     float **func_input,
     struct data *d
 )
@@ -65,28 +76,43 @@ int regression_traverse(
     float res;
     float zero = 0.0;
     float *result = NULL;
-    struct node *n = stack[index];
+    struct node *n = chromosome[index];
+    struct node *in1 = NULL;
+    struct node *in2 = NULL;
+    int in1_type = -1;
+    int in2_type = -1;
 
-    if (n->type == FUNC_NODE) {
-        /* result array */
-        result = malloc(sizeof(float) * (unsigned long) d->rows);
+    if (n->type == TERM_NODE) {
+        stack_push(stack, n);
 
+    } else if (n->type == FUNC_NODE) {
         /* prep function input data */
         if (n->arity == 2) {
-            regression_stack_pop(stack[index - 2], d, func_input, 0);
-            regression_stack_pop(stack[index - 1], d, func_input, 1);
-        } else if (n->arity == 1) {
-            regression_stack_pop(stack[index - 1], d, func_input, 0);
+            in2 = stack_pop(stack);
+            in1 = stack_pop(stack);
+
+            in1_type = in1->terminal_type;
+            in2_type = in2->terminal_type;
+
+            silent_check(regression_func_input(in1, d, func_input, 0) == 0);
+            silent_check(regression_func_input(in2, d, func_input, 1) == 0);
+
+        } else {
+            in1 = stack_pop(stack);
+            in1_type = in1->terminal_type;
+
+            silent_check(regression_func_input(in1, d, func_input, 0) == 0);
+
         }
 
         /* evaluate function */
+        result = malloc(sizeof(float) * (unsigned long) d->rows);
         switch (n->function) {
         case ADD:
             for (i = 0; i < d->rows; i++) {
                 res = func_input[0][i] + func_input[1][i];
                 result[i] = res;
             }
-            stack[index] = node_new_eval(FLOAT, result, d->rows);
             break;
 
         case SUB:
@@ -94,7 +120,6 @@ int regression_traverse(
                 res = func_input[0][i] - func_input[1][i];
                 result[i] = res;
             }
-            stack[index] = node_new_eval(FLOAT, result, d->rows);
             break;
 
         case MUL:
@@ -102,7 +127,6 @@ int regression_traverse(
                 res = func_input[0][i] * func_input[1][i];
                 result[i] = res;
             }
-            stack[index] = node_new_eval(FLOAT, result, d->rows);
             break;
 
         case DIV:
@@ -113,50 +137,47 @@ int regression_traverse(
                 res = func_input[0][i] / func_input[1][i];
                 result[i] = res;
             }
-            stack[index] = node_new_eval(FLOAT, result, d->rows);
             break;
 
         case POW:
             for (i = 0; i < d->rows; i++) {
-                res = (float) pow(func_input[0][i], func_input[1][i]);
+                func_input[0][i] = (float) fabs(func_input[0][i]);
+                res = powf(func_input[0][i], func_input[1][i]);
                 result[i] = res;
             }
-            stack[index] = node_new_eval(FLOAT, result, d->rows);
             break;
 
         case LOG:
             for (i = 0; i < d->rows; i++) {
+                /* check for zero and non-negative */
+                silent_check(fltcmp(&func_input[0][i], &zero) == 1);
+
                 result[i] = (float) log(func_input[0][i]);
             }
-            stack[index] = node_new_eval(FLOAT, result, d->rows);
             break;
 
         case EXP:
             for (i = 0; i < d->rows; i++) {
                 result[i] = (float) exp(func_input[0][i]);
             }
-            stack[index] = node_new_eval(FLOAT, result, d->rows);
             break;
 
         case RAD:
             for (i = 0; i < d->rows; i++) {
                 result[i] = func_input[0][i] * (float) (PI / 180.0);
             }
-            stack[index] = node_new_eval(FLOAT, result, d->rows);
             break;
 
         case SIN:
             for (i = 0; i < d->rows; i++) {
                 result[i] = (float) sin(func_input[0][i]);
             }
-            stack[index] = node_new_eval(FLOAT, result, d->rows);
             break;
 
         case COS:
             for (i = 0; i < d->rows; i++) {
                 result[i] = (float) cos(func_input[0][i]);
             }
-            stack[index] = node_new_eval(FLOAT, result, d->rows);
             break;
 
         default:
@@ -164,24 +185,31 @@ int regression_traverse(
             goto func_error;
         }
 
-        /* clean up */
-        node_destroy(n);
+        stack_push(stack, node_new_eval(FLOAT, result, d->rows));
+        regression_free_inputs(in1_type, in1, in2_type, in2);
     }
 
     /* terminate check */
     if (index == end) {
         return 0;
     } else {
-        return regression_traverse(index + 1, end, stack, func_input, d);
+        return regression_traverse(
+            index + 1,
+            end,
+            chromosome,
+            stack,
+            func_input,
+            d
+        );
     }
 
 error:
-    regression_stack_destroy(index, end, stack);
+    regression_free_inputs(in1_type, in1, in2_type, in2);
     free(result);
     return -1;
 
 func_error:
-    regression_stack_destroy(index, end, stack);
+    regression_free_inputs(in1_type, in1, in2_type, in2);
     free(result);
     return -2;
 }
@@ -197,20 +225,22 @@ int regression_evaluate(
     int res;
     int hits = 0;
     int col = data_field_index(d, resp);
+    float value;
     float zero = 0.0;
     float err = 0.0;
     float sse = 0.0;
-    struct node **stack = tree_copy_chromosome(t);
-    struct node *n;
+    struct node *result;
+    struct stack *s = stack_new();
 
-    /* evaluate stack */
-    res = regression_traverse(0, t->size - 1, stack, func_input, d);
+    /* evaluate chromosome */
+    res = regression_traverse(0, t->size - 1, t->chromosome, s, func_input, d);
     silent_check(res != -1);
-    n = stack[t->size - 1];
 
     /* check results */
+    result = stack_pop(s);
     for (i = 0; i < d->rows; i++) {
-        err = (float) fabs(((float *) n->values)[i] - *d->data[col][i]);
+        value = ((float *) result->values)[i];
+        err = (float) fabs(value - *d->data[col][i]);
         err = (float) pow(err, 2);
         sse += err;
 
@@ -218,15 +248,17 @@ int regression_evaluate(
             hits++;
         }
     }
-    node_destroy(n);
-    free(stack);
 
     /* record evaluation */
     t->score = malloc_float(sse + t->size);
     t->hits = hits;
 
+    /* clean up */
+    node_destroy(result);
+    stack_destroy(s, node_destroy);
     return 0;
 error:
+    stack_destroy(s, node_destroy);
     return -1;
 }
 
@@ -243,16 +275,8 @@ int regression_evaluate_population(struct population *p, struct data *d)
 
     /* evaluate population */
     for (i = 0; i < p->size; i++) {
-        tree_print(p->individuals[i]);
         regression_evaluate(p->individuals[i], func_input, d, (char *) "y");
     }
-
-    /* struct tree *t = p->individuals[i]; */
-    /* printf("tree->depth: %d\n", t->depth); */
-    /* for (i = 0;  i < t->size; i++) { */
-    /*     node_print(t->chromosome[i]); */
-    /* } */
-    /* printf("\n"); */
 
     /* clean up */
     free_mem_arr(func_input, 2, free);

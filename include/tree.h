@@ -123,8 +123,8 @@ struct node *node_new_cfunc(int function, int arity);
 struct node *node_new_input(char *input_name);
 struct node *node_new_constant(int value_type, void *value);
 struct node *node_new_eval(int value_type, void *values, int n_values);
-int node_destroy(struct node *n);
-int node_clear_destroy(struct node *n);
+void node_destroy(void *n);
+void node_clear_destroy(void *n);
 void *node_copy(void *src);
 void *node_deepcopy(void *src);
 int node_equals(struct node *n1, struct node *n2);
@@ -137,7 +137,7 @@ struct node *node_random_term(struct terminal_set *ts);
 
 /* tree */
 struct tree *tree_new(struct function_set *fs);
-int tree_destroy(void *t);
+void tree_destroy(void *t);
 void *tree_copy(void *t);
 struct node **tree_copy_chromosome(struct tree *t);
 int tree_traverse(struct node *n, int (*callback)(struct node *));

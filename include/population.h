@@ -17,7 +17,7 @@ struct population
 
 /* FUNCTIONS */
 struct population *population_new(int size, size_t individual_size);
-int population_destroy(struct population *p, int (*callback)(void *));
+void population_destroy(struct population *p, void (*callback)(void *));
 void *population_best(
     struct population *p,
     int (*cmp)(const void *, const void *)

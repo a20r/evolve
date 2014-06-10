@@ -10,6 +10,7 @@
 #include "csv.h"
 #include "cmp.h"
 #include "tree.h"
+#include "stack.h"
 #include "utils.h"
 #include "random.h"
 #include "regression.h"
@@ -24,20 +25,27 @@ static struct terminal_set *ts;
 
 
 /* TESTS */
+void free_chromosome(struct node **chromosome, int length);
 void setup_population(void);
 void teardown_population(void);
-int test_regression_stack_pop(void);
-int test_regression_stack_pop(void);
-int test_regression_stack_destroy(void);
+int test_regression_func_input(void);
 int test_regression_traverse(void);
 int test_regression_evaluate(void);
 int test_regression_evaluate_population(void);
 void test_suite(void);
 
 
+void free_chromosome(struct node **chromosome, int length)
+{
+    int i;
+    for (i = 0; i < length; i++) {
+        node_destroy(chromosome[i]);
+    }
+}
+
 void setup_population()
 {
-    int size = 1;
+    int size = 100;
 
     /* function set */
     struct function *functions[10] = {
@@ -79,7 +87,7 @@ void teardown_population()
     function_set_destroy(fs);
 }
 
-int test_regression_stack_pop(void)
+int test_regression_func_input(void)
 {
     int i;
     int res;
@@ -108,28 +116,28 @@ int test_regression_stack_pop(void)
     stack[3] = node_new_eval(FLOAT, (void *) f_arr, d->rows);
 
     /* input node - x */
-    regression_stack_pop(stack[0], d, func_input, 0);
+    regression_func_input(stack[0], d, func_input, 0);
     for (i = 0; i < d->rows; i++) {
         res = fltcmp(&func_input[0][i], d->data[data_field_index(d, "x")][i]);
         mu_check(res == 0);
     }
 
     /* input node - y */
-    regression_stack_pop(stack[1], d, func_input, 1);
+    regression_func_input(stack[1], d, func_input, 1);
     for (i = 0; i < d->rows; i++) {
         res = fltcmp(&func_input[1][i], d->data[data_field_index(d, "y")][i]);
         mu_check(res == 0);
     }
 
     /* constant node */
-    regression_stack_pop(stack[2], d, func_input, 0);
+    regression_func_input(stack[2], d, func_input, 0);
     for (i = 0; i < d->rows; i++) {
         res = fltcmp(&func_input[0][i], &f);
         mu_check(res == 0);
     }
 
     /* eval node */
-    regression_stack_pop(stack[3], d, func_input, 0);
+    regression_func_input(stack[3], d, func_input, 0);
     for (i = 0; i < d->rows; i++) {
         f = (float) i;
         res = fltcmp(&func_input[0][i], &f);
@@ -137,6 +145,10 @@ int test_regression_stack_pop(void)
     }
 
     /* clean up */
+    node_destroy(stack[0]);
+    node_destroy(stack[1]);
+    node_destroy(stack[2]);
+    node_destroy(stack[3]);
     data_destroy(d);
     free_mem_arr(func_input, 2, free);
     free(stack);
@@ -144,44 +156,19 @@ int test_regression_stack_pop(void)
     return 0;
 }
 
-
-int test_regression_stack_destroy(void)
-{
-    int i;
-    float *f_arr;
-    float f = 1.0;
-    struct node **stack = malloc(sizeof(struct node *) * 5);
-    struct data *d = csv_load_data(TEST_DATA, 1, ",");
-
-    /* create float array */
-    f_arr = malloc(sizeof(float) * (unsigned long) d->rows);
-    for (i = 0; i < d->rows; i++) {
-        f_arr[i] = (float) i;
-    }
-
-    /* create stack */
-    stack[0] = node_new_input((char *) "x");
-    stack[1] = node_new_input((char *) "y");
-    stack[2] = node_new_constant(FLOAT, &f);
-    stack[3] = node_new_eval(FLOAT, f_arr, d->rows);
-    stack[4] = node_new_func(ADD, 2);
-
-    regression_stack_destroy(0, 4, stack);
-    data_destroy(d);
-    return 0;
-}
-
 int test_regression_traverse(void)
 {
     int i;
     int res;
-    float result;
     float f1 = 1.0;
     float f2 = 2.0;
     float f3;
+    float *flt_ptr;
     float zero = 0.0;
     float **func_input;
-    struct node **stack = malloc(sizeof(struct node *) * 3);
+    struct node *result_node;
+    struct node **chromosome = malloc(sizeof(struct node *) * 3);
+    struct stack *stack = stack_new();
     struct data *d = csv_load_data(TEST_DATA, 1, ",");
 
     /* initialize func_input */
@@ -191,162 +178,179 @@ int test_regression_traverse(void)
     }
 
     /* ADD */
-    stack[0] = node_new_constant(FLOAT, &f1);
-    stack[1] = node_new_constant(FLOAT, &f2);
-    stack[2] = node_new_func(ADD, 2);
-    regression_traverse(0, 2, stack, func_input, d);
+    chromosome[0] = node_new_constant(FLOAT, &f1);
+    chromosome[1] = node_new_constant(FLOAT, &f2);
+    chromosome[2] = node_new_func(ADD, 2);
+    res = regression_traverse(0, 2, chromosome, stack, func_input, d);
 
+    result_node = stack_pop(stack);
     for (i = 0; i < d->rows; i++) {
         f3 = f1 + f2;
-        result = ((float *) stack[2]->values)[i];
-        mu_check(fltcmp(&result, &f3) == 0);
+        flt_ptr = &((float *) result_node->values)[i];
+        mu_check(fltcmp(flt_ptr, &f3) == 0);
     }
-    node_destroy(stack[2]);
+    node_destroy(result_node);
+    free_chromosome(chromosome, 3);
 
 
     /* SUB */
-    stack[0] = node_new_constant(FLOAT, &f1);
-    stack[1] = node_new_constant(FLOAT, &f2);
-    stack[2] = node_new_func(SUB, 2);
-    regression_traverse(0, 2, stack, func_input, d);
+    chromosome[0] = node_new_constant(FLOAT, &f1);
+    chromosome[1] = node_new_constant(FLOAT, &f2);
+    chromosome[2] = node_new_func(SUB, 2);
+    res = regression_traverse(0, 2, chromosome, stack, func_input, d);
 
+    result_node = stack_pop(stack);
     for (i = 0; i < d->rows; i++) {
         f3 = f1 - f2;
-        result = ((float *) stack[2]->values)[i];
-        mu_check(fltcmp(&result, &f3) == 0);
+        flt_ptr = &((float *) result_node->values)[i];
+        mu_check(fltcmp(flt_ptr, &f3) == 0);
     }
-    node_destroy(stack[2]);
+    node_destroy(result_node);
+    free_chromosome(chromosome, 3);
 
 
     /* MUL */
-    stack[0] = node_new_constant(FLOAT, &f1);
-    stack[1] = node_new_constant(FLOAT, &f2);
-    stack[2] = node_new_func(MUL, 2);
-    regression_traverse(0, 2, stack, func_input, d);
+    chromosome[0] = node_new_constant(FLOAT, &f1);
+    chromosome[1] = node_new_constant(FLOAT, &f2);
+    chromosome[2] = node_new_func(MUL, 2);
+    res = regression_traverse(0, 2, chromosome, stack, func_input, d);
 
+    result_node = stack_pop(stack);
     for (i = 0; i < d->rows; i++) {
         f3 = f1 * f2;
-        result = ((float *) stack[2]->values)[i];
-        mu_check(fltcmp(&result, &f3) == 0);
+        flt_ptr = &((float *) result_node->values)[i];
+        mu_check(fltcmp(flt_ptr, &f3) == 0);
     }
-    node_destroy(stack[2]);
+    node_destroy(result_node);
+    free_chromosome(chromosome, 3);
 
 
     /* DIV */
-    stack[0] = node_new_constant(FLOAT, &f1);
-    stack[1] = node_new_constant(FLOAT, &f2);
-    stack[2] = node_new_func(DIV, 2);
-    regression_traverse(0, 2, stack, func_input, d);
+    chromosome[0] = node_new_constant(FLOAT, &f1);
+    chromosome[1] = node_new_constant(FLOAT, &f2);
+    chromosome[2] = node_new_func(DIV, 2);
+    res = regression_traverse(0, 2, chromosome, stack, func_input, d);
 
+    result_node = stack_pop(stack);
     for (i = 0; i < d->rows; i++) {
         f3 = f1 / f2;
-        result = ((float *) stack[2]->values)[i];
-        mu_check(fltcmp(&result, &f3) == 0);
+        flt_ptr = &((float *) result_node->values)[i];
+        mu_check(fltcmp(flt_ptr, &f3) == 0);
     }
-    node_destroy(stack[2]);
+    node_destroy(result_node);
+    free_chromosome(chromosome, 3);
 
 
     /* DIV - FAIL TEST - DIVIDE BY ZERO */
-    stack[0] = node_new_constant(FLOAT, &f1);
-    stack[1] = node_new_constant(FLOAT, &zero);
-    stack[2] = node_new_func(DIV, 2);
-    res = regression_traverse(0, 2, stack, func_input, d);
+    chromosome[0] = node_new_constant(FLOAT, &f1);
+    chromosome[1] = node_new_constant(FLOAT, &zero);
+    chromosome[2] = node_new_func(DIV, 2);
+    res = regression_traverse(0, 2, chromosome, stack, func_input, d);
     mu_check(res == -1);
-    stack = malloc(sizeof(struct node *) * 3);
+    free_chromosome(chromosome, 3);
 
 
     /* POW */
-    stack[0] = node_new_constant(FLOAT, &f1);
-    stack[1] = node_new_constant(FLOAT, &f2);
-    stack[2] = node_new_func(POW, 2);
-    regression_traverse(0, 2, stack, func_input, d);
+    chromosome[0] = node_new_constant(FLOAT, &f1);
+    chromosome[1] = node_new_constant(FLOAT, &f2);
+    chromosome[2] = node_new_func(POW, 2);
+    res = regression_traverse(0, 2, chromosome, stack, func_input, d);
 
+    result_node = stack_pop(stack);
     for (i = 0; i < d->rows; i++) {
         f3 = (float) pow(f1, f2);
-        result = ((float *) stack[2]->values)[i];
-
-        mu_check(fltcmp(&result, &f3) == 0);
+        flt_ptr = &((float *) result_node->values)[i];
+        mu_check(fltcmp(flt_ptr, &f3) == 0);
     }
-    node_destroy(stack[2]);
+    node_destroy(result_node);
+    free_chromosome(chromosome, 3);
 
 
     /* LOG */
-    stack[0] = node_new_constant(FLOAT, &f1);
-    stack[1] = node_new_func(LOG, 1);
-    regression_traverse(0, 1, stack, func_input, d);
+    chromosome[0] = node_new_constant(FLOAT, &f1);
+    chromosome[1] = node_new_func(LOG, 1);
+    res = regression_traverse(0, 1, chromosome, stack, func_input, d);
 
+    result_node = stack_pop(stack);
     for (i = 0; i < d->rows; i++) {
         f3 = (float) log(f1);
-        result = ((float *) stack[1]->values)[i];
-
-        mu_check(fltcmp(&result, &f3) == 0);
+        flt_ptr = &((float *) result_node->values)[i];
+        mu_check(fltcmp(flt_ptr, &f3) == 0);
     }
-    node_destroy(stack[1]);
+    node_destroy(result_node);
+    free_chromosome(chromosome, 2);
 
 
     /* EXP */
-    stack[0] = node_new_constant(FLOAT, &f1);
-    stack[1] = node_new_func(EXP, 1);
-    regression_traverse(0, 1, stack, func_input, d);
+    chromosome[0] = node_new_constant(FLOAT, &f1);
+    chromosome[1] = node_new_func(EXP, 1);
+    res = regression_traverse(0, 1, chromosome, stack, func_input, d);
 
+    result_node = stack_pop(stack);
     for (i = 0; i < d->rows; i++) {
         f3 = (float) exp(f1);
-        result = ((float *) stack[1]->values)[i];
-
-        mu_check(fltcmp(&result, &f3) == 0);
+        flt_ptr = &((float *) result_node->values)[i];
+        mu_check(fltcmp(flt_ptr, &f3) == 0);
     }
-    node_destroy(stack[1]);
+    node_destroy(result_node);
+    free_chromosome(chromosome, 2);
 
     /* RAD */
-    stack[0] = node_new_constant(FLOAT, &f1);
-    stack[1] = node_new_func(RAD, 1);
-    regression_traverse(0, 1, stack, func_input, d);
+    chromosome[0] = node_new_constant(FLOAT, &f1);
+    chromosome[1] = node_new_func(RAD, 1);
+    res = regression_traverse(0, 1, chromosome, stack, func_input, d);
 
+    result_node = stack_pop(stack);
     for (i = 0; i < d->rows; i++) {
         f3 = (float) f1 * (float) (PI / 180.0);
-        result = ((float *) stack[1]->values)[i];
-
-        mu_check(fltcmp(&result, &f3) == 0);
+        flt_ptr = &((float *) result_node->values)[i];
+        mu_check(fltcmp(flt_ptr, &f3) == 0);
     }
-    node_destroy(stack[1]);
+    node_destroy(result_node);
+    free_chromosome(chromosome, 2);
 
 
     /* SIN */
-    stack[0] = node_new_constant(FLOAT, &f1);
-    stack[1] = node_new_func(SIN, 1);
-    regression_traverse(0, 1, stack, func_input, d);
+    chromosome[0] = node_new_constant(FLOAT, &f1);
+    chromosome[1] = node_new_func(SIN, 1);
+    res = regression_traverse(0, 1, chromosome, stack, func_input, d);
 
+    result_node = stack_pop(stack);
     for (i = 0; i < d->rows; i++) {
         f3 = (float) sin(f1);
-        result = ((float *) stack[1]->values)[i];
-
-        mu_check(fltcmp(&result, &f3) == 0);
+        flt_ptr = &((float *) result_node->values)[i];
+        mu_check(fltcmp(flt_ptr, &f3) == 0);
     }
-    node_destroy(stack[1]);
+    node_destroy(result_node);
+    free_chromosome(chromosome, 2);
 
 
     /* COS */
-    stack[0] = node_new_constant(FLOAT, &f1);
-    stack[1] = node_new_func(COS, 1);
-    regression_traverse(0, 1, stack, func_input, d);
+    chromosome[0] = node_new_constant(FLOAT, &f1);
+    chromosome[1] = node_new_func(COS, 1);
+    res = regression_traverse(0, 1, chromosome, stack, func_input, d);
 
+    result_node = stack_pop(stack);
     for (i = 0; i < d->rows; i++) {
         f3 = (float) cos(f1);
-        result = ((float *) stack[1]->values)[i];
-
-        mu_check(fltcmp(&result, &f3) == 0);
+        flt_ptr = &((float *) result_node->values)[i];
+        mu_check(fltcmp(flt_ptr, &f3) == 0);
     }
-    node_destroy(stack[1]);
+    node_destroy(result_node);
+    free_chromosome(chromosome, 2);
 
 
     /* FAIL TEST - UNKNOWN FUNCTION */
-    stack[0] = node_new_constant(FLOAT, &f1);
-    stack[1] = node_new_func(99, 1);
-    res = regression_traverse(0, 1, stack, func_input, d);
+    chromosome[0] = node_new_constant(FLOAT, &f1);
+    chromosome[1] = node_new_func(99, 1);
+    res = regression_traverse(0, 1, chromosome, stack, func_input, d);
     mu_check(res == -2);
+    free_chromosome(chromosome, 2);
 
 
     /* clean up */
+    stack_destroy(stack, free);
+    free(chromosome);
     data_destroy(d);
     free_mem_arr(func_input, 2, free);
     return 0;
@@ -360,7 +364,7 @@ int test_regression_evaluate(void)
     float **func_input;
     float solution_score = 5.0;
     struct tree *t;
-    struct node **stack = malloc(sizeof(struct node *) * 5);
+    struct node **chromosome = malloc(sizeof(struct node *) * 5);
     struct data *d = csv_load_data(TEST_DATA, 1, ",");
 
     /* initialize func_input */
@@ -369,12 +373,12 @@ int test_regression_evaluate(void)
         func_input[i] = malloc(sizeof(float) * (unsigned long) d->rows);
     }
 
-    /* build stack */
-    stack[0] = node_new_constant(FLOAT, &f);
-    stack[1] = node_new_input((char *) "x");
-    stack[2] = node_new_func(MUL, 2);
-    stack[3] = node_new_func(RAD, 1);
-    stack[4] = node_new_func(SIN, 1);
+    /* build chromosome */
+    chromosome[0] = node_new_constant(FLOAT, &f);
+    chromosome[1] = node_new_input((char *) "x");
+    chromosome[2] = node_new_func(MUL, 2);
+    chromosome[3] = node_new_func(RAD, 1);
+    chromosome[4] = node_new_func(SIN, 1);
 
     /* build tree */
     t = malloc(sizeof(struct tree));
@@ -382,7 +386,7 @@ int test_regression_evaluate(void)
     t->size = 5;
     t->depth = -1;
     t->score = NULL;
-    t->chromosome = stack;
+    t->chromosome = chromosome;
 
     /* evaluate tree */
     res = regression_evaluate(t, func_input, d, (char *) "y");
@@ -391,9 +395,7 @@ int test_regression_evaluate(void)
     mu_check(t->hits == 361);
 
     /* clean up */
-    for (i = 0; i < 5; i++) {
-        node_destroy(stack[i]);
-    }
+    free_chromosome(chromosome, 5);
     tree_destroy(t);
     data_destroy(d);
     free_mem_arr(func_input, 2, free);
@@ -406,7 +408,6 @@ int test_regression_evaluate_population(void)
 
     setup_population();
 
-    tree_print(p->individuals[0]);
     regression_evaluate_population(p, d);
 
     /* clean up */
@@ -416,14 +417,12 @@ int test_regression_evaluate_population(void)
 }
 
 
-
 void test_suite(void)
 {
-    mu_add_test(test_regression_stack_pop);
-    mu_add_test(test_regression_stack_destroy);
-    /* mu_add_test(test_regression_traverse); */
-    /* mu_add_test(test_regression_evaluate); */
-    /* mu_add_test(test_regression_evaluate_population); */
+    mu_add_test(test_regression_func_input);
+    mu_add_test(test_regression_traverse);
+    mu_add_test(test_regression_evaluate);
+    mu_add_test(test_regression_evaluate_population);
 }
 
 mu_run_tests(test_suite)

@@ -25,24 +25,16 @@ struct population *population_new(int size, size_t individual_size)
     return p;
 }
 
-int population_destroy(struct population *p, int (*callback)(void *))
+void population_destroy(struct population *p, void (*callback)(void *))
 {
     int i;
-    int res = 0;
 
     for (i = 0; i < p->size; i++) {
-        res = callback(p->individuals[i]);
-
-        if (res == -1) {
-            free(p->individuals);
-            free(p);
-            return -1;
-        }
+        callback(p->individuals[i]);
     }
 
     free(p->individuals);
     free(p);
-    return 0;
 }
 
 void *population_best(

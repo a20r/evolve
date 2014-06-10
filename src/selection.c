@@ -10,7 +10,7 @@ struct population *tournament_selection(
     int select,
     int tournament_size,
     float (*get_score)(void *),
-    int (*free_individual)(void *)
+    int (*free_func)(void *)
 )
 {
     int i;
@@ -34,7 +34,7 @@ struct population *tournament_selection(
         parents->individuals[j] = best;
     }
 
-    free_individual(best);
-    free_individual(contender);
+    free_func(best);
+    free_func(contender);
     return parents;
 }

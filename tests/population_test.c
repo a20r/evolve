@@ -26,16 +26,8 @@ void setup_population(void);
 void teardown_population(void);
 int test_population_new_and_destroy(void);
 int test_population_best(void);
-
 void test_suite(void);
 
-
-/* TESTS */
-int free_wrapper(void *value)
-{
-    free(value);
-    return 0;
-}
 
 void setup_population()
 {
@@ -104,7 +96,7 @@ int test_population_new_and_destroy(void)
         mu_check(p->individuals[i] == NULL);
     }
 
-    population_destroy(p, free_wrapper);
+    population_destroy(p, free);
     return 0;
 }
 

@@ -324,59 +324,54 @@ struct node *node_new_eval(int value_type, void *values, int n_values)
     return n;
 }
 
-int node_destroy(struct node *n)
+void node_destroy(void *n)
 {
-    if (n == NULL) {
-        return -1;
+    struct node *node = (struct node *) n;
 
-    } else if (n->type == TERM_NODE) {
-        if (n->terminal_type == RANDOM_CONSTANT) {
-            free(n->value);
-        } else if (n->terminal_type == EVAL) {
-            free(n->values);
+    if (n == NULL) {
+        return;
+
+    } else if (node->type == TERM_NODE) {
+        if (node->terminal_type == RANDOM_CONSTANT) {
+            free(node->value);
+        } else if (node->terminal_type == EVAL) {
+            free(node->values);
         }
 
-    } else if (n->type == FUNC_NODE) {
-        free(n->children);
+    } else if (node->type == FUNC_NODE) {
+        free(node->children);
 
     }
 
     free(n);
-    return 0;
 }
 
-int node_clear_destroy(struct node *n)
+void node_clear_destroy(void *n)
 {
     int i;
-    int res = 0;
+    struct node *node = (struct node *) n;
 
     if (n == NULL) {
-        return -1;
+        return;
 
-    } else if (n->type == TERM_NODE) {
-        if (n->terminal_type == RANDOM_CONSTANT) {
-            free(n->value);
-        } else if (n->terminal_type == EVAL) {
-            free(n->values);
+    } else if (node->type == TERM_NODE) {
+        if (node->terminal_type == RANDOM_CONSTANT) {
+            free(node->value);
+        } else if (node->terminal_type == EVAL) {
+            free(node->values);
         }
 
-    } else if (n->type == FUNC_NODE) {
-        if (n->children) {
-            for (i = 0; i < n->arity; i++) {
-                res = node_clear_destroy(n->children[i]);
-
-                if (res == -1) {
-                    free(n->children);
-                    free(n);
-                    return -1;
-                }
+    } else if (node->type == FUNC_NODE) {
+        if (node->children) {
+            for (i = 0; i < node->arity; i++) {
+                node_clear_destroy(node->children[i]);
             }
-            free(n->children);
+            free(node->children);
         }
+
     }
 
     free(n);
-    return 0;
 }
 
 void *node_copy(void *s)
@@ -665,11 +660,11 @@ struct tree *tree_new(struct function_set *fs)
     return t;
 }
 
-int tree_destroy(void *t)
+void tree_destroy(void *t)
 {
     /* pre-check */
     if (t == NULL) {
-        return -1;
+        return;
     }
 
     struct tree *target = (struct tree *) t;
@@ -678,8 +673,6 @@ int tree_destroy(void *t)
     free(target->score);
     free(target->chromosome);
     free(t);
-
-    return 0;
 }
 
 int tree_traverse(struct node *n, int (*callback)(struct node *))
