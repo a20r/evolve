@@ -1,7 +1,7 @@
 #ifndef __REGRESSION__
 #define __REGRESSION__
 
-#include "tree.h"
+#include "gp/tree.h"
 #include "data.h"
 #include "stack.h"
 

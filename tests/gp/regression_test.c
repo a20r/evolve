@@ -9,11 +9,11 @@
 #include "munit.h"
 #include "csv.h"
 #include "cmp.h"
-#include "tree.h"
+#include "gp/tree.h"
 #include "stack.h"
 #include "utils.h"
 #include "random.h"
-#include "regression.h"
+#include "gp/regression.h"
 #include "population.h"
 
 #define TEST_DATA "./tests/data/sine.csv"

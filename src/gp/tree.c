@@ -6,7 +6,7 @@
 #include "dbg.h"
 #include "cmp.h"
 #include "utils.h"
-#include "tree.h"
+#include "gp/tree.h"
 #include "random.h"
 #include "population.h"
 

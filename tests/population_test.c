@@ -8,11 +8,11 @@
 #endif
 
 #include "munit.h"
-#include "tree.h"
+#include "gp/tree.h"
 #include "utils.h"
 #include "random.h"
 #include "population.h"
-#include "regression.h"
+#include "gp/regression.h"
 
 /* GLOBAL VARS */
 static struct population *p = NULL;

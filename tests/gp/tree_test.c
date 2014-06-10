@@ -10,9 +10,9 @@
 #include "munit.h"
 #include "cmp.h"
 #include "utils.h"
-#include "tree.h"
+#include "gp/tree.h"
+#include "gp/regression.h"
 #include "random.h"
-#include "regression.h"
 #include "population.h"
 
 /* GLOBAL VARS */

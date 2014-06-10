@@ -1,24 +1,11 @@
 #include <stdlib.h>
 
 #include "cmp.h"
+#include "config.h"
 #include "random.h"
 #include "population.h"
 #include "selection.h"
 
-
-struct selection_config *selection_config_new(int method)
-{
-    struct selection_config *sc = malloc(sizeof(struct selection_config));
-    sc->method = method;
-    return sc;
-}
-
-void selection_config_destroy(void *config)
-{
-    if (config) {
-        free(config);
-    }
-}
 
 struct population *tournament_selection(
     struct population *p,

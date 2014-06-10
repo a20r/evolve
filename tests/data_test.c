@@ -9,7 +9,7 @@
 
 #include "munit.h"
 #include "cmp.h"
-#include "tree.h"
+#include "gp/tree.h"
 #include "data.h"
 #include "utils.h"
 

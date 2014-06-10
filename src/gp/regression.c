@@ -5,10 +5,10 @@
 
 #include "dbg.h"
 #include "cmp.h"
-#include "tree.h"
+#include "gp/tree.h"
 #include "utils.h"
 #include "stack.h"
-#include "regression.h"
+#include "gp/regression.h"
 #include "population.h"
 
 

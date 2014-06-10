@@ -1,7 +1,7 @@
 #ifndef __MUTATION__
 #define __MUTATION__
 
-#include "tree.h"
+#include "gp/tree.h"
 
 int mutate_node(
     struct node *n,

@@ -6,23 +6,23 @@
 #endif
 
 #include "munit.h"
-#include "tree.h"
+#include "gp/tree.h"
 #include "utils.h"
+#include "config.h"
 #include "random.h"
-#include "regression.h"
+#include "gp/regression.h"
 #include "selection.h"
 #include "population.h"
+
 
 /* GLOBAL VAR */
 static struct population *p;
 static struct function_set *fs;
 static struct terminal_set *ts;
 
-
 /* TESTS */
 void setup_population(void);
 void teardown_population(void);
-int test_selection_config_new_and_destroy(void);
 int test_tournament_selection(void);
 void test_suite(void);
 
@@ -72,13 +72,6 @@ void teardown_population()
     function_set_destroy(fs);
 }
 
-int test_selection_config_new_and_destroy(void)
-{
-    struct selection_config *sc = selection_config_new(TOURNAMENT_SELECTION);
-    selection_config_destroy(sc);
-    return 0;
-}
-
 int test_tournament_selection(void)
 {
     int i;
@@ -122,7 +115,6 @@ int test_tournament_selection(void)
 
 void test_suite(void)
 {
-    mu_add_test(test_selection_config_new_and_destroy);
     mu_add_test(test_tournament_selection);
 }
 

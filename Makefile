@@ -3,15 +3,11 @@ include config.mk
 default: rmdirs all done
 
 all: mkdirs
-	@echo "ENTERING --> src"
 	@make -s -C src
-	@echo "ENTERING --> tests!"
 	@make -s -C tests
 
 debug: mkdirs
-	@echo "ENTERING --> src"
 	@make -C src
-	@echo "ENTERING --> tests"
 	@make -C tests
 
 mkdirs: rmdirs

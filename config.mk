@@ -14,19 +14,20 @@ DEBUG_FLAGS = -g
 WARN_FLAGS = -Weverything -Wno-padded -Wno-gnu-zero-variadic-macro-arguments
 CFLAGS = $(INCLUDES) $(DEBUG_FLAGS) $(WARN_FLAGS)
 
-COMPILE_OBJ = \
-	echo "COMPILING [$<]"; \
-	$(CC) $(CFLAGS) -c $< -o $(addprefix $(OBJ_DIR)/, $@);
-
-MAKE_EXE = \
-	echo "LINKING [$<]"; \
-	$(CC) $(addprefix $(OBJ_DIR)/, $<) -o $(addprefix $(BIN_DIR)/, $@) $(LIBS);
-
-MAKE_STATIC_LIB = \
-	echo "LINK STATIC LIBRARY[$@]"; \
-	$(AR) $(ARFLAGS) $(LIB_DIR)/libevolve.a $(addprefix $(OBJ_DIR)/, $(OBJS)); \
-
-
 # ARCHIVER
 AR = ar
 ARFLAGS = rvs
+
+# COMMANDS
+COMPILE_OBJ = \
+	@echo "COMPILING [$<]"; \
+	$(CC) $(CFLAGS) -c $< -o $(addprefix $(OBJ_DIR)/, $@);
+
+MAKE_EXE = \
+	@echo "LINKING [$<]"; \
+	$(CC) $(addprefix $(OBJ_DIR)/, $<) -o $(addprefix $(BIN_DIR)/, $@) $(LIBS);
+
+MAKE_STATIC_LIB = \
+	@echo "LINK STATIC LIBRARY [$@]"; \
+	$(AR) $(ARFLAGS) $(LIB_DIR)/libevolve.a $(wildcard $(OBJ_DIR)/*.o);
+

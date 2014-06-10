@@ -1,8 +1,8 @@
 #include <stdlib.h>
 
-#include "tree.h"
+#include "gp/tree.h"
 #include "random.h"
-#include "crossover.h"
+#include "gp/crossover.h"
 
 
 int **random_indicies_new(struct tree *t1, struct tree *t2)

@@ -8,9 +8,9 @@
 #endif
 
 #include "munit.h"
-#include "tree.h"
-#include "crossover.h"
-#include "regression.h"
+#include "gp/tree.h"
+#include "gp/crossover.h"
+#include "gp/regression.h"
 
 
 /* GLOBAL VARS */

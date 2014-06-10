@@ -46,20 +46,6 @@
 
 /* struct population *reproduce( */
 /*     struct population *p,  */
-
-struct evolve_config *evolve_config_new(void)
-{
-    struct evolve_config *config = malloc(sizeof(struct evolve_config));
-    return config;
-}
-
-void evolve_config_destroy(void *config)
-{
-    if (config) {
-        free(config);
-    }
-}
-
 struct evolve_stats *evolve_stats_new(void)
 {
     struct evolve_stats *stats = malloc(sizeof(struct evolve_stats));
