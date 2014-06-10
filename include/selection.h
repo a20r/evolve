@@ -7,10 +7,9 @@
 /* FUNCTIONS */
 struct population *tournament_selection(
     struct population *p,
-    int select,
     int tournament_size,
-    float (*get_score)(void *),
-    int (*free_individual)(void *)
+    int (*cmp)(const void *, const void *),
+    void *(*copy_func)(void *)
 );
 
 #endif

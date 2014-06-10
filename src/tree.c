@@ -802,16 +802,20 @@ struct population *tree_population(
 
 void *tree_copy(void *src)
 {
+    struct tree *source = (struct tree *) src;
     struct tree *copy = malloc(sizeof(struct tree));
 
-    copy->root = ((struct tree *) src)->root;
-    copy->size = ((struct tree *) src)->size;
-    copy->depth = ((struct tree *) src)->depth;
+    copy->root = node_deepcopy(source->root);
 
-    if (((struct tree *) src)->score) {
+    if (source->score) {
         copy->score = malloc(sizeof(float));
-        *(copy->score) = *(((struct tree *) src)->score);
+        *(copy->score) = *(source->score);
+    } else {
+        copy->score = NULL;
     }
+    copy->hits = source->hits;
+    copy->chromosome = NULL;
+    tree_update(copy);
 
     return (void *) copy;
 }
@@ -819,10 +823,13 @@ void *tree_copy(void *src)
 struct node **tree_copy_chromosome(struct tree *t)
 {
     int i;
-    struct node **copy = malloc(sizeof(struct node) * (unsigned long) t->size);
+    struct node **copy = NULL;
 
-    for (i = 0; i < t->size; i++) {
-        copy[i] = node_copy(t->chromosome[i]);
+    if (t->chromosome) {
+        copy = malloc(sizeof(struct node) * (unsigned long) t->size);
+        for (i = 0; i < t->size; i++) {
+            copy[i] = node_copy(t->chromosome[i]);
+        }
     }
 
     return copy;
@@ -952,34 +959,39 @@ struct node *tree_replace_node(struct node *old_node, struct node *new_node)
     return old_node;
 }
 
-int tree_asc_cmp(const void *tree1, const void *tree2)
+int tree_asc_cmp(const void *t1, const void *t2)
 {
-    float *t1 = (float *) ((struct tree *) tree1)->score;
-    float *t2 = (float *) ((struct tree *) tree2)->score;
+    float *score_1 = (float *) ((struct tree *) t1)->score;
+    float *score_2 = (float *) ((struct tree *) t2)->score;
 
     /* null-check */
-    if (t1 == NULL || t2 == NULL) {
-        if (t1 == NULL && t2 == NULL) {
+    if (score_1 == NULL || score_2 == NULL) {
+        if (score_1 == NULL && score_2 == NULL) {
             return 0;
-        } else if (t1 == NULL) {
+        } else if (score_1 == NULL) {
             return -1;
-        } else if (t2 == NULL) {
+        } else if (score_2 == NULL) {
             return 1;
         }
     }
 
     /* compare floats */
-    if (*t1 > *t2) {
+    if (*score_1 > *score_2) {
         return  1;
-    } else if (*t1 < *t2) {
+    } else if (*score_1 < *score_2) {
         return -1;
     } else {
         return 0;
     }
 }
 
-int tree_desc_cmp(const void *tree1, const void *tree2)
+int tree_desc_cmp(const void *t1, const void *t2)
 {
-    return tree_asc_cmp(tree1, tree2) * -1;
+    return tree_asc_cmp(t1, t2) * -1;
+}
+
+int tree_cmp(const void *t1, const void *t2)
+{
+    return tree_asc_cmp(t1, t2);
 }
 

@@ -19,6 +19,9 @@ tree_test: tree_test.o
 population_test: population_test.o
 	$(MAKE_EXE)
 
+selection_test: selection_test.o
+	$(MAKE_EXE)
+
 crossover_test: crossover_test.o
 	$(MAKE_EXE)
 

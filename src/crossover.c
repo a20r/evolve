@@ -30,8 +30,8 @@ void random_indicies_destory(int **indicies)
 int point_crossover(struct tree *t1, struct tree *t2)
 {
     int **indicies = random_indicies_new(t1, t2);
-    struct node *n1 = t1->chromosome[*(int *) indicies[0]];
-    struct node *n2 = t2->chromosome[*(int *) indicies[1]];
+    struct node *n1 = t1->chromosome[*indicies[0]];
+    struct node *n2 = t2->chromosome[*indicies[1]];
     struct node *n1_old_parent = n1->parent;
     struct node *n2_old_parent = n2->parent;
     int n1_old_nth_child = n1->nth_child;
@@ -46,6 +46,7 @@ int point_crossover(struct tree *t1, struct tree *t2)
         n2->parent->children[n2->nth_child] = n1;
     }
 
+    /* crossover */
     n1->parent = n2_old_parent;
     n2->parent = n1_old_parent;
     n1->nth_child = n2_old_nth_child;
