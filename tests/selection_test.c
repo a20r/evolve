@@ -6,13 +6,12 @@
 #endif
 
 #include "munit.h"
-#include "gp/tree.h"
 #include "utils.h"
 #include "config.h"
-#include "random.h"
-#include "gp/regression.h"
 #include "selection.h"
 #include "population.h"
+#include "gp/tree.h"
+#include "gp/regression.h"
 
 
 /* GLOBAL VAR */

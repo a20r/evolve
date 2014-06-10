@@ -3,13 +3,11 @@
 #include <signal.h>
 #include <math.h>
 
-#include "dbg.h"
-#include "cmp.h"
-#include "gp/tree.h"
-#include "utils.h"
 #include "stack.h"
-#include "gp/regression.h"
+#include "utils.h"
 #include "population.h"
+#include "gp/tree.h"
+#include "gp/regression.h"
 
 
 int regression_func_input(

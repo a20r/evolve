@@ -3,7 +3,6 @@
 
 #include "munit.h"
 #include "utils.h"
-#include "cmp.h"
 
 
 /* TESTS */

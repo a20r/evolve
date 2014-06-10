@@ -1,11 +1,11 @@
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
-#include "dbg.h"
-#include "cmp.h"
 #include "utils.h"
 
 
+/* MEMORY */
 void *copy_value(int value_type, void *value)
 {
     void *copy = NULL;
@@ -60,22 +60,9 @@ char *malloc_string(const char *s)
     return str_ptr;
 }
 
-int cmp_values(int value_type, void *v1, void *v2)
-{
-    switch (value_type) {
-    case INTEGER:
-        return intcmp(v1, v2);
-    case FLOAT:
-        return fltcmp(v1, v2);
-    case DOUBLE:
-        return fltcmp(v1, v2);
-    case STRING:
-        return strcmp(v1, v2);
-    default:
-        return -2;
-    }
-}
 
+
+/* STRING */
 int trim_char(const char c)
 {
     int i;
@@ -117,4 +104,161 @@ char *trim(const char *s)
     return trimmed;
 error:
     return NULL;
+}
+
+
+
+/* RANDOM */
+int randi(int min, int max)
+{
+    int divisor = RAND_MAX / (max + 1);
+    int retval = rand() / divisor;
+
+    check(max > min, "Lower bound is bigger than upper bound!");
+    while (retval < min || retval > max) {
+        retval = rand() / divisor;
+        printf("-->%d\n", retval);
+    }
+
+    return retval;
+error:
+    return min + 1;
+}
+
+float randf(float min, float max)
+{
+    float divisor = (float) RAND_MAX / (float) (max + 1.0);
+    float retval = rand() / divisor;
+
+    check(max > min, "Lower bound is bigger than upper bound!");
+    while (retval < min || retval > max) {
+        retval = rand() / divisor;
+    }
+
+    return retval;
+error:
+    return min + 1;
+}
+
+
+
+/* COMPARATOR */
+int intcmp(const void *v1, const void *v2)
+{
+    /* null-check */
+    if (v1 == NULL || v2 == NULL) {
+        if (v1 == NULL) {
+            return -1;
+        } else if (v1 == NULL) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    if (*(int *) v1 > *(int *) v2) {
+        return 1;
+    } else if (*(int *) v1 < *(int *) v2) {
+        return -1;
+    } else {
+        return 0;
+    }
+}
+
+int intcmp_asc(const void *v1, const void *v2)
+{
+    return intcmp(v1, v2);
+}
+
+int intcmp_desc(const void *v1, const void *v2)
+{
+    return intcmp(v1, v2) * -1;
+}
+
+int fltcmp(const void *v1, const void *v2)
+{
+    /* null-check */
+    if (v1 == NULL || v2 == NULL) {
+        if (v1 == NULL) {
+            return -1;
+        } else if (v1 == NULL) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    /* compare floats */
+    if (fabs(*(float *) v1 - *(float *) v2) <= FLOAT_EPSILON) {
+        return 0;
+    } else if (*(float *) v1 > *(float *) v2) {
+        return 1;
+    } else if (*(float *) v1 < *(float *) v2) {
+        return -1;
+    } else {
+        printf("Error! Undefined runtime behaviour!\n");
+        return -1;
+    }
+}
+
+int fltcmp_asc(const void *v1, const void *v2)
+{
+    return fltcmp(v1, v2);
+}
+
+int fltcmp_desc(const void *v1, const void *v2)
+{
+    return fltcmp(v1, v2) * -1;
+}
+
+int dblcmp(const void *v1, const void *v2)
+{
+    /* null-check */
+    if (v1 == NULL || v2 == NULL) {
+        if (v1 == NULL) {
+            return -1;
+        } else if (v1 == NULL) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    /* compare doubles */
+    if (fabs(*(double *) v1 - *(double *) v2) <= FLOAT_EPSILON) {
+        return 0;
+    } else if (*(double *) v1 > *(double *) v2) {
+        return 1;
+    } else if (*(double *) v1 < *(double *) v2) {
+        return -1;
+    } else {
+        printf("Error! Undefined runtime behaviour!\n");
+        return -1;
+    }
+}
+
+int dblcmp_asc(const void *v1, const void *v2)
+{
+    return dblcmp(v1, v2);
+}
+
+int dblcmp_desc(const void *v1, const void *v2)
+{
+    return dblcmp(v1, v2) * -1;
+}
+
+int cmp_values(int value_type, void *v1, void *v2)
+{
+    switch (value_type) {
+    case INTEGER:
+        return intcmp(v1, v2);
+    case FLOAT:
+        return fltcmp(v1, v2);
+    case DOUBLE:
+        return fltcmp(v1, v2);
+    case STRING:
+        return strcmp(v1, v2);
+    default:
+        return -2;
+    }
 }

@@ -6,7 +6,6 @@
 #endif
 
 #include "munit.h"
-#include "cmp.h"
 #include "stack.h"
 #include "utils.h"
 

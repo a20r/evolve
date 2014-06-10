@@ -1,8 +1,7 @@
 #include <stdlib.h>
 
-#include "cmp.h"
+#include "utils.h"
 #include "config.h"
-#include "random.h"
 #include "population.h"
 #include "selection.h"
 

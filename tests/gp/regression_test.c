@@ -7,14 +7,12 @@
 #endif
 
 #include "munit.h"
-#include "csv.h"
-#include "cmp.h"
-#include "gp/tree.h"
+#include "data.h"
 #include "stack.h"
 #include "utils.h"
-#include "random.h"
-#include "gp/regression.h"
 #include "population.h"
+#include "gp/tree.h"
+#include "gp/regression.h"
 
 #define TEST_DATA "./tests/data/sine.csv"
 

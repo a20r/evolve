@@ -8,10 +8,9 @@
 #endif
 
 #include "munit.h"
-#include "gp/tree.h"
 #include "utils.h"
-#include "random.h"
 #include "population.h"
+#include "gp/tree.h"
 #include "gp/regression.h"
 
 /* GLOBAL VARS */

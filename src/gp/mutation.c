@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "gp/tree.h"
 #include "utils.h"
-#include "random.h"
+#include "gp/tree.h"
 #include "gp/mutation.h"
+
 
 int mutate_node(
     struct node *n,

@@ -8,12 +8,10 @@
 #endif
 
 #include "munit.h"
-#include "cmp.h"
 #include "utils.h"
+#include "population.h"
 #include "gp/tree.h"
 #include "gp/regression.h"
-#include "random.h"
-#include "population.h"
 
 /* GLOBAL VARS */
 static struct function_set *fs = NULL;

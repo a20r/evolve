@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
+#include "utils.h"
 #include "gp/tree.h"
-#include "random.h"
 #include "gp/crossover.h"
 
 
