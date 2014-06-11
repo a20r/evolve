@@ -29,19 +29,21 @@ struct function_set *function_set_new(struct function **functions, int n)
     return fs;
 }
 
-int function_set_destroy(struct function_set *fs)
+void function_set_destroy(void *set)
 {
     int i;
+    struct function_set *fs = (struct function_set *) set;
 
-    for (i = 0; i < fs->length; i++) {
-        if (fs->functions[i]) {
-            function_destroy(fs->functions[i]);
+    if (set) {
+        for (i = 0; i < fs->length; i++) {
+            if (fs->functions[i]) {
+                function_destroy(fs->functions[i]);
+            }
         }
-    }
 
-    free(fs->functions);
-    free(fs);
-    return 0;
+        free(fs->functions);
+        free(fs);
+    }
 }
 
 struct function *function_new(int type, int function, int arity)
@@ -94,17 +96,19 @@ struct terminal_set *terminal_set_new(struct terminal **terminals, int n)
     return ts;
 }
 
-int terminal_set_destroy(struct terminal_set *ts)
+void terminal_set_destroy(void *set)
 {
     int i;
+    struct terminal_set *ts = (struct terminal_set *) set;
 
-    for (i = 0; i < ts->length; i++) {
-        terminal_destroy(ts->terminals[i]);
+    if (set) {
+        for (i = 0; i < ts->length; i++) {
+            terminal_destroy(ts->terminals[i]);
+        }
+
+        free(ts->terminals);
+        free(ts);
     }
-
-    free(ts->terminals);
-    free(ts);
-    return 0;
 }
 
 struct terminal *terminal_new(int type, int value_type, void *value)

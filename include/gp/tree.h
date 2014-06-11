@@ -95,7 +95,7 @@ struct tree {
 /* FUNCTIONS */
 /* function set */
 struct function_set *function_set_new(struct function **functions, int n);
-int function_set_destroy(struct function_set *fs);
+void function_set_destroy(void *set);
 struct function *function_new(int type, int function, int arity);
 struct function *function_new_func(int function, int arity);
 struct function *function_new_cfunc(int function, int arity);
@@ -103,7 +103,7 @@ int function_destroy(struct function *f);
 
 /* terminal set */
 struct terminal_set *terminal_set_new(struct terminal **terminals, int n);
-int terminal_set_destroy(struct terminal_set *fs);
+void terminal_set_destroy(void *set);
 struct terminal *terminal_new(int type, int value_type, void *value);
 struct terminal *terminal_new_input(char *input_name);
 struct terminal *terminal_new_constant(int type, void *value);

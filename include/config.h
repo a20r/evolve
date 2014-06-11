@@ -3,12 +3,19 @@
 
 #define NONE -1
 
+#include "gp/tree.h"
+
+
 /* STRUCTS */
-struct evolve
+struct config
 {
+    int population_size;
     int max_generations;
+
     int stale_limit;
     float target_score;
+
+    struct tree_config *tree;
 
     struct selection_config *selection;
     struct crossover_config *crossover;
@@ -22,12 +29,27 @@ struct evolve
     void *terminal_set;
 };
 
+struct tree_config
+{
+    int build_method;
+    int max_depth;
+
+    struct function_set *fs;
+    struct terminal_set *ts;
+    struct tree *(*tree_generate)(
+        int,
+        struct function_set *,
+        struct terminal_set *,
+        int
+    );
+};
+
 struct selection_config
 {
     int method;
     struct population *(*select_func)(
         struct population *,
-        struct evolve *
+        struct config *
     );
 
     int tournament_size;
@@ -46,13 +68,16 @@ struct mutation_config
     int method;
     float probability;
 
-    int (*mutation_func)(void *, struct evolve *);
+    int (*mutation_func)(void *, struct config *);
 };
 
 
 /* FUNCTIONS */
-struct evolve *evolve_new(int s_method, int c_method, int m_method);
-void evolve_destroy(void *e);
+struct config *config_new(int s_method, int c_method, int m_method);
+void config_destroy(void *e);
+
+struct tree_config *tree_config_new(void);
+void tree_config_destroy(void *e);
 
 struct selection_config *selection_config_new(int method);
 void selection_config_destroy(void *config);

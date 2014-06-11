@@ -8,7 +8,7 @@
 
 struct population *tournament_selection(
     struct population *p,
-    struct evolve *config
+    struct config *config
 )
 {
     int i;

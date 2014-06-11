@@ -14,6 +14,6 @@ int mutate_new_node(
     struct function_set *fs,
     struct terminal_set *ts
 );
-int point_mutation(void *t, struct evolve *config);
+int point_mutation(void *t, struct config *config);
 
 #endif

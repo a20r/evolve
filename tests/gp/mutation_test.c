@@ -194,10 +194,9 @@ int test_point_mutation(void)
     char *before;
     char *after;
 
-    struct evolve *config = evolve_new(NONE, NONE, NONE);
+    struct config *config = config_new(NONE, NONE, NONE);
     config->terminal_set = ts;
     config->function_set = fs;
-
 
     for (i = 0; i < 100; i++) {
         t = tree_generate(FULL, fs, ts, 2);
@@ -221,7 +220,7 @@ int test_point_mutation(void)
         tree_destroy(t);
     }
 
-    evolve_destroy(config);
+    config_destroy(config);
     return 0;
 }
 
