@@ -8,6 +8,7 @@
 #endif
 
 #include "munit.h"
+#include "config.h"
 #include "gp/tree.h"
 #include "gp/mutation.h"
 #include "gp/regression.h"
@@ -193,6 +194,11 @@ int test_point_mutation(void)
     char *before;
     char *after;
 
+    struct evolve *config = evolve_new(NONE, NONE, NONE);
+    config->terminal_set = ts;
+    config->function_set = fs;
+
+
     for (i = 0; i < 100; i++) {
         t = tree_generate(FULL, fs, ts, 2);
 
@@ -201,7 +207,7 @@ int test_point_mutation(void)
         mu_print("tree: %s\n", before);
         mu_print("size: %d depth %d\n\n", t->size, t->depth);
 
-        point_mutation(t, fs, ts);
+        point_mutation(t, config);
 
         mu_print("AFTER:\n");
         after = tree_string(t);
@@ -215,6 +221,7 @@ int test_point_mutation(void)
         tree_destroy(t);
     }
 
+    evolve_destroy(config);
     return 0;
 }
 

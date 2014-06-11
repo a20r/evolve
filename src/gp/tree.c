@@ -174,7 +174,7 @@ struct terminal *terminal_new_random_constant(
 
 int terminal_destroy(struct terminal *t)
 {
-    if (t->value != NULL) {
+    if (t->value) {
         free(t->value);
     }
 
@@ -379,13 +379,11 @@ void *node_copy(void *s)
     /* pre-check */
     if (s == NULL) {
         return cpy;
-    } else {
-        cpy = malloc(sizeof(struct node));
-        cpy->type = src->type;
-        cpy->children = NULL;
     }
 
     /* create copy */
+    cpy = node_new(src->type);
+
     if (src->type == TERM_NODE) {
         cpy->terminal_type = src->terminal_type;
         cpy->value_type = src->value_type;
@@ -423,13 +421,11 @@ void *node_deepcopy(void *s)
     /* pre-check */
     if (s == NULL) {
         return cpy;
-    } else {
-        cpy = malloc(sizeof(struct node));
-        cpy->type = src->type;
-        cpy->children = NULL;
     }
 
     /* create copy */
+    cpy = node_new(src->type);
+
     if (src->type == TERM_NODE) {
         cpy->terminal_type = src->terminal_type;
         cpy->value_type = src->value_type;

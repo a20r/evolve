@@ -72,13 +72,11 @@ int mutate_new_node(
     return -1;
 }
 
-int point_mutation(
-    struct tree *t,
-    struct function_set *fs,
-    struct terminal_set *ts
-)
+int point_mutation(void *t, struct evolve *config)
 {
-    int index = randi(0, t->size - 1);
-    struct node *n = t->chromosome[index];
+    struct function_set *fs = config->function_set;
+    struct terminal_set *ts = config->terminal_set;
+    int index = randi(0, ((struct tree *) t)->size - 1);
+    struct node *n = ((struct tree *) t)->chromosome[index];
     return mutate_new_node(n, fs, ts);
 }

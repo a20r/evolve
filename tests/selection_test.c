@@ -75,14 +75,14 @@ int test_tournament_selection(void)
 {
     int i;
     struct tree *t;
-    struct selection_config *sc;
+    struct evolve *config;
     setup_population();
 
     /* selection config */
-    sc = selection_config_new(TOURNAMENT_SELECTION);
-    sc->tournament_size = 5;
-    sc->copy_func = tree_copy;
-    sc->cmp = tree_cmp;
+    config = evolve_new(TOURNAMENT_SELECTION, NONE, NONE);
+    config->selection->tournament_size = 5;
+    config->copy_func = tree_copy;
+    config->cmp = tree_cmp;
 
     /* print population */
     for (i = 0; i < p->size; i++) {
@@ -93,7 +93,7 @@ int test_tournament_selection(void)
     }
 
     /* select parents */
-    struct population *parents = tournament_selection(p, sc);
+    struct population *parents = tournament_selection(p, config);
     mu_print("parents->size: %d\n", parents->size);
     mu_print("--------------------------------\n");
     mu_print("SELECTED: \n");
@@ -107,7 +107,7 @@ int test_tournament_selection(void)
 
     /* clean up */
     population_destroy(parents, tree_destroy);
-    selection_config_destroy(sc);
+    evolve_destroy(config);
     teardown_population();
     return 0;
 }

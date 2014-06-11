@@ -8,7 +8,7 @@
 /* FUNCTIONS */
 struct population *tournament_selection(
     struct population *p,
-    struct selection_config *sc
+    struct evolve *config
 );
 
 #endif

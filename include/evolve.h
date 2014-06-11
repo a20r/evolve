@@ -1,8 +1,11 @@
 #ifndef __EVOLVE__
 #define __EVOLVE__
 
+#include "config.h"
+
+
 /* STRUCTS */
-struct evolve_stats
+struct log
 {
     int generation;
     int stale_counter;
@@ -14,7 +17,9 @@ struct evolve_stats
 
 
 /* FUNCTIONS */
-struct evolve_stats *evolve_stats_new(void);
-void evolve_stats_destroy(void *stats);
+struct log *log_new(void);
+void log_destroy(void *stats);
+
+struct population *evolve_reproduce(struct population *p, struct evolve *e);
 
 #endif

@@ -3,16 +3,26 @@
 #include "config.h"
 
 
-struct evolve_config *evolve_config_new(void)
+struct evolve *evolve_new(int s_method, int c_method, int m_method)
 {
-    struct evolve_config *config = malloc(sizeof(struct evolve_config));
-    return config;
+    struct evolve *e = malloc(sizeof(struct evolve));
+
+    e->selection = selection_config_new(s_method);
+    e->crossover = crossover_config_new(c_method);
+    e->mutation = mutation_config_new(m_method);
+
+    return e;
 }
 
-void evolve_config_destroy(void *config)
+void evolve_destroy(void *e)
 {
-    if (config) {
-        free(config);
+    struct evolve *c = (struct evolve *) e;
+
+    if (e) {
+        selection_config_destroy(c->selection);
+        crossover_config_destroy(c->crossover);
+        mutation_config_destroy(c->mutation);
+        free(e);
     }
 }
 
@@ -30,3 +40,30 @@ void selection_config_destroy(void *config)
     }
 }
 
+struct crossover_config *crossover_config_new(int method)
+{
+    struct crossover_config *cc = malloc(sizeof(struct crossover_config));
+    cc->method = method;
+    return cc;
+}
+
+void crossover_config_destroy(void *config)
+{
+    if (config) {
+        free(config);
+    }
+}
+
+struct mutation_config *mutation_config_new(int method)
+{
+    struct mutation_config *mc = malloc(sizeof(struct mutation_config));
+    mc->method = method;
+    return mc;
+}
+
+void mutation_config_destroy(void *config)
+{
+    if (config) {
+        free(config);
+    }
+}

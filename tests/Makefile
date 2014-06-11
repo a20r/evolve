@@ -49,6 +49,9 @@ regression_test: regression_test.o
 stack_test: stack_test.o
 	$(MAKE_EXE)
 
+evolve_test: evolve_test.o
+	$(MAKE_EXE)
+
 done:
 	@echo "EXITING <-- $(FOLDER_NAME)"
 	@echo ""

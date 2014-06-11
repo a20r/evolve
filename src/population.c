@@ -25,12 +25,12 @@ struct population *population_new(int size, size_t individual_size)
     return p;
 }
 
-void population_destroy(struct population *p, void (*callback)(void *))
+void population_destroy(struct population *p, void (*free_func)(void *))
 {
     int i;
 
     for (i = 0; i < p->size; i++) {
-        callback(p->individuals[i]);
+        free_func(p->individuals[i]);
     }
 
     free(p->individuals);
