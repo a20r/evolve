@@ -9,6 +9,7 @@
 
 #include "munit.h"
 #include "utils.h"
+#include "config.h"
 #include "population.h"
 #include "gp/tree.h"
 #include "gp/regression.h"
@@ -45,6 +46,7 @@ int test_node_random_term(void);
 
 void setup_tree_test(void);
 void teardown_tree_test(void);
+int test_tree_config_new_and_destroy(void);
 int test_tree_new_and_destroy(void);
 int test_tree_build(void);
 int test_tree_generate(void);
@@ -555,6 +557,20 @@ void teardown_tree_test(void)
     teardown_terminal_set();
 }
 
+int test_tree_config_new_and_destroy(void)
+{
+    struct tree_config *tc = tree_config_new();
+
+    mu_check(tc->build_method == -1);
+    mu_check(tc->max_depth == -1);
+    mu_check(tc->fs == NULL);
+    mu_check(tc->ts == NULL);
+
+    tree_config_destroy(tc);
+
+    return 0;
+}
+
 int test_tree_new_and_destroy(void)
 {
     tree = tree_new(fs);
@@ -604,8 +620,24 @@ int test_tree_population(void)
 {
     int i;
     char *tree_str;
-    struct population *p = tree_population(100, FULL, fs, ts, 2);
+    struct config *c;
+    struct tree_config *tc;
+    struct population *p;
 
+    /* config */
+    c = config_new(NONE, NONE, NONE);
+    c->population_size = 100;
+
+    tc = tree_config_new();
+    tc->build_method = FULL;
+    tc->max_depth = 2;
+    tc->fs = fs;
+    tc->ts = ts;
+
+    c->data_struct = tc;
+
+    /* create population */
+    p = tree_population(c);
     for (i = 0; i < 100; i++) {
         tree = p->individuals[i];
         tree_str = tree_string(tree);
@@ -858,6 +890,7 @@ void test_suite(void)
 
     /* #<{(| tree |)}># */
     /* setup_tree_test(); */
+    /* mu_add_test(test_tree_config_new_and_destroy); */
     /* mu_add_test(test_tree_new_and_destroy); */
     /* mu_add_test(test_tree_build); */
     /* mu_add_test(test_tree_generate); */

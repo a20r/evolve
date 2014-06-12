@@ -4,7 +4,7 @@
 #include <time.h>
 
 #ifndef MU_PRINT
-#define MU_PRINT 1
+#define MU_PRINT 0
 #endif
 
 #include "munit.h"
@@ -196,6 +196,7 @@ int test_point_mutation(void)
     c->data_struct = tree_config_new();
     ((struct tree_config *) c->data_struct)->ts = ts;
     ((struct tree_config *) c->data_struct)->fs = fs;
+    c->data_struct_free = tree_config_destroy;
 
     for (i = 0; i < 100; i++) {
         t = tree_generate(FULL, fs, ts, 2);

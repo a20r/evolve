@@ -646,6 +646,27 @@ struct node *node_random_term(struct terminal_set *ts)
 
 
 /* TREE */
+struct tree_config *tree_config_new(void)
+{
+    struct tree_config *tc = malloc(sizeof(struct tree_config));
+
+    tc->build_method = -1;
+    tc->max_depth = -1;
+    tc->fs = NULL;
+    tc->ts = NULL;
+
+    return tc;
+}
+
+void tree_config_destroy(void *config)
+{
+    struct tree_config *tc = (struct tree_config *) config;
+
+    if (config) {
+        free(tc);
+    }
+}
+
 struct tree *tree_new(struct function_set *fs)
 {
     struct tree *t = malloc(sizeof(struct tree));
@@ -782,19 +803,15 @@ struct tree *tree_generate(
     return t;
 }
 
-struct population *tree_population(
-    int size,
-    int method,
-    struct function_set *fs,
-    struct terminal_set *ts,
-    int max_depth
-)
+struct population *tree_population(struct config *c)
 {
     int i;
+    int size = c->population_size;
+    struct tree_config *tc = c->data_struct;
     struct population *p = population_new(size, sizeof(struct tree));
 
     for (i = 0; i < size; i++) {
-        p->individuals[i] = tree_generate(method, fs, ts, max_depth);
+        p->individuals[i] = tree_generate(tc->build_method, tc->fs, tc->ts, tc->max_depth);
     }
 
     return p;

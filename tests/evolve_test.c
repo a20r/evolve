@@ -34,8 +34,6 @@ void test_suite(void);
 
 void setup_population(void)
 {
-    int size = 100;
-
     /* function set */
     struct function *functions[10] = {
         function_new_func(ADD, 2),
@@ -75,6 +73,7 @@ void setup_population(void)
     c->data_struct = tree_config_new();
     ((struct tree_config *) c->data_struct)->fs = fs;
     ((struct tree_config *) c->data_struct)->ts = ts;
+    c->data_struct_free = tree_config_destroy;
 
     /* selection config */
     c->selection->select_func = tournament_selection;
@@ -85,7 +84,7 @@ void setup_population(void)
     c->mutation->mutation_func = point_mutation;
 
     /* create trees */
-    p = tree_population(size, FULL, fs, ts, 3);
+    p = tree_population(c);
 
     free(one);
     free(two);

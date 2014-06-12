@@ -17,6 +17,8 @@
 static struct population *p = NULL;
 static struct function_set *fs = NULL;
 static struct terminal_set *ts = NULL;
+static struct config *c = NULL;
+static struct tree_config *tc = NULL;
 
 
 /* TEST PROTOTYPES */
@@ -31,7 +33,6 @@ void test_suite(void);
 void setup_population()
 {
     int i;
-    int size = 10;
     struct tree *t;
 
     /* function set */
@@ -62,9 +63,22 @@ void setup_population()
     };
     ts = terminal_set_new(terminals, 3);
 
+    /* config */
+    c = config_new(NONE, NONE, NONE);
+    c->population_size = 100;
+
+    tc = tree_config_new();
+    tc->build_method = FULL;
+    tc->max_depth = 2;
+    tc->fs = fs;
+    tc->ts = ts;
+
+    c->data_struct = tc;
+    c->data_struct_free = tree_config_destroy;
+
     /* create trees */
-    p = tree_population(size, FULL, fs, ts, 5);
-    for (i = 0; i < size; i++) {
+    p = tree_population(c);
+    for (i = 0; i < p->size; i++) {
         t = p->individuals[i];
         t->score = malloc_float(randf(0, 100));
     }
@@ -79,6 +93,7 @@ void teardown_population()
     population_destroy(p, tree_destroy);
     terminal_set_destroy(ts);
     function_set_destroy(fs);
+    config_destroy(c);
 }
 
 int test_population_new_and_destroy(void)

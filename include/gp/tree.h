@@ -1,6 +1,8 @@
 #ifndef __TREE__
 #define __TREE__
 
+#include "config.h"
+
 
 /* NODE TYPE */
 #define TERM_NODE 0
@@ -151,6 +153,8 @@ struct node *node_random_func_arity(struct function_set *fs, int arity);
 struct node *node_random_term(struct terminal_set *ts);
 
 /* tree */
+struct tree_config *tree_config_new(void);
+void tree_config_destroy(void *e);
 struct tree *tree_new(struct function_set *fs);
 void tree_destroy(void *t);
 void *tree_copy(void *t);
@@ -171,13 +175,7 @@ struct tree *tree_generate(
     struct terminal_set *ts,
     int max_depth
 );
-struct population *tree_population(
-    int size,
-    int method,
-    struct function_set *fs,
-    struct terminal_set *ts,
-    int max_depth
-);
+struct population *tree_population(struct config *c);
 float tree_score(void *t);
 int tree_equals(struct tree *t1, struct tree *t2);
 int tree_size(struct node *n);

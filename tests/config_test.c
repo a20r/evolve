@@ -13,7 +13,6 @@
 
 /* TESTS */
 int test_evolve_new_and_destroy(void);
-int test_tree_config_new_and_destroy(void);
 int test_selection_config_new_and_destroy(void);
 int test_crossover_config_new_and_destroy(void);
 int test_mutation_config_new_and_destroy(void);
@@ -37,20 +36,6 @@ int test_evolve_new_and_destroy(void)
     mu_check(c->mutation != NULL);
 
     config_destroy(c);
-    return 0;
-}
-
-int test_tree_config_new_and_destroy(void)
-{
-    struct tree_config *tc = tree_config_new();
-
-    mu_check(tc->build_method == -1);
-    mu_check(tc->max_depth == -1);
-    mu_check(tc->fs == NULL);
-    mu_check(tc->ts == NULL);
-
-    tree_config_destroy(tc);
-
     return 0;
 }
 
@@ -78,7 +63,6 @@ int test_mutation_config_new_and_destroy(void)
 void test_suite(void)
 {
     mu_add_test(test_evolve_new_and_destroy);
-    mu_add_test(test_tree_config_new_and_destroy);
     mu_add_test(test_selection_config_new_and_destroy);
     mu_add_test(test_crossover_config_new_and_destroy);
     mu_add_test(test_mutation_config_new_and_destroy);

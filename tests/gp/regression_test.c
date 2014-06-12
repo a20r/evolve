@@ -8,6 +8,7 @@
 
 #include "munit.h"
 #include "data.h"
+#include "config.h"
 #include "stack.h"
 #include "utils.h"
 #include "population.h"
@@ -20,6 +21,7 @@
 static struct population *p;
 static struct function_set *fs;
 static struct terminal_set *ts;
+static struct config *c;
 
 
 /* TESTS */
@@ -43,8 +45,6 @@ void free_chromosome(struct node **chromosome, int length)
 
 void setup_population()
 {
-    int size = 100;
-
     /* function set */
     struct function *functions[10] = {
         function_new_func(ADD, 2),
@@ -71,8 +71,26 @@ void setup_population()
     };
     ts = terminal_set_new(terminals, 2);
 
+    /* setup config */
+    c = config_new(NONE, NONE, NONE);
+    c->population_size = 100;
+
+    /* general config */
+    c->get_score = tree_score;
+    c->copy_func = tree_copy;
+    c->free_func = tree_destroy;
+    c->cmp = tree_cmp;
+
+    /* tree config */
+    c->data_struct = tree_config_new();
+    ((struct tree_config *) c->data_struct)->build_method = FULL;
+    ((struct tree_config *) c->data_struct)->max_depth = 4;
+    ((struct tree_config *) c->data_struct)->fs = fs;
+    ((struct tree_config *) c->data_struct)->ts = ts;
+    c->data_struct_free = tree_config_destroy;
+
     /* create trees */
-    p = tree_population(size, FULL, fs, ts, 3);
+    p = tree_population(c);
 
     free(one);
     free(two);
@@ -83,6 +101,7 @@ void teardown_population()
     population_destroy(p, tree_destroy);
     terminal_set_destroy(ts);
     function_set_destroy(fs);
+    config_destroy(c);
 }
 
 int test_regression_func_input(void)

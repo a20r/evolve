@@ -2,7 +2,6 @@
 
 #include "config.h"
 #include "utils.h"
-#include "gp/tree.h"
 
 
 struct config *config_new(int s_method, int c_method, int m_method)
@@ -10,12 +9,13 @@ struct config *config_new(int s_method, int c_method, int m_method)
     struct config *c = malloc(sizeof(struct config));
 
     c->max_generations = -1;
-    c->population_size = 0;
+    c->population_size = -1;
 
     c->stale_limit = -1;
     c->target_score = -1;
 
     c->data_struct = NULL;
+    c->data_struct_free = NULL;
 
     c->selection = selection_config_new(s_method);
     c->crossover = crossover_config_new(c_method);
@@ -29,34 +29,17 @@ void config_destroy(void *config)
     struct config *c = (struct config *) config;
 
     if (config) {
-        free_mem(c->data_struct, tree_config_destroy);
+        if (c->data_struct && c->data_struct_free) {
+            c->data_struct_free(c->data_struct);
+        } else if (c->data_struct && (c->data_struct_free == NULL)) {
+            printf("ERROR! You forgot to set config->data_struct_free!\n");
+        }
+
         selection_config_destroy(c->selection);
         crossover_config_destroy(c->crossover);
         mutation_config_destroy(c->mutation);
+
         free(config);
-    }
-}
-
-struct tree_config *tree_config_new(void)
-{
-    struct tree_config *tc = malloc(sizeof(struct tree_config));
-
-    tc->build_method = -1;
-    tc->max_depth = -1;
-    tc->fs = NULL;
-    tc->ts = NULL;
-
-    return tc;
-}
-
-void tree_config_destroy(void *config)
-{
-    struct tree_config *tc = (struct tree_config *) config;
-
-    if (config) {
-        function_set_destroy(tc->fs);
-        terminal_set_destroy(tc->ts);
-        free(tc);
     }
 }
 

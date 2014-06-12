@@ -11,7 +11,7 @@ before_script:
     - sudo apt-get install valgrind
 
 script:
-    make && python ./scripts/unittest_runner.py
+    make && python ./tests/unittest_runner.py
 
 branches:
   only:

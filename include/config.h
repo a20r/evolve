@@ -3,8 +3,6 @@
 
 #define NONE -1
 
-#include "gp/tree.h"
-
 
 /* STRUCTS */
 struct config
@@ -16,6 +14,7 @@ struct config
     float target_score;
 
     void *data_struct;
+    void (*data_struct_free)(void *);
 
     struct selection_config *selection;
     struct crossover_config *crossover;
@@ -58,9 +57,6 @@ struct mutation_config
 /* FUNCTIONS */
 struct config *config_new(int s_method, int c_method, int m_method);
 void config_destroy(void *e);
-
-struct tree_config *tree_config_new(void);
-void tree_config_destroy(void *e);
 
 struct selection_config *selection_config_new(int method);
 void selection_config_destroy(void *config);

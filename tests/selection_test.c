@@ -15,9 +15,11 @@
 
 
 /* GLOBAL VAR */
-static struct population *p;
-static struct function_set *fs;
-static struct terminal_set *ts;
+static struct population *p = NULL;
+static struct function_set *fs = NULL;
+static struct terminal_set *ts = NULL;
+static struct config *c = NULL;
+static struct tree_config *tc = NULL;
 
 /* TESTS */
 void setup_population(void);
@@ -28,8 +30,6 @@ void test_suite(void);
 
 void setup_population()
 {
-    int size = 10;
-
     /* function set */
     struct function *functions[10] = {
         function_new_func(ADD, 2),
@@ -56,8 +56,26 @@ void setup_population()
     };
     ts = terminal_set_new(terminals, 2);
 
+    /* config */
+    c = config_new(NONE, NONE, NONE);
+
+    c->population_size = 10;
+    c->copy_func = tree_copy;
+    c->cmp = tree_cmp;
+
+    tc = tree_config_new();
+    tc->build_method = FULL;
+    tc->max_depth = 2;
+    tc->fs = fs;
+    tc->ts = ts;
+
+    c->data_struct = tc;
+    c->data_struct_free = tree_config_destroy;
+
+    c->selection->tournament_size = 5;
+
     /* create trees */
-    p = tree_population(size, FULL, fs, ts, 3);
+    p = tree_population(c);
 
     /* clean up */
     free(one);
@@ -69,20 +87,16 @@ void teardown_population()
     population_destroy(p, tree_destroy);
     terminal_set_destroy(ts);
     function_set_destroy(fs);
+    config_destroy(c);
 }
 
 int test_tournament_selection(void)
 {
     int i;
     struct tree *t;
-    struct config *c;
     setup_population();
 
     /* selection config */
-    c = config_new(TOURNAMENT_SELECTION, NONE, NONE);
-    c->selection->tournament_size = 5;
-    c->copy_func = tree_copy;
-    c->cmp = tree_cmp;
 
     /* print population */
     for (i = 0; i < p->size; i++) {
