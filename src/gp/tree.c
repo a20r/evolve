@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 
+#include "config.h"
 #include "utils.h"
 #include "gp/tree.h"
 #include "population.h"
@@ -34,7 +35,7 @@ void function_set_destroy(void *set)
     int i;
     struct function_set *fs = (struct function_set *) set;
 
-    if (set) {
+    if (set != NULL) {
         for (i = 0; i < fs->length; i++) {
             if (fs->functions[i]) {
                 function_destroy(fs->functions[i]);
@@ -71,10 +72,9 @@ struct function *function_new_cfunc(int function, int arity)
     return f;
 }
 
-int function_destroy(struct function *f)
+void function_destroy(void *f)
 {
-    free(f);
-    return 0;
+    free_mem(f, free);
 }
 
 
@@ -106,8 +106,8 @@ void terminal_set_destroy(void *set)
             terminal_destroy(ts->terminals[i]);
         }
 
-        free(ts->terminals);
-        free(ts);
+        free_mem(ts->terminals, free);
+        free_mem(ts, free);
     }
 }
 
@@ -176,19 +176,22 @@ struct terminal *terminal_new_random_constant(
     return t;
 }
 
-int terminal_destroy(struct terminal *t)
+void terminal_destroy(void *t)
 {
-    if (t->value) {
-        free(t->value);
-    }
+    struct terminal *term = (struct terminal *) t;
 
-    if (t->type == RANDOM_CONSTANT) {
-        free(t->min);
-        free(t->max);
-    }
+    if (t) {
+        if (term->value) {
+            free(term->value);
+        }
 
-    free(t);
-    return 0;
+        if (term->type == RANDOM_CONSTANT) {
+            free(term->min);
+            free(term->max);
+        }
+
+        free(term);
+    }
 }
 
 void *terminal_resolve_random(struct terminal *t)

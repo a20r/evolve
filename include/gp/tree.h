@@ -99,7 +99,7 @@ void function_set_destroy(void *set);
 struct function *function_new(int type, int function, int arity);
 struct function *function_new_func(int function, int arity);
 struct function *function_new_cfunc(int function, int arity);
-int function_destroy(struct function *f);
+void function_destroy(void *f);
 
 /* terminal set */
 struct terminal_set *terminal_set_new(struct terminal **terminals, int n);
@@ -113,7 +113,7 @@ struct terminal *terminal_new_random_constant(
     void *max,
     int precision
 );
-int terminal_destroy(struct terminal *f);
+void terminal_destroy(void *f);
 void *terminal_resolve_random(struct terminal *t);
 
 /* node */

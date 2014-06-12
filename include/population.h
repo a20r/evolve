@@ -23,5 +23,4 @@ void *population_best(
     int (*cmp)(const void *, const void *)
 );
 
-
 #endif

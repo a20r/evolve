@@ -839,37 +839,37 @@ void test_suite(void)
 
     /* function set */
     mu_add_test(test_function_set_new_and_destroy);
-    mu_add_test(test_function_new_and_destroy);
+    /* mu_add_test(test_function_new_and_destroy); */
 
-    /* terminal set */
-    mu_add_test(test_terminal_set_new_and_destroy);
-    mu_add_test(test_terminal_new_and_destroy);
-    mu_add_test(test_terminal_resolve_random);
+    /* #<{(| terminal set |)}># */
+    /* mu_add_test(test_terminal_set_new_and_destroy); */
+    /* mu_add_test(test_terminal_new_and_destroy); */
+    /* mu_add_test(test_terminal_resolve_random); */
 
-    /* node */
-    mu_add_test(test_node_new_and_destroy);
-    mu_add_test(test_node_copy);
-    mu_add_test(test_node_deepcopy);
-    mu_add_test(test_node_equals);
-    mu_add_test(test_node_deep_equals);
-    mu_add_test(test_node_random_func);
-    mu_add_test(test_node_random_func_arity);
-    mu_add_test(test_node_random_term);
+    /* #<{(| node |)}># */
+    /* mu_add_test(test_node_new_and_destroy); */
+    /* mu_add_test(test_node_copy); */
+    /* mu_add_test(test_node_deepcopy); */
+    /* mu_add_test(test_node_equals); */
+    /* mu_add_test(test_node_deep_equals); */
+    /* mu_add_test(test_node_random_func); */
+    /* mu_add_test(test_node_random_func_arity); */
+    /* mu_add_test(test_node_random_term); */
 
-    /* tree */
-    setup_tree_test();
-    mu_add_test(test_tree_new_and_destroy);
-    mu_add_test(test_tree_build);
-    mu_add_test(test_tree_generate);
-    mu_add_test(test_tree_population);
-    mu_add_test(test_tree_equals);
-    mu_add_test(test_tree_size);
-    mu_add_test(test_tree_string);
-    mu_add_test(test_tree_update);
-    mu_add_test(test_tree_replace_node);
-    mu_add_test(test_tree_asc_cmp);
-    mu_add_test(test_tree_desc_cmp);
-    teardown_tree_test();
+    /* #<{(| tree |)}># */
+    /* setup_tree_test(); */
+    /* mu_add_test(test_tree_new_and_destroy); */
+    /* mu_add_test(test_tree_build); */
+    /* mu_add_test(test_tree_generate); */
+    /* mu_add_test(test_tree_population); */
+    /* mu_add_test(test_tree_equals); */
+    /* mu_add_test(test_tree_size); */
+    /* mu_add_test(test_tree_string); */
+    /* mu_add_test(test_tree_update); */
+    /* mu_add_test(test_tree_replace_node); */
+    /* mu_add_test(test_tree_asc_cmp); */
+    /* mu_add_test(test_tree_desc_cmp); */
+    /* teardown_tree_test(); */
 }
 
 mu_run_tests(test_suite)

@@ -25,7 +25,7 @@ static struct config *c;
 /* TESTS */
 void setup_population(void);
 void teardown_population(void);
-int test_log_new_and_destroy(void);
+int test_stats_new_and_destroy(void);
 int test_evolve_terminate(void);
 int test_evolve_reproduction(void);
 int test_evolve_gp(void);
@@ -62,20 +62,19 @@ void setup_population(void)
     };
     ts = terminal_set_new(terminals, 2);
 
-    /* create trees */
-    p = tree_population(size, FULL, fs, ts, 3);
-
-    /* setup evolve */
+    /* setup config */
     c = config_new(TOURNAMENT_SELECTION, NONE, NONE);
 
     /* general config */
-    c->tree = tree_config_new();
-    c->tree->fs = fs;
-    c->tree->ts = ts;
-
+    c->get_score = tree_score;
     c->copy_func = tree_copy;
     c->free_func = tree_destroy;
     c->cmp = tree_cmp;
+
+    /* tree config */
+    c->tree = tree_config_new();
+    c->tree->fs = fs;
+    c->tree->ts = ts;
 
     /* selection config */
     c->selection->select_func = tournament_selection;
@@ -84,6 +83,9 @@ void setup_population(void)
     /* crossover config */
     c->crossover->crossover_func = point_crossover;
     c->mutation->mutation_func = point_mutation;
+
+    /* create trees */
+    p = tree_population(size, FULL, fs, ts, 3);
 
     free(one);
     free(two);
@@ -95,48 +97,54 @@ void teardown_population(void)
     config_destroy(c);
 }
 
-int test_log_new_and_destroy(void)
+int test_stats_new_and_destroy(void)
 {
-    struct log *l = log_new();
-    log_destroy(l);
+    struct stats *s = stats_new();
+    stats_destroy(s);
     return 0;
 }
 
 int test_evolve_terminate(void)
 {
-    struct log *l = log_new();
+    struct stats *s = stats_new();
     c = config_new(NONE, NONE, NONE);
 
+    /* max generation not reached */
     c->max_generations = 100;
-    l->generation = 0;
-    mu_check(evolve_terminate(l, c) == 0);
+    s->generation = 0;
+    mu_check(evolve_terminate(s, c) == 0);
 
+    /* max generation reached */
     c->max_generations = 100;
-    l->generation = 100;
-    mu_check(evolve_terminate(l, c) == 1);
+    s->generation = 100;
+    mu_check(evolve_terminate(s, c) == 1);
 
+    /* stale limit not reached */
     c->max_generations = 100;
-    l->generation = 0;
+    s->generation = 0;
     c->stale_limit = 100;
-    l->stale_counter = 10;
-    mu_check(evolve_terminate(l, c) == 0);
+    s->stale_counter = 10;
+    mu_check(evolve_terminate(s, c) == 0);
 
+    /* stale limit reached */
     c->stale_limit = 100;
-    l->stale_counter = 100;
-    mu_check(evolve_terminate(l, c) == 1);
+    s->stale_counter = 100;
+    mu_check(evolve_terminate(s, c) == 1);
 
+    /* target score not reached */
     c->stale_limit = 100;
-    l->stale_counter = 10;
+    s->stale_counter = 10;
     c->target_score = 100;
-    l->best_score = 10;
-    mu_check(evolve_terminate(l, c) == 0);
+    s->best_score = 10;
+    mu_check(evolve_terminate(s, c) == 0);
 
+    /* target score reached */
     c->target_score = 100;
-    l->best_score = 100;
-    mu_check(evolve_terminate(l, c) == 1);
+    s->best_score = 100;
+    mu_check(evolve_terminate(s, c) == 1);
 
     config_destroy(c);
-    log_destroy(l);
+    stats_destroy(s);
     return 0;
 }
 
@@ -144,6 +152,7 @@ int test_evolve_reproduction(void)
 {
     setup_population();
 
+    /* reproduce */
     struct population *new_generation = evolve_reproduce(p, c);
     population_destroy(new_generation, tree_destroy);
 

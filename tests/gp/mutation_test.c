@@ -18,6 +18,7 @@
 static struct function_set *fs = NULL;
 static struct terminal_set *ts = NULL;
 static struct tree *t = NULL;
+static struct config *c;
 
 
 /* TESTS */
@@ -67,8 +68,7 @@ void setup(void)
 
 void teardown()
 {
-    function_set_destroy(fs);
-    terminal_set_destroy(ts);
+    config_destroy(c);
 }
 
 int test_mutate_node(void)
@@ -194,9 +194,10 @@ int test_point_mutation(void)
     char *before;
     char *after;
 
-    struct config *config = config_new(NONE, NONE, NONE);
-    config->terminal_set = ts;
-    config->function_set = fs;
+    c = config_new(NONE, NONE, NONE);
+    c->tree = tree_config_new();
+    c->tree->ts = ts;
+    c->tree->fs = fs;
 
     for (i = 0; i < 100; i++) {
         t = tree_generate(FULL, fs, ts, 2);
@@ -206,7 +207,7 @@ int test_point_mutation(void)
         mu_print("tree: %s\n", before);
         mu_print("size: %d depth %d\n\n", t->size, t->depth);
 
-        point_mutation(t, config);
+        point_mutation(t, c);
 
         mu_print("AFTER:\n");
         after = tree_string(t);
@@ -220,7 +221,6 @@ int test_point_mutation(void)
         tree_destroy(t);
     }
 
-    config_destroy(config);
     return 0;
 }
 

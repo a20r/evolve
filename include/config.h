@@ -23,10 +23,8 @@ struct config
 
     void (*free_func)(void *);
     void *(*copy_func)(void *);
+    float (*get_score)(void *);
     int (*cmp)(const void *, const void *);
-
-    void *function_set;
-    void *terminal_set;
 };
 
 struct tree_config

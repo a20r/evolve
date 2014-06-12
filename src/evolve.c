@@ -7,9 +7,9 @@
 #include "population.h"
 
 
-struct log *log_new(void)
+struct stats *stats_new(void)
 {
-    struct log *l = malloc(sizeof(struct log));
+    struct stats *l = malloc(sizeof(struct stats));
 
     l->generation = 0;
     l->stale_counter = 0;
@@ -22,14 +22,35 @@ struct log *log_new(void)
     return l;
 }
 
-void log_destroy(void *stats)
+void stats_destroy(void *stats)
 {
     if (stats) {
         free(stats);
     }
 }
 
-int evolve_terminate(struct log *l, struct config *c)
+void stats_update(struct population *p, struct stats *s, struct config *c)
+{
+    int cmp_res;
+    void *best = population_best(p, c->cmp);
+    float best_score = c->get_score(best);
+
+    s->generation++;
+    s->population_size = p->size;
+
+    cmp_res = fltcmp(&best_score, &s->best_score);
+    if (cmp_res == 0 || cmp_res == -1) {
+        s->best_score = best_score;
+        s->best = best;
+        s->stale_counter = 0;
+    } else {
+        s->stale_counter++;
+    }
+
+}
+
+
+int evolve_terminate(struct stats *l, struct config *c)
 {
     if (l->generation == c->max_generations) {
         return 1;
