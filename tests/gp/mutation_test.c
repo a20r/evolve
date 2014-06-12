@@ -62,8 +62,6 @@ void setup(void)
         terminal_new_random_constant(FLOAT, &min, &max, 2)
     };
     ts = terminal_set_new(terminals, 4);
-
-    /* generate trees */
 }
 
 void teardown()
@@ -195,9 +193,9 @@ int test_point_mutation(void)
     char *after;
 
     c = config_new(NONE, NONE, NONE);
-    c->tree = tree_config_new();
-    c->tree->ts = ts;
-    c->tree->fs = fs;
+    c->data_struct = tree_config_new();
+    ((struct tree_config *) c->data_struct)->ts = ts;
+    ((struct tree_config *) c->data_struct)->fs = fs;
 
     for (i = 0; i < 100; i++) {
         t = tree_generate(FULL, fs, ts, 2);

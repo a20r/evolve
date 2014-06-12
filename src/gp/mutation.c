@@ -74,8 +74,9 @@ int mutate_new_node(
 
 int point_mutation(void *t, struct config *c)
 {
-    struct function_set *fs = c->tree->fs;
-    struct terminal_set *ts = c->tree->ts;
+    struct tree_config *tc = (struct tree_config *) c->data_struct;
+    struct function_set *fs = tc->fs;
+    struct terminal_set *ts = tc->ts;
     int index = randi(0, ((struct tree *) t)->size - 1);
     struct node *n = ((struct tree *) t)->chromosome[index];
     return mutate_new_node(n, fs, ts);

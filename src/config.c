@@ -15,7 +15,7 @@ struct config *config_new(int s_method, int c_method, int m_method)
     c->stale_limit = -1;
     c->target_score = -1;
 
-    c->tree = NULL;
+    c->data_struct = NULL;
 
     c->selection = selection_config_new(s_method);
     c->crossover = crossover_config_new(c_method);
@@ -29,7 +29,7 @@ void config_destroy(void *config)
     struct config *c = (struct config *) config;
 
     if (config) {
-        free_mem(c->tree, tree_config_destroy);
+        free_mem(c->data_struct, tree_config_destroy);
         selection_config_destroy(c->selection);
         crossover_config_destroy(c->crossover);
         mutation_config_destroy(c->mutation);

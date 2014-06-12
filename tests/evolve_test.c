@@ -72,9 +72,9 @@ void setup_population(void)
     c->cmp = tree_cmp;
 
     /* tree config */
-    c->tree = tree_config_new();
-    c->tree->fs = fs;
-    c->tree->ts = ts;
+    c->data_struct = tree_config_new();
+    ((struct tree_config *) c->data_struct)->fs = fs;
+    ((struct tree_config *) c->data_struct)->ts = ts;
 
     /* selection config */
     c->selection->select_func = tournament_selection;

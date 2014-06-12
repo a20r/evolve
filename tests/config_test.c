@@ -30,7 +30,7 @@ int test_evolve_new_and_destroy(void)
     mu_check(c->stale_limit == -1);
     mu_check(fltcmp(&c->target_score, &solution) == 0);
 
-    mu_check(c->tree == NULL);
+    mu_check(c->data_struct == NULL);
 
     mu_check(c->selection != NULL);
     mu_check(c->crossover != NULL);

@@ -33,6 +33,21 @@
 
 
 /* STRUCTURES */
+struct tree_config
+{
+    int build_method;
+    int max_depth;
+
+    struct function_set *fs;
+    struct terminal_set *ts;
+    struct tree *(*tree_generate)(
+        int,
+        struct function_set *,
+        struct terminal_set *,
+        int
+    );
+};
+
 struct function_set
 {
     int length;

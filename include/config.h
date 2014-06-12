@@ -15,7 +15,7 @@ struct config
     int stale_limit;
     float target_score;
 
-    struct tree_config *tree;
+    void *data_struct;
 
     struct selection_config *selection;
     struct crossover_config *crossover;
@@ -25,21 +25,6 @@ struct config
     void *(*copy_func)(void *);
     float (*get_score)(void *);
     int (*cmp)(const void *, const void *);
-};
-
-struct tree_config
-{
-    int build_method;
-    int max_depth;
-
-    struct function_set *fs;
-    struct terminal_set *ts;
-    struct tree *(*tree_generate)(
-        int,
-        struct function_set *,
-        struct terminal_set *,
-        int
-    );
 };
 
 struct selection_config
