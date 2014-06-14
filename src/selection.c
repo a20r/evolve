@@ -18,6 +18,10 @@ struct population *tournament_selection(
     struct population *selected;
 
     /* pre-check */
+    check(c->cmp, ECMP);
+    check(c->copy_func, ECOPYFUNC);
+    check(c->get_score, EGETSCORE);
+    check(c->selection->tournament_size > 0, ETSIZE);
 
     /* setup new population */
     selected = population_new(p->size, p->individual_size);
@@ -42,4 +46,6 @@ struct population *tournament_selection(
     }
 
     return selected;
+error:
+    return NULL;
 }

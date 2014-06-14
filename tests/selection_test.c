@@ -60,6 +60,7 @@ void setup_population()
     c = config_new(NONE, NONE, NONE);
 
     c->population_size = 10;
+    c->get_score = tree_score;
     c->copy_func = tree_copy;
     c->cmp = tree_cmp;
 
@@ -121,7 +122,6 @@ int test_tournament_selection(void)
 
     /* clean up */
     population_destroy(parents, tree_destroy);
-    config_destroy(c);
     teardown_population();
     return 0;
 }

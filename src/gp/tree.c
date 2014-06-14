@@ -1027,13 +1027,7 @@ int tree_asc_cmp(const void *t1, const void *t2)
 
 int tree_desc_cmp(const void *t1, const void *t2)
 {
-    int res = tree_asc_cmp(t1, t2);
-
-    if (res != -2) {
-        return res * -1;
-    } else {
-        return -2;
-    }
+    return tree_asc_cmp(t1, t2) * -1;
 }
 
 int tree_cmp(const void *t1, const void *t2)

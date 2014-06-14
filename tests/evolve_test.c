@@ -71,8 +71,8 @@ void setup(int random_score)
     c = config_new(TOURNAMENT_SELECTION, NONE, NONE);
 
     /* general config */
-    c->max_generations = 1000;
-    c->population_size = 800;
+    c->max_generations = 10;
+    c->population_size = 10;
 
     c->population_generator = tree_population;
     c->evaluate_population = regression_evaluate_population;

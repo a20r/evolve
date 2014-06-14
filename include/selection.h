@@ -3,6 +3,9 @@
 
 #define TOURNAMENT_SELECTION 0
 
+/* ERRORS */
+#define ETSIZE "c->selection->tournament_size not set!"
+
 #include "config.h"
 
 /* FUNCTIONS */
