@@ -58,6 +58,7 @@ int test_tree_update(void);
 int test_tree_replace_node(void);
 int test_tree_asc_cmp(void);
 int test_tree_desc_cmp(void);
+int test_tree_cmp(void);
 
 int test_copy_value(void);
 
@@ -134,21 +135,18 @@ int test_function_new_and_destroy(void)
 /* TERMINAL SET TESTS */
 void setup_terminal_set(void)
 {
-    int one = 1;
-    float two = 2.0;
-    const char *three = "three";
+    const char *x = "x";
 
     float min = 0.0;
     float max = 100.0;
 
-    struct terminal *terminals[4] = {
-        terminal_new_constant(INTEGER, &one),
-        terminal_new_constant(FLOAT, &two),
-        terminal_new_constant(STRING, (void *) three),
+    struct terminal *terminals[3] = {
+        terminal_new_constant(INTEGER, &min),
+        terminal_new_constant(STRING, (char *) x),
         terminal_new_random_constant(FLOAT, &min, &max, 2)
     };
 
-    ts = terminal_set_new(terminals, 4);
+    ts = terminal_set_new(terminals, 3);
 }
 
 void teardown_terminal_set(void)
@@ -635,6 +633,7 @@ int test_tree_population(void)
     tc->ts = ts;
 
     c->data_struct = tc;
+    c->data_struct_free = tree_config_destroy;
 
     /* create population */
     p = tree_population(c);
@@ -646,6 +645,7 @@ int test_tree_population(void)
     }
 
     population_destroy(p, tree_destroy);
+    config_destroy(c);
     return 0;
 }
 
@@ -710,7 +710,7 @@ int test_tree_update(void)
 
     /* tree */
     tree = tree_new(fs);
-    tree_build(FULL, tree, tree->root, fs, ts, 0, 5);
+    tree_build(FULL, tree, tree->root, fs, ts, 0, 2);
 
     mu_check(tree->size > 0);
     mu_check(tree->depth > 0);
@@ -797,13 +797,13 @@ int test_tree_asc_cmp(void)
     free(t1->score);
     t1->score = NULL;
     *(t2->score) = 0.0;
-    mu_check(tree_asc_cmp(t1, t2) == -1);
+    mu_check(tree_asc_cmp(t1, t2) == 1);
 
     /* t2 is NULL */
     free(t2->score);
     t2->score = NULL;
     t1->score = malloc_float(0.0);
-    mu_check(tree_asc_cmp(t1, t2) == 1);
+    mu_check(tree_asc_cmp(t1, t2) == -1);
 
 
     /* clean up */
@@ -843,20 +843,43 @@ int test_tree_desc_cmp(void)
     /* equal case */
     *(t1->score) = 0.0;
     *(t2->score) = 0.0;
-    mu_check(tree_asc_cmp(t1, t2) == 0);
+    mu_check(tree_desc_cmp(t1, t2) == 0);
 
     /* t1 is NULL */
     free(t1->score);
     t1->score = NULL;
     *(t2->score) = 0.0;
-    mu_check(tree_desc_cmp(t1, t2) == 1);
+    mu_check(tree_desc_cmp(t1, t2) == -1);
 
     /* t2 is NULL */
     free(t2->score);
     t2->score = NULL;
     t1->score = malloc_float(0.0);
-    mu_check(tree_desc_cmp(t1, t2) == -1);
+    mu_check(tree_desc_cmp(t1, t2) == 1);
 
+
+    /* clean up */
+    tree_destroy(t1);
+    tree_destroy(t2);
+    return 0;
+}
+
+int test_tree_cmp(void)
+{
+    /* tree */
+    struct tree *t1 = tree_new(fs);
+    struct tree *t2 = tree_new(fs);
+
+    /* generate tree using full method */
+    tree_build(FULL, t1, t1->root, fs, ts, 0, 2);
+    tree_build(FULL, t2, t2->root, fs, ts, 0, 2);
+    t1->score = NULL;
+    t2->score = malloc_float(2);
+
+    /* null score checks */
+    mu_check(tree_cmp(t1, t2) == 1);
+    mu_check(tree_cmp(t2, t1) == -1);
+    mu_check(tree_cmp(t1, t1) == 0);
 
     /* clean up */
     tree_destroy(t1);
@@ -870,7 +893,7 @@ void test_suite(void)
     srand((unsigned int) time(NULL));
 
     /* function set */
-    mu_add_test(test_function_set_new_and_destroy);
+    /* mu_add_test(test_function_set_new_and_destroy); */
     /* mu_add_test(test_function_new_and_destroy); */
 
     /* #<{(| terminal set |)}># */
@@ -888,8 +911,8 @@ void test_suite(void)
     /* mu_add_test(test_node_random_func_arity); */
     /* mu_add_test(test_node_random_term); */
 
-    /* #<{(| tree |)}># */
-    /* setup_tree_test(); */
+    /* tree */
+    setup_tree_test();
     /* mu_add_test(test_tree_config_new_and_destroy); */
     /* mu_add_test(test_tree_new_and_destroy); */
     /* mu_add_test(test_tree_build); */
@@ -898,11 +921,12 @@ void test_suite(void)
     /* mu_add_test(test_tree_equals); */
     /* mu_add_test(test_tree_size); */
     /* mu_add_test(test_tree_string); */
-    /* mu_add_test(test_tree_update); */
+    mu_add_test(test_tree_update);
     /* mu_add_test(test_tree_replace_node); */
     /* mu_add_test(test_tree_asc_cmp); */
     /* mu_add_test(test_tree_desc_cmp); */
-    /* teardown_tree_test(); */
+    /* mu_add_test(test_tree_cmp); */
+    teardown_tree_test();
 }
 
 mu_run_tests(test_suite)

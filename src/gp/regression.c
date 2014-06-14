@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <math.h>
+#include <errno.h>
 
 #include "stack.h"
 #include "utils.h"
@@ -18,21 +19,23 @@ int regression_func_input(
 )
 {
     int i;
+    int type;
     int col_index;
     float f;
 
-    if (n->terminal_type == INPUT) {
+    type = n->terminal_type;
+    if (type == INPUT) {
         col_index = data_field_index(d, n->value);
         for (i = 0; i < d->rows; i++) {
             func_input[nth_arity][i] = *d->data[col_index][i];
         }
 
-    } else if (n->terminal_type == CONSTANT) {
+    } else if (type == CONSTANT || type == RANDOM_CONSTANT) {
         for (i = 0; i < d->rows; i++) {
             func_input[nth_arity][i] = *(float *) n->value;
         }
 
-    } else if (n->terminal_type == EVAL) {
+    } else if (type == EVAL) {
         for (i = 0; i < d->rows; i++) {
             f = ((float *) n->values)[i];
             func_input[nth_arity][i] = f;
@@ -61,6 +64,17 @@ void regression_free_inputs(
     }
 }
 
+int regression_check(void)
+{
+    if (errno == EDOM) {
+        return -1;
+    } else if (errno == ERANGE) {
+        return -1;
+    }
+
+    return 0;
+}
+
 int regression_traverse(
     int index,
     int end,
@@ -71,7 +85,6 @@ int regression_traverse(
 )
 {
     int i;
-    float res;
     float zero = 0.0;
     float *result = NULL;
     struct node *n = chromosome[index];
@@ -80,6 +93,7 @@ int regression_traverse(
     int in1_type = -1;
     int in2_type = -1;
 
+    errno = 0;
     if (n->type == TERM_NODE) {
         stack_push(stack, n);
 
@@ -88,7 +102,6 @@ int regression_traverse(
         if (n->arity == 2) {
             in2 = stack_pop(stack);
             in1 = stack_pop(stack);
-
             in1_type = in1->terminal_type;
             in2_type = in2->terminal_type;
 
@@ -108,22 +121,22 @@ int regression_traverse(
         switch (n->function) {
         case ADD:
             for (i = 0; i < d->rows; i++) {
-                res = func_input[0][i] + func_input[1][i];
-                result[i] = res;
+                result[i] = func_input[0][i] + func_input[1][i];
+                silent_check(regression_check() == 0);
             }
             break;
 
         case SUB:
             for (i = 0; i < d->rows; i++) {
-                res = func_input[0][i] - func_input[1][i];
-                result[i] = res;
+                result[i] = func_input[0][i] - func_input[1][i];
+                silent_check(regression_check() == 0);
             }
             break;
 
         case MUL:
             for (i = 0; i < d->rows; i++) {
-                res = func_input[0][i] * func_input[1][i];
-                result[i] = res;
+                result[i] = func_input[0][i] * func_input[1][i];
+                silent_check(regression_check() == 0);
             }
             break;
 
@@ -131,50 +144,53 @@ int regression_traverse(
             for (i = 0; i < d->rows; i++) {
                 /* check for zero */
                 silent_check(fltcmp(&func_input[1][i], &zero) != 0);
-
-                res = func_input[0][i] / func_input[1][i];
-                result[i] = res;
+                result[i] = func_input[0][i] / func_input[1][i];
+                silent_check(regression_check() == 0);
             }
             break;
 
         case POW:
             for (i = 0; i < d->rows; i++) {
-                func_input[0][i] = (float) fabs(func_input[0][i]);
-                res = powf(func_input[0][i], func_input[1][i]);
-                result[i] = res;
+                func_input[0][i] = fabsf(func_input[0][i]);
+                result[i] = powf(func_input[0][i], func_input[1][i]);
+                silent_check(regression_check() == 0);
             }
             break;
 
         case LOG:
             for (i = 0; i < d->rows; i++) {
-                /* check for zero and non-negative */
+                /* check for zero and negative */
                 silent_check(fltcmp(&func_input[0][i], &zero) == 1);
-
-                result[i] = (float) log(func_input[0][i]);
+                result[i] = logf(func_input[0][i]);
+                silent_check(regression_check() == 0);
             }
             break;
 
         case EXP:
             for (i = 0; i < d->rows; i++) {
-                result[i] = (float) exp(func_input[0][i]);
+                result[i] = expf(func_input[0][i]);
+                silent_check(regression_check() == 0);
             }
             break;
 
         case RAD:
             for (i = 0; i < d->rows; i++) {
                 result[i] = func_input[0][i] * (float) (PI / 180.0);
+                silent_check(regression_check() == 0);
             }
             break;
 
         case SIN:
             for (i = 0; i < d->rows; i++) {
-                result[i] = (float) sin(func_input[0][i]);
+                result[i] = sinf(func_input[0][i]);
+                silent_check(regression_check() == 0);
             }
             break;
 
         case COS:
             for (i = 0; i < d->rows; i++) {
-                result[i] = (float) cos(func_input[0][i]);
+                result[i] = cosf(func_input[0][i]);
+                silent_check(regression_check() == 0);
             }
             break;
 
@@ -210,6 +226,20 @@ func_error:
     regression_free_inputs(in1_type, in1, in2_type, in2);
     free(result);
     return -2;
+}
+
+void regression_clear_stack(struct stack *s)
+{
+    int i;
+    struct node *n;
+
+    for (i = 0; s->size; i++) {
+        n = stack_pop(s);
+        if (n->terminal_type == EVAL) {
+            node_destroy(n);
+        }
+    }
+    free(s);
 }
 
 int regression_evaluate(
@@ -248,15 +278,21 @@ int regression_evaluate(
     }
 
     /* record evaluation */
-    t->score = malloc_float(sse + t->size);
+    if (t->score == NULL) {
+        t->score = malloc_float(sse + t->size);
+    } else {
+        *t->score = (sse + t->size);
+    }
     t->hits = hits;
 
     /* clean up */
     node_destroy(result);
-    stack_destroy(s, node_destroy);
+    regression_clear_stack(s);
     return 0;
 error:
-    stack_destroy(s, node_destroy);
+    free(t->score);
+    t->score = NULL;
+    regression_clear_stack(s);
     return -1;
 }
 
@@ -280,3 +316,82 @@ int regression_evaluate_population(struct population *p, struct data *d)
     free_mem_arr(func_input, 2, free);
     return 0;
 }
+
+void regression_print_traverse(struct node *n)
+{
+    if (n->type == TERM_NODE) {
+        if (n->value_type == INTEGER) {
+            printf("%d", *(int *) n->value);
+        } else if (n->value_type == FLOAT) {
+            printf("%f", *(float *) n->value);
+        } else if (n->value_type == STRING) {
+            printf("%s", (char *) n->value);
+        }
+
+    } else if (n->type == FUNC_NODE) {
+        printf("(");
+
+        if (n->arity == 2) {
+            regression_print_traverse(n->children[0]);
+        }
+
+        switch (n->function) {
+        case ADD:
+            printf(" + ");
+            break;
+        case SUB:
+            printf(" - ");
+            break;
+        case MUL:
+            printf(" * ");
+            break;
+        case DIV:
+            printf(" / ");
+            break;
+        case POW:
+            printf("^");
+            break;
+        case LOG:
+            printf("log");
+            printf("(");
+            break;
+        case EXP:
+            printf("exp");
+            printf("(");
+            break;
+        case RAD:
+            printf("rad");
+            printf("(");
+            break;
+        case SIN:
+            printf("sin");
+            printf("(");
+            break;
+        case COS:
+            printf("cos");
+            printf("(");
+            break;
+        default:
+            log_err("Opps! Don't recognize that function -> %d", n->function);
+            break;
+        }
+
+        if (n->arity == 2) {
+            regression_print_traverse(n->children[1]);
+        } else if (n->arity == 1) {
+            regression_print_traverse(n->children[0]);
+            printf(")");
+        }
+
+        printf(")");
+    }
+
+}
+
+void regression_print(void *target)
+{
+    struct tree *t = (struct tree *) target;
+    regression_print_traverse(t->root);
+    printf("\n");
+}
+

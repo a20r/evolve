@@ -32,6 +32,7 @@ int test_regression_func_input(void);
 int test_regression_traverse(void);
 int test_regression_evaluate(void);
 int test_regression_evaluate_population(void);
+int test_regression_print(void);
 void test_suite(void);
 
 
@@ -84,7 +85,7 @@ void setup_population()
     /* tree config */
     c->data_struct = tree_config_new();
     ((struct tree_config *) c->data_struct)->build_method = FULL;
-    ((struct tree_config *) c->data_struct)->max_depth = 4;
+    ((struct tree_config *) c->data_struct)->max_depth = 3;
     ((struct tree_config *) c->data_struct)->fs = fs;
     ((struct tree_config *) c->data_struct)->ts = ts;
     c->data_struct_free = tree_config_destroy;
@@ -433,6 +434,18 @@ int test_regression_evaluate_population(void)
     return 0;
 }
 
+int test_regression_print(void)
+{
+    struct tree *t;
+
+    setup_population();
+    t = p->individuals[0];
+    regression_print(t);
+
+    teardown_population();
+    return 0;
+}
+
 
 void test_suite(void)
 {
@@ -440,6 +453,7 @@ void test_suite(void)
     mu_add_test(test_regression_traverse);
     mu_add_test(test_regression_evaluate);
     mu_add_test(test_regression_evaluate_population);
+    mu_add_test(test_regression_print);
 }
 
 mu_run_tests(test_suite)

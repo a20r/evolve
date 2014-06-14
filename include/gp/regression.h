@@ -1,9 +1,9 @@
 #ifndef __REGRESSION__
 #define __REGRESSION__
 
-#include "gp/tree.h"
 #include "data.h"
 #include "stack.h"
+#include "gp/tree.h"
 
 #define ADD 0
 #define SUB 1
@@ -39,6 +39,7 @@ void regression_free_inputs(
     int in2_type,
     struct node *in2
 );
+int regression_check(void);
 int regression_traverse(
     int index,
     int end,
@@ -47,6 +48,7 @@ int regression_traverse(
     float **func_input,
     struct data *d
 );
+void regression_clear_stack(struct stack *s);
 int regression_evaluate(
     struct tree *t,
     float **func_input,
@@ -54,5 +56,7 @@ int regression_evaluate(
     char *resp
 );
 int regression_evaluate_population(struct population *p, struct data *d);
+void regression_print_traverse(struct node *n);
+void regression_print(void *target);
 
 #endif

@@ -120,11 +120,16 @@ int test_population_best(void)
     struct tree *t = NULL;
 
     setup_population();
+    t = p->individuals[0];
+    free(t->score);
+    t->score = NULL;
 
     /* list trees in population */
     for (i = 0; i < p->size; i++) {
         t = p->individuals[i];
-        mu_print("tree[%d]: %f\n", i, *t->score);
+        if (t->score) {
+            mu_print("tree[%d]: %f\n", i, *t->score);
+        }
     }
     mu_print("----------\n");
 

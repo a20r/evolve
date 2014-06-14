@@ -3,16 +3,23 @@
 
 #define NONE -1
 
+#include "data.h"
+#include "population.h"
+
 
 /* STRUCTS */
 struct config
 {
-    int population_size;
     int max_generations;
+    int population_size;
+
+    struct population *(*population_generator)(struct config *c);
+    int (*evaluate_population)(struct population *p, struct data *d);
 
     int stale_limit;
     float target_score;
 
+    struct data *data;
     void *data_struct;
     void (*data_struct_free)(void *);
 
@@ -20,9 +27,10 @@ struct config
     struct crossover_config *crossover;
     struct mutation_config *mutation;
 
+    void (*print_func)(void *);
     void (*free_func)(void *);
     void *(*copy_func)(void *);
-    float (*get_score)(void *);
+    float *(*get_score)(void *);
     int (*cmp)(const void *, const void *);
 };
 

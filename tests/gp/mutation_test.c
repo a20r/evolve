@@ -4,7 +4,7 @@
 #include <time.h>
 
 #ifndef MU_PRINT
-#define MU_PRINT 0
+#define MU_PRINT 1
 #endif
 
 #include "munit.h"
@@ -27,6 +27,7 @@ void teardown(void);
 int test_mutate_node(void);
 int test_mutate_new_node(void);
 int test_point_mutation(void);
+int test_subtree_mutation(void);
 
 void test_suite(void);
 
@@ -66,6 +67,8 @@ void setup(void)
 
 void teardown()
 {
+    function_set_destroy(fs);
+    terminal_set_destroy(ts);
     config_destroy(c);
 }
 
@@ -223,12 +226,51 @@ int test_point_mutation(void)
     return 0;
 }
 
+int test_subtree_mutation(void)
+{
+    int i;
+    char *before;
+    char *after;
+
+    c = config_new(NONE, NONE, NONE);
+    c->data_struct = tree_config_new();
+    ((struct tree_config *) c->data_struct)->ts = ts;
+    ((struct tree_config *) c->data_struct)->fs = fs;
+    c->data_struct_free = tree_config_destroy;
+
+    for (i = 0; i < 70; i++) {
+        t = tree_generate(FULL, fs, ts, 2);
+
+        mu_print("BEFORE:\n");
+        before = tree_string(t);
+        mu_print("tree: %s\n", before);
+        mu_print("size: %d depth %d\n\n", t->size, t->depth);
+
+        subtree_mutation(t, c);
+
+        mu_print("AFTER:\n");
+        after = tree_string(t);
+        mu_print("tree: %s\n", after);
+        mu_print("size: %d depth %d\n\n\n", t->size, t->depth);
+
+        /* mu_check(strcmp(before, after) != 0); */
+
+        free(before);
+        free(after);
+        tree_destroy(t);
+    }
+
+
+    return 0;
+}
+
 void test_suite(void)
 {
     setup();
-    mu_add_test(test_mutate_node);
-    mu_add_test(test_mutate_new_node);
-    mu_add_test(test_point_mutation);
+    /* mu_add_test(test_mutate_node); */
+    /* mu_add_test(test_mutate_new_node); */
+    /* mu_add_test(test_point_mutation); */
+    mu_add_test(test_subtree_mutation);
     teardown();
 }
 

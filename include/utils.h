@@ -26,31 +26,23 @@
         ##__VA_ARGS__\
     )
 #define log_warn(M, ...) \
-    fprintf(stderr,\
-        "[WARN] (%s:%d) " M "\n",\
-        __FILE__,\
-        __LINE__,\
-        ##__VA_ARGS__\
-    )
+    fprintf(stderr, "[WARN] " M "\n", ##__VA_ARGS__)
 #define log_info(M, ...) \
-    fprintf(stderr, \
-        "[INFO] (%s:%d) " M "\n", \
-        __FILE__, \
-        __LINE__, \
-        ##__VA_ARGS__\
-    )
+    fprintf(stderr, "[INFO] " M "\n", ##__VA_ARGS__)
 
 
 
 /* CONTROL FLOW */
 #define check(A, M, ...) \
     if (!(A)) { \
-        log_err(M, ##__VA_ARGS__); goto error; \
+        log_err(M, ##__VA_ARGS__); \
+        goto error; \
     }
 #define check_mem(A) check((A), "Out of memory.")
 #define check_debug(A, M, ...) \
     if (!(A)) { \
-        debug(M, ##__VA_ARGS__); goto error; \
+        debug(M, ##__VA_ARGS__); \
+        goto error; \
     }
 #define silent_check(A) \
     if (!(A)) { \

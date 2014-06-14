@@ -5,6 +5,8 @@
 #define MU_PRINT 1
 #endif
 
+#define TEST_DATA "./tests/data/sine.csv"
+
 #include "munit.h"
 #include "utils.h"
 #include "evolve.h"
@@ -23,17 +25,21 @@ static struct terminal_set *ts;
 static struct config *c;
 
 /* TESTS */
-void setup_population(void);
-void teardown_population(void);
+void setup(int random_score);
+void teardown(void);
 int test_stats_new_and_destroy(void);
+int test_stats_update(void);
 int test_evolve_terminate(void);
-int test_evolve_reproduction(void);
+int test_evolve_reproduce(void);
 int test_evolve_gp(void);
 void test_suite(void);
 
 
-void setup_population(void)
+void setup(int random_score)
 {
+    int i;
+    struct tree *t;
+
     /* function set */
     struct function *functions[10] = {
         function_new_func(ADD, 2),
@@ -51,12 +57,12 @@ void setup_population(void)
     fs = function_set_new(functions, 10);
 
     /* terminal set */
-    float *one= malloc_float(1.0);
-    float *two = malloc_float(2.0);
+    float *min= malloc_float(1.0);
+    float *max = malloc_float(100.0);
 
     struct terminal *terminals[2] = {
-        terminal_new_constant(FLOAT, one),
-        terminal_new_constant(FLOAT, two)
+        terminal_new_input((char *) "x"),
+        terminal_new_random_constant(FLOAT, min, max, 0)
     };
     ts = terminal_set_new(terminals, 2);
 
@@ -64,49 +70,123 @@ void setup_population(void)
     c = config_new(TOURNAMENT_SELECTION, NONE, NONE);
 
     /* general config */
-    c->get_score = tree_score;
-    c->copy_func = tree_copy;
-    c->free_func = tree_destroy;
-    c->cmp = tree_cmp;
+    c->max_generations = 10;
+    c->population_size = 50;
+
+    c->population_generator = tree_population;
+    c->evaluate_population = regression_evaluate_population;
 
     /* tree config */
     c->data_struct = tree_config_new();
+    ((struct tree_config *) c->data_struct)->build_method = FULL;
+    ((struct tree_config *) c->data_struct)->max_depth = 2;
     ((struct tree_config *) c->data_struct)->fs = fs;
     ((struct tree_config *) c->data_struct)->ts = ts;
     c->data_struct_free = tree_config_destroy;
 
     /* selection config */
     c->selection->select_func = tournament_selection;
-    c->selection->tournament_size = 5;
+    c->selection->tournament_size = 2;
 
-    /* crossover config */
+    /* genetic operator config */
     c->crossover->crossover_func = point_crossover;
-    c->mutation->mutation_func = point_mutation;
+    c->crossover->probability = 0.7f;
+
+    c->mutation->mutation_func = subtree_mutation;
+    c->mutation->probability = 0.5f;
+
+    /* misc config */
+    c->print_func = regression_print;
+    c->get_score = tree_score;
+    c->copy_func = tree_copy;
+    c->free_func = tree_destroy;
+    c->cmp = tree_cmp;
 
     /* create trees */
-    p = tree_population(c);
+    p = c->population_generator(c);
+    if (random_score) {
+        for (i = 0; i < p->size; i++) {
+            t = ((struct tree *) p->individuals[i]);
+            t->score = malloc_float(randf(0, 100));
+        }
+    }
 
-    free(one);
-    free(two);
+    free(min);
+    free(max);
 }
 
-void teardown_population(void)
+void teardown(void)
 {
-    population_destroy(p, tree_destroy);
+    function_set_destroy(fs);
+    terminal_set_destroy(ts);
     config_destroy(c);
 }
 
 int test_stats_new_and_destroy(void)
 {
     struct stats *s = stats_new();
-    stats_destroy(s);
+    float zero = 0.0f;
+
+    setup(0);
+
+    mu_check(s->generation == -1);
+    mu_check(s->stale_counter == 0);
+    mu_check(s->population_size == 0);
+    mu_check(s->best == NULL);
+
+    mu_check(s->individuals_evaluated == 0);
+    mu_check(fltcmp(&s->diversity, &zero) == 0);
+
+    stats_destroy(s, c);
+    population_destroy(p, tree_destroy);
+    teardown();
+    return 0;
+}
+
+int test_stats_update(void)
+{
+    struct stats *s;
+    struct tree *best;
+    float *best_score;
+
+    /* setup */
+    setup(1);
+
+    s = stats_new();
+    best = population_best(p, c->cmp);
+    best_score = tree_score(best);
+
+    /* stats update */
+    stats_update(p, c, s);
+    mu_check(s->generation == 0);
+    mu_check(s->stale_counter == 0);
+    mu_check(s->population_size == p->size);
+    mu_check(tree_cmp(s->best, best) == 0);
+
+    stats_update(p, c, s);
+    mu_check(s->generation == 1);
+    mu_check(s->stale_counter == 1);
+    mu_check(s->population_size == p->size);
+    mu_check(tree_cmp(s->best, best) == 0);
+
+    *best->score -= 1.0;
+    stats_update(p, c, s);
+    mu_check(s->generation == 2);
+    mu_check(s->population_size == p->size);
+    mu_check(s->stale_counter == 0);
+    mu_check(tree_cmp(s->best, best) == 0);
+
+    /* destroy */
+    stats_destroy(s, c);
+    population_destroy(p, tree_destroy);
+    teardown();
     return 0;
 }
 
 int test_evolve_terminate(void)
 {
     struct stats *s = stats_new();
-    c = config_new(NONE, NONE, NONE);
+    setup(1);
 
     /* max generation not reached */
     c->max_generations = 100;
@@ -142,34 +222,48 @@ int test_evolve_terminate(void)
     s->best_score = 100;
     mu_check(evolve_terminate(s, c) == 1);
 
-    config_destroy(c);
-    stats_destroy(s);
+    stats_destroy(s, c);
+    population_destroy(p, tree_destroy);
+    teardown();
     return 0;
 }
 
-int test_evolve_reproduction(void)
+int test_evolve_reproduce(void)
 {
-    setup_population();
+    setup(1);
 
     /* reproduce */
     struct population *new_generation = evolve_reproduce(p, c);
     population_destroy(new_generation, tree_destroy);
 
-    teardown_population();
+    teardown();
     return 0;
 }
 
 int test_evolve_gp(void)
 {
+    struct data *d = csv_load_data(TEST_DATA, 1, ",");
 
+    setup(0);
+
+    /* evolve */
+    evolve_gp(c, d);
+
+    /* clean up */
+    teardown();
+    population_destroy(p, tree_destroy);
+    data_destroy(d);
 
     return 0;
 }
 
 void test_suite(void)
 {
+    mu_add_test(test_stats_new_and_destroy);
+    mu_add_test(test_stats_update);
     mu_add_test(test_evolve_terminate);
-    mu_add_test(test_evolve_reproduction);
+    mu_add_test(test_evolve_reproduce);
+    mu_add_test(test_evolve_gp);
 }
 
 mu_run_tests(test_suite)

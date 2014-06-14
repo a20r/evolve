@@ -5,58 +5,83 @@
 #include "config.h"
 #include "evolve.h"
 #include "population.h"
+#include "gp/regression.h"
 
 
 struct stats *stats_new(void)
 {
-    struct stats *l = malloc(sizeof(struct stats));
+    struct stats *s = malloc(sizeof(struct stats));
 
-    l->generation = 0;
-    l->stale_counter = 0;
-    l->population_size = 0;
-    l->best_score = 0.0f;
+    s->generation = -1;
+    s->population_size = 0;
 
-    l->individuals_evaluated = 0;
-    l->diversity = 0.0f;
+    s->stale_counter = 0;
+    s->best = NULL;
+    s->best_score = 0.0f;
 
-    return l;
+    s->individuals_evaluated = 0;
+    s->diversity = 0.0f;
+
+    return s;
 }
 
-void stats_destroy(void *stats)
+void stats_destroy(void *stats, struct config *c)
 {
     if (stats) {
+        c->free_func(((struct stats *) stats)->best);
         free(stats);
     }
 }
 
-void stats_update(struct population *p, struct stats *s, struct config *c)
+void stats_update(struct population *p, struct config *c, struct stats *s)
 {
     int cmp_res;
-    void *best = population_best(p, c->cmp);
-    float best_score = c->get_score(best);
+    void *p_best = NULL;
+
+    /* pre-check */
+    check(c->free_func, E_FREE_FUNC);
+    check(c->get_score, E_GET_SCORE);
+    check(c->cmp, E_CMP);
+
+    /* update */
+    p_best = population_best(p, c->cmp);
+
+    if (s->generation == -1) {
+        s->best_score = *c->get_score(p_best);
+        s->best = c->copy_func(p_best);
+
+    } else {
+        cmp_res = c->cmp(p_best, s->best);
+
+        if (cmp_res == -1) {
+            c->free_func(s->best);
+            s->best = c->copy_func(p_best);
+            s->best_score = *c->get_score(p_best);
+            s->stale_counter = 0;
+        } else {
+            s->stale_counter++;
+        }
+
+    }
 
     s->generation++;
     s->population_size = p->size;
 
-    cmp_res = fltcmp(&best_score, &s->best_score);
-    if (cmp_res == 0 || cmp_res == -1) {
-        s->best_score = best_score;
-        s->best = best;
-        s->stale_counter = 0;
-    } else {
-        s->stale_counter++;
-    }
-
+error:
+    return;
 }
 
 
-int evolve_terminate(struct stats *l, struct config *c)
+int evolve_terminate(struct stats *s, struct config *c)
 {
-    if (l->generation == c->max_generations) {
+    if (s->generation == c->max_generations) {
+        log_info(MAX_GEN_REACHED);
         return 1;
-    } else if (l->stale_counter == c->stale_limit) {
+    } else if (s->stale_counter == c->stale_limit) {
+        log_info(STALE_LIMIT_REACHED);
         return 1;
-    } else if (fltcmp(&l->best_score, &c->target_score) == 0) {
+    } else if (fltcmp(&s->best_score, &c->target_score) == 0) {
+        log_info(TARGET_SCORE_REACHED);
         return 1;
     }
 
@@ -66,38 +91,74 @@ int evolve_terminate(struct stats *l, struct config *c)
 struct population *evolve_reproduce(struct population *p, struct config *c)
 {
     int i;
-    struct population *parents;
+    float random;
     struct population *child_1;
     struct population *child_2;
     struct population *new_generation;
 
-    /* setup new generation and select parents */
-    new_generation = population_new(p->size, p->individual_size);
-    parents = c->selection->select_func(p, c);
+    /* pre-check */
+    check(c->crossover->crossover_func, "Crossover function is not set!");
+    check(c->crossover->probability, "Crossover probability is not set!");
+    check(c->mutation->mutation_func, "Mutation function is not set!");
+    check(c->mutation->probability, "Mutation probability is not set!");
 
-    for (i = 0; i < parents->size; i += 2) {
-        child_1 = c->copy_func(parents->individuals[i]);
-        child_2 = c->copy_func(parents->individuals[i + 1]);
+    /* setup new generation and select parents */
+    new_generation = c->selection->select_func(p, c);
+    population_destroy(p, c->free_func);
+
+    for (i = 0; i < new_generation->size; i += 2) {
+        child_1 = new_generation->individuals[i];
+        child_2 = new_generation->individuals[i + 1];
 
         /* genetic operators */
-        c->crossover->crossover_func(child_1, child_2);
-        c->mutation->mutation_func(child_1, c);
-        c->mutation->mutation_func(child_2, c);
+        random = randf(0, 1.0);
+        if (c->crossover->probability > random) {
+            c->crossover->crossover_func(child_1, child_2);
+        }
 
-        /* append children to new population */
-        new_generation->individuals[i] = child_1;
-        new_generation->individuals[i + 1] = child_2;
+        random = randf(0, 1.0);
+        if (c->mutation->probability > random) {
+            c->mutation->mutation_func(child_1, c);
+        }
+
+        random = randf(0, 1.0);
+        if (c->mutation->probability > random) {
+            c->mutation->mutation_func(child_2, c);
+        }
     }
-    population_destroy(parents, c->free_func);
 
     return new_generation;
+error:
+    return NULL;
 }
 
-/* struct population *evolve_gp(struct config *c) */
-/* { */
-/*     struct population *p = NULL; */
-/*  */
-/*  */
-/*  */
-/*     return p; */
-/* } */
+void evolve_gp(struct config *c, struct data *d)
+{
+    struct stats *s = stats_new();
+    struct population *p = c->population_generator(c);
+
+    /* pre-check */
+    check(c->evaluate_population, E_EVAL);
+
+    /* evolve */
+    c->evaluate_population(p, d);
+    stats_update(p, c, s);
+
+    while (evolve_terminate(s, c) != 1) {
+        p = evolve_reproduce(p, c);
+        c->evaluate_population(p, d);
+        stats_update(p, c, s);
+
+        c->print_func(population_best(p, c->cmp));
+        log_info("score[%d]: %f", s->generation, *c->get_score(population_best(p, c->cmp)));
+        printf("\n");
+    }
+
+
+    /* clean up */
+    population_destroy(p, c->free_func);
+    stats_destroy(s, c);
+
+error:
+    return;
+}

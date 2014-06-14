@@ -2,6 +2,7 @@
 
 #include "config.h"
 #include "utils.h"
+#include "data.h"
 
 
 struct config *config_new(int s_method, int c_method, int m_method)
@@ -11,15 +12,24 @@ struct config *config_new(int s_method, int c_method, int m_method)
     c->max_generations = -1;
     c->population_size = -1;
 
+    c->population_generator = NULL;
+    c->evaluate_population = NULL;
+
     c->stale_limit = -1;
     c->target_score = -1;
 
+    c->data = NULL;
     c->data_struct = NULL;
     c->data_struct_free = NULL;
 
     c->selection = selection_config_new(s_method);
     c->crossover = crossover_config_new(c_method);
     c->mutation = mutation_config_new(m_method);
+
+    c->free_func = NULL;
+    c->copy_func = NULL;
+    c->get_score = NULL;
+    c->cmp = NULL;
 
     return c;
 }
@@ -29,10 +39,12 @@ void config_destroy(void *config)
     struct config *c = (struct config *) config;
 
     if (config) {
+
+        data_destroy(c->data);
         if (c->data_struct && c->data_struct_free) {
             c->data_struct_free(c->data_struct);
         } else if (c->data_struct && (c->data_struct_free == NULL)) {
-            printf("ERROR! You forgot to set config->data_struct_free!\n");
+            log_err("ERROR! You forgot to set config->data_struct_free!\n");
         }
 
         selection_config_destroy(c->selection);

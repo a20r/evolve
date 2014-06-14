@@ -25,6 +25,7 @@ int test_evolve_new_and_destroy(void)
 
     mu_check(c->max_generations == -1);
     mu_check(c->population_size == -1);
+    mu_check(c->population_generator == NULL);
 
     mu_check(c->stale_limit == -1);
     mu_check(fltcmp(&c->target_score, &solution) == 0);

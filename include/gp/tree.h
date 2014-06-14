@@ -31,7 +31,9 @@
 #define RAMPED_HALF_AND_HALF 2
 
 /* ERRORS */
-#define ERROR_GEN_METHOD "Error! Unrecognized tree generation method!\n"
+#define E_FS "Function set is not set! Check config->data_struct->fs!"
+#define E_TS "Terminal set is not set! Check config->data_struct->ts!"
+#define E_GEN_METHOD "Unrecognized tree generation method!"
 
 
 /* STRUCTURES */
@@ -42,12 +44,6 @@ struct tree_config
 
     struct function_set *fs;
     struct terminal_set *ts;
-    struct tree *(*tree_generate)(
-        int,
-        struct function_set *,
-        struct terminal_set *,
-        int
-    );
 };
 
 struct function_set
@@ -176,7 +172,7 @@ struct tree *tree_generate(
     int max_depth
 );
 struct population *tree_population(struct config *c);
-float tree_score(void *t);
+float *tree_score(void *t);
 int tree_equals(struct tree *t1, struct tree *t2);
 int tree_size(struct node *n);
 char *tree_string(struct tree *t);

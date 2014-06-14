@@ -3,6 +3,9 @@
 
 #include <stdio.h>
 
+/* ERRORS */
+#define E_POP_SIZE "Invalid population size! Check config->population_size!"
+
 
 /* STRUCTURES */
 struct population

@@ -200,7 +200,7 @@ void *terminal_resolve_random(struct terminal *t)
     float f;
     double d;
     float precision = (float) pow(10 , t->precision);
-    void *retval;
+    void *retval = NULL;
 
     switch (t->value_type) {
     case INTEGER:
@@ -391,6 +391,9 @@ void *node_copy(void *s)
     /* create copy */
     cpy = node_new(src->type);
 
+    cpy->parent = src->parent;
+    cpy->nth_child = src->nth_child;
+
     if (src->type == TERM_NODE) {
         cpy->terminal_type = src->terminal_type;
         cpy->value_type = src->value_type;
@@ -432,6 +435,9 @@ void *node_deepcopy(void *s)
 
     /* create copy */
     cpy = node_new(src->type);
+
+    cpy->parent = src->parent;
+    cpy->nth_child = src->nth_child;
 
     if (src->type == TERM_NODE) {
         cpy->terminal_type = src->terminal_type;
@@ -629,8 +635,9 @@ struct node *node_random_term(struct terminal_set *ts)
 {
     int i = randi(0, ts->length - 1);
     struct terminal *t = ts->terminals[i];
-    struct node *n = node_new(TERM_NODE);
+    struct node *n = NULL;
 
+    n = node_new(TERM_NODE);
     n->terminal_type = t->type;
     if (t->type == RANDOM_CONSTANT) {
         n->value_type = t->value_type;
@@ -683,17 +690,14 @@ struct tree *tree_new(struct function_set *fs)
 
 void tree_destroy(void *t)
 {
-    /* pre-check */
-    if (t == NULL) {
-        return;
-    }
-
     struct tree *target = (struct tree *) t;
 
-    node_clear_destroy(target->root);
-    free(target->score);
-    free(target->chromosome);
-    free(t);
+    if (t != NULL) {
+        node_clear_destroy(target->root);
+        free(target->score);
+        free(target->chromosome);
+        free(t);
+    }
 }
 
 int tree_traverse(struct node *n, int (*callback)(struct node *))
@@ -737,7 +741,7 @@ void tree_build(
 )
 {
     int i;
-    struct node *child;
+    struct node *child = NULL;
     float end = ts->length / (float) (ts->length + fs->length);
 
     if (curr_depth > t->depth) {
@@ -781,13 +785,20 @@ struct tree *tree_generate(
     int max_depth
 )
 {
-    struct tree *t = tree_new(fs);
+    struct tree *t = NULL;
 
+    /* pre-check */
+    check(fs != NULL, E_FS);
+    check(ts != NULL, E_TS);
+
+    /* generate tree */
+    t = tree_new(fs);
     switch (method) {
     case FULL:
     case GROW:
         tree_build(method, t, t->root, fs, ts, 0, max_depth);
         break;
+
     case RAMPED_HALF_AND_HALF:
         if (randf(0.0, 1.0) > 0.5) {
             tree_build(FULL, t, t->root, fs, ts, 0, max_depth);
@@ -795,12 +806,16 @@ struct tree *tree_generate(
             tree_build(GROW, t, t->root, fs, ts, 0, max_depth);
         }
         break;
+
     default:
-        printf(ERROR_GEN_METHOD);
+        log_err(E_GEN_METHOD);
     }
     tree_update(t);
 
     return t;
+error:
+    tree_destroy(t);
+    return NULL;
 }
 
 struct population *tree_population(struct config *c)
@@ -808,13 +823,25 @@ struct population *tree_population(struct config *c)
     int i;
     int size = c->population_size;
     struct tree_config *tc = c->data_struct;
-    struct population *p = population_new(size, sizeof(struct tree));
+    struct population *p = NULL;
 
+    /* pre-check */
+    check(size > 0, E_POP_SIZE);
+
+    /* build population */
+    p = population_new(size, sizeof(struct tree));
     for (i = 0; i < size; i++) {
-        p->individuals[i] = tree_generate(tc->build_method, tc->fs, tc->ts, tc->max_depth);
+        p->individuals[i] = tree_generate(
+            tc->build_method,
+            tc->fs,
+            tc->ts,
+            tc->max_depth
+        );
     }
 
     return p;
+error:
+    return NULL;
 }
 
 void *tree_copy(void *src)
@@ -825,8 +852,7 @@ void *tree_copy(void *src)
     copy->root = node_deepcopy(source->root);
 
     if (source->score) {
-        copy->score = malloc(sizeof(float));
-        *(copy->score) = *(source->score);
+        copy->score = malloc_float(*source->score);
     } else {
         copy->score = NULL;
     }
@@ -852,9 +878,9 @@ struct node **tree_copy_chromosome(struct tree *t)
     return copy;
 }
 
-float tree_score(void *t)
+float *tree_score(void *t)
 {
-    return *(float *) ((struct tree *) t)->score;
+    return (float *) ((struct tree *) t)->score;
 }
 
 int tree_equals(struct tree *t1, struct tree *t2)
@@ -931,6 +957,9 @@ void tree_update_traverse(struct tree *t, struct node *n, int depth)
 
     if (n->type == FUNC_NODE) {
         for (i = 0; i < n->arity; i++) {
+            n->children[i]->parent = n;
+            n->children[i]->nth_child = i;
+
             tree_update_traverse(t, n->children[i], depth + 1);
         }
     }
@@ -985,30 +1014,29 @@ int tree_asc_cmp(const void *t1, const void *t2)
     if (score_1 == NULL || score_2 == NULL) {
         if (score_1 == NULL && score_2 == NULL) {
             return 0;
-        } else if (score_1 == NULL) {
-            return -1;
         } else if (score_2 == NULL) {
+            return -1;
+        } else if (score_1 == NULL) {
             return 1;
         }
     }
 
     /* compare floats */
-    if (*score_1 > *score_2) {
-        return  1;
-    } else if (*score_1 < *score_2) {
-        return -1;
-    } else {
-        return 0;
-    }
+    return fltcmp(score_1, score_2);
 }
 
 int tree_desc_cmp(const void *t1, const void *t2)
 {
-    return tree_asc_cmp(t1, t2) * -1;
+    int res = tree_asc_cmp(t1, t2);
+
+    if (res != -2) {
+        return res * -1;
+    } else {
+        return -2;
+    }
 }
 
 int tree_cmp(const void *t1, const void *t2)
 {
     return tree_asc_cmp(t1, t2);
 }
-

@@ -36,15 +36,18 @@ struct data *data_new(int rows, int cols, const char **fields)
     return d;
 }
 
-int data_destroy(struct data *d)
+void data_destroy(void *d)
 {
-    /* free field names */
-    free_mem_arr(d->fields, d->cols, free);
+    struct data *dat = (struct data *) d;
 
-    /* free data */
-    free_mem_2darr(d->data, d->rows, d->cols, free);
-    free(d);
-    return 0;
+    if (d) {
+        /* free field names */
+        free_mem_arr(dat->fields, dat->cols, free);
+
+        /* free data */
+        free_mem_2darr(dat->data, dat->rows, dat->cols, free);
+        free(dat);
+    }
 }
 
 int data_field_index(struct data *d, const char *field)

@@ -81,3 +81,34 @@ int point_mutation(void *t, struct config *c)
     struct node *n = ((struct tree *) t)->chromosome[index];
     return mutate_new_node(n, fs, ts);
 }
+
+int subtree_mutation(void *t, struct config *c)
+{
+    struct tree_config *tc = (struct tree_config *) c->data_struct;
+    struct function_set *fs = tc->fs;
+    struct terminal_set *ts = tc->ts;
+    struct tree *target = (struct tree *) t;
+    struct tree *subtree  = NULL;
+    struct node *selected = NULL;
+    int end = (target->size > 2) ? target->size - 2: target->size - 1;
+
+    /* generate subtree */
+    subtree = tree_generate(RAMPED_HALF_AND_HALF, fs, ts, 2);
+
+    /* mutate tree */
+    selected = target->chromosome[randi(0, end)];
+
+    if (selected != target->root) {
+        selected->parent->children[selected->nth_child] = subtree->root;
+        subtree->root->parent = selected->parent;
+        node_clear_destroy(selected);
+    } else {
+        node_clear_destroy(target->root);
+        target->root = subtree->root;
+    }
+    subtree->root = NULL;
+    tree_destroy(subtree);
+    tree_update(t);
+
+    return 0;
+}
