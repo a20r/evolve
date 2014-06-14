@@ -154,7 +154,7 @@ int test_stats_update(void)
     setup(1);
 
     s = stats_new();
-    best = population_best(p, c->cmp);
+    best = population_best(p, c->get_score, c->cmp);
     best_score = tree_score(best);
 
     /* stats update */

@@ -134,13 +134,13 @@ int test_population_best(void)
     mu_print("----------\n");
 
     /* find highest scoring trees */
-    t = (struct tree *) population_best(p, tree_desc_cmp);
+    t = (struct tree *) population_best(p, tree_score, tree_desc_cmp);
     mu_print("hightest score: %f\n", *(float *) t->score);
 
     mu_print("----------\n");
 
     /* find lowest scoring trees */
-    t = (struct tree *) population_best(p, tree_asc_cmp);
+    t = (struct tree *) population_best(p, tree_score, tree_asc_cmp);
     mu_print("lowest score: %f\n", *(float *) t->score);
 
     teardown_population();

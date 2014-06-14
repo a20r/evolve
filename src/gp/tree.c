@@ -826,7 +826,7 @@ struct population *tree_population(struct config *c)
     struct population *p = NULL;
 
     /* pre-check */
-    check(size > 0, E_POP_SIZE);
+    check(size > 0, "Invalid population size!");
 
     /* build population */
     p = population_new(size, sizeof(struct tree));

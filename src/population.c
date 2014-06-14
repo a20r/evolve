@@ -11,9 +11,13 @@ struct population *population_new(int size, size_t individual_size)
     int i;
     struct population *p = NULL;
 
-    check(size > 0, E_POP_SIZE);
+    /* pre-check */
+    check(size > 0, "Invalid population size!");
+    check(individual_size > 0, "Invalid individual_size!");
 
+    /* create population */
     p = malloc(sizeof(struct population));
+
     p->generation = 0;
     p->size = size;
 
@@ -34,6 +38,8 @@ void population_destroy(struct population *p, void (*free_func)(void *))
 {
     int i;
 
+    /* pre-check */
+    check(p, "population is NULL!");
     check(free_func, "free_func is NULL!");
 
     for (i = 0; i < p->size; i++) {
@@ -49,6 +55,7 @@ error:
 
 void *population_best(
     struct population *p,
+    float *(*get_score)(void *t),
     int (*cmp)(const void *, const void *)
 )
 {
@@ -57,16 +64,19 @@ void *population_best(
     void *best = NULL;
 
     /* pre-check */
+    check(p, "population is NULL!");
+    check(get_score, "get_score is NULL!");
     check(cmp, "cmp is NULL!");
-    check(cmp, "population is NULL!");
 
     /* find best */
     best = p->individuals[randi(0, p->size -1)];
     for (i = 0; i < p->size; i++) {
         contender = p->individuals[i];
 
-        if (cmp(contender, best) == -1) {
-            best = contender;
+        if (get_score(contender) != NULL) {
+            if (cmp(contender, best) == -1) {
+                best = contender;
+            }
         }
     }
 

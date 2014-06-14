@@ -44,7 +44,7 @@ void stats_update(struct population *p, struct config *c, struct stats *s)
     check(c->cmp, ECMP);
 
     /* update */
-    p_best = population_best(p, c->cmp);
+    p_best = population_best(p, c->get_score, c->cmp);
 
     if (s->generation == -1) {
         s->best_score = *c->get_score(p_best);
@@ -149,11 +149,11 @@ void evolve_gp(struct config *c, struct data *d)
         c->evaluate_population(p, d);
         stats_update(p, c, s);
 
-        c->print_func(population_best(p, c->cmp));
+        c->print_func(population_best(p, c->get_score, c->cmp));
         log_info(
             "score[%d]: %f",
             s->generation,
-            *c->get_score(population_best(p, c->cmp))
+            *c->get_score(population_best(p, c->get_score, c->cmp))
         );
         printf("\n");
     }
