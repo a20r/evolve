@@ -71,7 +71,7 @@ void setup(int random_score)
 
     /* general config */
     c->max_generations = 10;
-    c->population_size = 50;
+    c->population_size = 500;
 
     c->population_generator = tree_population;
     c->evaluate_population = regression_evaluate_population;
@@ -90,10 +90,10 @@ void setup(int random_score)
 
     /* genetic operator config */
     c->crossover->crossover_func = point_crossover;
-    c->crossover->probability = 0.7f;
+    c->crossover->probability = 0.0f;
 
     c->mutation->mutation_func = subtree_mutation;
-    c->mutation->probability = 0.5f;
+    c->mutation->probability = 0.8f;
 
     /* misc config */
     c->print_func = regression_print;
@@ -259,10 +259,10 @@ int test_evolve_gp(void)
 
 void test_suite(void)
 {
-    mu_add_test(test_stats_new_and_destroy);
-    mu_add_test(test_stats_update);
-    mu_add_test(test_evolve_terminate);
-    mu_add_test(test_evolve_reproduce);
+    /* mu_add_test(test_stats_new_and_destroy); */
+    /* mu_add_test(test_stats_update); */
+    /* mu_add_test(test_evolve_terminate); */
+    /* mu_add_test(test_evolve_reproduce); */
     mu_add_test(test_evolve_gp);
 }
 

@@ -4,7 +4,7 @@
 #include <time.h>
 
 #ifndef MU_PRINT
-#define MU_PRINT 1
+#define MU_PRINT 0
 #endif
 
 #include "munit.h"
@@ -44,6 +44,7 @@ int test_node_random_func(void);
 int test_node_random_func_arity(void);
 int test_node_random_term(void);
 
+void tree_deep_print(struct tree *target);
 void setup_tree_test(void);
 void teardown_tree_test(void);
 int test_tree_config_new_and_destroy(void);
@@ -542,6 +543,26 @@ int test_node_random_term(void)
 
 
 /* TREE TESTS */
+void tree_deep_print(struct tree *target)
+{
+    int i;
+    struct node *target_node;
+    char *node_str;
+    char *parent;
+
+    for (i = 0; i < target->size; i++) {
+        target_node = target->chromosome[i];
+        parent = node_string(target_node->parent);
+        node_str = node_string(target_node);
+
+        mu_print("%s ", node_str);
+        mu_print("{p: %s nth: %d}\n", parent, target_node->nth_child);
+
+        free(node_str);
+        free(parent);
+    }
+}
+
 void setup_tree_test(void)
 {
     /* function and terminal set */
@@ -706,8 +727,6 @@ int test_tree_string(void)
 
 int test_tree_update(void)
 {
-    char *node_str;
-
     /* tree */
     tree = tree_new(fs);
     tree_build(FULL, tree, tree->root, fs, ts, 0, 2);
@@ -721,15 +740,7 @@ int test_tree_update(void)
     mu_check(tree->size > 0);
     mu_check(tree->depth > 0);
     mu_check(tree->chromosome != NULL);
-
-    int i;
-    for (i = 0; i < tree->size; i++) {
-        mu_check(tree->chromosome[i] != NULL);
-        node_str = node_string(tree->chromosome[i]);
-        mu_print("%s ", node_str);
-        free(node_str);
-    }
-    mu_print("\n");
+    tree_deep_print(tree);
 
     /* clean up */
     tree_destroy(tree);
@@ -913,19 +924,19 @@ void test_suite(void)
 
     /* tree */
     setup_tree_test();
-    /* mu_add_test(test_tree_config_new_and_destroy); */
-    /* mu_add_test(test_tree_new_and_destroy); */
-    /* mu_add_test(test_tree_build); */
-    /* mu_add_test(test_tree_generate); */
-    /* mu_add_test(test_tree_population); */
-    /* mu_add_test(test_tree_equals); */
-    /* mu_add_test(test_tree_size); */
-    /* mu_add_test(test_tree_string); */
+    mu_add_test(test_tree_config_new_and_destroy);
+    mu_add_test(test_tree_new_and_destroy);
+    mu_add_test(test_tree_build);
+    mu_add_test(test_tree_generate);
+    mu_add_test(test_tree_population);
+    mu_add_test(test_tree_equals);
+    mu_add_test(test_tree_size);
+    mu_add_test(test_tree_string);
     mu_add_test(test_tree_update);
-    /* mu_add_test(test_tree_replace_node); */
-    /* mu_add_test(test_tree_asc_cmp); */
-    /* mu_add_test(test_tree_desc_cmp); */
-    /* mu_add_test(test_tree_cmp); */
+    mu_add_test(test_tree_replace_node);
+    mu_add_test(test_tree_asc_cmp);
+    mu_add_test(test_tree_desc_cmp);
+    mu_add_test(test_tree_cmp);
     teardown_tree_test();
 }
 

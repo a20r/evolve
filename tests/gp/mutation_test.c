@@ -223,6 +223,7 @@ int test_point_mutation(void)
         tree_destroy(t);
     }
 
+    config_destroy(c);
     return 0;
 }
 
@@ -238,7 +239,7 @@ int test_subtree_mutation(void)
     ((struct tree_config *) c->data_struct)->fs = fs;
     c->data_struct_free = tree_config_destroy;
 
-    for (i = 0; i < 70; i++) {
+    for (i = 0; i < 100; i++) {
         t = tree_generate(FULL, fs, ts, 2);
 
         mu_print("BEFORE:\n");
@@ -267,9 +268,9 @@ int test_subtree_mutation(void)
 void test_suite(void)
 {
     setup();
-    /* mu_add_test(test_mutate_node); */
-    /* mu_add_test(test_mutate_new_node); */
-    /* mu_add_test(test_point_mutation); */
+    mu_add_test(test_mutate_node);
+    mu_add_test(test_mutate_new_node);
+    mu_add_test(test_point_mutation);
     mu_add_test(test_subtree_mutation);
     teardown();
 }

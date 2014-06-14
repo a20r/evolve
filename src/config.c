@@ -77,7 +77,7 @@ struct crossover_config *crossover_config_new(int method)
     struct crossover_config *cc = malloc(sizeof(struct crossover_config));
 
     cc->method = method;
-    cc->probability = 0.0f;
+    cc->probability = -1.0f;
 
     return cc;
 }
@@ -94,7 +94,7 @@ struct mutation_config *mutation_config_new(int method)
     struct mutation_config *mc = malloc(sizeof(struct mutation_config));
 
     mc->method = method;
-    mc->probability = 0.0f;
+    mc->probability = -1.0f;
 
     return mc;
 }

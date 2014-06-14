@@ -49,15 +49,24 @@ int test_selection_config_new_and_destroy(void)
 
 int test_crossover_config_new_and_destroy(void)
 {
+    float uninit = -1.0f;
     struct crossover_config *cc = crossover_config_new(0);
+
+    mu_check(cc->method == 0);
+    mu_check(fltcmp(&cc->probability, &uninit) == 0);
     crossover_config_destroy(cc);
     return 0;
 }
 
 int test_mutation_config_new_and_destroy(void)
 {
-    struct mutation_config *cc = mutation_config_new(0);
-    mutation_config_destroy(cc);
+    float uninit = -1.0f;
+    struct mutation_config *mc = mutation_config_new(0);
+
+    mu_check(mc->method == 0);
+    mu_check(fltcmp(&mc->probability, &uninit) == 0);
+
+    mutation_config_destroy(mc);
     return 0;
 }
 
