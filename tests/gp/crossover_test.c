@@ -61,8 +61,8 @@ void setup(void)
     ts = terminal_set_new(terminals, 4);
 
     /* generate trees */
-    t1 = tree_generate(FULL, fs, ts, 5);
-    t2 = tree_generate(FULL, fs, ts, 5);
+    t1 = tree_generate(FULL, fs, ts, 1);
+    t2 = tree_generate(FULL, fs, ts, 1);
 }
 
 void teardown()
@@ -81,7 +81,7 @@ int test_point_crossover(void)
     char *t1_after;
     char *t2_after;
 
-    for (i = 0; i < 100; i++) {
+    for (i = 0; i < 1; i++) {
         setup();
         mu_print("BEFORE:\n");
         t1_before = tree_string(t1);
@@ -109,6 +109,24 @@ int test_point_crossover(void)
         free(t1_after);
         free(t2_after);
     }
+
+    setup();
+    mu_print("BEFORE:\n");
+    tree_print(t1);
+    tree_print(t2);
+    point_crossover(t1, t2);
+    mu_print("AFTER:\n");
+    tree_print(t1);
+    tree_print(t2);
+
+    mu_print("\n\nBEFORE:\n");
+    tree_print(t1);
+    tree_print(t2);
+    point_crossover(t1, t2);
+    mu_print("AFTER:\n");
+    tree_print(t1);
+    tree_print(t2);
+    teardown();
 
     return 0;
 }

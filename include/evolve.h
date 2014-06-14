@@ -4,11 +4,16 @@
 #include "config.h"
 
 /* ERRORS */
-#define E_EVAL "Evaluator is NULL! Check config->evaluate_population!"
-#define E_FREE_FUNC "Free function is NULL! Check config->free_func!"
-#define E_COPY_FUNC "Copy function is NULL! Check config->copy_func!"
-#define E_GET_SCORE "Get score is NULL! Check config->get_score!"
-#define E_CMP "Population individual comparator is NULL! Check config->cmp!"
+#define EEVAL "Evaluator is NULL! Check config->evaluate_population!"
+#define EFREEFUNC "Free function is NULL! Check config->free_func!"
+#define ECOPYFUNC "Copy function is NULL! Check config->copy_func!"
+#define EGETSCORE "Get score is NULL! Check config->get_score!"
+#define ECMP "Population individual comparator is NULL! Check config->cmp!"
+
+#define ECFUNC "Crossover function is not set!"
+#define ECPROB "Crossover probability is not set!"
+#define EMFUNC "Mutation function is not set!"
+#define EMPROB "Mutation probability is not set!"
 
 /* MESSAGES */
 #define MAX_GEN_REACHED "Max generation reached!"

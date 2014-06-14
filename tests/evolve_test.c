@@ -71,7 +71,7 @@ void setup(int random_score)
 
     /* general config */
     c->max_generations = 10;
-    c->population_size = 500;
+    c->population_size = 200;
 
     c->population_generator = tree_population;
     c->evaluate_population = regression_evaluate_population;
@@ -90,10 +90,10 @@ void setup(int random_score)
 
     /* genetic operator config */
     c->crossover->crossover_func = point_crossover;
-    c->crossover->probability = 0.0f;
+    c->crossover->probability = 0.9f;
 
     c->mutation->mutation_func = subtree_mutation;
-    c->mutation->probability = 0.8f;
+    c->mutation->probability = 0.9f;
 
     /* misc config */
     c->print_func = regression_print;

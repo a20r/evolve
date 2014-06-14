@@ -54,6 +54,7 @@ int test_crossover_config_new_and_destroy(void)
 
     mu_check(cc->method == 0);
     mu_check(fltcmp(&cc->probability, &uninit) == 0);
+
     crossover_config_destroy(cc);
     return 0;
 }

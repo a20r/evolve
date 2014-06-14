@@ -39,9 +39,9 @@ void stats_update(struct population *p, struct config *c, struct stats *s)
     void *p_best = NULL;
 
     /* pre-check */
-    check(c->free_func, E_FREE_FUNC);
-    check(c->get_score, E_GET_SCORE);
-    check(c->cmp, E_CMP);
+    check(c->free_func, EFREEFUNC);
+    check(c->get_score, EGETSCORE);
+    check(c->cmp, ECMP);
 
     /* update */
     p_best = population_best(p, c->cmp);
@@ -97,10 +97,10 @@ struct population *evolve_reproduce(struct population *p, struct config *c)
     struct population *new_generation;
 
     /* pre-check */
-    /* check(c->crossover->crossover_func, "Crossover function is not set!"); */
-    /* check(c->crossover->probability, "Crossover probability is not set!"); */
-    /* check(c->mutation->mutation_func, "Mutation function is not set!"); */
-    /* check(c->mutation->probability, "Mutation probability is not set!"); */
+    check(c->crossover->crossover_func, ECFUNC);
+    check(c->crossover->probability >= 0.0f, ECPROB);
+    check(c->mutation->mutation_func, EMFUNC);
+    check(c->mutation->probability >= 0.0f, EMPROB);
 
     /* setup new generation and select parents */
     new_generation = c->selection->select_func(p, c);
@@ -128,8 +128,8 @@ struct population *evolve_reproduce(struct population *p, struct config *c)
     }
 
     return new_generation;
-/* error: */
-/*     return NULL; */
+error:
+    return NULL;
 }
 
 void evolve_gp(struct config *c, struct data *d)
@@ -138,7 +138,7 @@ void evolve_gp(struct config *c, struct data *d)
     struct population *p = c->population_generator(c);
 
     /* pre-check */
-    check(c->evaluate_population, E_EVAL);
+    check(c->evaluate_population, EEVAL);
 
     /* evolve */
     c->evaluate_population(p, d);

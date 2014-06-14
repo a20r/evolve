@@ -749,7 +749,7 @@ void tree_build(
     }
 
     for (i = 0; i < n->arity; i++) {
-        if (curr_depth == max_depth) {
+        if ((curr_depth + 1) == max_depth) {
             /* create terminal node */
             child = node_random_term(ts);
             child->parent = n;
