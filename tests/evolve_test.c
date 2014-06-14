@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #ifndef MU_PRINT
 #define MU_PRINT 1
@@ -70,8 +71,8 @@ void setup(int random_score)
     c = config_new(TOURNAMENT_SELECTION, NONE, NONE);
 
     /* general config */
-    c->max_generations = 10;
-    c->population_size = 200;
+    c->max_generations = 1000;
+    c->population_size = 800;
 
     c->population_generator = tree_population;
     c->evaluate_population = regression_evaluate_population;
@@ -86,14 +87,14 @@ void setup(int random_score)
 
     /* selection config */
     c->selection->select_func = tournament_selection;
-    c->selection->tournament_size = 2;
+    c->selection->tournament_size = 100;
 
     /* genetic operator config */
     c->crossover->crossover_func = point_crossover;
-    c->crossover->probability = 0.9f;
+    c->crossover->probability = 0.8f;
 
     c->mutation->mutation_func = subtree_mutation;
-    c->mutation->probability = 0.9f;
+    c->mutation->probability = 0.6f;
 
     /* misc config */
     c->print_func = regression_print;
@@ -259,6 +260,8 @@ int test_evolve_gp(void)
 
 void test_suite(void)
 {
+    srand((unsigned int) time(NULL));
+
     /* mu_add_test(test_stats_new_and_destroy); */
     /* mu_add_test(test_stats_update); */
     /* mu_add_test(test_evolve_terminate); */

@@ -3,18 +3,6 @@
 
 #include "config.h"
 
-/* ERRORS */
-#define EEVAL "Evaluator is NULL! Check config->evaluate_population!"
-#define EFREEFUNC "Free function is NULL! Check config->free_func!"
-#define ECOPYFUNC "Copy function is NULL! Check config->copy_func!"
-#define EGETSCORE "Get score is NULL! Check config->get_score!"
-#define ECMP "Population individual comparator is NULL! Check config->cmp!"
-
-#define ECFUNC "Crossover function is not set!"
-#define ECPROB "Crossover probability is not set!"
-#define EMFUNC "Mutation function is not set!"
-#define EMPROB "Mutation probability is not set!"
-
 /* MESSAGES */
 #define MAX_GEN_REACHED "Max generation reached!"
 #define STALE_LIMIT_REACHED "Stale limit reached!"

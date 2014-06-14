@@ -17,6 +17,8 @@ struct population *tournament_selection(
     void *best = NULL;
     struct population *selected;
 
+    /* pre-check */
+
     /* setup new population */
     selected = population_new(p->size, p->individual_size);
 
@@ -27,8 +29,12 @@ struct population *tournament_selection(
         for (i = 0; i < c->selection->tournament_size; i++) {
             contender = p->individuals[randi(0, p->size - 1)];
 
-            if (c->cmp(contender, best) == -1) {
-                best = contender;
+            if (c->get_score(contender) == NULL)  {
+                i--;
+            } else {
+                if (c->cmp(contender, best) == -1) {
+                    best = contender;
+                }
             }
         }
 

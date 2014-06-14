@@ -3,6 +3,20 @@
 
 #define NONE -1
 
+/* ERRORS */
+#define EEVAL "config->evaluate_population is NULL!"
+#define ECMP "config->cmp is NULL!"
+
+#define EFREEFUNC "config->free_func is NULL!"
+#define ECOPYFUNC "config->copy_fun is NULLc!"
+#define EGETSCORE "config->get_score is NULL!"
+
+#define ECFUNC "config->crossover->crossover_func is NULL!"
+#define ECPROB "config->crossover->probability is NULL!"
+
+#define EMFUNC "config->mutation->mutation_func is NULL!"
+#define EMPROB "config->mutation->probability is NULL!"
+
 #include "data.h"
 #include "population.h"
 

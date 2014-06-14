@@ -904,23 +904,23 @@ void test_suite(void)
     srand((unsigned int) time(NULL));
 
     /* function set */
-    /* mu_add_test(test_function_set_new_and_destroy); */
-    /* mu_add_test(test_function_new_and_destroy); */
+    mu_add_test(test_function_set_new_and_destroy);
+    mu_add_test(test_function_new_and_destroy);
 
-    /* #<{(| terminal set |)}># */
-    /* mu_add_test(test_terminal_set_new_and_destroy); */
-    /* mu_add_test(test_terminal_new_and_destroy); */
-    /* mu_add_test(test_terminal_resolve_random); */
+    /* terminal set */
+    mu_add_test(test_terminal_set_new_and_destroy);
+    mu_add_test(test_terminal_new_and_destroy);
+    mu_add_test(test_terminal_resolve_random);
 
-    /* #<{(| node |)}># */
-    /* mu_add_test(test_node_new_and_destroy); */
-    /* mu_add_test(test_node_copy); */
-    /* mu_add_test(test_node_deepcopy); */
-    /* mu_add_test(test_node_equals); */
-    /* mu_add_test(test_node_deep_equals); */
-    /* mu_add_test(test_node_random_func); */
-    /* mu_add_test(test_node_random_func_arity); */
-    /* mu_add_test(test_node_random_term); */
+    /* node */
+    mu_add_test(test_node_new_and_destroy);
+    mu_add_test(test_node_copy);
+    mu_add_test(test_node_deepcopy);
+    mu_add_test(test_node_equals);
+    mu_add_test(test_node_deep_equals);
+    mu_add_test(test_node_random_func);
+    mu_add_test(test_node_random_func_arity);
+    mu_add_test(test_node_random_term);
 
     /* tree */
     setup_tree_test();

@@ -93,7 +93,7 @@ int subtree_mutation(void *t, struct config *c)
     int end = (target->size > 2) ? target->size - 2: target->size - 1;
 
     /* generate subtree */
-    subtree = tree_generate(RAMPED_HALF_AND_HALF, fs, ts, 2);
+    subtree = tree_generate(RAMPED_HALF_AND_HALF, fs, ts, 3);
 
     /* mutate tree */
     selected = target->chromosome[randi(0, end)];
