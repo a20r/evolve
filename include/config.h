@@ -1,5 +1,5 @@
-#ifndef __CONFIG__
-#define __CONFIG__
+#ifndef _CONFIG_H_
+#define _CONFIG_H_
 
 #define NONE -1
 
@@ -27,8 +27,13 @@ struct config
     int max_generations;
     int population_size;
 
-    struct population *(*population_generator)(struct config *c);
-    int (*evaluate_population)(struct population *p, struct data *d);
+    struct population *(*population_generator)(
+        struct config *
+    );
+    int (*evaluate_population)(
+        struct population *,
+        struct data *
+    );
 
     int stale_limit;
     float target_score;

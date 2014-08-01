@@ -1,5 +1,5 @@
-#ifndef __STACK__
-#define __STACK__
+#ifndef _STACK_H_
+#define _STACK_H_
 
 struct stack_node
 {

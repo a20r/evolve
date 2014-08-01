@@ -1,5 +1,5 @@
-#ifndef __POPULATION__
-#define __POPULATION__
+#ifndef _POPULATION_H_
+#define _POPULATION_H_
 
 #include <stdio.h>
 

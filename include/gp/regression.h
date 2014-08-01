@@ -1,5 +1,5 @@
-#ifndef __REGRESSION__
-#define __REGRESSION__
+#ifndef _REGRESSION_H_
+#define _REGRESSION_H_
 
 #include "data.h"
 #include "stack.h"
@@ -17,7 +17,9 @@
 #define SIN 8
 #define COS 9
 
-#define PI 3.14159265358979323846
+#ifndef PI
+  #define PI 3.14159265358979323846
+#endif
 
 struct regression_stack
 {

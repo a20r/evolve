@@ -99,7 +99,7 @@ static int failed = 0;
     } while (0)
 
 #define mu_run_tests(TEST_SUITE) \
-    int main() \
+    int main(void) \
     { \
         TEST_SUITE(); \
         mu_report(); \

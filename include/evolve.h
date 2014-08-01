@@ -1,5 +1,5 @@
-#ifndef __EVOLVE__
-#define __EVOLVE__
+#ifndef _EVOLVE_H_
+#define _EVOLVE_H_
 
 #include "config.h"
 
@@ -30,7 +30,6 @@ void stats_destroy(void *stats, struct config *c);
 void stats_update(struct population *p, struct config *c, struct stats *s);
 
 struct population *evolve_reproduce(struct population *p, struct config *c);
-struct population *evove_gp(struct config *c);
 int evolve_terminate(struct stats *s, struct config *c);
 void evolve_gp(struct config *c, struct data *d);
 
