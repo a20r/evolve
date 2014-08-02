@@ -3,6 +3,7 @@
 lib
 bin
 obj
+tags
 
 *.pyc
 
