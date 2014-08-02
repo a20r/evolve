@@ -6,7 +6,7 @@
 #include <string.h>
 
 
-/* DEBUG / LOG*/
+/* DEBUG / LOG */
 #ifdef NDEBUG
   #define debug(M, ...)
 #else

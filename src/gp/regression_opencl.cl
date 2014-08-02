@@ -1,21 +1,11 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <signal.h>
-#include <math.h>
-#include <errno.h>
-
-#include "stack.h"
-#include "utils.h"
-#include "population.h"
-#include "gp/tree.h"
-#include "gp/regression.h"
+#include "regression.h"
 
 
-int regression_func_input(
-    struct node *n,
-    struct data *d,
-    float **func_input,
-    int nth_arity
+__kernel int regression_func_input(
+    __global struct node *n,
+    __global struct data *d,
+    __global float **func_input,
+    __global int nth_arity
 )
 {
     int i;
@@ -49,11 +39,11 @@ int regression_func_input(
     return 0;
 }
 
-void regression_free_inputs(
-    int in1_type,
-    struct node *in1,
-    int in2_type,
-    struct node *in2
+__kernel void regression_free_inputs(
+    __global int in1_type,
+    __global struct node *in1,
+    __global int in2_type,
+    __global struct node *in2
 )
 {
     if (in1_type == EVAL) {
@@ -64,7 +54,7 @@ void regression_free_inputs(
     }
 }
 
-int regression_check(void)
+__kernel int regression_check(void)
 {
     if (errno == EDOM) {
         return -1;
@@ -75,7 +65,7 @@ int regression_check(void)
     return 0;
 }
 
-int regression_traverse(
+__kernel int regression_traverse(
     int index,
     int end,
     struct node **chromosome,
@@ -228,7 +218,7 @@ func_error:
     return -2;
 }
 
-void regression_clear_stack(struct stack *s)
+__kernel void regression_clear_stack(struct stack *s)
 {
     int i;
     struct node *n;
@@ -242,7 +232,7 @@ void regression_clear_stack(struct stack *s)
     free(s);
 }
 
-int regression_evaluate(
+__kernel int regression_evaluate(
     struct tree *t,
     float **func_input,
     struct data *d,
@@ -296,7 +286,10 @@ error:
     return -1;
 }
 
-int regression_evaluate_population(struct population *p, struct data *d)
+__kernel int regression_evaluate_population(
+    struct population *p,
+    struct data *d
+)
 {
     int i;
     float **func_input;
@@ -317,7 +310,7 @@ int regression_evaluate_population(struct population *p, struct data *d)
     return 0;
 }
 
-void regression_print_traverse(struct node *n)
+__kernel void regression_print_traverse(struct node *n)
 {
     if (n->type == TERM_NODE) {
         if (n->value_type == INTEGER) {
@@ -388,7 +381,7 @@ void regression_print_traverse(struct node *n)
 
 }
 
-void regression_print(void *target)
+__kernel void regression_print(void *target)
 {
     struct tree *t = (struct tree *) target;
     regression_print_traverse(t->root);

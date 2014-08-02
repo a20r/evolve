@@ -340,7 +340,8 @@ Replaces `old_node` with `new_node` and returns the `old_node`.
 - int tree_desc_cmp(const void *t1, const void *t2);
 - int tree_cmp(const void *t1, const void *t2);
 
-Compares two trees `t1` and `t2` in ascending order with `tree_asc_cmp()` and `tree_cmp()` where it returns:
+Compares two trees `t1` and `t2` in ascending order with `tree_asc_cmp()` and
+`tree_cmp()` where it returns:
 
     - `0` if `t1` and `t2` are equal or `NULL`.
     - `-1` if `t1 > t2` or `t2` `NULL`.

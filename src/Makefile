@@ -13,7 +13,7 @@ intro:
 	@echo "ENTERING --> $(FOLDER_NAME)"
 
 %.o: %.c
-	$(COMPILE_OBJ)
+	$(MAKE_OBJ)
 
 libevolve: evolve_gp
 	$(MAKE_STATIC_LIB)

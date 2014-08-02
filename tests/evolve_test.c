@@ -3,7 +3,7 @@
 #include <time.h>
 
 #ifndef MU_PRINT
-#define MU_PRINT 1
+  #define MU_PRINT 1
 #endif
 
 #define TEST_DATA "./tests/data/sine.csv"
@@ -71,18 +71,19 @@ void setup(int random_score)
     c = config_new(TOURNAMENT_SELECTION, NONE, NONE);
 
     /* general config */
-    c->max_generations = 10;
-    c->population_size = 10;
+    c->max_generations = 100;
+    c->population_size = 100;
 
     c->population_generator = tree_population;
     c->evaluate_population = regression_evaluate_population;
 
     /* tree config */
     c->data_struct = tree_config_new();
-    ((struct tree_config *) c->data_struct)->build_method = FULL;
-    ((struct tree_config *) c->data_struct)->max_depth = 2;
-    ((struct tree_config *) c->data_struct)->fs = fs;
-    ((struct tree_config *) c->data_struct)->ts = ts;
+    struct tree_config *tc = c->data_struct;
+    tc->build_method = RAMPED_HALF_AND_HALF;
+    tc->max_depth = 3;
+    tc->fs = fs;
+    tc->ts = ts;
     c->data_struct_free = tree_config_destroy;
 
     /* selection config */
@@ -94,7 +95,7 @@ void setup(int random_score)
     c->crossover->probability = 0.8f;
 
     c->mutation->mutation_func = subtree_mutation;
-    c->mutation->probability = 0.6f;
+    c->mutation->probability = 0.4f;
 
     /* misc config */
     c->print_func = regression_print;
@@ -262,10 +263,10 @@ void test_suite(void)
 {
     srand((unsigned int) time(NULL));
 
-    /* mu_add_test(test_stats_new_and_destroy); */
-    /* mu_add_test(test_stats_update); */
-    /* mu_add_test(test_evolve_terminate); */
-    /* mu_add_test(test_evolve_reproduce); */
+    mu_add_test(test_stats_new_and_destroy);
+    mu_add_test(test_stats_update);
+    mu_add_test(test_evolve_terminate);
+    mu_add_test(test_evolve_reproduce);
     mu_add_test(test_evolve_gp);
 }
 

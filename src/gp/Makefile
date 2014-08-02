@@ -10,7 +10,7 @@ intro:
 	@echo "ENTERING --> $(FOLDER_NAME)"
 
 %.o: %.c
-	$(COMPILE_OBJ)
+	$(MAKE_OBJ)
 
 done:
 	@echo "EXITING <-- $(FOLDER_NAME)"

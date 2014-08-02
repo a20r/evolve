@@ -7,14 +7,11 @@ EXES = $(basename $(SRCS))
 
 default: intro $(EXES) done gp_tests
 
-gp_tests:
-	make -s -C gp
-
 intro:
 	@echo "ENTERING --> $(FOLDER_NAME)"
 
 %.o: %.c
-	$(COMPILE_OBJ)
+	$(MAKE_OBJ)
 
 config_test: config_test.o
 	$(MAKE_EXE)
@@ -52,7 +49,12 @@ stack_test: stack_test.o
 evolve_test: evolve_test.o
 	$(MAKE_EXE)
 
+parallel_test: parallel_test.o
+	# $(MAKE_EXE)
+
 done:
 	@echo "EXITING <-- $(FOLDER_NAME)"
 	@echo ""
 
+gp_tests:
+	make -s -C gp

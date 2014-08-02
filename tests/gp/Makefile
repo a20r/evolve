@@ -11,7 +11,10 @@ intro:
 	@echo "ENTERING --> $(FOLDER_NAME)"
 
 %.o: %.c
-	$(COMPILE_OBJ)
+	$(MAKE_OBJ)
+
+cartesian_test: cartesian_test.o
+	$(MAKE_EXE)
 
 tree_test: tree_test.o
 	$(MAKE_EXE)

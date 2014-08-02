@@ -117,7 +117,6 @@ int randi(int min, int max)
     check(max > min, "Lower bound is bigger than upper bound!");
     while (retval < min || retval > max) {
         retval = rand() / divisor;
-        printf("-->%d\n", retval);
     }
 
     return retval;

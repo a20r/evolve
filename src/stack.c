@@ -38,6 +38,10 @@ int stack_push(struct stack *s, void *value)
     struct stack_node *n = malloc(sizeof(struct stack_node));
     struct stack_node *prev_end = s->end;
 
+    if (n == NULL) {
+        return -1;
+    }
+
     n->value = value;
     n->next = NULL;
     n->prev = prev_end;
