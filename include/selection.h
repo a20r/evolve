@@ -8,7 +8,22 @@
 
 #include "config.h"
 
+/* STRUCTS */
+struct selection_config
+{
+    int method;
+    struct population *(*select_func)(
+        struct population *,
+        struct config *
+    );
+
+    int tournament_size;
+};
+
 /* FUNCTIONS */
+struct selection_config *selection_config_new(int method);
+void selection_config_destroy(void *config);
+
 struct population *tournament_selection(
     struct population *p,
     struct config *c

@@ -57,7 +57,7 @@ void setup_population()
     ts = terminal_set_new(terminals, 2);
 
     /* config */
-    c = config_new(NONE, NONE, NONE);
+    c = config_new();
 
     c->population_size = 10;
     c->get_score = tree_score;
@@ -73,7 +73,10 @@ void setup_population()
     c->data_struct = tc;
     c->data_struct_free = tree_config_destroy;
 
-    c->selection->tournament_size = 5;
+    struct selection_config *sc = selection_config_new(TOURNAMENT_SELECTION);
+    sc->tournament_size = 5;
+    c->selection = sc;
+    c->selection_free = selection_config_destroy;
 
     /* create trees */
     p = tree_population(c);

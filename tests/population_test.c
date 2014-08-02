@@ -64,7 +64,7 @@ void setup_population()
     ts = terminal_set_new(terminals, 3);
 
     /* config */
-    c = config_new(NONE, NONE, NONE);
+    c = config_new();
     c->population_size = 100;
 
     tc = tree_config_new();

@@ -73,7 +73,7 @@ void setup_population()
     ts = terminal_set_new(terminals, 2);
 
     /* setup config */
-    c = config_new(NONE, NONE, NONE);
+    c = config_new();
     c->population_size = 100;
 
     /* general config */

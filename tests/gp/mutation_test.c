@@ -195,7 +195,7 @@ int test_point_mutation(void)
     char *before;
     char *after;
 
-    c = config_new(NONE, NONE, NONE);
+    c = config_new();
     c->data_struct = tree_config_new();
     ((struct tree_config *) c->data_struct)->ts = ts;
     ((struct tree_config *) c->data_struct)->fs = fs;
@@ -233,7 +233,7 @@ int test_subtree_mutation(void)
     char *before;
     char *after;
 
-    c = config_new(NONE, NONE, NONE);
+    c = config_new();
     c->data_struct = tree_config_new();
     ((struct tree_config *) c->data_struct)->ts = ts;
     ((struct tree_config *) c->data_struct)->fs = fs;

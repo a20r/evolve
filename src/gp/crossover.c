@@ -5,6 +5,23 @@
 #include "gp/crossover.h"
 
 
+struct crossover_config *crossover_config_new(int method)
+{
+    struct crossover_config *cc = malloc(sizeof(struct crossover_config));
+
+    cc->method = method;
+    cc->probability = -1.0f;
+
+    return cc;
+}
+
+void crossover_config_destroy(void *config)
+{
+    if (config) {
+        free(config);
+    }
+}
+
 int *random_indicies_new(struct tree *t1, struct tree *t2)
 {
     int *indicies = malloc(sizeof(int) * 2);

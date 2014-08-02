@@ -644,7 +644,7 @@ int test_tree_population(void)
     struct population *p;
 
     /* config */
-    c = config_new(NONE, NONE, NONE);
+    c = config_new();
     c->population_size = 100;
 
     tc = tree_config_new();

@@ -5,6 +5,9 @@
 #include "config.h"
 #include "evolve.h"
 #include "population.h"
+#include "selection.h"
+#include "gp/crossover.h"
+#include "gp/mutation.h"
 #include "gp/regression.h"
 
 
@@ -95,15 +98,18 @@ struct population *evolve_reproduce(struct population *p, struct config *c)
     struct population *child_1;
     struct population *child_2;
     struct population *new_generation;
+    struct crossover_config *crossover = c->crossover;
+    struct mutation_config *mutation = c->mutation;
 
     /* pre-check */
-    check(c->crossover->crossover_func, ECFUNC);
-    check(c->crossover->probability >= 0.0f, ECPROB);
-    check(c->mutation->mutation_func, EMFUNC);
-    check(c->mutation->probability >= 0.0f, EMPROB);
+    check(crossover->crossover_func, ECFUNC);
+    check(crossover->probability >= 0.0f, ECPROB);
+    check(mutation->mutation_func, EMFUNC);
+    check(mutation->probability >= 0.0f, EMPROB);
 
     /* setup new generation and select parents */
-    new_generation = c->selection->select_func(p, c);
+    struct selection_config *sc = c->selection;
+    new_generation = sc->select_func(p, c);
     population_destroy(p, c->free_func);
 
     for (i = 0; i < new_generation->size; i += 2) {
@@ -112,18 +118,18 @@ struct population *evolve_reproduce(struct population *p, struct config *c)
 
         /* genetic operators */
         random = randf(0, 1.0);
-        if (c->crossover->probability > random) {
-            c->crossover->crossover_func(child_1, child_2);
+        if (crossover->probability > random) {
+            crossover->crossover_func(child_1, child_2);
         }
 
         random = randf(0, 1.0);
-        if (c->mutation->probability > random) {
-            c->mutation->mutation_func(child_1, c);
+        if (mutation->probability > random) {
+            mutation->mutation_func(child_1, c);
         }
 
         random = randf(0, 1.0);
-        if (c->mutation->probability > random) {
-            c->mutation->mutation_func(child_2, c);
+        if (mutation->probability > random) {
+            mutation->mutation_func(child_2, c);
         }
     }
 

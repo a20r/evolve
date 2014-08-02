@@ -6,6 +6,23 @@
 #include "gp/mutation.h"
 
 
+struct mutation_config *mutation_config_new(int method)
+{
+    struct mutation_config *mc = malloc(sizeof(struct mutation_config));
+
+    mc->method = method;
+    mc->probability = -1.0f;
+
+    return mc;
+}
+
+void mutation_config_destroy(void *config)
+{
+    if (config) {
+        free(config);
+    }
+}
+
 int mutate_node(
     struct node *n,
     struct function_set *fs,

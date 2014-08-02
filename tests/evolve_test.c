@@ -68,7 +68,7 @@ void setup(int random_score)
     ts = terminal_set_new(terminals, 2);
 
     /* setup config */
-    c = config_new(TOURNAMENT_SELECTION, NONE, NONE);
+    c = config_new();
 
     /* general config */
     c->max_generations = 100;
@@ -78,8 +78,8 @@ void setup(int random_score)
     c->evaluate_population = regression_evaluate_population;
 
     /* tree config */
-    c->data_struct = tree_config_new();
-    struct tree_config *tc = c->data_struct;
+    struct tree_config *tc = tree_config_new();
+    c->data_struct = tc;
     tc->build_method = RAMPED_HALF_AND_HALF;
     tc->max_depth = 3;
     tc->fs = fs;
@@ -87,15 +87,24 @@ void setup(int random_score)
     c->data_struct_free = tree_config_destroy;
 
     /* selection config */
-    c->selection->select_func = tournament_selection;
-    c->selection->tournament_size = 100;
+    struct selection_config *sc = selection_config_new(TOURNAMENT_SELECTION);
+    sc->select_func = tournament_selection;
+    sc->tournament_size = 100;
+    c->selection = sc;
+    c->selection_free = selection_config_destroy;
 
     /* genetic operator config */
-    c->crossover->crossover_func = point_crossover;
-    c->crossover->probability = 0.8f;
+    struct crossover_config *cc = crossover_config_new(POINT_CROSSOVER);
+    c->crossover = cc;
+    cc->crossover_func = point_crossover;
+    cc->probability = 0.8f;
+    c->crossover_free = crossover_config_destroy;
 
-    c->mutation->mutation_func = subtree_mutation;
-    c->mutation->probability = 0.4f;
+    struct mutation_config *mc = mutation_config_new(POINT_MUTATION);
+    c->mutation = mc;
+    mc->mutation_func = subtree_mutation;
+    mc->probability = 0.4f;
+    c->mutation_free = mutation_config_destroy;
 
     /* misc config */
     c->print_func = regression_print;

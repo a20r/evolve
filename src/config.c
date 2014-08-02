@@ -3,9 +3,10 @@
 #include "config.h"
 #include "utils.h"
 #include "data.h"
+#include "selection.h"
 
 
-struct config *config_new(int s_method, int c_method, int m_method)
+struct config *config_new(void)
 {
     struct config *c = malloc(sizeof(struct config));
 
@@ -22,9 +23,14 @@ struct config *config_new(int s_method, int c_method, int m_method)
     c->data_struct = NULL;
     c->data_struct_free = NULL;
 
-    c->selection = selection_config_new(s_method);
-    c->crossover = crossover_config_new(c_method);
-    c->mutation = mutation_config_new(m_method);
+    c->selection = NULL;
+    c->crossover = NULL;
+    c->mutation = NULL;
+    c->selection_free = selection_config_destroy;
+
+    c->selection_free = NULL;
+    c->crossover_free = NULL;
+    c->mutation_free = NULL;
 
     c->free_func = NULL;
     c->copy_func = NULL;
@@ -47,61 +53,10 @@ void config_destroy(void *config)
             log_err("ERROR! You forgot to set config->data_struct_free!\n");
         }
 
-        selection_config_destroy(c->selection);
-        crossover_config_destroy(c->crossover);
-        mutation_config_destroy(c->mutation);
+        free_mem(c->selection, c->selection_free);
+        free_mem(c->crossover, c->crossover_free);
+        free_mem(c->mutation, c->mutation_free);
 
-        free(config);
-    }
-}
-
-struct selection_config *selection_config_new(int method)
-{
-    struct selection_config *sc = malloc(sizeof(struct selection_config));
-
-    sc->method = method;
-    sc->tournament_size = -1;
-
-    return sc;
-}
-
-void selection_config_destroy(void *config)
-{
-    if (config) {
-        free(config);
-    }
-}
-
-struct crossover_config *crossover_config_new(int method)
-{
-    struct crossover_config *cc = malloc(sizeof(struct crossover_config));
-
-    cc->method = method;
-    cc->probability = -1.0f;
-
-    return cc;
-}
-
-void crossover_config_destroy(void *config)
-{
-    if (config) {
-        free(config);
-    }
-}
-
-struct mutation_config *mutation_config_new(int method)
-{
-    struct mutation_config *mc = malloc(sizeof(struct mutation_config));
-
-    mc->method = method;
-    mc->probability = -1.0f;
-
-    return mc;
-}
-
-void mutation_config_destroy(void *config)
-{
-    if (config) {
         free(config);
     }
 }
