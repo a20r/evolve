@@ -8,6 +8,7 @@
 #endif
 
 #include "munit.h"
+#include "utils.h"
 #include "config.h"
 #include "gp/tree.h"
 #include "gp/mutation.h"
@@ -24,6 +25,7 @@ static struct config *c;
 /* TESTS */
 void setup(void);
 void teardown(void);
+int test_mutation_config_new_and_destroy(void);
 int test_mutate_node(void);
 int test_mutate_new_node(void);
 int test_point_mutation(void);
@@ -70,6 +72,18 @@ void teardown()
     function_set_destroy(fs);
     terminal_set_destroy(ts);
     config_destroy(c);
+}
+
+int test_mutation_config_new_and_destroy(void)
+{
+    float uninit = -1.0f;
+    struct mutation_config *mc = mutation_config_new(0);
+
+    mu_check(mc->method == 0);
+    mu_check(fltcmp(&mc->probability, &uninit) == 0);
+
+    mutation_config_destroy(mc);
+    return 0;
 }
 
 int test_mutate_node(void)
@@ -268,6 +282,7 @@ int test_subtree_mutation(void)
 void test_suite(void)
 {
     setup();
+    mu_add_test(test_mutation_config_new_and_destroy);
     mu_add_test(test_mutate_node);
     mu_add_test(test_mutate_new_node);
     mu_add_test(test_point_mutation);

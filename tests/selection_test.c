@@ -24,6 +24,7 @@ static struct tree_config *tc = NULL;
 /* TESTS */
 void setup_population(void);
 void teardown_population(void);
+int test_selection_config_new_and_destroy(void);
 int test_tournament_selection(void);
 void test_suite(void);
 
@@ -94,6 +95,13 @@ void teardown_population()
     config_destroy(c);
 }
 
+int test_selection_config_new_and_destroy(void)
+{
+    struct selection_config *sc = selection_config_new(TOURNAMENT_SELECTION);
+    selection_config_destroy(sc);
+    return 0;
+}
+
 int test_tournament_selection(void)
 {
     int i;
@@ -131,6 +139,7 @@ int test_tournament_selection(void)
 
 void test_suite(void)
 {
+    mu_add_test(test_selection_config_new_and_destroy);
     mu_add_test(test_tournament_selection);
 }
 

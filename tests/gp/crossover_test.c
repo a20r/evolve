@@ -8,6 +8,7 @@
 #endif
 
 #include "munit.h"
+#include "utils.h"
 #include "gp/tree.h"
 #include "gp/crossover.h"
 #include "gp/regression.h"
@@ -23,6 +24,7 @@ static struct tree *t2 = NULL;
 /* TESTS */
 void setup(void);
 void teardown(void);
+int test_crossover_config_new_and_destroy(void);
 int test_point_crossover(void);
 
 void test_suite(void);
@@ -71,6 +73,18 @@ void teardown()
     terminal_set_destroy(ts);
     tree_destroy(t1);
     tree_destroy(t2);
+}
+
+int test_crossover_config_new_and_destroy(void)
+{
+    float uninit = -1.0f;
+    struct crossover_config *cc = crossover_config_new(0);
+
+    mu_check(cc->method == 0);
+    mu_check(fltcmp(&cc->probability, &uninit) == 0);
+
+    crossover_config_destroy(cc);
+    return 0;
 }
 
 int test_point_crossover(void)
@@ -133,6 +147,7 @@ int test_point_crossover(void)
 
 void test_suite(void)
 {
+    mu_add_test(test_crossover_config_new_and_destroy);
     mu_add_test(test_point_crossover);
 }
 
