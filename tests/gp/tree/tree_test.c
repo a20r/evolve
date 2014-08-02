@@ -11,8 +11,8 @@
 #include "utils.h"
 #include "config.h"
 #include "population.h"
-#include "gp/tree.h"
-#include "gp/regression.h"
+#include "gp/tree/tree.h"
+#include "gp/tree/regression.h"
 
 /* GLOBAL VARS */
 static struct function_set *fs = NULL;

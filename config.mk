@@ -24,14 +24,14 @@ ARFLAGS = rvs
 
 # COMMANDS
 MAKE_OBJ = \
-	@echo "COMPILING [$<]"; \
+	@echo "CC [$<]"; \
 	$(CC) $(CFLAGS) -c $< -o $(addprefix $(OBJ_DIR)/, $@);
 
-MAKE_EXE = \
-	echo "LINKING [$@]"; \
-	$(CC) $(addprefix $(OBJ_DIR)/, $<) -o $(addprefix $(BIN_DIR)/, $@) $(LIBS);
+MAKE_TEST = \
+	echo "CC [$@.c]"; \
+	$(CC) $(CFLAGS) -c $@.c -o $(addprefix $(OBJ_DIR)/, $@.o); \
+	$(CC) $(addprefix $(OBJ_DIR)/, $@.o) -o $(addprefix $(BIN_DIR)/, $@) $(LIBS);
 
 MAKE_STATIC_LIB = \
-	@echo "LINK STATIC LIBRARY [$@]"; \
-	$(AR) $(ARFLAGS) $(LIB_DIR)/libevolve.a $(wildcard $(OBJ_DIR)/*.o);
-
+	echo "AR [$@]"; \
+	$(AR) $(ARFLAGS) $(LIB_DIR)/$@.a $(wildcard $(OBJ_DIR)/*.o);

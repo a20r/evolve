@@ -1,7 +1,30 @@
 # `selection.h`
 
+# Structures
+
+    struct selection_config
+    {
+        int method;
+        struct population *(*select_func)(
+            struct population *,
+            struct config *
+        );
+
+        int tournament_size;
+    };
+
 
 # Functions
+- struct selection_config *selection_config_new(int method)
+- void selection_config_destroy(void *config)
+
+`selection_config_new()` creates and returns pointer to a `struct
+selection_config`, while `selection_config_destroy()` destroys it.
+
+`selection_config_new()` accepts an integer argument detailing which selection
+method to use.
+
+
 - struct population *tournament_selection(
         struct population *p,
         struct config *c

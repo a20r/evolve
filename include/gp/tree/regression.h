@@ -3,7 +3,7 @@
 
 #include "data.h"
 #include "stack.h"
-#include "gp/tree.h"
+#include "gp/tree/tree.h"
 
 #define ADD 0
 #define SUB 1

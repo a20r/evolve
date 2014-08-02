@@ -1,8 +1,8 @@
 #include <stdlib.h>
 
 #include "utils.h"
-#include "gp/tree.h"
-#include "gp/crossover.h"
+#include "gp/tree/tree.h"
+#include "gp/tree/crossover.h"
 
 
 struct crossover_config *crossover_config_new(int method)

@@ -1,17 +1,12 @@
 include $(PWD)/config.mk
 FOLDER_NAME = src/gp
 
-SRCS = $(wildcard *.c)
-OBJS = $(SRCS:.c=.o)
+default: evolve_gp
 
-default: intro $(OBJS) done
+gp_tree:
+	@make -s -C tree
 
-intro:
-	@echo "ENTERING --> $(FOLDER_NAME)"
+gp_cartesian:
+	@make -s -C cartesian
 
-%.o: %.c
-	$(MAKE_OBJ)
-
-done:
-	@echo "EXITING <-- $(FOLDER_NAME)"
-	@echo ""
+evolve_gp: gp_tree gp_cartesian

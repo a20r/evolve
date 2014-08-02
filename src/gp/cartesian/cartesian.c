@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "gp/cartesian.h"
+#include "gp/cartesian/cartesian.h"
 #include "utils.h"
 
 

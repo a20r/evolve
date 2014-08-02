@@ -1,7 +1,7 @@
 #ifndef _CROSSOVER_H_
 #define _CROSSOVER_H_
 
-#include "gp/tree.h"
+#include "gp/tree/tree.h"
 
 #define POINT_CROSSOVER 0
 

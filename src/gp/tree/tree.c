@@ -5,7 +5,7 @@
 
 #include "config.h"
 #include "utils.h"
-#include "gp/tree.h"
+#include "gp/tree/tree.h"
 #include "population.h"
 
 

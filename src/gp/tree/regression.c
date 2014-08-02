@@ -7,8 +7,8 @@
 #include "stack.h"
 #include "utils.h"
 #include "population.h"
-#include "gp/tree.h"
-#include "gp/regression.h"
+#include "gp/tree/tree.h"
+#include "gp/tree/regression.h"
 
 
 int regression_func_input(

@@ -2,7 +2,7 @@
 #define _MUTATION_H_
 
 #include "config.h"
-#include "gp/tree.h"
+#include "gp/tree/tree.h"
 
 #define POINT_MUTATION 0
 #define SUBTREE_MUTATION 1

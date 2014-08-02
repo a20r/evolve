@@ -13,10 +13,10 @@
 #include "evolve.h"
 #include "population.h"
 #include "selection.h"
-#include "gp/tree.h"
-#include "gp/crossover.h"
-#include "gp/mutation.h"
-#include "gp/regression.h"
+#include "gp/tree/tree.h"
+#include "gp/tree/crossover.h"
+#include "gp/tree/mutation.h"
+#include "gp/tree/regression.h"
 
 
 /* GLOBAL VAR */

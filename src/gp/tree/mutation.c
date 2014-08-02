@@ -2,8 +2,8 @@
 #include <stdlib.h>
 
 #include "utils.h"
-#include "gp/tree.h"
-#include "gp/mutation.h"
+#include "gp/tree/tree.h"
+#include "gp/tree/mutation.h"
 
 
 struct mutation_config *mutation_config_new(int method)

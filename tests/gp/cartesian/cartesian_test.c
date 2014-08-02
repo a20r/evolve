@@ -1,5 +1,5 @@
 #include "munit.h"
-#include "gp/cartesian.h"
+#include "gp/cartesian/cartesian.h"
 
 /* GLOBAL VARS */
 static struct cartesian_config *config = NULL;

@@ -10,8 +10,8 @@
 #include "config.h"
 #include "selection.h"
 #include "population.h"
-#include "gp/tree.h"
-#include "gp/regression.h"
+#include "gp/tree/tree.h"
+#include "gp/tree/regression.h"
 
 
 /* GLOBAL VAR */

@@ -9,9 +9,9 @@
 
 #include "munit.h"
 #include "utils.h"
-#include "gp/tree.h"
-#include "gp/crossover.h"
-#include "gp/regression.h"
+#include "gp/tree/tree.h"
+#include "gp/tree/crossover.h"
+#include "gp/tree/regression.h"
 
 
 /* GLOBAL VARS */

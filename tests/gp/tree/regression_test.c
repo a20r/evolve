@@ -12,8 +12,8 @@
 #include "stack.h"
 #include "utils.h"
 #include "population.h"
-#include "gp/tree.h"
-#include "gp/regression.h"
+#include "gp/tree/tree.h"
+#include "gp/tree/regression.h"
 
 #define TEST_DATA "./tests/data/sine.csv"
 

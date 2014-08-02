@@ -12,7 +12,7 @@
 #include "munit.h"
 #include "data.h"
 #include "utils.h"
-#include "gp/tree.h"
+#include "gp/tree/tree.h"
 
 
 /* TESTS */

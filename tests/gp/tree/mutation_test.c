@@ -10,9 +10,9 @@
 #include "munit.h"
 #include "utils.h"
 #include "config.h"
-#include "gp/tree.h"
-#include "gp/mutation.h"
-#include "gp/regression.h"
+#include "gp/tree/tree.h"
+#include "gp/tree/mutation.h"
+#include "gp/tree/regression.h"
 
 
 /* GLOBAL VARS */
