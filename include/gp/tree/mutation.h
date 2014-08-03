@@ -1,5 +1,5 @@
-#ifndef _MUTATION_H_
-#define _MUTATION_H_
+#ifndef _TREE_MUTATION_H_
+#define _TREE_MUTATION_H_
 
 #include "config.h"
 #include "gp/tree/tree.h"

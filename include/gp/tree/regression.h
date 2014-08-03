@@ -1,5 +1,5 @@
-#ifndef _REGRESSION_H_
-#define _REGRESSION_H_
+#ifndef _TREE_REGRESSION_H_
+#define _TREE_REGRESSION_H_
 
 #include "data.h"
 #include "stack.h"

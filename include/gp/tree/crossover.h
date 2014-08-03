@@ -1,5 +1,5 @@
-#ifndef _CROSSOVER_H_
-#define _CROSSOVER_H_
+#ifndef _TREE_CROSSOVER_H_
+#define _TREE_CROSSOVER_H_
 
 #include "gp/tree/tree.h"
 
