@@ -1,6 +1,11 @@
-# `selection.h`
+# selection.h
 
-# Structures
+**Contents**:
+- Structures
+- Functions
+
+
+## Structures
 
     struct selection_config
     {
@@ -14,9 +19,10 @@
     };
 
 
-# Functions
-- struct selection_config *selection_config_new(int method)
-- void selection_config_destroy(void *config)
+## Functions
+
+    struct selection_config *selection_config_new(int method);
+    void selection_config_destroy(void *config);
 
 `selection_config_new()` creates and returns pointer to a `struct
 selection_config`, while `selection_config_destroy()` destroys it.
@@ -25,18 +31,20 @@ selection_config`, while `selection_config_destroy()` destroys it.
 method to use.
 
 
-- struct population *tournament_selection(
+---
+
+    struct population *tournament_selection(
         struct population *p,
         struct config *c
-  )
+    )
 
 `tournament_selection()` performs tournament selection on population `p` with
 additional configuration in `c`. The function expects configuraiton `c` to
 contain:
 
-    - `c->cmp`
-    - `c->copy`
-    - `c->get_score`
-    - `c->selection->tournament_size`
+- `c->cmp`
+- `c->copy`
+- `c->get_score`
+- `c->selection->tournament_size`
 
 See docs for `config.h` for more info.

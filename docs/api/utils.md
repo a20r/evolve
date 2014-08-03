@@ -1,12 +1,21 @@
-# `utils.h`
+# utils.h
+
+**Contents**:
+- Debug / log
+- Control flow
+- Memory
+- String
+- Random
+- Comparator
+
 
 
 ## Debug / log
 
-- debug(M, ...)
-- log_err(M, ...)
-- log_warn(M, ...)
-- log_info(M, ...)
+    void debug(M, ...);
+    void log_err(M, ...);
+    void log_warn(M, ...);
+    void log_info(M, ...);
 
 `debug()`, `log_err()`, `log_warn()` and `log_info()` provides functionatily to
 log different levels of messages, from debug, error and warning to information
@@ -20,17 +29,19 @@ M.
 
 
 ## Control flow
-- check(A, M, ...)
-- check_mem(A)
-- check_debug(A, M, ...)
-- silent_check(A)
+
+    void check(A, M, ...);
+    void check_mem(A);
+    void check_debug(A, M, ...);
+    void silent_check(A);
 
 `check()`, `check_mem()`, `check_debug()` and `silent_check()` provide
 functionality that helps with flow control, essentially they all encapsulate
 if/else statments for convienice. Aside from encapsulating if/else in a
-function they emulate the try/catch behaviour found in many modern objective
+function they emulate the try/catch behaviour found in many modern object
 oriented languages. If the condition in `A` fails, the message `M` will be
-displayed, and `goto` will be executed to `error` defined by the user. Example:
+displayed, and a `goto` statement will be executed to `error` defined by the
+user. Example:
 
     #include <stdio.h>
     #include "utils.h"
@@ -50,60 +61,71 @@ displayed, and `goto` will be executed to `error` defined by the user. Example:
 
 
 
-## MEMORY
-- void *copy_value(int value_type, void *value)
+## Memory
+
+    void *copy_value(int value_type, void *value);
 
 `copy_value()` copies `value` with type `value_type`:
 
-    - INTEGER
-    - FLOAT
-    - DOUBLE
-    - STRING
+- `INTEGER`
+- `FLOAT`
+- `DOUBLE`
+- `STRING`
 
-and returns a pointer.
+And returns a pointer.
 
 
-- int *malloc_int(int i)
-- float *malloc_float(float f)
-- double *malloc_double(double d)
-- char *malloc_string(const char *s)
+---
+
+    int *malloc_int(int i);
+    float *malloc_float(float f);
+    double *malloc_double(double d);
+    char *malloc_string(const char *s);
 
 `malloc_int()`, `malloc_float()`, `malloc_double()` and `malloc_string()`
 allocates addtional memory for an integer of value `i`, float of value `f` ,
 `double` of value `d` and `char *` of value `s`, and returns a pointer to them.
 
 
-- free_mem(TARGET, FREE_FUNC)
-- free_mem_arr(TARGET, NELEM, FREE_FUNC)
-- free_mem_2darr(TARGET, ROWS, COLS, FREE_FUNC)
+---
+
+    void free_mem(TARGET, FREE_FUNC);
+    void free_mem_arr(TARGET, NELEM, FREE_FUNC);
+    void free_mem_2darr(TARGET, ROWS, COLS, FREE_FUNC);
 
 `free_mem()`, `free_mem_arr()` and `free_mem_2darr()` frees target `TARGET`,
-with `FREE_FUNC`. If `TARGET is a 2 dimensional array, rows `ROWS`, columns
+with `FREE_FUNC`. If `TARGET` is a 2 dimensional array, rows `ROWS`, columns
 `COLS` need to be supplied in `free_mem_2darr()`.
 
 
 
 ## String
-- int trim_char(const char c)
+
+    int trim_char(const char c);
+
 `trim_char()` is a boolean function that determins whether character `c` should
 be trimmed or not, if `c` should be trimmed, the function trims on:
 
-    - newline `\n` or `\r`
-    - tabs `\t`
-    - space `' '`
+- newline `\n` or `\r`
+- tabs `\t`
+- space `' '`
 
 if the function matches any of the above it returns `1` else `0`.
 
 
-- char *trim(const char *s)
+---
+
+    char *trim(const char *s);
+
 `trim()` trims the string `s` of any newline characters `\n` or `\r`, tabs `\t`
 and spaces `' '`. Then returns a trimmed version.
 
 
 
 ## Random
-- int randi(int min, int max)
-- float randf(float min, float max)
+
+    int randi(int min, int max);
+    float randf(float min, float max);
 
 `randi()` and `randf()` generates a random integer or float between `min` and
 `max`.
@@ -112,15 +134,15 @@ and spaces `' '`. Then returns a trimmed version.
 
 ## Comparator
 
-- intcmp(const void *v1, const void *v2)
-- intcmp_asc(const void *v1, const void *v2)
-- intcmp_desc(const void *v1, const void *v2)
-- fltcmp(const void *v1, const void *v2)
-- fltcmp_asc(const void *v1, const void *v2)
-- fltcmp_desc(const void *v1, const void *v2)
-- dblcmp(const void *v1, const void *v2)
-- dblcmp_asc(const void *v1, const void *v2)
-- dblcmp_desc(const void *v1, const void *v2)
+    int intcmp(const void *v1, const void *v2);
+    int intcmp_asc(const void *v1, const void *v2);
+    int intcmp_desc(const void *v1, const void *v2);
+    int fltcmp(const void *v1, const void *v2);
+    int fltcmp_asc(const void *v1, const void *v2);
+    int fltcmp_desc(const void *v1, const void *v2);
+    int dblcmp(const void *v1, const void *v2);
+    int dblcmp_asc(const void *v1, const void *v2);
+    int dblcmp_desc(const void *v1, const void *v2);
 
 Compare between `v1` and `v2` of type integer, float or double with `intcmp*`,
 `fltcmp*`, `dblcmp*` in ascending order or decending order. By default
@@ -133,24 +155,20 @@ acceptable error margin. You can do this by defining your own `FLOAT_EPSILON`.
 
 In descending order the function will return:
 
-    - `1` if `v1` is larger than `v2`
-    - `-1` if `v2` is larger than `v1`
-    - `0` if `v1` equals `v2`
+- `1` if `v1` is larger than `v2`
+- `-1` if `v2` is larger than `v1`
+- `0` if `v1` equals `v2`
 
 The reverse is true for assending order.
 
 
-- cmp_values(int value_type, void *v1, void *v2)
+---
 
-`cmp_values()` provudes a warpper to conviently compare `v1` and `v2` of `value_type`:
+    int cmp_values(int value_type, void *v1, void *v2);
 
-    - INTEGER
-    - FLOAT
-    - DOUBLE
-    - STRING
+`cmp_values()` provides a wrapper to conviently compare `v1` and `v2` of `value_type`:
 
-Returns:
-
-    - `1` if `v1` is larger than `v2`
-    - `-1` if `v2` is larger than `v1`
-    - `0` if `v1` equals `v2`
+- `INTEGER`
+- `FLOAT`
+- `DOUBLE`
+- `STRING`

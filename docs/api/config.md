@@ -1,8 +1,13 @@
-# `config.h`
+# config.h
 This module contains code for creating a `struct config` to configure
 the Evolutionary Algorithm.
 
-# Structures
+**Contents**:
+- Structures
+- Functions
+
+
+## Structures
 
     struct config
     {
@@ -40,9 +45,10 @@ the Evolutionary Algorithm.
     };
 
 
-# Functions
-- struct config *config_new()
-- void config_destroy(void *e)`
+## Functions
+
+    struct config *config_new();
+    void config_destroy(void *e);
 
 `config_new()` creates and returns pointer to a `struct config`, while
 `config_destroy()` destroys it.
