@@ -3,7 +3,7 @@
 #include <math.h>
 
 #ifndef MU_PRINT
-#define MU_PRINT 1
+  #define MU_PRINT 1
 #endif
 
 #include "munit.h"
@@ -12,8 +12,7 @@
 #include "stack.h"
 #include "utils.h"
 #include "population.h"
-#include "gp/tree/tree.h"
-#include "gp/tree/regression.h"
+#include "evolve_gp.h"
 
 #define TEST_DATA "./tests/data/sine.csv"
 

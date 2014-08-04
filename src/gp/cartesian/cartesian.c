@@ -34,7 +34,7 @@ void cartesian_config_destroy(void *cc)
 /* CARTESIAN */
 struct cartesian *cartesian_new(struct cartesian_config *cc)
 {
-    struct cartesian *c = malloc(sizeof(struct cartestian *));
+    struct cartesian *c = malloc(sizeof(struct cartesian));
 
     c->score = NULL;
 
@@ -63,6 +63,7 @@ void cartesian_destroy(void *c)
     free_mem(cart->graph, free);
     free_mem(cart->inputs, free);
     free_mem(cart->outputs, free);
+    free_mem_arr(cart->address_grid, cart->columns, free);
 
     free(cart);
 }
@@ -92,70 +93,110 @@ void cartesian_print(struct cartesian *c)
     }
 }
 
-/* char *cartesian_string(struct cartesian *c) */
-/* { */
-/*     int i; */
-/*     char buffer[4096] = ""; */
-/*     char *cartesian_string = NULL; */
-/*     int graph_size = ((c->rows * c->columns) * c->max_arity); */
-/*  */
-/*     #<{(| build inputs string |)}># */
-/*     for (i = 0; i < c->num_inputs; i++) { */
-/*         strcat(buffer, "[%d]", c->inputs[i]); */
-/*     } */
-/*  */
-/*     #<{(| build graph string |)}># */
-/*     for (i = 0; i < graph_size; i += c->max_arity) { */
-/*         strcat(buffer, "["); */
-/*         strcat(buffer, "%d", c->inputs[i]); */
-/*         strcat(buffer, " %d ", c->inputs[i + 1]); */
-/*         strcat(buffer, "%d", c->inputs[i + 2]); */
-/*         strcat(buffer, "]"); */
-/*     } */
-/*  */
-/*     #<{(| build outputs string |)}># */
-/*     for (i = 0; i < c->num_outputs; i++) { */
-/*         strcat(buffer, "[%d]", c->outputs[i]); */
-/*     } */
-/*  */
-/*     #<{(| copy and return |)}># */
-/*     cartesian_string = malloc(sizeof(char) * strlen(buffer) + 1); */
-/*     strcpy(cartesian_string, buffer); */
-/*     return cartesian_string; */
-/* } */
+static char *cartesian_inputs_string(struct cartesian *c)
+{
+    int i;
+    char buffer[4096] = "";
+    char *inputs_string = NULL;
 
-/* int **caretsian_address_grid(struct cartesian *c) */
-/* { */
-/*     int i; */
-/*     int j; */
-/*     int addr_index = 0; */
-/*     int grid_size; */
-/*     float **grid; */
-/*  */
-/*     grid_size = c->num_inputs + (c->rows * c->columns); */
-/*     grid  = malloc(sizeof(int *) * grid_size); */
-/*  */
-/*     #<{(| inputs |)}># */
-/*     grid[0] = malloc(sizeof(int) * c->num_inputs); */
-/*     for (i = 0; i < c->num_inputs; i++) { */
-/*         grid[0][i] = addr_index; */
-/*         addr_index++; */
-/*     } */
-/*  */
-/*     #<{(| graph |)}># */
-/*     for (i = 1; i < c->columns; i++) { */
-/*         grid[i] = malloc(sizeof(int) * c->rows); */
-/*  */
-/*         for (j = 0; j < c->rows; j++) { */
-/*             grid[i][j] = addr_index; */
-/*             addr_index++; */
-/*         } */
-/*     } */
-/*  */
-/*     return grid; */
-/* } */
+    /* build inputs string */
+    for (i = 0; i < c->num_inputs; i++) {
+        sprintf(buffer, "[%d]", c->inputs[i]);
+    }
 
-/* int cartesian_column_level(int address) */
+    inputs_string = malloc(sizeof(char) * strlen(buffer) + 1);
+    strcpy(inputs_string, buffer);
+    return inputs_string;
+}
+
+static char *cartesian_graph_string(struct cartesian *c)
+{
+    int i;
+    char node_tmp[100] = "";
+    char buffer[4096] = "";
+    char *graph_string = NULL;
+    int graph_size = ((c->rows * c->columns) * c->max_arity);
+
+    /* build graph string */
+    for (i = 0; i < graph_size; i += c->max_arity) {
+        sprintf(
+            node_tmp,
+            "[%d %d %d]",
+            c->inputs[i],
+            c->inputs[i + 1],
+            c->inputs[i + 2]
+        );
+        strcat(buffer, node_tmp);
+    }
+
+    graph_string = malloc(sizeof(char) * strlen(buffer) + 1);
+    strcpy(graph_string, buffer);
+    return graph_string;
+}
+
+static char *cartesian_outputs_string(struct cartesian *c)
+{
+    int i;
+    char buffer[4096] = "";
+    char *outputs_string = NULL;
+
+    /* build outputs string */
+    for (i = 0; i < c->num_outputs; i++) {
+        sprintf(buffer, "[%d]", c->outputs[i]);
+    }
+
+    outputs_string = malloc(sizeof(char) * strlen(buffer) + 1);
+    strcpy(outputs_string, buffer);
+    return outputs_string;
+}
+
+char *cartesian_string(struct cartesian *c)
+{
+    char *in= cartesian_inputs_string(c);
+    char *graph = cartesian_graph_string(c);
+    char *out= cartesian_outputs_string(c);
+
+    size_t string_length = strlen(in) + strlen(graph) + strlen(out);
+    char *cartesian_string = malloc(sizeof(char) * string_length + 1);
+    strcat(cartesian_string, in);
+    strcat(cartesian_string, graph);
+    strcat(cartesian_string, out);
+
+    free(in);
+    free(graph);
+    free(out);
+
+    return cartesian_string;
+}
+
+int **cartesian_address_grid(struct cartesian *c)
+{
+    int i;
+    int j;
+    int addr_index = 0;
+    int **grid = malloc(sizeof(int *) * (unsigned long) c->columns);
+
+    /* inputs */
+    grid[0] = malloc(sizeof(int) * (unsigned long) c->num_inputs);
+    for (i = 0; i < c->num_inputs; i++) {
+        grid[0][i] = addr_index;
+        addr_index++;
+    }
+
+    /* graph */
+    for (i = 1; i < c->columns; i++) {
+        grid[i] = malloc(sizeof(int) * (unsigned long) c->rows);
+
+        for (j = 0; j < c->rows; j++) {
+            grid[i][j] = addr_index;
+            addr_index++;
+        }
+    }
+
+    return grid;
+}
+
+/* int cartesian_column_level(int address, struct cartesian *c) */
 /* { */
 /*     int i; */
 /*     int j; */
@@ -173,32 +214,31 @@ void cartesian_print(struct cartesian *c)
 /*     for (i = 0; i < c->columns; i++) { */
 /*         for (j = 0; j < c->rows; j++) { */
 /*             if (address == addr_grid[i][j]) { */
-/*                 free_mem(addr_grid); */
+/*                 addr_grid[i][j] = -1; */
 /*                 return i; */
 /*             } */
 /*         } */
 /*     } */
-/*     free_mem(addr_grid); */
+/*     free_mem_arr(addr_grid, c->columns, free); */
 /*  */
 /*     return -1; */
-/* error: */
-/*     free_mem(addr_grid); */
-/*     return -2; */
-/* } */
 /*  */
+/* error: */
+    /* free_mem_arr(addr_grid, c->columns, free); */
+    /* return -2; */
+/* } */
+
 /* int cartesian_random_func_gene(struct cartesian_config *cc) */
 /* { */
-/*  */
-/*  */
-/*     return 0; */
+/*     return sample(cc->functions, cc->functions_length); */
 /* } */
-/*  */
+
 /* int cartesian_random_conn_gene(int from_level, struct cartesian_config *cc) */
 /* { */
 /*  */
 /*     return 0; */
 /* } */
-/*  */
+
 /* int *cartesian_random_function(int addr, int level, struct cartesian_config *cc) */
 /* { */
 /*     int i; */
@@ -213,7 +253,7 @@ void cartesian_print(struct cartesian *c)
 /*  */
 /*     return function; */
 /* } */
-/*  */
+
 /* int cartesian_random_output(struct cartesian *c) */
 /* { */
 /*  */
@@ -227,14 +267,11 @@ void cartesian_print(struct cartesian *c)
 /*     int rows = cc->rows; */
 /*     int cols = cc->columns; */
 /*     int max_arity = cc->max_arity; */
-/*     int last_addr; */
-/*     struct cartesian *c; */
+/*     int last_addr = (cc->rows * cc->columns) + cc->num_outputs; */
 /*  */
 /*     #<{(| setup |)}># */
-/*     last_addr = (cc->rows * cc->columns) + cc->num_outputs; */
-/*  */
-/*     c = cartesian_new(cc); */
-/*     c->graph = malloc(sizeof(int) * (unsigned long) rows * cols * max_arity); */
+/*     struct cartesian *c = cartesian_new(cc); */
+/*     c->graph = malloc(sizeof(int) * (unsigned long) (rows * cols * max_arity)); */
 /*     c->inputs = malloc(sizeof(int) * (unsigned long) cc->num_inputs); */
 /*     c->outputs = malloc(sizeof(int) * (unsigned long) cc->num_outputs); */
 /*  */

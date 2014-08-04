@@ -8,23 +8,6 @@
 #define TERM_NODE 0
 #define FUNC_NODE 1
 
-/* TERMINAL TYPE */
-#define INPUT 0
-#define CONSTANT 1
-#define RANDOM_CONSTANT 2
-#define EVAL 3
-
-/* TERMINAL VALUE TYPE */
-#define INTEGER 0
-#define FLOAT 1
-#define DOUBLE 2
-#define STRING 3
-
-/* FUNCTION TYPE */
-#define DEFAULT 0
-#define CLASSIFICATION 1
-
-
 /* GENERATE TYPE */
 #define FULL 0
 #define GROW 1
@@ -44,36 +27,6 @@ struct tree_config
 
     struct function_set *fs;
     struct terminal_set *ts;
-};
-
-struct function_set
-{
-    int length;
-    struct function **functions;
-};
-
-struct function
-{
-    int type;
-    int function;
-    int arity;
-};
-
-struct terminal_set
-{
-    int length;
-    struct terminal **terminals;
-};
-
-struct terminal
-{
-    int type;
-    int value_type;
-    void *value;
-
-    void *min;
-    void *max;
-    int precision;
 };
 
 struct node {
@@ -106,29 +59,6 @@ struct tree {
 };
 
 /* FUNCTIONS */
-/* function set */
-struct function_set *function_set_new(struct function **functions, int n);
-void function_set_destroy(void *set);
-struct function *function_new(int type, int function, int arity);
-struct function *function_new_func(int function, int arity);
-struct function *function_new_cfunc(int function, int arity);
-void function_destroy(void *f);
-
-/* terminal set */
-struct terminal_set *terminal_set_new(struct terminal **terminals, int n);
-void terminal_set_destroy(void *set);
-struct terminal *terminal_new(int type, int value_type, void *value);
-struct terminal *terminal_new_input(char *input_name);
-struct terminal *terminal_new_constant(int type, void *value);
-struct terminal *terminal_new_random_constant(
-    int type,
-    void *min,
-    void *max,
-    int precision
-);
-void terminal_destroy(void *f);
-void *terminal_resolve_random(struct terminal *t);
-
 /* node */
 struct node *node_new(int type);
 struct node *node_new_func(int function, int arity);

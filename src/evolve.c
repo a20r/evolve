@@ -6,9 +6,7 @@
 #include "evolve.h"
 #include "population.h"
 #include "selection.h"
-#include "gp/tree/crossover.h"
-#include "gp/tree/mutation.h"
-#include "gp/tree/regression.h"
+#include "evolve_gp.h"
 
 
 struct stats *stats_new(void)

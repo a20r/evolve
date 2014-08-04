@@ -4,14 +4,12 @@
 #include <time.h>
 
 #ifndef MU_PRINT
-#define MU_PRINT 1
+  #define MU_PRINT 1
 #endif
 
 #include "munit.h"
 #include "utils.h"
-#include "gp/tree/tree.h"
-#include "gp/tree/crossover.h"
-#include "gp/tree/regression.h"
+#include "evolve_gp.h"
 
 
 /* GLOBAL VARS */

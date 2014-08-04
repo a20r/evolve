@@ -7,6 +7,7 @@
 #include "stack.h"
 #include "utils.h"
 #include "population.h"
+#include "gp/terminal.h"
 #include "gp/tree/tree.h"
 #include "gp/tree/regression.h"
 

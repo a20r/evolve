@@ -5,6 +5,8 @@
 
 ## API
 - [gp](#docs/api/gp/gp_module)
+    - [cartesian](#docs/api/gp/cartesian/cartesian_module)
+        - [cartesian](#docs/api/gp/cartesian/cartesian)
     - [tree](#docs/api/gp/tree/tree_module)
         - [crossover](#docs/api/gp/tree/crossover)
         - [mutation](#docs/api/gp/tree/mutation)

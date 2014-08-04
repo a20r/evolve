@@ -20,7 +20,9 @@ struct cartesian_config
     int num_outputs;
 
     /* data details */
-    int *functions;
+    int **functions;
+    int functions_length;
+    int *terminals;
 };
 
 struct cartesian
@@ -54,6 +56,7 @@ struct cartesian *cartesian_new(struct cartesian_config *cc);
 void cartesian_destroy(void *c);
 void cartesian_print(struct cartesian *c);
 char *cartesian_string(struct cartesian *c);
-int **caretsian_address_grid(struct cartesian *c);
+int **cartesian_address_grid(struct cartesian *c);
+struct cartesian *cartesian_generate(struct cartesian_config *cc);
 
 #endif

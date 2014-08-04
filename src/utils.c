@@ -139,6 +139,11 @@ error:
     return min + 1;
 }
 
+void *sample(void **array, int array_length)
+{
+    return array[randi(0, array_length)];
+}
+
 
 
 /* COMPARATOR */

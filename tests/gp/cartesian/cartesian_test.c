@@ -1,5 +1,8 @@
+#include <stdlib.h>
+
 #include "munit.h"
-#include "gp/cartesian/cartesian.h"
+#include "utils.h"
+#include "evolve_gp.h"
 
 /* GLOBAL VARS */
 static struct cartesian_config *config = NULL;
@@ -74,6 +77,7 @@ int test_cartesian_new_and_destroy(void)
     mu_check(c->outputs == NULL);
 
     cartesian_destroy(c);
+    cartesian_config_destroy(cc);
     return 0;
 }
 
@@ -91,22 +95,52 @@ int test_cartesian_string(void)
 
 int test_cartesian_address_grid(void)
 {
+    struct cartesian *c;
+    int i;
+    int j;
+    int **grid;
 
-    return 0;
-}
-
-int test_cartesian_generate(void)
-{
+    /* setup */
     setup();
+    c = cartesian_new(config);
+    grid = cartesian_address_grid(c);
 
+    /* print address grid */
+    for (i = 0; i < config->columns; i++) {
+        printf("column: %d\n", i);
+        for (j = 0; j < config->rows; j++) {
+            printf("%d ", grid[i][j]);
+        }
+        printf("\n");
+    }
+
+    /* clean up */
+    free_mem_arr(grid, c->columns, free);
+    cartesian_destroy(c);
     teardown();
+
     return 0;
 }
+
+/* int test_cartesian_random_func_gene(void) */
+/* { */
+/*  */
+/*     return 0; */
+/* } */
+/*  */
+/* int test_cartesian_generate(void) */
+/* { */
+/*     setup(); */
+/*  */
+/*     teardown(); */
+/*     return 0; */
+/* } */
 
 void test_suite(void)
 {
     mu_add_test(test_cartesian_config_new_and_destroy);
     mu_add_test(test_cartesian_new_and_destroy);
+    mu_add_test(test_cartesian_address_grid);
 }
 
 

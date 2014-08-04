@@ -103,6 +103,7 @@ char *trim(const char *s);
 /* RANDOM */
 int randi(int min, int max);
 float randf(float min, float max);
+void *sample(void **array, int array_length);
 
 
 

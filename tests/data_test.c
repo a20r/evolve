@@ -4,7 +4,7 @@
 #include <time.h>
 
 #ifndef MU_PRINT
-#define MU_PRINT 1
+  #define MU_PRINT 1
 #endif
 
 #define IRIS_DATA "./tests/data/iris.csv"
@@ -12,7 +12,7 @@
 #include "munit.h"
 #include "data.h"
 #include "utils.h"
-#include "gp/tree/tree.h"
+#include "evolve_gp.h"
 
 
 /* TESTS */

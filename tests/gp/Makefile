@@ -1,11 +1,15 @@
 include $(PWD)/config.mk
 FOLDER_NAME = tests/gp
 
+SRCS = $(wildcard *.c)
+OBJS = $(SRCS:.c=.o)
+TESTS = $(basename $(SRCS))
 
-default: gp_tree gp_cartesian
+default: subdirs $(TESTS)
 
-gp_tree:
+subdirs:
 	@make -s -C tree
-
-gp_cartesian:
 	@make -s -C cartesian
+
+%: %.c
+	$(MAKE_TEST)

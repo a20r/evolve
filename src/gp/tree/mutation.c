@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "utils.h"
+#include "gp/terminal.h"
 #include "gp/tree/tree.h"
 #include "gp/tree/mutation.h"
 

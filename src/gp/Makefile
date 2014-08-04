@@ -1,6 +1,9 @@
 include $(PWD)/config.mk
 FOLDER_NAME = src/gp
 
+SRCS = $(wildcard *.c)
+OBJS = $(SRCS:.c=.o)
+
 default: evolve_gp
 
 gp_tree:
@@ -9,4 +12,7 @@ gp_tree:
 gp_cartesian:
 	@make -s -C cartesian
 
-evolve_gp: gp_tree gp_cartesian
+%.o: %.c
+	$(MAKE_OBJ)
+
+evolve_gp: gp_tree gp_cartesian $(OBJS)

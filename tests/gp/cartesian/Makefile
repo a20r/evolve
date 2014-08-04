@@ -8,4 +8,4 @@ TESTS = $(basename $(SRCS))
 default: $(TESTS)
 
 %: %.c
-	$(MAKE_EXE)
+	$(MAKE_TEST)

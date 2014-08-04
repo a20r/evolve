@@ -10,8 +10,7 @@
 #include "config.h"
 #include "selection.h"
 #include "population.h"
-#include "gp/tree/tree.h"
-#include "gp/tree/regression.h"
+#include "evolve_gp.h"
 
 
 /* GLOBAL VAR */
